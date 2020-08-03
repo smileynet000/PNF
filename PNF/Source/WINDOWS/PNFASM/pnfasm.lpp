@@ -1,0 +1,1917 @@
+%option yylineno
+
+%{
+/* Prologue */
+/*
+Copyright (C) 2019 Dennis Earl Smiley
+
+This file is part of pnfasm.
+
+    pnfasm is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    pnfasm is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with pnfasm.  If not, see <https://www.gnu.org/licenses/>. 
+*/
+
+/*
+ CHANGELOG
+ =========
+ 
+ 5/25/15 Origional a 	- The first version.
+ 5/25/15 Origional a-a	- Removed ADDSTORE instruction. 2 instructions did the same thing.
+ 7/27/15 Original a-a-a - Added support for a type1 range.
+ 7/30/15 Original  a-a-b - 1. Added support for a type1 range implementation.
+			   2. Added support for RLOAD1 and RSTORE1.
+			   3. Added features to fix bugs...
+			   4. Added support for a type2 range
+			   5. Added support for a type2 range implementation
+			   6. Added support for RPREP2 and RLOAD2
+			   7. Added support for enums
+			   8. Added support for enum implementations
+			   9. Added support for other enum instructions
+			  10. Added support for arrays
+			  11. Added support for other array functions
+			  12. Changed array definition.
+			  13. Added version mechinism.
+
+3/25/17 Original a-a-c - 1. Added support for preprocessor.
+			 2. Debugged the code...
+			 3. Added support for automatic preprocessing...
+			 4. Fixed bugs...
+			 5. Added LIB directive...
+			 6. Fixed bugs...
+			 7. Added IFs.
+			 8. Added switches.
+			 9. Added more stack instructions.
+			10. Made Linux compatable.
+			11. Added PATCH and NATIVE.
+
+12/9/19 Origional a-a-d 1. Added FDECL and FRETS instructions.
+			2. Added FDEF, FDEF2, FEDEF2 and FEDEF instructions.
+			3. Added PARAMF2 instruction.
+			4. Added more function instructions.
+			5. Added documentation.
+			6. Added FNCPOINT and FNCLENGTH.
+			7. Fixed bugs...
+			8. Took out "extra" instructions.
+			9. Took out extra instructions.
+		       10. Added FNCFIND.
+		       11. Added FNCFRET and FNCFPARAM.
+*/
+/*
+ IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
+              VERSION TVOID 0V
+
+ IVOID      - Does nothing.
+              VOID TVOID 0V
+
+ ICRASH     - Intentional crash of program.
+              CRASH TSTRING [string]
+
+ IQUIT      - Quits the program. Returns return value.
+              QUIT TVOID [return value]
+
+ IHALT      - Halts the system by entering a forever loop.
+              HALT TVOID 0V
+
+ IPRINT     - Prints the specified value or the contents of the accumulator.
+              PRINT TVOID 0V
+              PRINT TBOOLEAN [data]
+              PRINT TNUMBER [data]
+              PRINT TCHARACTER [data]
+              PRINT TSTRING [data]
+
+ IPRINTLN   - Prints the specified value or the contents of the accumulator,
+              then a newline.
+              PRINTLN TVOID 0V
+              PRINTLN TBOOLEAN [data]
+              PRINTLN TNUMBER [data]
+              PRINTLN TCHARACTER [data]
+              PRINTLN TSTRING [data]
+
+ IREAD      - Reads in a value to the accumulator.
+              READ [type] 0V
+
+ ILOAD      - Loads a value from memory into the accumulator.
+              LOAD [type] [address]
+
+ ISTORE     - Stores the contents of the accumulator at the specified memory
+              location.
+              STORE TVOID [address]
+
+ ILOADC     - Loads a value from memory into the %calc register.
+              LOADC [type] [address]
+
+ ISTOREC    - Stores the contents of the %calc register into the specified
+              memory location.
+              STOREC TVOID [address]
+
+ IESTORE    - Stores the contents of %accumulator into [%ecount + 3].
+              ESTORE TVOID 0V
+
+ IESTOREC    - Stores the contents of %calc into [%ecount + 3].
+               ESTOREC TVOID 0V
+
+ IVLOAD      - Gets a variable from variable location %operand, and stores it in
+               %accumulator.
+               VLOAD [type] [Variable Address]
+
+ IVSTORE     - Stores a new variable from %accumulator to the next location.
+               VSTORE TVOID 0V
+               VSTORE TNUMBER [variable number]
+
+ IVLOADC     - Gets a variable from variable location %operand, and stores it in
+               %calc.
+               VLOADC [type] [Variable Address]
+
+ IVSTOREC    - Stores a new variable from %calc to the next location.
+               VSTOREC TVOID 0V
+               VSTOREC TNUMBER [variable number]
+
+ ISTOREA     - Stores %accumulator to the address pointed at by %calc.
+ 	       STOREA TVOID 0V
+
+ IMODT       - Modifies the type of %accumulator.
+               MODT [type] 0V
+
+ IMODCT      - Modifies the type of %calc.
+               MODCT [type] 0V
+
+ IADD       - Adds %calc or other value to %accumulator.
+              ADD TVOID 0V
+              ADD TNUMBER [data]
+              ADD TCHARACTER [data]
+              ADD TSTRING [data]
+
+ ISUB       - Subtracts %calc from %accumulator.
+              SUB VOID 0
+              SUB TNUMBER [data]
+
+ IMUL       - Multiplies %accumulator and %calc.
+              MUL VOID 0
+              MUL TNUMBER [data]
+
+ IDIV       - Divides %calc by %accumulator.
+              DIV VOID 0
+              DIV TNUMBER [data]
+
+ IMOD       - Takes a modulus of %accumulator and %calc.
+              MOD VOID 0
+              MOD TNUMBER [data]
+
+ IPOW       - Raises %accumulator to the power of %calc.
+              POW VOID 0
+              POW TNUMBER [data]
+
+ IROOT      - Root %accumulator by itself or the given number.
+              SQRT VOID 0
+              SQRT TNUMBER [data]
+
+ IINC       - Increments %accumulator.
+              INC TVOID 0V
+
+ IDEC       - Decrements %accumulator.
+              DEC TVOID 0V
+
+ IEQU       - Tests if %accumulator == %calc.
+              EQU TVOID 0V
+              EQU TBOOLEAN [data]
+              EQU TNUMBER [data]
+              EQU TCHARACTER [data]
+
+ INEQU      - Tests if %accumulator != %calc.
+              NEQU TVOID 0V
+              NEQU TBOOLEAN [data]
+              NEQU TNUMBER [data]
+              NEQU TCHARACTER [data]
+
+ IGTR       - Tests if %accumulator > %calc.
+              GTR TVOID 0V
+              GTR TNUMBER [data]
+              GTR TCHARACTER [data]
+
+ ILSS       - Tests if %accumulator < %calc.
+              LSS TVOID 0V
+              LSS TNUMBER [data]
+              LSS TCHARACTER [data]
+
+ IGEQU       - Tests if %accumulator >= %calc.
+               GEQU TVOID 0V
+               GEQU TNUMBER [data]
+               GEQU TCHARACTER [data]
+
+ ILEQU       - Tests if %accumulator <= %calc.
+               LEQU TVOID 0V
+               LEQU TNUMBER [data]
+               LEQU TCHARACTER [data]
+
+ IAND        - %accumulator && %calc
+               AND TVOID 0V
+
+ IOR         - %accumulator || %calc
+               OR TVOID 0V
+
+ INOT        - !(%accumulator)
+               NOT TVOID 0V
+
+ IGOTO       - Go to the memory address specified and continue running the
+               program from there.
+               GOTO TVOID [memory address]
+
+ ICGOTO       - Go to the memory address specified and continue running the
+                program from there if %accumulator equals true.
+                CGOTO TVOID [memory address]
+
+ IZGOTO       - Go to the memory address specified if %accumulator is 0.
+                ZGOTO TVOID [memory address]
+
+ IPGOTO       - Go to the memory address specified if %accumulator is > 0.
+                PGOTO TVOID [memory address]
+
+ INGOTO       - Go to the memory address specified if %accumulator is < 0.
+                NGOTO TVOID [memory address]
+
+ IGOTOL        - Go to the label specified and continue running the
+                 program from there.
+                 GOTOL TVOID [label number]
+                 GOTOL TSTRING [label string]               
+
+ ICGOTOL       - Go to the label specified and continue running the
+                 program from there if %accumulator equals true.
+                 CGOTOL TVOID [label number]
+                 CGOTOL TSTRING [label string
+
+ IZGOTOL       - Go to the label specified if %accumulator is 0.
+                 ZGOTOL TVOID [label number]
+                 ZGOTOL TSTRING [label string]
+
+ IPGOTOL       - Go to the memory address specified if %accumulator is > 0.
+                 PGOTOL TVOID [label number]
+                 PGOTOL TSTRING [label string]
+
+ INGOTOL       - Go to the label specified if %accumulator is < 0.
+                 NGOTOL TVOID [label number]
+                 NGOTOL TSTRING [label string]
+
+ IST           - Sets %accumulator to 0 if %calc is 0. (Used for loops.)
+                 ST TVOID 0V
+
+ IPUSH         - Put the accumulator on the stack.
+                 PUSH TVOID 0V
+
+ IPOP          - Loads a value into the accumulator from the stack.
+                 POP TVOID 0V
+
+ ICALL         - Calls a subroutine that begins at [memory address].
+                 CALL TVOID [memory address]
+
+ ICALLL        - Calls a subroutine that begins at [label].
+                 CALLL TVOID [label]
+
+ IRET          - Returns from a subroutine.
+                 RET TVOID 0
+
+ ILBL	       - Declares a label.
+	         LBL TVOID 0V
+                 LBL TSTRING [string]
+
+ IVAR          - Declares a variable.
+                 VAR TVOID [variable]
+
+ IELBL         - Declares an event label.
+                 ELBL TVOID 0V
+
+ IEVLOAD       - Loads a value into %evalue.
+                 EVLOAD TVOID [value]
+
+ IHEADD        - Adds a Hardware Event to the table.
+                 HEADD TVOID [event label number]
+
+ IHEREM        - Removes a Hardware Event from the table.
+                 HEREM TVOID 0V
+
+ IHEED         - Edits a Hardware Event in the table. %evalue must be the hevent
+                 number.
+                 HEED TVOID [new event label number number]
+
+ IHEGET        - Gets a Hardware Event event label number from the table. Puts it
+                 in %evalue.
+                 HEGET TVOID [hardware event number]
+
+ ISHEADD       - Adds a System Hardware Event to the table.
+                 SHEADD TVOID [event label number]
+
+ ISHEREM       - Removes a System Hardware Event from the table.
+                 SHEREM TVOID 0V
+
+ ISHEED        - Edits a System Hardware Event in the table. %evalue must be the 
+                 shevent number.
+                 SHEED TVOID [new event label number number]
+
+ ISHEGET       - Gets a System Hardware Event event label number from the table.
+                 Puts it in %evalue.
+                 SHEGET TVOID [hardware event number]
+
+ IEADD        -  Adds an Event to the table.
+                 EADD TVOID [event label number]
+
+ IEREM         - Removes an Event from the table.
+                 EREM TVOID 0V
+
+ IEED          - Edits an Event in the table. %evalue must be the event number.
+                 EED TVOID [new event label number number]
+
+ IEGET         - Gets an Event event label number from the table. Puts it in \
+                 %evalue.
+                 EGET TVOID [hardware event number]
+
+ IEXADD        - Adds an Exception to the table.
+                 EXADD TVOID [event label number]
+
+ IEXREM        - Removes an Exception from the table.
+                 EXREM TVOID 0V
+
+ IEXED         - Edits an Exception in the table. %evalue must be the exception
+                 number.
+                 EXED TVOID [new event label number number]
+
+ IEXGET        - Gets an Exception event label number from the table. Puts it
+                 in %evalue.
+                 EXGET TVOID [hardware event number]
+
+ IIADD         - Adds an Interrupt to the table.
+                 IADD TVOID [event label number]
+
+ IIREM         - Removes an Interrupt from the table.
+                 IREM TVOID 0V
+
+ IIED          - Edits an Interrupt in the table. %evalue must be the interrupt
+                 number.
+                 IED TVOID [new event label number number]
+
+ IIGET         - Gets an Interrupt event label number from the table. Puts it
+                 in %evalue.
+                 IGET TVOID [hardware event number]
+              
+ IHEVENT       - Executes a Hardware Event subroutine.
+                 HEVENT TVOID [hardware event number]
+
+ ISHEVENT      - Executes a System Hardware Event Subroutine.
+                 SHEVENT TVOID [system hardware event number]
+
+ IEVENT        - Executes an Event subroutine.
+          	 EVENT TVOID [event number]
+
+ IEXCEPTION 	- Executes an Exception subroutine.
+              	  EXCEPTION TVOID [exception number]
+
+ IINT   	- Executes an Interrupt (User Defined Event) subroutine.
+              	  INT TVOID [interrupt number]
+                            
+ ITYPEOF	- Puts the type of %accumulator in %typeof.
+ 		  TYPEOF TVOID 0V
+ 			  
+ ICTYPEOF	- Puts the type of %calc in %typeof.
+ 		  CTYPEOF TVOID 0V
+ 			  
+ ITLOAD         - Loads %typeof to %accumulator.
+   	    	  TLOAD TVOID 0V
+
+ IALOAD		- Loads a value into the accumulator.
+ 		  ALOAD TVOID 0V
+ 		  ALOAD TBOOLEAN [data]
+ 		  ALOAD TNUMBER [data]
+ 		  ALOAD TCHARACTER [data]
+ 		  ALOAD TSTRING [data]
+ 			  
+ IINLOAD	- Loads %iname into %accumulator.
+ 		  INLOAD TVOID 0V
+ 			  
+ IICLOAD	- Loads %icount into %accumulator.
+ 		  ICLOAD TVOID 0V
+ 			  
+ IARLOAD	- Loads %arg[number] into %accumulator.
+ 		  ARLOAD TVOID [number]
+ 			  
+ IELOAD		- Loads [%ecount + 3] to %accumulator.
+ 		  ELOAD TVOID 0V
+ 			  
+ IELOADC	- Loads [%ecount + 3] to %calc.
+ 		  ELOADC TVOID 0V
+ 			  
+ IATOC		- Puts %accumulator in %calc.
+ 		  ATOC TVOID 0V
+ 			  
+ ISWITCH    	- Switches %accumulator and %calc.
+ 		  SWITCH TVOID 0V
+ 		
+ IVADD		- Gets the address of the specified variable.
+ 		  VADD TVOID [variable number]
+ 			  
+ ILADD		- Gets the address of the specified label.
+ 		  LADD TVOID [label number]
+ 			  
+ IELADD		- Gets the address of the specified event label.
+ 		  ELADD TVOID [event label number]
+
+ IADD2V	   	 - Retrieves the value at the address stored in %accumulator.
+ 	    	   ADD2V TVOID 0V
+ 			  
+ IBTAND		- Performs bit AND on %accumulator and %calc.
+ 		  BTAND TVOID 0V
+ 			  
+ IBTOR		- Performs bit OR on %accumulator and %calc.
+ 		  BTOR TVOID 0V
+ 			  
+ IBTEXOR	- Performs bit exclusive OR on %accumulator and %calc.
+ 	 	  BTEXOR TVOID 0V
+ 			  
+ IBTNOT		- Performs bit NOT on %accumulator.
+		  BTNOT TVOID 0V
+ 			  
+ IBTSL		- Performs << on %accumulator and %calc.
+		  BTSL TVOID 0V
+ 			  
+ IBTSR		- Performs >> on %accumulator and %calc.
+		  BTSR TVOID 0V
+
+ IVCHECK        - Sets %accumulator to true if version parameters match.
+ 	          VCHECK [type] [operand]
+
+ IVSUPP	        - Checks to see if a version is supported.
+ 	          VSUPP [type] [operand]
+
+ IVPRINT	- Prints the version.
+		  VPRINT TVOID 0V
+
+ IVPRINTLN	- Prints the version, then a newline.
+		  VPRINTLN TVOID 0V
+
+ IISUPP	    	- Checks to see if an instruction is supported or not.
+ 		  ISUPP TNUMBER [data]
+ 			  
+ ITSUPP		- Checks to see if a type is supported or not.
+ 		  TSUPP TNUMBER [data]
+
+ ICOMMENT   	- A comment in the code.
+ 		  COMMENT TSTRING [string]
+
+ IFIMODE        - Sets the mode for file input.
+ 	          FIMODE TSTRING [mode]
+ 		
+ IFOMODE        - Sets the mode for file output.
+ 	          FOMODE TSTRING [mode]
+ 			  
+ IFIOPEN        - Opens the specified file for input. If VOID, gets it from %accumulator.
+		  FIOPEN TVOID 0V
+ 	          FIOPEN TSTRING [filename]
+ 			  
+ IFOOPEN        - Opens the specified file for output. If VOID, gets it from, %accumulator.
+		  FOOPEN TVOID 0V
+ 	          FOOPEN TSTRING [filename]
+ 			  
+ IFREAD	        - Reads a value from the file, and stores it in %accumulator.
+ 	          FREAD [type] 0V
+ 			  
+ IFPRINT        - Prints a value to the file.
+ 	          FRPINT [type] [data]
+ 			  
+ IFPRINTLN      - Prints a value to the file, then a newline.
+ 	          FPRINTLN [type] [data]
+
+ IFICLOSE   	- Closes the input file that's open.
+ 		  FICLOSE TVOID 0V
+ 			  
+ IFOCLOSE   	- Closes the output file that's open.
+ 		  FOCLOSE TVOID 0V
+
+ IMEML		- Stores the length of memory in %accumulator.
+ 		  MEML TVOID 0V
+
+ IFIEOF		- Tests if we are at EOF or not.
+ 		  FIEOF TVOID 0V
+
+ IARNLOAD	- Loads the number of arguments into %accumulator.
+ 		  ARNLOAD TVOID 0V
+
+ IRDSTART1      - Marks the start of a type1 range.
+ 		  RDSTART1 TSTRING [name]
+ 			  
+ IRFROM1        - Specifies the type1 range from value.
+ 		  RFROM1 TNUMBER [num]
+ 			  
+ IRTO1		- Specifies the type1 range to value.
+ 		  RTO1 TNUMBER [num]
+ 			  
+ IRDEND1	- Marks the end of a type1 range.
+                  RDEND1 TVOID 0V
+
+ IRSTART1       - Marks the start of a type1 range implementation. Needs a definition name.
+                  RSTART1 TSTRING [defname]
+              
+ IRANGE1        - Specifies the range implementation value for a type1 range. To be valid, number MUST be within the range values...
+ 		  RANGE1 TNUMBER [num]
+ 			  
+ IREND1         - Marks the end of the type1 range implementation, and names it.
+ 		  REND1 TSTRING [name]
+
+ IRLOAD1    	- Loads a value from a type1 range to %accumulator.
+ 		  RLOAD1 TSTRING [name]
+ 			  
+ IRSTORE1   	- Stores a value from %accumulator to a type1 range.
+ 		  RSTORE TSTRING [name]
+
+ IHEADDB	- Add num blank hardware events
+ 		  HEADDB TVOID [num]
+ 			  
+ ISHEADDB	- Add num blank system hardware events
+ 		  SHEADDB TVOID [num]
+ 			  
+ IEADDB		- Add num blank events
+ 	          EADDB TVOID [num]
+ 			  
+ IEXADDB	- Add num blank exceptions
+ 		  EXADDB TVOID [num]
+ 			  
+ IIADDB		- Add num blank system interrupts
+ 		  IADDB TVOID [num]
+
+ IRDSTART2  	- Marks the start of a type2 range.
+ 		  RDSTART2 TSTRING [name]
+ 			  
+ IRFROM2    	- Specifies the type2 range from value.
+ 		  RFROM2 TNUMBER [num]
+ 			  
+ IRTO2		- Specifies the type2 range to value.
+ 		  RTO2 TNUMBER [num]
+ 			  
+ IRDEND2	- Marks the end of a type2 range.
+              	  RDEND2 TVOID 0V
+
+ IRSTART2   	- Marks the start of a type2 range implementation. Needs a definition name.
+              	  RSTART2 TSTRING [defname]
+              
+ IRANGE2    	- Specifies the range implementation value for a type2 range.
+ 		  RANGE2 TSTRING [name]
+
+ IRPREP2	- Prepares the rt2prep register...
+ 		  RPREP2 TSTRING [name]
+ 			  
+ IRLOAD2	- Loads a value from index to %accumulator
+ 		  RLOAD2 TNUMBER [index]
+
+ IESTART	- Marks the start of an enum definition
+ 		  ESTART TSTRING [name]
+ 			  
+ IENAME		- Specifies an enum definition name
+ 		  ENAME TSTRING [name]
+ 			  
+ IEEND		- Marks the end of an enum definition
+ 		  EEND TVOID 0V
+
+ IENUMS		- Marks the beginning of an enum implementation
+ 		  ENUMS TSTRING [defname]
+ 			  
+ IENUM		- Sets the value for the enum implementation
+ 		  ENUM TSTRING [valuename]
+ 			  
+ ISENUM		- Ends the enum implementation. Names it.
+ 		  SENUM TSTRING [name]
+
+ IEPREP		- Prepares the etprep register...
+ 		  EPREP TSTRING [name]
+ 			  
+ ILOADE		- Loads a value from an enum to %accumulator
+ 		  LOADE TVOID 0V
+ 			  
+ ISTOREE	- Stores a value from %accumulator to an enum
+ 		  STOREE TVOID 0V
+
+ IASTART	- Names the array to be defined.
+ 		  ASTART TSTRING [name] 			
+ 			  
+ IAEND		- Marks the end of an array definition
+ 		  AEND TNUMBER [length]
+
+ IAPREP		- Prepares %aprep register
+ 		  APREP TSTRING [name]
+ 			  
+ IAIPREP	- Prepares %aiprep register. If TVOID, gets number from %accumulator.
+ 		  AIPREP TNUMBER [num]
+		  AIPREP TVOID 0V
+ 			  
+ ILOADIA	- Loads a value from an array to %accumulator
+ 		  LOADIA TVOID 0V
+ 			  
+ ISTOREIA	- Stores a value from %accumulator to an array
+ 		  STOREIA TVOID 0V
+
+ IALENGTH   	- Gets the length of an array and puts it in %accumulator
+	      	  ALENGTH TVOID 0V
+
+ IAPRINT        - Prints the contents of an array
+	    	  APRINT TVOID 0V
+
+ IDUP		- Sets %accumulator to %calc
+		  DUP TVOID 0V
+
+ ICDUP		- Sets %calc to %accumulator
+		  CDUP TVOID 0V
+
+ IIF	    - Branches to if block if %accumulator is true, otherwise either optional else block or the end of the if.
+	      IF TVOID 0V
+
+ IIFBEGIN    - Marks the begining of the if or else block.
+	      IFBEGIN TVOID 0V
+
+ IIFEND	     - Marks the end of the if or else block.
+	       IFEND TVOID 0V
+
+ IENDIF	     - Marks the end of the if.
+	       ENDIF TVOID 0V
+
+ IIFELSE     - Marks the beginning of the optional else block.
+	       IFELSE TVOID 0V
+
+ IENDIFELSE  - Marks the end of the optional else blcok.
+	       ENDIFELSE TVOID 0V
+
+ IEIF	     - Marks the end of the if/else.
+	       EIF TVOID 0V
+
+ISWITCH2    - Specifies that what follows is a switch statement.
+               SWITCH2 TVOID 0V
+
+ ISWBEGIN    - The switch statement block start.
+               SWBEGIN TVOID 0V
+
+ ISWEND      - The switch statement block end.
+               SWEND TVOID 0V
+
+ ISWCBEGIN   - The switch statement case block start.
+               SWCBEGIN TVOID 0V
+
+ ISWCEND     - The switch statement case block end.
+               SWCEND TVOID 0V
+
+ ISWCASE     - A switch statement case.
+               SWCASE [type] [value]
+
+ ISWDEFAULT  - A switch statement default case.
+               SWDEFAULT TVOID 0V
+
+ ISWBREAK    - Goes to the next SWEND or reg.ecount.
+	       SWBREAK TVOID 0V
+
+ ILOADSP     - Loads the specified stack position into %accumulator.
+	       LOADSP TNUMBER [stackpos]
+
+ ISTORESP    - Stores the specified stack position from %accumulator. Also mirrors the stack in %savestack.
+	       STORESP TNUMBER [stackpos]
+
+ ILOADSTACK  - Loads %savestack into the stack.
+	       LOADSTACK TVOID 0V
+
+ ISTORESTACK - Stores the stack in %savestack.
+	       STORESTACK TVOID 0V
+
+ IATOSP	     - Sends %accumulator to %stackp.
+	       ATOSP TVOID 0V
+
+ ISPTOA	     - Sends %stackp to %accumulator.
+	       SPTOA TVOID 0V
+
+ IPATCH	     - Applies a patch.
+	       PATCH [type] [value]
+
+ INATIVE     - Runs a native subroutine.
+	       NATIVE TSTRING [subroutine name]
+
+ IFRET	      - Returns from a function.
+		FRET TVOID 0V
+
+ IFCALL	      - Prepares to call function [name]
+		FCALL TSTRING [name]
+
+ IFCPARAMS    - The actual parameter block start.
+		FCPARAMS TVOID 0V
+
+ IFECPARAMS   - The actual parameter block end.
+		FECPARAMS TVOID 0V
+
+ IFECALL      - Makes the call to the function.
+		FECALL TVOID 0V
+
+ IPUNUM       - Allows us to specify an actual parameter number.
+		PNUM TNUMBER [num]
+
+ IPARAMF      - Specify an actual parameter.
+		PARAMF [type] [value]
+
+ IPARAMF2     - Load parameter specified by %pnum to %accumulator
+		PARAMF2 TVOID 0V
+
+ IRNUM	      - Specify a return value number
+		RNUM TNUMBER [num]
+
+ IRETURNF     - Modifies a value for return
+		RETURNF [type] [value]
+
+ IFNAME	      - Sets %fname
+		FNAME TSTRING [name]
+
+ IRETURNV     - Loads %accumulator with return value %rnum
+		RETURNV TVOID 0V
+
+ IFNCLOAD     - Loads a function from %fpointer1 to %fpointer2.
+		FNCLOAD TNUMBER [num]
+
+ IFNCSTORE    - Stores a function from %fpointer2 to %fpointer1
+		FNCSTORE TNUMBER [num]
+		FNCSTORE TVOID 0V
+
+ IFNCNEW      - Adds a new Function on the C++ heap.
+		FNCNEW TVOID 0V
+
+ IFNCDELETE   - Deletes a new Function on the C++ heap.
+		FNCDELETE TVOID 0V
+
+ IFNCSNAME    - Sets the name of the function %fpointer2
+		FNCSNAME TVOID 0V
+
+ IFNCSRET     - Sets the return type of a return value in %fpointer.
+		FNCSRET [type] 0V
+
+ IFNCSPARAM   - Adds a parameter of type [type] to %fpointer2 with value %accumulator
+		FNCSPARAM [type] 0V
+
+ IFNCSDEF      - Adds a definition beginning at [where] or [label] to %fpointer2.
+		 FNCSDEF TNUMBER [where]
+		 FNCSDEF TSTRING [label]
+
+ IFNCGNAME     - Gets the name of %fpointer2
+		 FNCGNAME TVOID 0V
+
+ IFNCGRET      - Gets a return value from %fpointer2
+		 FNCGRET TNUMBER [num]
+
+ IFNCGPARAM    - Gets a parameter value from %fpointer2
+		 FNCGPARAM TNUMBER [num]
+
+ IFNCGDEF      - Gets a definition address for %fpointer2
+		 FNCGDEF TVOID 0V
+*/
+#include "pnfasm.tab.cpp"
+%}
+/* Flex Definitions */
+ASMVERSION	"version"
+
+PNF		"pnf"
+
+IVERSION	"VERSION"
+
+IVOID		"VOID"
+
+ICRASH		"CRASH"
+
+IQUIT		"QUIT"
+
+IHALT		"HALT"
+
+IPRINT		"PRINT"
+
+IPRINTLN	"PRINTLN"
+
+IREAD		"READ"
+
+ILOAD		"LOAD"
+
+ISTORE		"STORE"
+
+ILOADC		"LOADC"
+
+ISTOREC		"STOREC"
+
+IELOAD		"ELOAD"
+
+IESTORE		"ESTORE"
+
+IELOADC		"ELOADC"
+
+IESTOREC	"ESTOREC"
+
+IVLOAD		"VLOAD"
+
+IVSTORE		"VSTORE"
+
+IVLOADC		"VLOADC"
+
+IVSTOREC	"VSTOREC"
+
+ISTOREA		"STOREA"
+
+IMODT		"MODT"
+
+IMODCT		"MODCT"
+
+IADD		"ADD"
+
+ISUB		"SUB"
+
+IMUL		"MUL"
+
+IDIV		"DIV"
+
+IMOD		"MOD"
+
+IPOW		"POW"
+
+IROOT		"ROOT"
+
+IINC		"INC"
+
+IDEC		"DEC"
+
+IEQU		"EQU"
+
+INEQU		"NEQU"
+
+IGTR		"GTR"
+
+ILSS		"LSS"
+
+IGEQU		"GEQU"
+
+ILEQU		"LEQU"
+
+IAND		"AND"
+
+IOR		"OR"
+
+INOT		"NOT"
+
+IGOTO		"GOTO"
+
+ICGOTO		"CGOTO"
+
+IZGOTO		"ZGOTO"
+
+IPGOTO		"PGOTO"
+
+INGOTO		"NGOTO"
+
+IGOTOL		"GOTOL"
+
+ICGOTOL		"CGOTOL"
+
+IZGOTOL		"ZGOTOL"
+
+IPGOTOL		"PGOTOL"
+
+INGOTOL		"NGOTOL"
+
+IST		"ST"
+
+IPUSH		"PUSH"
+
+IPOP		"POP"
+
+ICALL		"CALL"
+
+ICALLL		"CALLL"
+
+IRET		"RET"
+
+IVAR		"VAR"
+
+ILBL		"LBL"
+
+IEPRINT		"EPRINT"
+
+IEPRINTLN	"EPRINTLN"
+
+IEND		"END"
+
+IELBL		"ELBL"
+
+IEVLOAD		"EVLOAD"
+
+IHEADD		"HEADD"
+
+IHEREM		"HEREM"
+
+IHEED		"HEED"
+
+IHEGET		"HEGET"
+
+ISHEADD		"SHEADD"
+
+ISHEREM		"SHEREM"
+
+ISHEED		"SHEED"
+
+ISHEGET		"SHEGET"
+
+IEADD		"EADD"
+
+IEREM		"EREM"
+
+IEED		"EED"
+
+IEGET		"EGET"
+
+IEXADD		"EXADD"
+
+IEXREM		"EXREM"
+
+IEXED		"EXED"
+
+IEXGET		"EXGET"
+
+IIADD		"IADD"
+
+IIREM		"IREM"
+
+IIED		"IED"
+
+IIGET		"IGET"
+
+IHEVENT		"HEVENT"
+
+ISHEVENT	"SHEVENT"
+
+IEVENT		"EVENT"
+
+IEXCEPTION	"EXCEPTION"
+
+IINT		"INT"
+
+ITYPEOF		"TYPEOF"
+
+ICTYPEOF	"CTYPEOF"
+
+ITLOAD		"TLOAD"
+
+IALOAD		"ALOAD"
+
+IINLOAD		"INLOAD"
+
+IICLOAD		"ICLOAD"
+
+IARLOAD		"ARLOAD"
+
+IATOC		"ATOC"
+
+ISWITCH		"SWITCH"
+
+IVADD		"VADD"
+
+ILADD		"LADD"
+
+IELADD		"ELADD"
+
+IADD2V		"ADD2V"
+
+IBTAND		"BTAND"
+
+IBTOR		"BTOR"
+
+IBTEXOR		"BTEXOR"
+
+IBTNOT		"BTNOT"
+
+IBTSL		"BTSL"
+
+IBTSR		"BTSR"
+
+IVCHECK		"VCHECK"
+
+IVSUPP		"VSUPP"
+
+IVPRINT		"VPRINT"
+
+IVPRINTLN	"VPRINTLN"
+
+IISUPP		"ISUPP"
+
+ITSUPP		"TSUPP"
+
+ICOMMENT	"COMMENT"
+
+IFIMODE		"FIMODE"
+
+IFOMODE		"FOMODE"
+
+IFIOPEN		"FIOPEN"
+
+IFOOPEN		"FOOPEN"
+
+IFREAD		"FREAD"
+
+IFPRINT		"FPRINT"
+
+IFPRINTLN	"FPRINTLN"
+
+IFICLOSE	"FICLOSE"
+
+IFOCLOSE	"FOCLOSE"
+
+IMEML		"MEML"
+
+IFIEOF		"FIEOF"
+
+IARNLOAD	"ARNLOAD"
+
+IRDSTART1	"RDSTART1"
+
+IRFROM1		"RFROM1"
+
+IRTO1		"RTO1"
+
+IRDEND1		"RDEND1"
+
+IRSTART1	"RSTART1"
+
+IRANGE1		"RANGE1"
+
+IREND1		"REND1"
+
+IRLOAD1		"RLOAD1"
+
+IRSTORE1	"RSTORE1"
+
+IHEADDB		"HEADDB"
+
+ISHEADDB	"SHEADDB"
+
+IEADDB		"EADDB"
+
+IEXADDB		"EXADDB"
+
+IIADDB		"IADDB"
+
+IRDSTART2	"RDSTART2"
+
+IRFROM2		"RFROM2"
+
+IRTO2		"RTO2"
+
+IRDEND2		"RDEND2"
+
+IRSTART2	"RSTART2"
+
+IRANGE2		"RANGE2"
+
+IRPREP2		"RPREP2"
+
+IRLOAD2		"RLOAD2"
+
+IESTART		"ESTART"
+
+IENAME		"ENAME"
+
+IEEND		"EEND"
+
+IENUMS		"ENUMS"
+
+IENUM		"ENUM"
+
+ISENUM		"SENUM"
+
+IEPREP		"EPREP"
+
+ILOADE		"LOADE"
+
+ISTOREE		"STOREE"
+
+IASTART		"ASTART"
+
+IAEND		"AEND"
+
+IAPREP		"APREP"
+
+IAIPREP		"AIPREP"
+
+ILOADIA		"LOADIA"
+
+ISTOREIA	"STOREIA"
+
+IALENGTH	"ALENGTH"
+
+IAPRINT		"APRINT"
+
+IDUP		"DUP"
+
+ICDUP		"CDUP"
+
+IIF		"IF"
+
+IENDIF		"ENDIF"
+
+IIFELSE		"IFELSE"
+
+IENDIFELSE	"ENDIFELSE"
+
+IEIF		"EIF"
+
+IIFBEGIN	"IFBEGIN"
+
+IIFEND		"IFEND"
+
+ISWITCH2	"SWITCH2"
+
+ISWBEGIN	"SWBEGIN"
+
+ISWEND		"SWEND"
+
+ISWCASE		"SWCASE"
+
+ISWCBEGIN	"SWCBEGIN"
+
+ISWCEND		"SWCEND"
+
+ISWDEFAULT	"SWDEFAULT"
+
+ISWBREAK	"SWBREAK"
+
+ILOADSP		"LOADSP"
+
+ISTORESP	"STORESP"
+
+ILOADSTACK	"LOADSTACK"
+
+ISTORESTACK	"STORESTACK"
+
+IATOSP		"ATOSP"
+
+ISPTOA		"SPTOA"
+
+IPATCH		"PATCH"
+
+INATIVE		"NATIVE"
+
+IFRET		"FRET"
+
+IFCALL		"FCALL"
+
+IFCPARAMS	"FCPARAMS"
+
+IFECPARAMS	"FECPARAMS"
+
+IFECALL		"FECALL"
+
+IPNUM		"PNUM"
+
+IPARAMF		"PARAMF"
+
+IPARAMF2	"PARAMF2"
+
+IPARAMF3	"PARAMF3"
+
+IRNUM		"RNUM"
+
+IRETURNF	"RETURNF"
+
+IRETURNF2	"RETURNF2"
+
+IRETURNF3	"RETURNF3"
+
+IFNAME		"FNAME"
+
+IRETURNV	"RETURNV"
+
+IFNCLOAD	"FNCLOAD"
+
+IFNCSTORE	"FNCSTORE"
+
+IFNCNEW		"FNCNEW"
+
+IFNCDELETE	"FNCDELETE"
+
+IFNCSNAME	"FNCSNAME"
+
+IFNCSRET	"FNCSRET"
+
+IFNCSPARAM	"FNCSPARAM"
+
+IFNCSDEF	"FNCSDEF"
+
+IFNCGNAME	"FNCGNAME"
+
+IFNCGRET	"FNCGRET"
+
+IFNCGPARAM	"FNCGPARAM"
+
+IFNCGDEF	"FNCGDEF"
+
+IFNCPOINT	"FNCPOINT"
+
+IFNCLENGTH	"FNCLENGTH"
+
+IFNCSYNCR	"FNCSYNCR"
+
+IFNCFIND	"FNCFIND"
+
+IFNCFRET	"FNCFRET"
+
+IFNCFPARAM	"FNCFPARAM"
+
+IFNCFBRET	"FNCFBRET"
+
+IFNCFBPARAM	"FNCFBPARAM"
+
+
+TVOID		"TVOID"
+
+TBOOLEAN	"TBOOLEAN"
+
+TNUMBER		"TNUMBER"
+
+TCHARACTER	"TCHARACTER"
+
+TSTRING		"TSTRING"
+
+VOID		"0V"
+
+BOOLEAN		"true"|"false"
+
+DIGIT		[0-9]
+
+NUMBER		{DIGIT}+|{DIGIT}+"."{DIGIT}*
+
+CHARACTER	'.'
+
+TCHARACTER2	.
+
+TCHARACTER3	[^\"]
+
+STRING		\"{TCHARACTER3}*\"
+
+COMMENT		;{TCHARACTER2}*
+
+BIN		"#BIN#"
+
+PBIN		"#PBIN#"
+
+LIB		"#LIB#"
+
+PINCLUDE 	"%include "
+
+PIMPORT		"%import "
+
+PDEFINE		"%define"
+
+PMACRO		"%macro"
+
+PENDM		"%endm"
+
+PUNDEF		"%undef"
+
+PIFDEF		"%ifdef"
+
+PIFNDEF		"%ifndef"
+
+PELSE		"%else"
+
+PENDIF		"%endif"
+
+PPDATE		"%_DATE()"
+
+PPTIME		"%_TIME()"
+
+PPLINE		"%_LINE()"
+
+PPFILE		"%_FILE()"
+
+PPCDATE		"%_CDATE()"
+
+PPCTIME		"%_CTIME()"
+
+PPCOMMENT		"'! "{TCHARACTER2}*
+
+
+
+/* Flex Patterns Below %% */
+%%
+{ASMVERSION}		yylval = "-1"; return ASMVERSION;
+
+{PNF}			yylval = "-2"; return PNF;
+
+{BIN}			yylval = "-3"; return BIN;
+
+{PBIN}			yylval = "-4"; return PBIN;
+
+{LIB}			yylval = "-5"; return LIB;
+
+{PINCLUDE} 		yylval = "-6"; return PINCLUDE;
+
+{PIMPORT}		yylval = "-7"; return PIMPORT;
+
+{PDEFINE}		yylval = "-8"; return PDEFINE;
+
+{PMACRO}		yylval = "-9"; return PMACRO;
+
+{PENDM}			yylval = "-10"; return PENDM;
+
+{PUNDEF}		yylval = "-11"; return PUNDEF;
+
+{PIFDEF}		yylval = "-12"; return PIFDEF;
+
+{PIFNDEF}		yylval = "-13"; return PIFNDEF;
+
+{PELSE}			yylval = "-14"; return PELSE;
+
+{PENDIF}		yylval = "-15"; return PENDIF;
+
+{PPDATE}		yylval = "-16"; return PPDATE;
+
+{PPTIME}		yylval = "-17"; return PPTIME;
+
+{PPLINE}		yylval = "-18"; return PPLINE;
+
+{PPFILE}		yylval = "-19"; return PPFILE;
+
+{PPCDATE}		yylval = "-20"; return PPCDATE;
+
+{PPCTIME}		yylval = "-21"; return PPCTIME;
+
+{PPCOMMENT}		yylval = yytext; return PPCOMMENT;
+
+{IVERSION}		yylval = "0"; return IVERSION;
+
+{IVOID}			yylval = "1"; return IVOID;
+
+{ICRASH}		yylval = "2"; return ICRASH;
+
+{IQUIT}			yylval = "3"; return IQUIT;
+
+{IHALT}			yylval = "4"; return IHALT;
+
+{IPRINT}		yylval = "5"; return IPRINT;
+
+{IPRINTLN}		yylval = "6"; return IPRINTLN;
+
+{IREAD}			yylval = "7"; return IREAD;
+
+{ILOAD}			yylval = "8"; return ILOAD;
+
+{ISTORE}		yylval = "9"; return ISTORE;
+
+{ILOADC}		yylval = "10"; return ILOADC;
+
+{ISTOREC}		yylval = "11"; return ISTOREC;
+
+{IELOAD}		yylval = "12"; return IELOAD;
+
+{IESTORE}		yylval = "13"; return IESTORE;
+
+{IELOADC}		yylval = "14"; return IELOADC;
+
+{IESTOREC}		yylval = "15"; return IESTOREC;
+
+{IVLOAD}		yylval = "16"; return IVLOAD;
+
+{IVSTORE}		yylval = "17"; return IVSTORE;
+
+{IVLOADC}		yylval = "18"; return IVLOADC;
+
+{IVSTOREC}		yylval = "19"; return IVSTOREC;
+
+{ISTOREA}		yylval = "20"; return ISTOREA;
+
+{IMODT}			yylval = "21"; return IMODT;
+
+{IMODCT}		yylval = "22"; return IMODCT;
+
+{IADD}			yylval = "23"; return IADD;
+
+{ISUB}			yylval = "24"; return ISUB;
+
+{IMUL}			yylval = "25"; return IMUL;
+
+{IDIV}			yylval = "26"; return IDIV;
+
+{IMOD}			yylval = "27"; return IMOD;
+
+{IPOW}			yylval = "28"; return IPOW;
+
+{IROOT}			yylval = "29"; return IROOT;
+
+{IINC}			yylval = "30"; return IINC;
+
+{IDEC}			yylval = "31"; return IDEC;
+
+{IEQU}			yylval = "32"; return IEQU;
+
+{INEQU}			yylval = "33"; return INEQU;
+
+{IGTR}			yylval = "34"; return IGTR;
+
+{ILSS}			yylval = "35"; return ILSS;
+
+{IGEQU}			yylval = "36"; return IGEQU;
+
+{ILEQU}			yylval = "37"; return ILEQU;
+
+{IAND}			yylval = "38"; return IAND;
+
+{IOR}			yylval = "39"; return IOR;
+
+{INOT}			yylval = "40"; return INOT;
+
+{IGOTO}			yylval = "41"; return IGOTO;
+
+{ICGOTO}		yylval = "42"; return ICGOTO;
+
+{IZGOTO}		yylval = "43"; return IZGOTO;
+
+{IPGOTO}		yylval = "44"; return IPGOTO;
+
+{INGOTO}		yylval = "45"; return INGOTO;
+
+{IGOTOL}		yylval = "46"; return IGOTOL;
+
+{ICGOTOL}		yylval = "47"; return ICGOTOL;
+
+{IZGOTOL}		yylval = "48"; return IZGOTOL;
+
+{IPGOTOL}		yylval = "49"; return IPGOTOL;
+
+{INGOTOL}		yylval = "50"; return INGOTOL;
+
+{IST}			yylval = "51"; return IST;
+
+{IPUSH}			yylval = "52"; return IPUSH;
+
+{IPOP}			yylval = "53"; return IPOP;
+
+{ICALL}			yylval = "54"; return ICALL;
+
+{ICALLL}		yylval = "55"; return ICALLL;
+
+{IRET}			yylval = "56"; return IRET;
+
+{IVAR}			yylval = "57"; return IVAR;
+
+{ILBL}			yylval = "58"; return ILBL;
+
+{IEPRINT}		yylval = "59"; return IEPRINT;
+
+{IEPRINTLN}		yylval = "60"; return IEPRINTLN;
+
+{IEND}			yylval = "61"; return IEND;
+
+{IELBL}			yylval = "62"; return IELBL;
+
+{IEVLOAD}		yylval = "63"; return IEVLOAD;
+
+{IHEADD}		yylval = "64"; return IHEADD;
+
+{IHEREM}		yylval = "65"; return IHEREM;
+
+{IHEED}			yylval = "66"; return IHEED;
+
+{IHEGET}		yylval = "67"; return IHEGET;
+
+{ISHEADD}		yylval = "68"; return ISHEADD;
+
+{ISHEREM}		yylval = "69"; return ISHEREM;
+
+{ISHEED}		yylval = "70"; return ISHEED;
+
+{ISHEGET}		yylval = "71"; return ISHEGET;
+
+{IEADD}			yylval = "72"; return IEADD;
+
+{IEREM}			yylval = "73"; return IEREM;
+
+{IEED}			yylval = "74"; return IEED;
+
+{IEGET}			yylval = "75"; return IEGET;
+
+{IEXADD}		yylval = "76"; return IEXADD;
+
+{IEXREM}		yylval = "77"; return IEXREM;
+
+{IEXED}			yylval = "78"; return IEXED;
+
+{IEXGET}		yylval = "79"; return IEXGET;
+
+{IIADD}			yylval = "80"; return IIADD;
+
+{IIREM}			yylval = "81"; return IIREM;
+
+{IIED}			yylval = "82"; return IIED;
+
+{IIGET}			yylval = "83"; return IIGET;
+
+{IHEVENT}		yylval = "84"; return IHEVENT;
+
+{ISHEVENT}		yylval = "85"; return ISHEVENT;
+
+{IEVENT}		yylval = "86"; return IEVENT;
+
+{IEXCEPTION}		yylval = "87"; return IEXCEPTION;
+
+{IINT}			yylval = "88"; return IINT;
+
+{ITYPEOF}		yylval = "89"; return ITYPEOF;
+
+{ICTYPEOF}		yylval = "90"; return ICTYPEOF;
+
+{ITLOAD}		yylval = "91"; return ITLOAD;
+
+{IALOAD}		yylval = "92"; return IALOAD;
+
+{IINLOAD}		yylval = "93"; return IINLOAD;
+
+{IICLOAD}		yylval = "94"; return IINLOAD;
+
+{IARLOAD}		yylval = "95"; return IARLOAD;
+
+{IATOC}			yylval = "96"; return IATOC;
+
+{ISWITCH}		yylval = "97"; return ISWITCH;
+
+{IVADD}			yylval = "98"; return IVADD;
+
+{ILADD}			yylval = "99"; return ILADD;
+
+{IELADD}		yylval = "100"; return IELADD;
+
+{IADD2V}		yylval = "101"; return IADD2V;
+
+{IBTAND}		yylval = "102"; return IBTAND;
+
+{IBTOR}			yylval = "103"; return IBTOR;
+
+{IBTEXOR}		yylval = "104"; return IBTEXOR;
+
+{IBTNOT}		yylval = "105"; return IBTNOT;
+
+{IBTSL}			yylval = "106"; return IBTSL;
+
+{IBTSR}			yylval = "107"; return IBTSR;
+
+{IVCHECK}		yylval = "108"; return IVCHECK;
+
+{IVSUPP}		yylval = "109"; return IVSUPP;
+
+{IVPRINT}		yylval = "110"; return IVPRINT;
+
+{IVPRINTLN}		yylval = "111"; return IVPRINTLN;
+
+{IISUPP}		yylval = "112"; return IISUPP;
+
+{ITSUPP}		yylval = "113"; return ITSUPP;
+
+{ICOMMENT}		yylval = "114"; return ICOMMENT;
+
+{IFIMODE}		yylval = "115"; return IFIMODE;
+
+{IFOMODE}		yylval = "116"; return IFOMODE;
+
+{IFIOPEN}		yylval = "117"; return IFIOPEN;
+
+{IFOOPEN}		yylval = "118"; return IFOOPEN;
+
+{IFREAD}		yylval = "119"; return IFREAD;
+
+{IFPRINT}		yylval = "120"; return IFPRINT;
+
+{IFPRINTLN}		yylval = "121"; return IFPRINTLN;
+
+{IFICLOSE}		yylval = "122"; return IFICLOSE;
+
+{IFOCLOSE}		yylval = "123"; return IFOCLOSE;
+
+{IMEML}			yylval = "124"; return IMEML;
+
+{IFIEOF}		yylval = "125"; return IFIEOF;
+
+{IARNLOAD}		yylval = "126"; return IARNLOAD;
+
+{IRDSTART1}  	        yylval = "127"; return IRDSTART1;
+
+{IRFROM1}		yylval = "128"; return IRFROM1;
+
+{IRTO1}			yylval = "129"; return IRTO1;
+
+{IRDEND1}		yylval = "130"; return IRDEND1;
+
+{IRSTART1}		yylval = "131"; return IRSTART1;
+
+{IRANGE1}		yylval = "132"; return IRANGE1;
+
+{IREND1}		yylval = "133"; return IREND1;
+
+{IRLOAD1}		yylval = "134"; return IRLOAD1;
+
+{IRSTORE1}		yylval = "135"; return IRSTORE1;
+
+{IHEADDB}		yylval = "136"; return IHEADDB;
+
+{ISHEADDB}		yylval = "137"; return ISHEADDB;
+
+{IEADDB}		yylval = "138"; return IEADDB;
+
+{IEXADDB}		yylval = "139"; return IEXADDB;
+
+{IIADDB}		yylval = "140"; return IIADDB;
+
+{IRDSTART2}		yylval = "141"; return IRDSTART2;
+
+{IRFROM2}		yylval = "142"; return IRFROM2;
+
+{IRTO2}			yylval = "143"; return IRTO2;
+
+{IRDEND2}		yylval = "144"; return IRDEND2;
+
+{IRSTART2}		yylval = "145"; return IRSTART2;
+
+{IRANGE2}		yylval = "146"; return IRANGE2;
+
+{IRPREP2}		yylval = "147"; return IRPREP2;
+
+{IRLOAD2}		yylval = "148"; return IRLOAD2;
+
+{IESTART}		yylval = "149"; return IESTART;
+
+{IENAME}		yylval = "150"; return IENAME;
+
+{IEEND}			yylval = "151"; return IEEND;
+
+{IENUMS}		yylval = "152"; return IENUMS;
+
+{IENUM}			yylval = "153"; return IENUM;
+
+{ISENUM}		yylval = "154"; return ISENUM;
+
+{IEPREP}		yylval = "155"; return IEPREP;
+
+{ILOADE}		yylval = "156"; return ILOADE;
+
+{ISTOREE}		yylval = "157"; return ISTOREE;
+
+{IASTART}		yylval = "158"; return IASTART;
+
+{IAEND}			yylval = "159"; return IAEND;
+
+{IAPREP}		yylval = "160"; return IAPREP;
+
+{IAIPREP}		yylval = "161"; return IAIPREP;
+
+{ILOADIA}		yylval = "162"; return ILOADIA;
+
+{ISTOREIA}		yylval = "163"; return ISTOREIA;
+
+{IALENGTH}		yylval = "164"; return IALENGTH;
+
+{IAPRINT}		yylval = "165"; return IAPRINT;
+
+{IDUP}			yylval = "166"; return IDUP;
+
+{ICDUP}			yylval = "167"; return ICDUP;
+
+{IIF}			yylval = "168"; return IIF;
+
+{IENDIF}		yylval = "169"; return IENDIF;
+
+{IIFELSE}		yylval = "170"; return IIFELSE;
+
+{IENDIFELSE}		yylval = "171"; return IENDIFELSE;
+
+{IEIF}			yylval = "172"; return IEIF;
+
+{IIFBEGIN}		yylval = "173"; return IIFBEGIN;
+
+{IIFEND}		yylval = "174"; return IIFEND;
+
+{ISWITCH2}		yylval = "175"; return ISWITCH2;
+
+{ISWBEGIN}		yylval = "176"; return ISWBEGIN;
+
+{ISWEND}		yylval = "177"; return ISWEND;
+
+{ISWCASE}		yylval = "178"; return ISWCASE;
+
+{ISWCBEGIN}		yylval = "179"; return ISWCBEGIN;
+
+{ISWCEND}		yylval = "180"; return ISWCEND;
+
+{ISWDEFAULT}		yylval = "181"; return ISWDEFAULT;
+
+{ISWBREAK}		yylval = "182"; return ISWBREAK;
+
+{ILOADSP}		yylval = "183"; return ILOADSP;
+
+{ISTORESP}		yylval = "184"; return ISTORESP;
+
+{ILOADSTACK}		yylval = "185"; return ILOADSTACK;
+
+{ISTORESTACK}		yylval = "186"; return ISTORESTACK;
+
+{IATOSP}		yylval = "187"; return IATOSP;
+
+{ISPTOA}		yylval = "188"; return ISPTOA;
+
+{IPATCH}		yylval = "189"; return IPATCH;
+
+{INATIVE}		yylval = "190"; return INATIVE;
+
+{IFRET}			yylval = "191"; return IFRET;
+
+{IFCALL}		yylval = "192"; return IFCALL;
+
+{IFCPARAMS}		yylval = "193"; return IFCPARAMS;
+
+{IFECPARAMS}		yylval = "194"; return IFECPARAMS;
+
+{IFECALL}		yylval = "195"; return IFECALL;
+
+{IPNUM}			yylval = "196"; return IPNUM;
+
+{IPARAMF}		yylval = "197"; return IPARAMF;
+
+{IPARAMF2}		yylval = "198"; return IPARAMF2;
+
+{IPARAMF3}		yylval = "199"; return IPARAMF3;
+
+{IRNUM}			yylval = "200"; return IRNUM;
+
+{IRETURNF}		yylval = "201"; return IRETURNF;
+
+{IRETURNF2}		yylval = "202"; return IRETURNF2;
+
+{IRETURNF3}		yylval = "203"; return IRETURNF3;
+
+{IFNAME}		yylval = "204"; return IFNAME;
+
+{IRETURNV}		yylval = "205"; return IRETURNV;
+
+{IFNCLOAD}		yylval = "206"; return IFNCLOAD;
+
+{IFNCSTORE}		yylval = "207"; return IFNCSTORE;
+
+{IFNCNEW}		yylval = "208"; return IFNCNEW;
+
+{IFNCDELETE}		yylval = "209"; return IFNCDELETE;
+
+{IFNCSNAME}		yylval = "210"; return IFNCSNAME;
+
+{IFNCSRET}		yylval = "211"; return IFNCSRET;
+
+{IFNCSPARAM}		yylval = "212"; return IFNCSPARAM;
+
+{IFNCSDEF}		yylval = "213"; return IFNCSDEF;
+
+{IFNCGNAME}		yylval = "214"; return IFNCGNAME;
+
+{IFNCGRET}		yylval = "215"; return IFNCGRET;
+
+{IFNCGPARAM}		yylval = "216"; return IFNCGPARAM;
+
+{IFNCGDEF}		yylval = "217"; return IFNCGDEF;
+
+{IFNCPOINT}		yylval = "218"; return IFNCPOINT;
+
+{IFNCLENGTH}		yylval = "219"; return IFNCLENGTH;
+
+{IFNCSYNCR}		yylval = "220"; return IFNCSYNCR;
+
+{IFNCFIND}		yylval = "221"; return IFNCFIND;
+
+{IFNCFRET}		yylval = "222"; return IFNCFRET;
+
+{IFNCFPARAM}		yylval = "223"; return IFNCFPARAM;
+
+{IFNCFBRET}		yylval = "224"; return IFNCFBRET;
+
+{IFNCFBPARAM}		yylval = "225"; return IFNCFBPARAM;
+
+
+{TVOID}			yylval = yytext; return TVOID;
+
+{TBOOLEAN}		yylval = yytext; return TBOOLEAN;
+
+{TNUMBER}		yylval = yytext; return TNUMBER;
+
+{TCHARACTER}		yylval = yytext; return TCHARACTER;
+
+{TSTRING}		yylval = yytext; return TSTRING;
+
+{VOID}			yylval = yytext; return VOID;
+
+{BOOLEAN}		yylval = yytext; return BOOLEAN;
+
+{NUMBER}		yylval = yytext; return NUMBER;
+
+{CHARACTER}		{
+			 if (yytext == "\\n")
+                          yytext = (char *)"\n";
+
+                         yylval = yytext; return CHARACTER;
+                        }
+
+{STRING}		yylval = yytext; return STRING;
+
+{COMMENT}		/* Eat up Comment */
+
+[\n\t ]+		/* Eat up Whitespace */
+
+.			{
+			 String str = "Scan error: ";
+			 str += yytext;
+			 yyerror(str.getString().c_str());
+			}
+
+
+
+%%
+/* Additional Code */
+int main(int argc, char ** argv)
+{
+ if (argc == 3)
+ {
+  String extension = get_extension(argv[1]);
+  if (extension == ".pppasm")
+   preprocess(argv[1]);
+
+
+  FILE * input = fopen((strip_extension(argv[1]) + ".pasm").getString().c_str(), "r");
+  if (!input)
+  {
+   yyerror("can't open file");
+   return -1;
+  }
+  yyin = input;
+  output = fopen(argv[2], "w");
+  if (!output)
+  {
+   yyerror("can't open file for write");
+   return -1;
+  }
+  yydebug = 0;
+
+
+  fprintf(output, "!@.PNF\n\n\n");
+
+  
+  int ret = yyparse();
+
+  fclose(input);
+  fclose(output);
+
+  if (mode == 2)
+   mklib(argv[2]);
+
+
+  return ret;
+ }
+ else
+  yyerror("can't find input file or output file.");
+}
+
+String get_extension(String fileName)
+{
+ unsigned long index = fileName.getString().find(".");
+ if (index == string::npos)
+  yyerror((char *)"File has No Extension.");
+
+ String extension = fileName.getString().substr(index);
+
+
+ return extension;
+}
+
+String strip_extension(String fileName)
+{
+ unsigned long index = fileName.getString().find(".");
+ if (index == string::npos)
+  yyerror((char *)"File has No Extension.");
+
+ String stripped = fileName.getString().substr(0, index);
+
+
+ return stripped;
+}
+
+void preprocess(String arg)
+{ 
+ _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(arg) + (char *)".pppasm").getString().c_str(), 
+ 		 (strip_extension(arg) + (char *)".pasm").getString().c_str(), NULL);
+}
+
+void mklib(String arg)
+{
+ _spawnl(_P_WAIT, "mkpnflib.exe", "mkpnflib.exe", (strip_extension(arg) + (char *)".pnf").getString().c_str(), 
+	 (strip_extension(arg) + (char *)".plib").getString().c_str(), NULL);
+}

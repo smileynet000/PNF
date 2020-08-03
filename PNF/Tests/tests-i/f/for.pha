@@ -1,0 +1,8 @@
+for ({ load aload 1; atoc; load aload 6; }; { switch; push; <; }; { ++; switch; })
+{
+ pop;
+ print "%accumulator = ";
+ println;
+}
+
+end 0;

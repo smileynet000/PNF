@@ -1,0 +1,26 @@
+var a;
+print "Enter a number: ";
+read number a;
+print "a: ";
+addressof avariable a;
+add2v;
+println;
+
+addressof avariable a;
+{
+add2v;
+atoc;
+load %accumulator aload 33;
+switch;
+==;
+} ?
+{
+ println "33";
+}
+:
+{
+ println "Not 33";
+}
+;
+
+end 0;

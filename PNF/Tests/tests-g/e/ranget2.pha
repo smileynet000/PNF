@@ -1,0 +1,15 @@
+println "Defining a t2 range...";
+range rtype2 "a" = "4".."10";
+
+println "Implementing a t2 range...";
+rangev rtype2 "a" "a";
+
+
+println "Testing load...";
+load range rtype2 "a"[5];
+print "a: ";
+println;
+
+
+println "Quitting...";
+end 0;

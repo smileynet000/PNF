@@ -1,0 +1,1391 @@
+Copyright (c)  2019  Dennis Earl Smiley.
+    Permission is granted to copy, distribute and/or modify this document
+    under the terms of the GNU Free Documentation License, Version 1.3
+    or any later version published by the Free Software Foundation;
+    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    A copy of the license is included in the section entitled "GNU
+    Free Documentation License".
+
+
+CHANGELOG
+=========
+
+5/3/19 Origional a-a-a - The first version.
+
+
+INTRODUCTION
+============
+
+PNFHA stands for Portable Numbers Format High Level Language A. It is a language that is similar to C++ and Java, but is DEFINATELY NOT either one. It can be compiled to PNFASM, which can then be assembled into PNF. At that point, it can run with the interpreter. Or you can compile PNF to C++, and then use a C++ compiler to turn that into a working executable file.
+
+PNFHA is a feature-ritch language, like C++. In order to understand it's features, we will be writing some programs. Well, let's jump right in now.
+
+First, you should read "PNFASM-tutorial.txt", and familiarize yourself with that level of the languages. We're working from bottom to top teaching you these languages.
+
+
+LESSON 1 - Empty Shell
+======================
+
+Traditionally, programmers like to start with, "Hello World". However, I break that tradition. I like to start with an empty shell, before the, "Hello World" program. Here is the empty shell program.
+
+
+empty.pha
+---
+end 0;
+---
+
+This program, consists of one instruction in PNFHA. The instruction is the, "end" instruction. Let's start at the beginning...
+
+To see the general syntax of the language, go to "PNFHA.txt". As you can see, every program consists of input, which is a newline, or a series of statmenents, followed by a newline. A statement is a stmt, or a statement, a comma (,), and then a stmt. A stmt, can be the null statement (;), or different types of statements. We will go over those all in time. However, the first thing to note, is the end statement.
+
+All statements in PNFHA, end with a ';'. That, as you can see is there. We will go into it in more detail later, but for now, note that an end statement is the keyword "end", followed by a number. In this tutorial, we will mostly use 0. However, you can use any value you want. This is a value that is returned to the OS. This program returns to the OS, and that's all it does. An empty shell. That's all there is to it!
+
+Now to compile it and run it. You compile it with the command:
+
+---
+pnfha empty.pha empty.pasm
+---
+
+Then you assemble it with this command:
+
+---
+pnfasm empty.pasm empty.pnf
+---
+
+Then you run it with this command:
+
+---
+pnf empty.pnf
+---
+
+That is the basics of how you run any program created in this language.
+
+
+LESSON 2 - Hello World
+======================
+
+Are you ready for some output? Now we will show you a program that print the words, "Hello World!" to the screen.
+
+
+hello.pha
+---
+println "Hello World!";
+end 0;
+---
+
+Output:
+---
+Hello World!
+
+---
+
+The new keyword here, is "println". "println" takes a string value. It prints the string value with a newline after it. That is where you get the output from.
+
+
+LESSON 3 - Basic Printing to the Screen
+=======================================
+
+Now we will discuss printing to the screen. Printing to the screen is acomplished with the "print" command, and the "println" command. Both take a string as the argument. The difference, is that one produces a newline at the end, and the other doesn't. The "println" command can also take an empty string, and just print a newline. With no parameters at all, it will print the contents of the accumulator. Now you know about basic printing to the screen!
+
+
+LESSON 4 - Variables
+====================
+
+A variable is created with the "var" command. It Takes the form:
+
+---
+var ID = expression;
+---
+
+We will get to the expression part later. However, the ID part is basically an alphanumeric string that can also contain '_', or '$', without it's quotes. Here is a program, that will help you understand variables better.
+
+
+var.pha
+---
+var name = "Dennis Earl Smiley";
+var age = 31;
+
+
+print "My name is: ";
+print name;
+println ".";
+
+print "My age is: ";
+print age;
+println ".";
+
+
+end 0;
+---
+
+Ouput:
+---
+My name is: Dennis Earl Smiley.
+My age is: 31.
+
+---
+
+As you can see, "print" and "println" take a variable name as well, which will print out the variable's value. This is the value assigned to it at compile time, not the vale assigned to it at run time! You have to use other commands to change it's value at run time.
+
+
+LESSON 5 - Expressions
+======================
+
+Now we will go over expressions. An expression, returns a value, much like in the language C++, if you are familiar with it. An expression can be one of these types:
+
+void
+boolean
+number
+character
+string
+id
+relational
+mixed
+
+Remember that this language works with PNF! In PNF, there are 5 types of values. There are also 5 types of values in this language. There is also the concept of an ID. And there is a such thing as a relational expression. A mixed expression just is all the types of values in a mixed way. What follows, is more about expressions.
+
+First we shall go over a void expression. Remember that a void expression is tha abscense of values. In PNFASM, it is signafied by: "0V". It is the same thing here. A void value is "0V". So what is a void expression? It is either that value, or that value in parenthesis.
+
+Next easiest to explain is a boolean expression. It is either a boolean value of true or false, or another type of boolean expression. The other types of boolean expressions are:
+
+! boolean_expression (NOT)
+boolean expression && boolean_expression (AND)
+boolean_expression || boolean_expression (OR)
+
+You can also enclose a boolean expression in parenthesis for a larger expression. Let me just say now that you can always enclose an expression in parenthesis to make a larger expression. Each of these boolean expression types, returns true or false.
+
+Now to explain number expressions. This is the possible number expressions:
+
+			NUMBERV
+			| number_expression + number_expression
+			| number_expression - number_expression
+			| number_expression * number_expression
+			| number_expression / number_expression
+			| number_expression % number_expression
+			| - number_expression
+			| number_expression ^ number_expression
+			| number_expression !^ number_expression
+			| ++ number_expression
+			| number_expression ++
+			| -- number_expression
+			| number_expression --
+			| number_expression & number_expression
+			| number_expression | number_expression
+			| number_expression ^| number_expression
+			| ~ number_expression
+			| number_expression << number_expression
+			| number_expression >> number_expression
+			| ( number_expression )
+
+A NUMBERV is a number value. Addition, subtraction, multiplication, division, modulous, negation, power, root, increment (in both prefix and postfix), decrement (in both prefix and postfix), bitand, bitor, bitexor, bitnot, bitshl, and bitshr, are the supported operations on a number.
+
+Character is the next to explain. A character value is a single character, such as a letter. It is an ASCII character. Here are the supported operations:
+
+			CHARACTERV
+			| character_expression + character_expression
+			| character_expression - character_expression
+			| character_expression * character_expression
+			| character_expression / character_expression
+			| character_expression % character_expression
+			| character_expression ^ character_expression
+			| character_expression !^ character_expression
+			| ++ character_expression
+			| character_expression ++
+			| -- character_expression
+			| character_expression --
+			| ( character_expression )
+
+This is additon, subtraction, multiplication, division, modulous, power, and root. There is also prefix and postfix increment and decrement.
+
+What is a string expression? Here are the operations you can use on it:
+
+			STRINGV
+			| string_expression + string_expression
+			| $ string_expression
+			| ( string_expression )
+
+There are only two operations. First of all, a STRINGV is a series of ASCII characters, transparently terminated by a NULL. You can add two strings, which means to concatenate them together. You can also stringitize a string, which means add quotes to it. You put quotes in a string when you write it. However, normally for most operations, those quotes are stripped. The stringitizing operator allows you to add quotes back into the string. That way you have the quotes for processing. You could probably stringitize a stringitized string if you wanted to, most clearly, written like this:
+
+---
+$($<string>)
+---
+
+Where <string> is the string you use. This is mostly used in asm commands, which we will get to later.
+
+So where did the other type of expressions come from? They are used in this language, but don't exist in PNF. First there is the ID expression, which takes this form:
+
+			ID
+			| & id_expression
+			| ! id_expression
+			| id_expression && id_expression
+			| id_expression || id_expression
+			| id_expression + id_expression
+			| id_expression - id_expression
+			| id_expression * id_expression
+			| id_expression / id_expression
+			| id_expression % id_expression
+			| - id_expression
+			| id_expression ^ id_expression
+			| id_expression !^ id_expression
+			| ++ id_expression
+			| id_expression ++
+			| -- id_expression
+			| id_expression --
+			| ( id_expression )
+
+An ID is a series of alphanumeric characters. You can find the address of an ID, or perform logical not on it. You can perform logical and or logical or on it. You can add them, subtract them, multiply them, divide them, take the modulous of them, power them, or root them. You can negate them too. Again, prefix and postfix increment and decrement is possible. That is an ID expression.
+
+What about a relational expression? Here is what it is:
+
+			number_expression == number_expression
+			| number_expression != number_expression
+			| number_expression > number_expression
+			| number_expression < number_expression
+			| number_expression >= number_expression
+			| number_expression <= number_expression
+
+As you can see, it is comparing two numbers to see what their values are. There is equals, not equals, greater than, less than, greater than or equal to, and less than or equal to. That is what you can do with a relational expression.
+
+So the mixed expression is where you mix types of expressions together to form meaningful result. Here is it's possible operations:
+
+			( mixed_expression )
+			| ID && boolean_expression
+			| boolean_expression && ID
+			| ID || boolean_expression
+			| boolean_expression || ID
+			| ID + number_expression
+			| ID - number_expression
+			| ID * number_expression
+			| ID / number_expression
+			| ID ^ number_expression
+			| ID !^ number_expression
+			| number_expression + ID
+			| number_expression - ID
+			| number_expression * ID
+			| number_expression / ID
+			| number_expression ^ ID
+			| number_expression !^ ID
+			| ID + character_expression
+			| ID - character_expression
+			| ID * character_expression
+			| ID / character_expression
+			| ID ^ character_expression
+			| ID !^ character_expression
+			| character_expression + ID
+			| character_expression - ID
+			| character_expression * ID
+			| character_expression / ID
+			| character_expression ^ ID
+			| character_expression !^ ID
+			| ID + string_expression
+			| string_expression + ID
+			| number_expression == ID
+			| number_expression != ID
+			| number_expression < ID
+			| number_expression > ID
+			| number_expression <= ID
+			| number_expression >= ID
+			| ID == number_expression
+			| ID != number_expression
+			| ID < number_expression
+			| ID > number_expression
+			| ID <= number_expression
+			| ID >= number_expression
+			| ID & number_expression
+			| ID | number_expression
+			| ID ^| number_expression
+			| number_expression & ID
+			| number_expression | ID
+			| number_expression ^| ID
+			| number_expression << ID
+			| number_expression >> ID
+			| ID << number_expression
+			| ID >> number_expression
+
+You can mix an ID and boolean. You can mix a number and ID. You can mix a character and ID. You can mix a string and an ID. That's about what you can do. This has been your lesson in expressions!
+
+
+LESSON 6 - Variable Declarations
+================================
+
+Before you use a variable, you MUST declare it. You have seen how to declare them already. But did you know you can declare them more than one at a time, like this?
+
+---
+var a;, var b;
+---
+
+You do NOT have to assign them when you declare them, as this also shows. Also, fvar allows you to tell the compiler about a variable ahead of time. Sometimes, this will be needed.
+
+
+LESSON 7 - Statement Blocks
+===========================
+
+Anywhere you can have a statement, you can have a statement block. A statement block is statements inside of a '{' and a '}'. This also creates a new scope. The lifetime of the variable is where it is scoped to. If it's outside anything, it is scoped to the global level. If they are inside of curly braces, they are scoped locally. You cannot use a variable outside it's scope, but you may hide a variable if you desire.
+
+
+LESSON 8 - Comments
+===================
+
+This language is almost comment rich. Compared to other languages, it is comment rich! There are a few types of comments possible. There is the regular comment, the comment type comment, and the preprocessor type comment.
+
+A comment is text put in for documentation, that the computer ignores. The main difference between comment types in this language is WHEN they are ignored. First, we shall go over the regular comment.
+
+The regular comment, is a line that starts with "//". It ends at the end of a line. It is ignored at compile time.
+
+The second comment type is a preprocessor comment. It is technically not part of the language, but part of the preprocessor. It is ignored at preprocessing time. There are actually 3 types of preprocessing comments. The first is signified by "'". Note that it is only available if you have used the extension .pppha for your program. The other two are actually built into the language. The second type of preprocessor comment is "%'!". It is passed onto the assembler for processing. It becomes a regular preprocessing comment at that point. Better use the .pppasm extension for output if you wish to use this! The third type of preprocessing comment, is passed through the assembly level to the PNF level, and is ignored at it's preprocessing time. Better assemble with the .pppnf extension as output if you wish to use it! It is signified by the "%%'!" mark. Again, it ends at a newline. It becomes a "'!" style comment in the level below. Better also use the %PBIN% directive if you wish to use it. That is the preprocessing comments!
+
+The third type of comment is a comment type comment. It is done by the "comment" command. There are two types of comment commands. "l1", and "l2". "l2" will generate an assembly comment. "l1" will generate a COMMENT instruction, which is ignored, but stays permantly in your program. This form of comment takes a string_expression. It's syntax is:
+
+---
+comment CMTYPE string_expression
+---
+
+Where CMTYPE is "l1" or "l2". 
+
+Why does all this matter? When it is ignored is very important because it will allow you to be flexible with your documentation. For example, if you want to document some obscure feature in your code and want it to be permanent, use a "l1" type comment comment. Also, as you begin to "tweak" the lower levels, you can use this feature to make sure that you document in the right place what is going on in your code. You can pretty much do it from all levels this way. That is benificial because you can do things the easiest way possible. 
+
+Now for some code:
+
+comment.pppha
+---
+%PBIN%
+
+
+' This is a preprocessor comment.
+%'! "This is another type of preprocessor comment.";
+%%'! "This is the third type of preprocessor comment.";
+
+
+// "This is a regular comment.";
+
+comment l2 "This is a level 2 comment.";
+comment l1 "This is a level 1 comment.";
+
+
+end 0;
+---
+
+That is all about comments!
+
+
+LESSON 9 - Directives
+=====================
+
+A directive tells the compiler what kind of code to generate. There are 3 directives. These are passed onto the assembler. They are "%BIN%", "%PBIN%", and "%LIB%". The first will generate code for a flat binary. The second, will generate code for a preprocessed binary. The third, will generate code for a PNF library.
+
+
+LESSON 10 - Subroutines
+=======================
+
+See the lower levels for what subroutines are. You can create an use subroutines in this language. To do so, first you put a declaration to tell it about your subroutine. Then you put a definition for it. Then you can call it. Here is an example that shows how to use subroutines.
+
+sub.pha
+---
+subroutine hello_world;
+
+
+gosub sub hello_world;
+end 0;
+
+
+subroutine hello_world:
+ println "Hello World!";
+ return;
+---
+
+
+The first line is the declaration. It is the word "subroutine", and then an ID. The subroutine definition, takes this form:
+
+---
+subroutine <ID>
+...
+return;
+---
+
+The ID is an ID. The ..., is any code. it ends with return. That is the general form of a subroutine definition. You can see where it occurs in the previous code. To call it, you use "gosub". You need to tell it it is a subroutine by using the word "sub". Then you specify the ID you are going to use to name it again. It's name, that is. At that point, it goes to the subroutine, and goes back to the program.
+
+
+LESSON 11 - Special Subroutines
+===============================
+
+There are a few special types of subroutines. For a review of them, see "instruction_set.txt". To see how to do them, continue on.
+
+First, we must "register" the subroutine.
+
+---
+register STYPE ID ;
+---
+
+---
+STYPE = "sub"|"heve"|"sheve"|"eve"|"exe"|"int"
+---
+
+example:
+
+---
+register exe breakpoint;
+---
+
+Then, we must define the special subroutine:
+
+---
+event breakpoint:
+ subroutine hello_world;
+
+
+ gosub sub hello_world;
+ return;
+
+subroutine hello_world:
+ println "Hello World!";
+ return;
+---
+
+If we want to call it manually, we use:
+
+---
+gosub exe breakpoint;
+---
+
+Here is a complete program with the breakpoint exception enabled:
+
+breakpoint.pha
+---
+event breakpoint;
+
+println "Before breakpoint.";
+register exe breakpoint;
+println "After breakpoint.";
+unregister exe;
+println "After breakpoint disabled.";
+
+end 0;
+
+event breakpoint:
+ subroutine hello_world;
+
+
+ gosub sub hello_world;
+ return;
+
+subroutine hello_world:
+ println "Hello World!";
+ return;
+---
+
+You can also reregister a special subroutine with the reregister command, or unregister it.
+
+---
+register_command:	unregister STYPE
+			| register STYPE ID
+			| reregister STYPE ID ID
+---
+
+
+LESSON 12 - Subroutine Coding
+=============================
+
+Now, you may be wondering what the abbreviations are for subroutine types. Well, here they are:
+
+---
+subroutine 		- sub
+hardware event 		- heve
+system hardware event 	- sheve
+software event 		- eve
+exception 		- exe
+interrupt 		- int
+---
+
+That's them...
+
+
+LESSON 13 - Conditional Statements
+==================================
+
+Here is some code to chew on:
+
+if.pha
+---
+var a = 5;
+
+
+load %accumulator variable a;
+++;
+atoc;
+load aload 5;
+switch;
+
+
+==; ?
+{
+ print "a = ";
+ println a;
+}
+:
+println "Other value.";
+;
+
+
+if (
+{
+load %accumulator variable a;
+atoc;
+load aload 5;
+switch;
+==;
+}
+) then
+{
+ fvar a;
+ load %accumulator variable a;
+ print "a = ";
+ println;
+}
+endif
+else
+ println "Other value.";
+endif
+doneif
+
+
+end 0;
+---
+
+Output:
+---
+Other value.
+a = 5
+---
+
+There are two main new parts. The conditional operator, and the if statement. Here is the synax of the if statement:
+
+---
+if (<stmt>) then
+...
+endif
+[else]
+[...]
+[endif]
+doneif
+---
+
+Where <stmt> is any stmt. The else is optional, and each ... is statements or a statement block. The syntax of the conditonal operator is:
+
+---
+... ? ... : ...
+---
+
+Where ... is any stmt. This allows you to use operator commands in the statement if you wish. Of course, you may use a statement block if you wish as well. Remember the semicolons at the end of the stmts!
+
+For now, you will just have to take the operator commands and the other statements at faith. For fun, let's see what this compiles to:
+
+if.pasm
+---
+VERSION TVOID 0V
+
+
+ALOAD TNUMBER 5
+VSTORE TVOID 0V
+VLOAD TNUMBER 0
+INC TVOID 0V
+ATOC TVOID 0V
+ALOAD TNUMBER 5
+SWITCH TVOID 0V
+EQU TVOID 0V
+IF TVOID 0V
+IFBEGIN TVOID 0V
+PRINT TSTRING "a = "
+PRINTLN TNUMBER 5
+IFEND TVOID 0V
+ENDIF TVOID 0V
+IFELSE TVOID 0V
+IFBEGIN TVOID 0V
+PRINTLN TSTRING "Other value."
+IFEND TVOID 0V
+ENDIFELSE TVOID 0V
+EIF TVOID 0V
+VLOAD TNUMBER 0
+ATOC TVOID 0V
+ALOAD TNUMBER 5
+SWITCH TVOID 0V
+EQU TVOID 0V
+IF TVOID 0V
+IFBEGIN TVOID 0V
+VLOAD TNUMBER 1
+PRINT TSTRING "a = "
+PRINTLN TVOID 0V
+IFEND TVOID 0V
+ENDIF TVOID 0V
+IFELSE TVOID 0V
+IFBEGIN TVOID 0V
+PRINTLN TSTRING "Other value."
+IFEND TVOID 0V
+ENDIFELSE TVOID 0V
+EIF TVOID 0V
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+You should be able to read this by now.
+
+
+LESSON 14 - Loops
+=================
+
+There is a such thing as loops. A loop is a way to repeat things over and over. This language is loop rich! Here are the types of loops:
+
+---
+looping with goto is possible.
+while
+whileb
+for
+forb
+forever
+---
+
+Here are the syntaxes of every loop but looping with goto:
+
+---
+while_loop:		while ( stmt ) stmt
+
+whileb_loop:		dowhile stmt while ( stmt )
+
+for_loop:		for ( stmt ; stmt ; stmt ) stmt
+
+forb_loop:		dofor stmt for ( stmt ; stmt ; stmt )
+
+forever_loop:		forever stmt
+---
+
+Now we will demonstrate the types of loops. Let's start with looping with goto. Here's an example of looping with goto:
+
+goto.pha
+---
+label loop_test;
+label loop_top;
+label loop_increment;
+label loop_end;
+
+
+load aload 1;
+atoc;
+load aload 6;
+
+loop_test:
+ switch;
+ push;
+ <;
+ goto condition loop_top;
+ goto normal loop_end;
+
+loop_top:
+ pop;
+ print "%accumulator = ";
+ println;
+
+loop_increment:
+ ++;
+ switch;
+ goto normal loop_test;
+
+loop_end:
+
+
+end 0;
+---
+
+Ouput:
+---
+%accumulator = 1
+%accumulator = 2
+%accumulator = 3
+%accumulator = 4
+%accumulator = 5
+---
+
+The three key statements are the label declaration, the IDs with colons after them, and the goto command. The label declaraion is neccessary, and you must have the labels in the exact same order as their implementation! The IDs with colons after them are how you make a label. The goto command with a condition will goto the label if %accumulator is true. With a normal goto, it will unconditionally goto the label. You should avoid this unless absolutely necessary. That is what you need to understand of that!
+
+Now for the while loop. Here is an example:
+
+while.pha
+---
+load aload 1;
+atoc;
+load aload 6;
+
+while ({
+switch;
+push;
+<;
+})
+{
+ pop;
+ print "%accumulator = ";
+ println;
+
+ ++;
+ switch;
+}
+
+end 0;
+---
+
+Ouput:
+---
+%accumulator = 1
+%accumulator = 2
+%accumulator = 3
+%accumulator = 4
+%accumulator = 5
+---
+
+That was the same program with a while loop. As you can see, it's a little simpler.
+
+Next, I'll show you a for loop. A for loop will be able to make this even easier. Here is the code for a for loop:
+
+for.pha
+---
+for ({ load aload 1; atoc; load aload 6; }; { switch; push; <; }; { ++; switch; })
+{
+ pop;
+ print "%accumulator = ";
+ println;
+}
+
+end 0;
+---
+
+Ouput:
+---
+%accumulator = 1
+%accumulator = 2
+%accumulator = 3
+%accumulator = 4
+%accumulator = 5
+---
+
+Whenever you have an inititalization, test, and increment, complicated though it looks, use a for loop instead of a while loop.
+
+Now we will demonstrate do...while (whileb) loops. With a regular while loop, if the condition statement evaluates to false, the loop will stop. This may happen on the first try. For example:
+
+
+swhile.pha
+---
+var a;
+print "How many hellos?: ";
+read number a;
+atoc;
+load aload 0;
+
+while ({ switch; push; >; })
+{
+ pop;
+ println "Hello!";
+ --;
+ switch;
+}
+
+switch;
+print "Counter is output: ";
+println;
+
+
+end 0;
+---
+
+Ouput:
+---
+How many hellos?: [2]
+Hello!
+Hello!
+Counter is output: 0
+---
+
+Ouput:
+---
+How many hellos?: [0]
+Counter is output: 0
+---
+
+As you can see, when you input 0, it will skip the loop entirely. This can be fixed with the do...while (whileb) loop. Here is the better version:
+
+dowhile.pha
+---
+var a;
+print "How many hellos?: ";
+read number a;
+atoc;
+load aload 0;
+
+switch;
+push;
+dowhile
+{
+ pop;
+ println "Hello!";
+ --;
+ switch;
+} while ({ switch; push; >; })
+
+switch;
+print "Counter is output: ";
+println;
+
+
+end 0;
+---
+
+Output:
+---
+How many hellos?: [2]
+Hello!
+Hello!
+Counter is output: 0
+---
+
+This time it always executes at least once.
+
+However, again, there is a better way to do this type of loop. The do...for (forb) loop. Why? Because this loop has an initialization, condition, and increment in it! Here is the modified code for the do...for (forb) loop:
+
+dofor.pha
+---
+var a;
+print "How many hellos?: ";
+read number a;
+atoc;
+load aload 0;
+
+dofor
+{
+ pop;
+ println "Hello!";
+} for ({ switch; push; }; { switch; push; >; }; { --; switch; })
+
+switch;
+print "Counter is output: ";
+println;
+
+
+end 0;
+---
+
+Output:
+---
+How many hellos?: 2
+Hello!
+Hello!
+Counter is output: 0
+---
+
+
+There are two other commands you should know about here. The continue command goes back to the beginning of the loop. The break command goes to the end of the loop. If you specify either with an ID after it, it functions just like a goto statement, but more controlled. Armed with this new knowlege, we can demonstrate the final type of loop. The final type of loop is a "forever" loop. Sometimes you want a loop to NEVER end (unless you use break). The best way to specify this is a forever loop. Here is a demonstration of the forever loop:
+
+forever.pha
+---
+var a;
+print "How many hellos?: ";
+read number a;
+atoc;
+load aload 0;
+
+forever
+{
+ switch;
+ push;
+ >; ? ; : break; ;
+ pop;
+ println "Hello!";
+ --;
+ switch;
+}
+
+switch;
+print "Counter is output: ";
+println;
+
+
+end 0;
+---
+
+Output:
+---
+How many hellos?: 2
+Hello!
+Hello!
+Counter is output: 0
+---
+
+Output:
+---
+How many hellos?: 0
+Counter is output: 0
+---
+
+The break, is necessary to end the loop. It does the same as the previous while loop that you saw before.
+
+That is loops!
+
+
+LESSON 15 - Switch Statement
+============================
+
+There is another control statement possible, called a switch statement. A switch statement is a substitute for an if-else ladder. Here is the syntax of a switch statement:
+
+---
+switch_statement:	switch ( expression ) { case_statements opt_default_statement }
+			| cswitch ( stmt ) { case_statements2 opt_default_statement2 }
+
+case_statements:	case_statements
+			| case_statements case_statement
+
+case_statement:		case expression : stmt
+
+opt_default_statement:	[default : stmt]
+
+case_statements2:	case_statements2
+			| case_statements2 case_statement2
+
+case_statement2:	ccase expression : stmt
+
+opt_default_statement2:	[cdefault : stmt]
+---
+
+There are two versions of a switch statement. One that acts at compile time, with that data, and one that acts at run time, with that data.
+
+Here is an example:
+
+cswitch.pha
+---
+var i;
+
+print "Enter a number: ";
+read number i;
+
+
+cswitch ( load %accumulator variable i; )
+{
+ ccase 0: {
+  println "Too small!";
+  break;
+ }
+
+ ccase 5: { println "Good job!"; // Fall through... 
+ }
+ ccase 4: { println "Nice pick!"; // Fall through... 
+ }
+ ccase 3: { println "Excelent!"; // Fall through... 
+ }
+ ccase 2: { println "Masterful!"; // Fall through... 
+ }
+ ccase 1: { 
+  println "Incredible!";
+  break;
+ }
+
+
+ cdefault:
+  println "Too big!";  
+}
+
+
+end 0;
+---
+
+Output:
+---
+Enter a number: [2]
+Masterful!
+Incredible!
+---
+
+But the same program won't work if we convert it to a compile time switch statement.
+
+switch.pha
+---
+var i;
+
+print "Enter a number: ";
+read number i;
+
+
+switch ( load %accumulator variable i; )
+{
+ case 0: {
+  println "Too small!";
+  break;
+ }
+
+ case 5: { println "Good job!"; // Fall through... 
+ }
+ case 4: { println "Nice pick!"; // Fall through... 
+ }
+ case 3: { println "Excelent!"; // Fall through... 
+ }
+ case 2: { println "Masterful!"; // Fall through... 
+ }
+ case 1: { 
+  println "Incredible!";
+  break;
+ }
+
+
+ default:
+  println "Too big!";  
+}
+
+
+end 0;
+---
+
+Output:
+---
+* ERROR: 7: syntax error, unexpected RIGHTP
+---
+
+This version will not assemble.
+
+There is one more example I would like you to see. You see, any valid expression is valid for a switch, and any valid stmt is valid for a cswitch statement. Therefore, this example works in this language, but fails in most languages:
+
+sswitch.pha
+---
+var i = "Dennis";
+
+switch (i)
+{
+ case "Dennis":
+ {
+  println "Cool name!";
+  break;
+ }
+
+ case "Amy":
+ {
+  println "That's my sister!";
+  break;
+ }
+
+ case "Michael":
+ {
+  println "He's my friend!";
+  break;
+ }
+
+ default:
+ {
+  println "I didn't recognize the name.";
+  break;
+ }
+}
+
+
+end 0;
+---
+
+Output:
+---
+Cool name!
+---
+
+or
+
+scswitch.pha
+---
+var i = "";
+
+print "Enter a name: ";
+read string i;
+
+
+cswitch ( load %accumulator variable i; )
+{
+ ccase "Dennis":
+ {
+  println "Cool name!";
+  break;
+ }
+
+ ccase "Amy":
+ {
+  println "That's my sister!";
+  break;
+ }
+
+ ccase "Michael":
+ {
+  println "He's my friend!";
+  break;
+ }
+
+ cdefault:
+ {
+  println "I didn't recognize the name.";
+  break;
+ }
+}
+
+
+end 0;
+---
+
+Output:
+---
+Enter a name: [Dennis]
+Cool name!
+---
+
+That is a switch statement!
+
+
+LESSON 16 - Ranges
+==================
+
+Now to show you how to create a range in PNFHA. If you don't remember what a range is, look a the lower level. Here is the syntax for creating a range:
+
+---
+range_declaration:	range RTYPE2 STRINGV = STRINGV .. STRINGV
+
+rangev_declaration:	rangev RTYPE2 STRINGV STRINGV = STRINGV
+			| rangev RTYPE2 STRINGV STRINGV
+
+
+RTYPE2 = "rtype1"|"rtype2"
+---
+
+Armed with this knowlege, we can show you a program:
+
+range.pha
+---
+// Type1 ranges
+range rtype1 "a" = "5".."7";
+
+rangev rtype1 "a" "a" = "6";
+
+
+load range rtype1 "a";
+print "The value of the type1 range is: ";
+println;
+
+
+// Type 2 ranges
+range rtype2 "b" = "3".."7";
+
+rangev rtype2 "b" "b";
+
+
+load range rtype2 "b"[2];
+print "The 2nd index of the type2 range is: ";
+println;
+
+
+end 0;
+---
+
+Output:
+---
+The value of the type1 range is: 6
+The 2nd index of the type2 range is: 5
+---
+
+Here are some small commands to use with your ranges, which will pretty much explain the program to you:
+
+---
+load range RTYPE2 STRINGV			
+| load range RTYPE2 STRINGV [ number_expression ]
+
+
+store range RTYPE2 STRINGV
+---
+
+That is ranges in PNFHA!
+
+
+LESSON 17 - Enums
+=================
+
+If you don't remember what an enum is, look at the lower level's documentation once again. Here is the syntax of enums in PNFHA:
+
+---
+enum_declaration:	enum ID = { enum_strings }
+
+enum_strings:		STRINGV
+			| enum_strings , enum_strings
+
+
+enumv_declaration:	enumv STRINGV STRINGV = STRINGV
+---
+
+Here are some small things you can do with enums:
+
+---
+load venum STRINGV
+
+store venum STRINGV
+---
+
+Here is a program, which will demonstrate enums in PNFHA:
+
+enum.pha
+---
+enum days_of_week = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+
+
+enumv "days_of_week" "a" = "Sunday";
+
+load venum "a";
+print "a: ";
+println;
+
+
+end 0;
+---
+
+Output:
+---
+a: Sunday
+---
+
+You should be able to understand how this works now. This is enums in PNFHA!
+
+
+LESSON 18 - Arrays
+==================
+
+Now for arrays in PNFHA. Check the lower levels if you need documentation on what an array is. Here is the syntax of an array:
+
+---
+array_declaration:	array STRINGV [ number_expression ]
+---
+
+Here are some things you can do with arrays:
+
+---
+load array STRINGV [ number_expression ]
+
+load array STRINGV [ ]
+
+store array STRINGV [ number_expression ]
+
+store array STRINGV [ ]
+
+array STRINGV . length
+
+print array STRINGV
+---
+
+Here is a program, demonstrating an array of enums and strings:
+
+array.pha
+---
+enum days_of_week = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+
+enumv "days_of_week" "day" = "Sunday";
+
+
+array "a"[7];
+
+load venum "day";
+store array "a"[0];
+load aload "Monday";
+store array "a"[1];
+load aload "Tuesday";
+store array "a"[2];
+load aload "Wednesday";
+store array "a"[3];
+load aload "Thursday";
+store array "a"[4];
+load aload "Friday";
+store array "a"[5];
+load aload "Saturday";
+store array "a"[6];
+
+
+print array "a";
+
+
+end 0;
+---
+
+Output:
+---
+a[0]: Sunday
+a[1]: Monday
+a[2]: Tuesday
+a[3]: Wednesday
+a[4]: Thursday
+a[5]: Friday
+a[6]: Saturday
+---
+
+As you can see, this program prints the days of the week. That is the basics of arrays!
+
+
+LESSON 19 - Command Line Processing
+===================================
+
+Now I will show you how to use command line arguments in a PNFHA program.
+
+Command line arguments are managed by the load command. For example:
+
+---
+load %accumulator args 1;
+---
+
+This would load arument 1 into the accumulator. This:
+
+---
+load argn;
+---
+
+Would load the number of arguments into the accumulator.
+
+While this:
+
+---
+load iname;
+---
+
+Would load the interpreter name into the accumulator.
+
+That's command line arguments!
+
+
+LESSON 20 - Advanced I/O
+========================
+
+In addition to the print, and println commands, there is an eprint and eprintln command. This prints to cerr instead of cout. There is also an fprint and fprintln command(s), which print to a file.
+
+---
+file_command:	fmode BFMODEC FMODEC
+		| fopen BFMODEC string_expression
+		| fclose FBMODEC
+		| feof
+---
+
+You can change the mode, with fmode. You can open the file with fopen. You can close the file, with fclose. You can check for eof, with feof.
+
+
+LESSON 21 - ASM Commands
+========================
+
+You can execute an asm command directly, using the PNFASM command or the ASM command. The ASM command is as follows:
+
+---
+asm_command:	asm STRINGV STRINGV string_expression
+---
+
+This directly writes pnfasm.
+
+The PNFASM command is as follows:
+
+---
+pnfasm_command: pnfasm STRINGV STRINGV STRINGV
+---
+
+This directly writes pnf into the pnfasm file.
+
+
+CONCLUSION
+==========
+Now you know PNFHA. This is a High-Level language that knows all about every lower level. It is a C++-Like language! But as you can see, it's far more powerful than C++ itself, as it can reach further into the lower levels than C++!

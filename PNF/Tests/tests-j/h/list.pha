@@ -1,0 +1,23 @@
+subroutine patch_0;
+
+
+gosub sub patch_0;
+
+end 0;
+
+
+patch_0:
+ asm "ISUPP" "TNUMBER" "89";
+ asm "CGOTOL" "TSTRING" $"patch_supp";
+ asm "GOTOL" "TSTRING" $"patch_no_supp";
+ 
+ asm "LBL" "TSTRING" $"patch_supp";
+ asm "PATCH" "TVOID" "0V";
+ asm "GOTOL" "TSTRING" $"patch_end";
+
+ asm "LBL" "TSTRING" $"patch_no_supp";
+ crash "PATCH not supported.";
+ asm "GOTOL" "TSTRING" $"patch_end";
+
+ asm "LBL" "TSTRING" $"patch_end";
+ return;

@@ -1,0 +1,2021 @@
+%{
+/* Prologue */
+/*
+Copyright (C) 2019 Dennis Earl Smiley
+
+This file is part of pnfasm.
+
+    pnfasm is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    pnfasm is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with pnfasm.  If not, see <https://www.gnu.org/licenses/>. 
+*/
+ 
+/* 
+ CHANGELOG
+ =========
+ 
+ 5/25/15 Origional a	- The first version.
+
+ 5/25/15 Origional a-a	- Removed ADDSTORE instruction. 2 instructions did the same thing.
+
+ 7/27/15 Original a-a-a - Added support for a type1 range.
+
+ 7/29/15 Original a-a-b - Fixed bugs...
+
+ 7/30/15 Original a-a-c - 1. Added support for a type1 range implementation.
+			  2. Fixed bugs...
+			  3. Added support for RLOAD1 and RSTORE1.
+			  4. Added features to fix bugs...
+			  5. Added support for a type2 range.
+			  6. Added support for a type2 range implementation.
+			  7. Added support for RPREP2 and RLOAD2
+			  8. Added support for enums
+			  9. Added support for enum implementations
+			 10. Added support for other enum instructions
+			 11. Added support for arrays
+			 12. Added support for other array functions
+			 13. Fixed bugs...
+			 14. Changed array design.
+			 15. Added version mechinism
+
+3/25/17 Original a-a-d - 1. Added support for preprocessor.
+			 2. Debugged the code...
+			 3. Added support for automatic preprocessing.
+			 4. Fixed bugs...
+			 5. Added LIB directive...
+			 6. Added IFs.
+			 7. Added switches.
+			 8. Added more stack documentation.
+			 9. Added PATCH and NATIVE.
+
+12/9/19 Origional a-a-e  1. Added FDECL and FRETS instructions.
+			 2. Added FDEF, FDEF2, FEDEF2 and FEDEF instructions.
+    			 3. Added PARAMF2 instruction.
+ 			 4. Added more function instructions.
+			 5. Added documentation.
+			 6. Added FNCPOINT and FNCLENGTH.
+			 7. Fixed bugs...
+			 8. Took out "extra" instructions.
+			 9. Debugged...
+			10. Added FNCFRET and FNCFPARAM.
+*/
+/*
+ IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
+              VERSION TVOID 0V
+
+ IVOID      - Does nothing.
+              VOID TVOID 0V
+
+ ICRASH     - Intentional crash of program.
+              CRASH TSTRING [string]
+
+ IQUIT      - Quits the program. Returns return value.
+              QUIT TVOID [return value]
+
+ IHALT      - Halts the system by entering a forever loop.
+              HALT TVOID 0V
+
+ IPRINT     - Prints the specified value or the contents of the accumulator.
+              PRINT TVOID 0V
+              PRINT TBOOLEAN [data]
+              PRINT TNUMBER [data]
+              PRINT TCHARACTER [data]
+              PRINT TSTRING [data]
+
+ IPRINTLN   - Prints the specified value or the contents of the accumulator,
+              then a newline.
+              PRINTLN TVOID 0V
+              PRINTLN TBOOLEAN [data]
+              PRINTLN TNUMBER [data]
+              PRINTLN TCHARACTER [data]
+              PRINTLN TSTRING [data]
+
+ IREAD      - Reads in a value to the accumulator.
+              READ [type] 0V
+
+ ILOAD      - Loads a value from memory into the accumulator.
+              LOAD [type] [address]
+
+ ISTORE     - Stores the contents of the accumulator at the specified memory
+              location.
+              STORE TVOID [address]
+
+ ILOADC     - Loads a value from memory into the %calc register.
+              LOADC [type] [address]
+
+ ISTOREC    - Stores the contents of the %calc register into the specified
+              memory location.
+              STOREC TVOID [address]
+
+ IESTORE    - Stores the contents of %accumulator into [%ecount + 3].
+              ESTORE TVOID 0V
+
+ IESTOREC    - Stores the contents of %calc into [%ecount + 3].
+               ESTOREC TVOID 0V
+
+ IVLOAD      - Gets a variable from variable location %operand, and stores it in
+               %accumulator.
+               VLOAD [type] [Variable Address]
+
+ IVSTORE     - Stores a new variable from %accumulator to the next location.
+               VSTORE TVOID 0V
+               VSTORE TNUMBER [variable number]
+
+ IVLOADC     - Gets a variable from variable location %operand, and stores it in
+               %calc.
+               VLOADC [type] [Variable Address]
+
+ IVSTOREC    - Stores a new variable from %calc to the next location.
+               VSTOREC TVOID 0V
+               VSTOREC TNUMBER [variable number]
+
+ ISTOREA     - Stores %accumulator to the address pointed at by %calc.
+ 	       STOREA TVOID 0V
+
+ IMODT       - Modifies the type of %accumulator.
+               MODT [type] 0V
+
+ IMODCT      - Modifies the type of %calc.
+               MODCT [type] 0V
+
+ IADD       - Adds %calc or other value to %accumulator.
+              ADD TVOID 0V
+              ADD TNUMBER [data]
+              ADD TCHARACTER [data]
+              ADD TSTRING [data]
+
+ ISUB       - Subtracts %calc from %accumulator.
+              SUB VOID 0
+              SUB TNUMBER [data]
+
+ IMUL       - Multiplies %accumulator and %calc.
+              MUL VOID 0
+              MUL TNUMBER [data]
+
+ IDIV       - Divides %calc by %accumulator.
+              DIV VOID 0
+              DIV TNUMBER [data]
+
+ IMOD       - Takes a modulus of %accumulator and %calc.
+              MOD VOID 0
+              MOD TNUMBER [data]
+
+ IPOW       - Raises %accumulator to the power of %calc.
+              POW VOID 0
+              POW TNUMBER [data]
+
+ IROOT      - Root %accumulator by itself or the given number.
+              SQRT VOID 0
+              SQRT TNUMBER [data]
+
+ IINC       - Increments %accumulator.
+              INC TVOID 0V
+
+ IDEC       - Decrements %accumulator.
+              DEC TVOID 0V
+
+ IEQU       - Tests if %accumulator == %calc.
+              EQU TVOID 0V
+              EQU TBOOLEAN [data]
+              EQU TNUMBER [data]
+              EQU TCHARACTER [data]
+
+ INEQU      - Tests if %accumulator != %calc.
+              NEQU TVOID 0V
+              NEQU TBOOLEAN [data]
+              NEQU TNUMBER [data]
+              NEQU TCHARACTER [data]
+
+ IGTR       - Tests if %accumulator > %calc.
+              GTR TVOID 0V
+              GTR TNUMBER [data]
+              GTR TCHARACTER [data]
+
+ ILSS       - Tests if %accumulator < %calc.
+              LSS TVOID 0V
+              LSS TNUMBER [data]
+              LSS TCHARACTER [data]
+
+ IGEQU       - Tests if %accumulator >= %calc.
+               GEQU TVOID 0V
+               GEQU TNUMBER [data]
+               GEQU TCHARACTER [data]
+
+ ILEQU       - Tests if %accumulator <= %calc.
+               LEQU TVOID 0V
+               LEQU TNUMBER [data]
+               LEQU TCHARACTER [data]
+
+ IAND        - %accumulator && %calc
+               AND TVOID 0V
+
+ IOR         - %accumulator || %calc
+               OR TVOID 0V
+
+ INOT        - !(%accumulator)
+               NOT TVOID 0V
+
+ IGOTO       - Go to the memory address specified and continue running the
+               program from there.
+               GOTO TVOID [memory address]
+
+ ICGOTO       - Go to the memory address specified and continue running the
+                program from there if %accumulator equals true.
+                CGOTO TVOID [memory address]
+
+ IZGOTO       - Go to the memory address specified if %accumulator is 0.
+                ZGOTO TVOID [memory address]
+
+ IPGOTO       - Go to the memory address specified if %accumulator is > 0.
+                PGOTO TVOID [memory address]
+
+ INGOTO       - Go to the memory address specified if %accumulator is < 0.
+                NGOTO TVOID [memory address]
+
+ IGOTOL        - Go to the label specified and continue running the
+                 program from there.
+                 GOTOL TVOID [label number]
+                 GOTOL TSTRING [label string]               
+
+ ICGOTOL       - Go to the label specified and continue running the
+                 program from there if %accumulator equals true.
+                 CGOTOL TVOID [label number]
+                 CGOTOL TSTRING [label string
+
+ IZGOTOL       - Go to the label specified if %accumulator is 0.
+                 ZGOTOL TVOID [label number]
+                 ZGOTOL TSTRING [label string]
+
+ IPGOTOL       - Go to the memory address specified if %accumulator is > 0.
+                 PGOTOL TVOID [label number]
+                 PGOTOL TSTRING [label string]
+
+ INGOTOL       - Go to the label specified if %accumulator is < 0.
+                 NGOTOL TVOID [label number]
+                 NGOTOL TSTRING [label string]
+
+ IST           - Sets %accumulator to 0 if %calc is 0. (Used for loops.)
+                 ST TVOID 0V
+
+ IPUSH         - Put the accumulator on the stack.
+                 PUSH TVOID 0V
+
+ IPOP          - Loads a value into the accumulator from the stack.
+                 POP TVOID 0V
+
+ ICALL         - Calls a subroutine that begins at [memory address].
+                 CALL TVOID [memory address]
+
+ ICALLL        - Calls a subroutine that begins at [label].
+                 CALLL TVOID [label]
+
+ IRET          - Returns from a subroutine.
+                 RET TVOID 0
+
+ ILBL	       - Declares a label.
+	         LBL TVOID 0V
+                 LBL TSTRING [string]
+
+ IVAR          - Declares a variable.
+                 VAR TVOID [variable]
+
+ IELBL         - Declares an event label.
+                 ELBL TVOID 0V
+
+ IEVLOAD       - Loads a value into %evalue.
+                 EVLOAD TVOID [value]
+
+ IHEADD        - Adds a Hardware Event to the table.
+                 HEADD TVOID [event label number]
+
+ IHEREM        - Removes a Hardware Event from the table.
+                 HEREM TVOID 0V
+
+ IHEED         - Edits a Hardware Event in the table. %evalue must be the hevent
+                 number.
+                 HEED TVOID [new event label number number]
+
+ IHEGET        - Gets a Hardware Event event label number from the table. Puts it
+                 in %evalue.
+                 HEGET TVOID [hardware event number]
+
+ ISHEADD       - Adds a System Hardware Event to the table.
+                 SHEADD TVOID [event label number]
+
+ ISHEREM       - Removes a System Hardware Event from the table.
+                 SHEREM TVOID 0V
+
+ ISHEED        - Edits a System Hardware Event in the table. %evalue must be the 
+                 shevent number.
+                 SHEED TVOID [new event label number number]
+
+ ISHEGET       - Gets a System Hardware Event event label number from the table.
+                 Puts it in %evalue.
+                 SHEGET TVOID [hardware event number]
+
+ IEADD        -  Adds an Event to the table.
+                 EADD TVOID [event label number]
+
+ IEREM         - Removes an Event from the table.
+                 EREM TVOID 0V
+
+ IEED          - Edits an Event in the table. %evalue must be the event number.
+                 EED TVOID [new event label number number]
+
+ IEGET         - Gets an Event event label number from the table. Puts it in \
+                 %evalue.
+                 EGET TVOID [hardware event number]
+
+ IEXADD        - Adds an Exception to the table.
+                 EXADD TVOID [event label number]
+
+ IEXREM        - Removes an Exception from the table.
+                 EXREM TVOID 0V
+
+ IEXED         - Edits an Exception in the table. %evalue must be the exception
+                 number.
+                 EXED TVOID [new event label number number]
+
+ IEXGET        - Gets an Exception event label number from the table. Puts it
+                 in %evalue.
+                 EXGET TVOID [hardware event number]
+
+ IIADD         - Adds an Interrupt to the table.
+                 IADD TVOID [event label number]
+
+ IIREM         - Removes an Interrupt from the table.
+                 IREM TVOID 0V
+
+ IIED          - Edits an Interrupt in the table. %evalue must be the interrupt
+                 number.
+                 IED TVOID [new event label number number]
+
+ IIGET         - Gets an Interrupt event label number from the table. Puts it
+                 in %evalue.
+                 IGET TVOID [hardware event number]
+              
+ IHEVENT       - Executes a Hardware Event subroutine.
+                 HEVENT TVOID [hardware event number]
+
+ ISHEVENT      - Executes a System Hardware Event Subroutine.
+                 SHEVENT TVOID [system hardware event number]
+
+ IEVENT        - Executes an Event subroutine.
+          	 EVENT TVOID [event number]
+
+ IEXCEPTION 	- Executes an Exception subroutine.
+              	  EXCEPTION TVOID [exception number]
+
+ IINT   	- Executes an Interrupt (User Defined Event) subroutine.
+              	  INT TVOID [interrupt number]
+                            
+ ITYPEOF	- Puts the type of %accumulator in %typeof.
+ 		  TYPEOF TVOID 0V
+ 			  
+ ICTYPEOF	- Puts the type of %calc in %typeof.
+ 		  CTYPEOF TVOID 0V
+ 			  
+ ITLOAD         - Loads %typeof to %accumulator.
+   	    	  TLOAD TVOID 0V
+
+ IALOAD		- Loads a value into the accumulator.
+ 		  ALOAD TVOID 0V
+ 		  ALOAD TBOOLEAN [data]
+ 		  ALOAD TNUMBER [data]
+ 		  ALOAD TCHARACTER [data]
+ 		  ALOAD TSTRING [data]
+ 			  
+ IINLOAD	- Loads %iname into %accumulator.
+ 		  INLOAD TVOID 0V
+ 			  
+ IICLOAD	- Loads %icount into %accumulator.
+ 		  ICLOAD TVOID 0V
+ 			  
+ IARLOAD	- Loads %arg[number] into %accumulator.
+ 		  ARLOAD TVOID [number]
+ 			  
+ IELOAD		- Loads [%ecount + 3] to %accumulator.
+ 		  ELOAD TVOID 0V
+ 			  
+ IELOADC	- Loads [%ecount + 3] to %calc.
+ 		  ELOADC TVOID 0V
+ 			  
+ IATOC		- Puts %accumulator in %calc.
+ 		  ATOC TVOID 0V
+ 			  
+ ISWITCH    	- Switches %accumulator and %calc.
+ 		  SWITCH TVOID 0V
+ 		
+ IVADD		- Gets the address of the specified variable.
+ 		  VADD TVOID [variable number]
+ 			  
+ ILADD		- Gets the address of the specified label.
+ 		  LADD TVOID [label number]
+ 			  
+ IELADD		- Gets the address of the specified event label.
+ 		  ELADD TVOID [event label number]
+
+ IADD2V	   	 - Retrieves the value at the address stored in %accumulator.
+ 	    	   ADD2V TVOID 0V
+ 			  
+ IBTAND		- Performs bit AND on %accumulator and %calc.
+ 		  BTAND TVOID 0V
+ 			  
+ IBTOR		- Performs bit OR on %accumulator and %calc.
+ 		  BTOR TVOID 0V
+ 			  
+ IBTEXOR	- Performs bit exclusive OR on %accumulator and %calc.
+ 	 	  BTEXOR TVOID 0V
+ 			  
+ IBTNOT		- Performs bit NOT on %accumulator.
+		  BTNOT TVOID 0V
+ 			  
+ IBTSL		- Performs << on %accumulator and %calc.
+		  BTSL TVOID 0V
+ 			  
+ IBTSR		- Performs >> on %accumulator and %calc.
+		  BTSR TVOID 0V
+
+ IVCHECK        - Sets %accumulator to true if version parameters match.
+ 	          VCHECK [type] [operand]
+
+ IVSUPP         - Checks to see if a version is supported.
+ 	          VSUPP [type] [operand]
+
+ IVPRINT	- Prints the version.
+		  VPRINT TVOID 0V
+
+ IVPRINTLN	- Prints the version, then a newline.
+		  VPRINTLN TVOID 0V
+
+ IISUPP	    	- Checks to see if an instruction is supported or not.
+ 		  ISUPP TNUMBER [data]
+ 			  
+ ITSUPP		- Checks to see if a type is supported or not.
+ 		  TSUPP TNUMBER [data]
+
+ ICOMMENT   	- A comment in the code.
+ 		  COMMENT TSTRING [string]
+
+ IFIMODE        - Sets the mode for file input.
+ 	          FIMODE TSTRING [mode]
+ 		
+ IFOMODE        - Sets the mode for file output.
+ 	          FOMODE TSTRING [mode]
+ 			  
+ IFIOPEN        - Opens the specified file for input. If VOID, gets it from %accumulator.
+		  FIOPEN TVOID 0V
+ 	          FIOPEN TSTRING [filename]
+ 			  
+ IFOOPEN        - Opens the specified file for output. If VOID, gets it from, %accumulator.
+		  FOOPEN TVOID 0V
+ 	          FOOPEN TSTRING [filename]
+ 			  
+ IFREAD	        - Reads a value from the file, and stores it in %accumulator.
+ 	          FREAD [type] 0V
+ 			  
+ IFPRINT        - Prints a value to the file.
+ 	          FRPINT [type] [data]
+ 			  
+ IFPRINTLN      - Prints a value to the file, then a newline.
+ 	          FPRINTLN [type] [data]
+
+ IFICLOSE   	- Closes the input file that's open.
+ 		  FICLOSE TVOID 0V
+ 			  
+ IFOCLOSE   	- Closes the output file that's open.
+ 		  FOCLOSE TVOID 0V
+
+ IMEML		- Stores the length of memory in %accumulator.
+ 		  MEML TVOID 0V
+
+ IFIEOF		- Tests if we are at EOF or not.
+ 		  FIEOF TVOID 0V
+
+ IARNLOAD	- Loads the number of arguments into %accumulator.
+ 		  ARNLOAD TVOID 0V
+
+ IRDSTART1      - Marks the start of a type1 range.
+ 		  RDSTART1 TSTRING [name]
+ 			  
+ IRFROM1        - Specifies the type1 range from value.
+ 		  RFROM1 TNUMBER [num]
+ 			  
+ IRTO1		- Specifies the type1 range to value.
+ 		  RTO1 TNUMBER [num]
+ 			  
+ IRDEND1	- Marks the end of a type1 range.
+                  RDEND1 TVOID 0V
+
+ IRSTART1       - Marks the start of a type1 range implementation. Needs a definition name.
+                  RSTART1 TSTRING [defname]
+              
+ IRANGE1        - Specifies the range implementation value for a type1 range. To be valid, number MUST be within the range values...
+ 		  RANGE1 TNUMBER [num]
+ 			  
+ IREND1         - Marks the end of the type1 range implementation, and names it.
+ 		  REND1 TSTRING [name]
+
+ IRLOAD1    	- Loads a value from a type1 range to %accumulator.
+ 		  RLOAD1 TSTRING [name]
+ 			  
+ IRSTORE1   	- Stores a value from %accumulator to a type1 range.
+ 		  RSTORE TSTRING [name]
+
+ IHEADDB	- Add num blank hardware events
+ 		  HEADDB TVOID [num]
+ 			  
+ ISHEADDB	- Add num blank system hardware events
+ 		  SHEADDB TVOID [num]
+ 			  
+ IEADDB		- Add num blank events
+ 	          EADDB TVOID [num]
+ 			  
+ IEXADDB	- Add num blank exceptions
+ 		  EXADDB TVOID [num]
+ 			  
+ IIADDB		- Add num blank system interrupts
+ 		  IADDB TVOID [num]
+
+ IRDSTART2  	- Marks the start of a type2 range.
+ 		  RDSTART2 TSTRING [name]
+ 			  
+ IRFROM2    	- Specifies the type2 range from value.
+ 		  RFROM2 TNUMBER [num]
+ 			  
+ IRTO2		- Specifies the type2 range to value.
+ 		  RTO2 TNUMBER [num]
+ 			  
+ IRDEND2	- Marks the end of a type2 range.
+              	  RDEND2 TVOID 0V
+
+ IRSTART2   	- Marks the start of a type2 range implementation. Needs a definition name.
+              	  RSTART2 TSTRING [defname]
+              
+ IRANGE2    	- Specifies the range implementation value for a type2 range.
+ 		  RANGE2 TSTRING [name]
+
+ IRPREP2	- Prepares the rt2prep register...
+ 		  RPREP2 TSTRING [name]
+ 			  
+ IRLOAD2	- Loads a value from index to %accumulator
+ 		  RLOAD2 TNUMBER [index]
+
+ IESTART	- Marks the start of an enum definition
+ 		  ESTART TSTRING [name]
+ 			  
+ IENAME		- Specifies an enum definition name
+ 		  ENAME TSTRING [name]
+ 			  
+ IEEND		- Marks the end of an enum definition
+ 		  EEND TVOID 0V
+
+ IENUMS		- Marks the beginning of an enum implementation
+ 		  ENUMS TSTRING [defname]
+ 			  
+ IENUM		- Sets the value for the enum implementation
+ 		  ENUM TSTRING [valuename]
+ 			  
+ ISENUM		- Ends the enum implementation. Names it.
+ 		  SENUM TSTRING [name]
+
+ IEPREP		- Prepares the etprep register...
+ 		  EPREP TSTRING [name]
+ 			  
+ ILOADE		- Loads a value from an enum to %accumulator
+ 		  LOADE TVOID 0V
+ 			  
+ ISTOREE	- Stores a value from %accumulator to an enum
+ 		  STOREE TVOID 0V
+
+ IASTART	- Names the array to be defined.
+ 		  ASTART TSTRING [name]
+ 			  
+ IAEND		- Marks the end of an array definition
+ 		  AEND TNUMBER [length]
+
+ IAPREP		- Prepares %aprep register
+ 		  APREP TSTRING [name]
+ 			  
+ IAIPREP	- Prepares %aiprep register. If TVOID, gets number from %accumulator.
+ 		  AIPREP TNUMBER [num]
+		  AIPREP TVOID 0V
+ 			  
+ ILOADIA	- Loads a value from an array to %accumulator
+ 		  LOADIA TVOID 0V
+ 			  
+ ISTOREIA	- Stores a value from %accumulator to an array
+ 		  STOREIA TVOID 0V
+
+ IALENGTH   	- Gets the length of an array and puts it in %accumulator
+	      	  ALENGTH TVOID 0V
+
+ IAPRINT        - Prints the contents of an array
+	    	  APRINT TVOID 0V
+
+ IDUP		- Sets %accumulator to %calc
+		  DUP TVOID 0V
+
+ ICDUP		- Sets %calc to %accumulator
+		  CDUP TVOID 0V
+
+ IIF	    - Branches to if block if %accumulator is true, otherwise either optional else block or the end of the if.
+	      IF TVOID 0V
+
+ IIFBEGIN    - Marks the begining of the if or else block.
+	      IFBEGIN TVOID 0V
+
+ IIFEND	     - Marks the end of the if or else block.
+	       IFEND TVOID 0V
+
+ IENDIF	     - Marks the end of the if.
+	       ENDIF TVOID 0V
+
+ IIFELSE     - Marks the beginning of the optional else block.
+	       IFELSE TVOID 0V
+
+ IENDIFELSE  - Marks the end of the optional else blcok.
+	       ENDIFELSE TVOID 0V
+
+ IEIF	     - Marks the end of the if/else.
+	       EIF TVOID 0V
+
+ISWITCH2    - Specifies that what follows is a switch statement.
+               SWITCH2 TVOID 0V
+
+ ISWBEGIN    - The switch statement block start.
+               SWBEGIN TVOID 0V
+
+ ISWEND      - The switch statement block end.
+               SWEND TVOID 0V
+
+ ISWCBEGIN   - The switch statement case block start.
+               SWCBEGIN TVOID 0V
+
+ ISWCEND     - The switch statement case block end.
+               SWCEND TVOID 0V
+
+ ISWCASE     - A switch statement case.
+               SWCASE [type] [value]
+
+ ISWDEFAULT  - A switch statement default case.
+               SWDEFAULT TVOID 0V
+
+ ISWBREAK    - Goes to the next SWEND or reg.ecount.
+	       SWBREAK TVOID 0V
+
+ ILOADSP     - Loads the specified stack position into %accumulator.
+	       LOADSP TNUMBER [stackpos]
+
+ ISTORESP    - Stores the specified stack position from %accumulator. Also mirrors the stack in %savestack.
+	       STORESP TNUMBER [stackpos]
+
+ ILOADSTACK  - Loads %savestack into the stack.
+	       LOADSTACK TVOID 0V
+
+ ISTORESTACK - Stores the stack in %savestack.
+	       STORESTACK TVOID 0V
+
+ IATOSP	     - Sends %accumulator to %stackp.
+	       ATOSP TVOID 0V
+
+ ISPTOA	     - Sends %stackp to %accumulator.
+	       SPTOA TVOID 0V
+
+ IPATCH	     - Applies a patch.
+	       PATCH [type] [value]
+
+ INATIVE     - Runs a native subroutine.
+	       NATIVE TSTRING [subroutine name]
+
+ IFRET	      - Returns from a function.
+		FRET TVOID 0V
+
+ IFCALL	      - Prepares to call function [name]
+		FCALL TSTRING [name]
+
+ IFCPARAMS    - The actual parameter block start.
+		FCPARAMS TVOID 0V
+
+ IFECPARAMS   - The actual parameter block end.
+		FECPARAMS TVOID 0V
+
+ IFECALL      - Makes the call to the function.
+		FECALL TVOID 0V
+
+ IPUNUM       - Allows us to specify an actual parameter number.
+		PNUM TNUMBER [num]
+
+ IPARAMF      - Specify an actual parameter.
+		PARAMF [type] [value]
+
+ IPARAMF2     - Load parameter specified by %pnum to %accumulator
+		PARAMF2 TVOID 0V
+
+ IRNUM	      - Specify a return value number
+		RNUM TNUMBER [num]
+
+ IRETURNF     - Modifies a value for return
+		RETURNF [type] [value]
+
+ IFNAME	      - Sets %fname
+		FNAME TSTRING [name]
+
+ IRETURNV     - Loads %accumulator with return value %rnum
+		RETURNV TVOID 0V
+
+ IFNCLOAD     - Loads a function from %fpointer1 to %fpointer2.
+		FNCLOAD TNUMBER [num]
+
+ IFNCSTORE    - Stores a function from %fpointer2 to %fpointer1
+		FNCSTORE TNUMBER [num]
+		FNCSTORE TVOID 0V
+
+ IFNCNEW      - Adds a new Function on the C++ heap.
+		FNCNEW TVOID 0V
+
+ IFNCDELETE   - Deletes a new Function on the C++ heap.
+		FNCDELETE TVOID 0V
+
+ IFNCSNAME    - Sets the name of the function %fpointer2
+		FNCSNAME TVOID 0V
+
+ IFNCSRET     - Sets the return type of a return value in %fpointer.
+		FNCSRET [type] 0V
+
+ IFNCSPARAM   - Adds a parameter of type [type] to %fpointer2 with value %accumulator
+		FNCSPARAM [type] 0V
+
+ IFNCSDEF      - Adds a definition beginning at [where] or [label] to %fpointer2.
+		 FNCSDEF TNUMBER [where]
+		 FNCSDEF TSTRING [label]
+
+ IFNCGNAME     - Gets the name of %fpointer2
+		 FNCGNAME TVOID 0V
+
+ IFNCGRET      - Gets a return value from %fpointer2
+		 FNCGRET TNUMBER [num]
+
+ IFNCGPARAM    - Gets a parameter value from %fpointer2
+		 FNCGPARAM TNUMBER [num]
+
+ IFNCGDEF      - Gets a definition address for %fpointer2
+		 FNCGDEF TVOID 0V
+*/
+#include <deslib/deslib.hpp>
+
+#include <cstring>
+
+
+#define YYSTYPE String
+
+#define YYDEBUG 1
+
+
+void yyerror(char const * c);
+int yylex();
+
+String get_extension(String fileName);
+String strip_extension(String fileName);
+void preprocess(String arg);
+void mklib(String arg);
+
+
+FILE * output;
+
+unsigned long mode = 0;
+
+
+unsigned long lineno = 0;
+unsigned long iflineno = 0;
+unsigned long elselineno = 0;
+unsigned long varcounter = 0;
+unsigned long ifcounter = 0;
+unsigned long ifcounter2 = 0;
+
+bool saw_elseend = false;
+unsigned long saw_pifend = 0;
+unsigned long ifcounter3 = 0;
+unsigned long pifend = 0;
+%}
+/* Bison Declarations */
+%error-verbose
+
+%expect 251
+
+
+%token ASMVERSION
+
+%token PNF
+%token BIN
+%token PBIN
+%token LIB
+
+%token PINCLUDE
+%token PIMPORT
+%token PDEFINE
+%token PMACRO
+%token PENDM
+%token PUNDEF
+%token PIFDEF
+%token PIFNDEF
+%token PELSE
+%token PENDIF
+%token PPDATE
+%token PPTIME
+%token PPLINE
+%token PPFILE
+%token PPCDATE
+%token PPCTIME
+%token PPCOMMENT
+
+%token IVERSION
+%token IVOID
+%token ICRASH
+%token IQUIT
+%token IHALT
+%token IPRINT
+%token IPRINTLN
+%token IREAD
+%token ILOAD
+%token ISTORE
+%token ILOADC
+%token ISTOREC
+%token IELOAD
+%token IESTORE
+%token IELOADC
+%token IESTOREC
+%token IVLOAD
+%token IVSTORE
+%token IVLOADC
+%token IVSTOREC
+%token ISTOREA
+%token IMODT
+%token IMODCT
+%token IADD
+%token ISUB
+%token IMUL
+%token IDIV
+%token IMOD
+%token IPOW
+%token IROOT
+%token IINC
+%token IDEC
+%token IEQU
+%token INEQU
+%token IGTR
+%token ILSS
+%token IGEQU
+%token ILEQU
+%token IAND
+%token IOR
+%token INOT
+%token IGOTO
+%token ICGOTO
+%token IZGOTO
+%token IPGOTO
+%token INGOTO
+%token IGOTOL
+%token ICGOTOL
+%token IZGOTOL
+%token IPGOTOL
+%token INGOTOL
+%token IST
+%token IPUSH
+%token IPOP
+%token ICALL
+%token ICALLL
+%token IRET
+%token IVAR
+%token ILBL
+%token IEPRINT
+%token IEPRINTLN
+%token IEND
+%token IELBL
+%token IEVLOAD
+%token IHEADD
+%token IHEREM
+%token IHEED
+%token IHEGET
+%token ISHEADD
+%token ISHEREM
+%token ISHEED
+%token ISHEGET
+%token IEADD
+%token IEREM
+%token IEED
+%token IEGET
+%token IEXADD
+%token IEXREM
+%token IEXED
+%token IEXGET
+%token IIADD
+%token IIREM
+%token IIED
+%token IIGET
+%token IHEVENT
+%token ISHEVENT
+%token IEVENT
+%token IEXCEPTION
+%token IINT
+%token ITYPEOF
+%token ICTYPEOF
+%token ITLOAD
+%token IALOAD
+%token IINLOAD
+%token IICLOAD
+%token IARLOAD
+%token IATOC
+%token ISWITCH
+%token IVADD
+%token ILADD
+%token IELADD
+%token IADD2V
+%token IBTAND
+%token IBTOR
+%token IBTEXOR
+%token IBTNOT
+%token IBTSL
+%token IBTSR
+%token IVCHECK
+%token IVSUPP
+%token IVPRINT
+%token IVPRINTLN
+%token IISUPP
+%token ITSUPP
+%token ICOMMENT
+%token IFIMODE
+%token IFOMODE
+%token IFIOPEN
+%token IFOOPEN
+%token IFREAD
+%token IFPRINT
+%token IFPRINTLN
+%token IFICLOSE
+%token IFOCLOSE
+%token IMEML
+%token IFIEOF
+%token IARNLOAD
+%token IRDSTART1
+%token IRFROM1
+%token IRTO1
+%token IRDEND1
+%token IRSTART1
+%token IRANGE1
+%token IREND1
+%token IRLOAD1
+%token IRSTORE1
+%token IHEADDB
+%token ISHEADDB
+%token IEADDB
+%token IEXADDB
+%token IIADDB
+%token IRDSTART2
+%token IRFROM2
+%token IRTO2
+%token IRDEND2
+%token IRSTART2
+%token IRANGE2
+%token IRPREP2
+%token IRLOAD2
+%token IESTART
+%token IENAME
+%token IEEND
+%token IENUMS
+%token IENUM
+%token ISENUM
+%token IEPREP
+%token ILOADE
+%token ISTOREE
+%token IASTART
+%token IAEND
+%token IAPREP
+%token IAIPREP
+%token ILOADIA
+%token ISTOREIA
+%token IALENGTH
+%token IAPRINT
+%token IDUP
+%token ICDUP
+%token IIF
+%token IENDIF
+%token IIFELSE
+%token IENDIFELSE
+%token IEIF
+%token IIFBEGIN
+%token IIFEND
+%token ISWITCH2
+%token ISWBEGIN
+%token ISWEND
+%token ISWCASE
+%token ISWCBEGIN
+%token ISWCEND
+%token ISWDEFAULT
+%token ISWBREAK
+%token ILOADSP
+%token ISTORESP
+%token ILOADSTACK
+%token ISTORESTACK
+%token IATOSP
+%token ISPTOA
+%token IPATCH
+%token INATIVE
+%token IFRET
+%token IFCALL
+%token IFCPARAMS
+%token IFECPARAMS
+%token IFECALL
+%token IPNUM
+%token IPARAMF
+%token IPARAMF2
+%token IPARAMF3
+%token IRNUM
+%token IRETURNF
+%token IRETURNF2
+%token IRETURNF3
+%token IFNAME
+%token IRETURNV
+%token IFNCLOAD
+%token IFNCSTORE
+%token IFNCNEW
+%token IFNCDELETE
+%token IFNCSNAME
+%token IFNCSRET
+%token IFNCSPARAM
+%token IFNCSDEF
+%token IFNCGNAME
+%token IFNCGRET
+%token IFNCGPARAM
+%token IFNCGDEF
+%token IFNCPOINT
+%token IFNCLENGTH
+%token IFNCSYNCR
+%token IFNCFIND
+%token IFNCFRET
+%token IFNCFPARAM
+%token IFNCFBRET
+%token IFNCFBPARAM
+
+
+%token TVOID
+%token TBOOLEAN
+%token TNUMBER
+%token TCHARACTER
+%token TSTRING
+
+%token VOID
+%token BOOLEAN
+%token NUMBER
+%token CHARACTER
+%token STRING
+
+%%
+/* Grammar Rules */
+
+input:		// Empty
+		| input line
+		;
+
+line:		'\n'
+		| instruction
+		| pinstruction
+		| variable		
+		| pp
+		| directive
+		| error		{ yyerrok; }
+		;
+
+instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
+		| IVERSION TVOID NUMBER { fprintf(output, "0 0 %s\n", $3.getString().c_str()); }
+		| IVOID TVOID VOID	{ fprintf(output, "1 0 0\n"); }
+		| ICRASH TSTRING STRING
+		{
+		 fprintf(output, "2 4 ");
+
+		 for (int i = 1; $3[i] != '\"'; ++i)
+                  fprintf(output, "%i ", $3[i]);
+		 fprintf(output, "0\n");
+		}
+		| IQUIT TVOID NUMBER 		{ fprintf(output, "3 0 %s\n", $3.getString().c_str()); }
+		| IHALT TVOID VOID		{ fprintf(output, "4 0 0\n"); }
+		| IPRINT TVOID VOID		{ fprintf(output, "5 0 0\n"); }
+		| IPRINT TBOOLEAN BOOLEAN	{
+						 if ($3 == "true")
+						  fprintf(output, "5 1 1\n");
+						 else
+						  fprintf(output, "5 1 0\n");
+					        }
+		| IPRINT TNUMBER NUMBER		{ fprintf(output, "5 2 %s\n", $3.getString().c_str()); }
+		| IPRINT TCHARACTER CHARACTER	{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "5 3 %i\n", ch);
+						}
+		| IPRINT TSTRING STRING		{
+						 fprintf(output, "5 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IPRINTLN TVOID VOID		{ fprintf(output, "6 0 0\n"); }
+		| IPRINTLN TBOOLEAN BOOLEAN	{
+						 if ($3 == "true")
+						  fprintf(output, "6 1 1\n");
+						 else
+						  fprintf(output, "6 1 0\n");
+					        }
+		| IPRINTLN TNUMBER NUMBER	{ fprintf(output, "6 2 %s\n", $3.getString().c_str()); }
+		| IPRINTLN TCHARACTER CHARACTER	{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "6 3 %i\n", ch);
+						}
+		| IPRINTLN TSTRING STRING	{ 
+						 fprintf(output, "6 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IREAD TBOOLEAN VOID		{ fprintf(output, "7 1 0\n"); }
+		| IREAD TNUMBER	 VOID		{ fprintf(output, "7 2 0\n"); }
+		| IREAD TCHARACTER VOID		{ fprintf(output, "7 3 0\n"); }
+		| IREAD TSTRING VOID		{ fprintf(output, "7 4 0\n"); }
+		| ILOAD TBOOLEAN NUMBER 	{ fprintf(output, "8 1 %s\n", $3.getString().c_str()); }
+		| ILOAD TNUMBER NUMBER		{ fprintf(output, "8 2 %s\n", $3.getString().c_str()); }
+		| ILOAD TCHARACTER NUMBER	{ fprintf(output, "8 3 %s\n", $3.getString().c_str()); }
+		| ILOAD TSTRING NUMBER		{ fprintf(output, "8 4 %s\n", $3.getString().c_str()); }
+		| ISTORE TVOID NUMBER 		{ fprintf(output, "9 0 %s\n", $3.getString().c_str()); }
+		| ILOADC TBOOLEAN NUMBER	{ fprintf(output, "10 1 %s\n", $3.getString().c_str()); }
+		| ILOADC TNUMBER NUMBER		{ fprintf(output, "10 2 %s\n", $3.getString().c_str()); }
+		| ILOADC TCHARACTER NUMBER	{ fprintf(output, "10 3 %s\n", $3.getString().c_str()); }
+		| ILOADC TSTRING NUMBER		{ fprintf(output, "10 4 %s\n", $3.getString().c_str()); }
+		| ISTOREC TVOID NUMBER 		{ fprintf(output, "11 0 %s\n", $3.getString().c_str()); }
+		| IELOAD TBOOLEAN VOID	 	{ fprintf(output, "12 1 0\n"); }
+		| IELOAD TNUMBER VOID		{ fprintf(output, "12 2 0\n"); }
+		| IELOAD TCHARACTER VOID	{ fprintf(output, "12 3 0\n"); }
+		| IELOAD TSTRING VOID		{ fprintf(output, "12 4 0\n"); }			
+		| IESTORE TVOID VOID 		{ fprintf(output, "13 0 0\n"); }
+		| IELOADC TBOOLEAN VOID	 	{ fprintf(output, "14 1 0\n"); }
+		| IELOADC TNUMBER VOID		{ fprintf(output, "14 2 0\n"); }
+		| IELOADC TCHARACTER VOID	{ fprintf(output, "14 3 0\n"); }
+		| IELOADC TSTRING VOID		{ fprintf(output, "14 4 0\n"); }
+		| IESTOREC TVOID VOID 		{ fprintf(output, "15 0 0\n"); }
+		| IVLOAD TBOOLEAN NUMBER	{ fprintf(output, "16 1 %s\n", $3.getString().c_str()); }
+		| IVLOAD TNUMBER NUMBER		{ fprintf(output, "16 2 %s\n", $3.getString().c_str()); }
+		| IVLOAD TCHARACTER NUMBER	{ fprintf(output, "16 3 %s\n", $3.getString().c_str()); }
+		| IVLOAD TSTRING NUMBER		{ fprintf(output, "16 4 %s\n", $3.getString().c_str()); }
+		| IVSTORE TVOID VOID		{ fprintf(output, "17 0 0\n"); }
+		| IVSTORE TNUMBER NUMBER	{ fprintf(output, "17 2 %s\n", $3.getString().c_str()); }
+		| IVLOADC TBOOLEAN NUMBER	{ fprintf(output, "18 1 %s\n", $3.getString().c_str()); }
+		| IVLOADC TNUMBER NUMBER	{ fprintf(output, "18 2 %s\n", $3.getString().c_str()); }
+		| IVLOADC TCHARACTER NUMBER	{ fprintf(output, "18 3 %s\n", $3.getString().c_str()); }
+		| IVLOADC TSTRING NUMBER	{ fprintf(output, "18 4 %s\n", $3.getString().c_str()); }
+		| IVSTOREC TVOID VOID		{ fprintf(output, "19 0 0\n"); }
+		| IVSTOREC TNUMBER NUMBER	{ fprintf(output, "19 4 0\n", $3.getString().c_str()); }
+		| ISTOREA TVOID VOID		{ fprintf(output, "20 0 0\n"); }
+		| IMODT TVOID VOID		{ fprintf(output, "21 0 0\n"); }
+		| IMODT TBOOLEAN VOID		{ fprintf(output, "21 1 0\n"); }
+		| IMODT TNUMBER VOID		{ fprintf(output, "21 2 0\n"); }
+		| IMODT TCHARACTER VOID		{ fprintf(output, "21 3 0\n"); }
+		| IMODT TSTRING VOID		{ fprintf(output, "21 4 0\n"); }
+		| IMODCT TVOID VOID		{ fprintf(output, "22 0 0\n"); }
+		| IMODCT TBOOLEAN VOID		{ fprintf(output, "22 1 0\n"); }
+		| IMODCT TNUMBER VOID		{ fprintf(output, "22 2 0\n"); }
+		| IMODCT TCHARACTER VOID	{ fprintf(output, "22 3 0\n"); }
+		| IMODCT TSTRING VOID		{ fprintf(output, "22 4 0\n"); }
+		| IADD TVOID VOID 		{ fprintf(output, "23 0 0\n"); }
+		| IADD TNUMBER NUMBER		{ fprintf(output, "23 2 %s\n", $3.getString().c_str()); }
+		| IADD TCHARACTER CHARACTER 		{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "23 3 %i\n", ch);
+						}
+		| IADD TSTRING STRING 		{		
+						 fprintf(output, "23 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| ISUB TVOID VOID 		{ fprintf(output, "24 0 0\n"); }
+		| ISUB TNUMBER NUMBER 		{ fprintf(output, "24 2 %s\n", $3.getString().c_str()); }
+		| IMUL TVOID VOID 		{ fprintf(output, "25 0 0\n"); }
+		| IMUL TNUMBER NUMBER 		{ fprintf(output, "25 2 %s\n", $3.getString().c_str()); }
+		| IDIV TVOID VOID 		{ fprintf(output, "26 0 0\n"); }
+		| IDIV TNUMBER NUMBER 		{ fprintf(output, "26 2 %s\n", $3.getString().c_str()); }
+		| IMOD TVOID VOID 		{ fprintf(output, "27 0 0\n"); }
+		| IMOD TNUMBER NUMBER 		{ fprintf(output, "27 2 %s\n", $3.getString().c_str()); }
+		| IPOW TVOID VOID 		{ fprintf(output, "28 0 0\n"); }
+		| IPOW TNUMBER NUMBER 		{ fprintf(output, "28 2 %s\n", $3.getString().c_str()); }
+		| IROOT TVOID VOID 		{ fprintf(output, "29 0 0\n"); }
+		| IROOT TNUMBER NUMBER 		{ fprintf(output, "29 2 %s\n", $3.getString().c_str()); }
+		| IINC TVOID VOID 		{ fprintf(output, "30 0 0\n"); }
+		| IDEC TVOID VOID 		{ fprintf(output, "31 0 0\n"); }
+		| IEQU TVOID VOID 		{ fprintf(output, "32 0 0\n"); }
+		| INEQU TVOID VOID 		{ fprintf(output, "33 0 0\n"); }
+		| IGTR TVOID VOID 		{ fprintf(output, "34 0 0\n"); }
+		| ILSS TVOID VOID 		{ fprintf(output, "35 0 0\n"); }
+		| IGEQU TVOID VOID 		{ fprintf(output, "36 0 0\n"); }
+		| ILEQU TVOID VOID 		{ fprintf(output, "37 0 0\n"); }
+		| IAND TVOID VOID 		{ fprintf(output, "38 0 0\n"); }
+		| IOR TVOID VOID 		{ fprintf(output, "39 0 0\n"); }
+		| INOT TVOID VOID 		{ fprintf(output, "40 0 0\n"); }
+		| IGOTO TVOID NUMBER		{ fprintf(output, "41 0 %s\n", $3.getString().c_str()); }
+		| ICGOTO TVOID NUMBER		{ fprintf(output, "42 0 %s\n", $3.getString().c_str()); }
+		| IZGOTO TVOID NUMBER		{ fprintf(output, "43 0 %s\n", $3.getString().c_str()); }
+		| IPGOTO TVOID NUMBER		{ fprintf(output, "44 0 %s\n", $3.getString().c_str()); }
+		| INGOTO TVOID NUMBER		{ fprintf(output, "45 0 %s\n", $3.getString().c_str()); }
+		| IGOTOL TVOID NUMBER		{ fprintf(output, "46 0 %s\n", $3.getString().c_str()); }
+		| IGOTOL TSTRING STRING		{
+						 fprintf(output, "46 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| ICGOTOL TVOID NUMBER		{ fprintf(output, "47 0 %s\n", $3.getString().c_str()); }
+		| ICGOTOL TSTRING STRING	
+						{
+						 fprintf(output, "47 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IZGOTOL TVOID NUMBER		{ fprintf(output, "48 0 %s\n", $3.getString().c_str()); }
+		| IZGOTOL TSTRING STRING	
+						{
+						 fprintf(output, "48 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IPGOTOL TVOID NUMBER		{ fprintf(output, "49 0 %s\n", $3.getString().c_str()); }
+		| IPGOTOL TSTRING STRING	
+						{
+						 fprintf(output, "49 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| INGOTOL TVOID NUMBER		{ fprintf(output, "50 0 %s\n", $3.getString().c_str()); }							
+		| INGOTOL TSTRING STRING	
+						{
+						 fprintf(output, "50 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IST TVOID VOID		{ fprintf(output, "51 0 0\n"); }
+		| IPUSH TVOID VOID 		{ fprintf(output, "52 0 0\n"); }
+		| IPOP TVOID VOID 		{ fprintf(output, "53 0 0\n"); }
+		| ICALL TVOID NUMBER		{ fprintf(output, "54 0 %s\n", $3.getString().c_str()); }
+		| ICALLL TVOID NUMBER		{ fprintf(output, "55 0 %s\n", $3.getString().c_str()); }
+		| ICALLL TSTRING STRING
+						{
+						 fprintf(output, "55 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IRET TVOID VOID		{ fprintf(output, "56 0 0\n"); } 
+						/* skip IVAR = 57 */
+		| ILBL TVOID VOID		{ fprintf(output, "58 0 0\n"); }
+		| ILBL TSTRING STRING		{
+						 fprintf(output, "58 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");		
+						}
+		| IEPRINT TVOID VOID		{ fprintf(output, "59 0 0\n"); }
+		| IEPRINT TBOOLEAN BOOLEAN	{
+						 if ($3 == "true")
+						  fprintf(output, "59 1 1\n");
+						 else
+						  fprintf(output, "59 1 0\n");
+					        }
+		| IEPRINT TNUMBER NUMBER		{ fprintf(output, "59 2 %s\n", $3.getString().c_str()); }
+		| IEPRINT TCHARACTER CHARACTER	{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "59 3 %i\n", ch);
+						}
+		| IEPRINT TSTRING STRING	{ 
+						 fprintf(output, "59 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+
+		| IEPRINTLN TVOID VOID		{ fprintf(output, "60 0 0\n"); }
+		| IEPRINTLN TBOOLEAN BOOLEAN	{
+						 if ($3 == "true")
+						  fprintf(output, "60 1 1\n");
+						 else
+						  fprintf(output, "60 1 0\n");
+					        }
+		| IEPRINTLN TNUMBER NUMBER	{ fprintf(output, "60 2 %s\n", $3.getString().c_str()); }
+		| IEPRINTLN TCHARACTER CHARACTER	{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "60 3 %i\n", ch);
+						}
+		| IEPRINTLN TSTRING STRING	{ 
+						 fprintf(output, "60 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+
+		| IEND TVOID VOID		{ fprintf(output, "61 0 0"); }
+		| IELBL TVOID VOID		{ fprintf(output, "62 0 0\n"); }
+		| IEVLOAD TVOID NUMBER		{ fprintf(output, "63 0 %s\n", $3.getString().c_str()); }
+		| IHEADD TVOID NUMBER		{ fprintf(output, "64 0 %s\n", $3.getString().c_str()); }
+		| IHEREM TVOID VOID		{ fprintf(output, "65 0 0\n"); }
+ 		| IHEED TVOID NUMBER		{ fprintf(output, "66 0 %s\n", $3.getString().c_str()); }
+		| IHEGET TVOID VOID		{ fprintf(output, "67 0 0\n"); }
+		| ISHEADD TVOID NUMBER		{ fprintf(output, "68 0 %s\n", $3.getString().c_str()); }
+		| ISHEREM TVOID VOID		{ fprintf(output, "69 0 0\n"); }
+ 		| ISHEED TVOID NUMBER		{ fprintf(output, "70 0 %s\n", $3.getString().c_str()); }
+		| ISHEGET TVOID VOID		{ fprintf(output, "71 0 0\n"); }
+		| IEADD TVOID NUMBER		{ fprintf(output, "72 0 %s\n", $3.getString().c_str()); }
+		| IEREM TVOID VOID		{ fprintf(output, "73 0 0\n"); }
+ 		| IEED TVOID NUMBER		{ fprintf(output, "74 0 %s\n", $3.getString().c_str()); }
+		| IEGET TVOID VOID		{ fprintf(output, "75 0 0\n"); }
+		| IEXADD TVOID NUMBER		{ fprintf(output, "76 0 %s\n", $3.getString().c_str()); }
+		| IEXREM TVOID VOID		{ fprintf(output, "77 0 0\n"); }
+ 		| IEXED TVOID NUMBER		{ fprintf(output, "78 0 %s\n", $3.getString().c_str()); }
+		| IEXGET TVOID VOID		{ fprintf(output, "79 0 0\n"); }
+		| IIADD TVOID NUMBER		{ fprintf(output, "80 0 %s\n", $3.getString().c_str()); }
+		| IIREM TVOID VOID		{ fprintf(output, "81 0 0\n"); }
+ 		| IIED TVOID NUMBER		{ fprintf(output, "82 0 %s\n", $3.getString().c_str()); }
+		| IIGET TVOID VOID		{ fprintf(output, "83 0 0\n"); }
+		| IHEVENT TVOID NUMBER		{ fprintf(output, "84 0 %s\n", $3.getString().c_str()); }
+		| ISHEVENT TVOID NUMBER		{ fprintf(output, "85 0 %s\n", $3.getString().c_str()); }
+		| IEVENT TVOID NUMBER		{ fprintf(output, "86 0 %s\n", $3.getString().c_str()); }
+		| IEXCEPTION TVOID NUMBER	{ fprintf(output, "87 0 %s\n", $3.getString().c_str()); }
+		| IINT TVOID NUMBER		{ fprintf(output, "88 0 %s\n", $3.getString().c_str()); }
+		| ITYPEOF TVOID VOID		{ fprintf(output, "89 0 0\n"); }
+		| ICTYPEOF TVOID VOID		{ fprintf(output, "90 0 0\n"); }
+		| ITLOAD TVOID VOID		{ fprintf(output, "91 0 0\n"); }
+		| IALOAD TVOID VOID		{ fprintf(output, "92 0 0\n"); }
+		| IALOAD TBOOLEAN BOOLEAN
+		{
+		 if ($3 == "true")
+		  fprintf(output, "92 1 1\n");
+		 else
+		  fprintf(output, "92 1 0\n");
+		}
+		| IALOAD TNUMBER NUMBER		{ fprintf(output, "92 2 %s\n", $3.getString().c_str()); }
+		| IALOAD TCHARACTER CHARACTER
+		{
+		 char * dup = strdup($3.getString().c_str());
+		 int ch = (int)dup[1];
+		 fprintf(output, "92 3 %i\n", ch);
+		}
+		| IALOAD TSTRING STRING
+		{
+		 fprintf(output, "92 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IINLOAD TVOID VOID		{ fprintf(output, "93 0 0\n"); }
+		| IICLOAD TVOID VOID		{ fprintf(output, "94 0 0\n"); }
+		| IARLOAD TVOID NUMBER		{ fprintf(output, "95 0 %s\n", $3.getString().c_str()); }
+		| IATOC TVOID VOID		{ fprintf(output, "96 0 0\n"); }
+		| ISWITCH TVOID VOID		{ fprintf(output, "97 0 0\n"); }
+		| IVADD TVOID NUMBER		{ fprintf(output, "98 0 %s\n", $3.getString().c_str()); }
+		| ILADD TVOID NUMBER		{ fprintf(output, "99 0 %s\n", $3.getString().c_str()); }
+		| IELADD TVOID NUMBER		{ fprintf(output, "100 0 %s\n", $3.getString().c_str()); }
+		| IADD2V TVOID VOID		{ fprintf(output, "101 0 0\n"); }
+		| IBTAND TVOID VOID		{ fprintf(output, "102 0 0\n"); }
+		| IBTOR TVOID VOID		{ fprintf(output, "103 0 0\n"); }
+		| IBTEXOR TVOID VOID		{ fprintf(output, "104 0 0\n"); }
+		| IBTNOT TVOID VOID		{ fprintf(output, "105 0 0\n"); }
+		| IBTSL TVOID VOID		{ fprintf(output, "106 0 0\n"); }
+		| IBTSR TVOID VOID		{ fprintf(output, "107 0 0\n"); }
+		| IVCHECK TVOID NUMBER		{ fprintf(output, "108 0 %s\n", $3.getString().c_str()); }
+		| IVCHECK TBOOLEAN BOOLEAN
+		{
+		 if ($3 == "true")
+		  fprintf(output, "108 1 1\n");
+		 else
+		  fprintf(output, "108 1 0\n");
+		}
+		| IVCHECK TNUMBER NUMBER	{ fprintf(output, "108 2 %s\n", $3.getString().c_str()); }
+		| IVCHECK TCHARACTER CHARACTER
+		{
+		 char * dup = strdup($3.getString().c_str());
+		 int ch = (int)dup[1];
+		 fprintf(output, "108 3 %i\n", ch);
+		}
+		| IVCHECK TSTRING STRING
+		{
+		 fprintf(output, "108 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IVSUPP TVOID NUMBER		{ fprintf(output, "109 0 %s\n", $3.getString().c_str()); }
+		| IVSUPP TBOOLEAN BOOLEAN
+		{
+		 if ($3 == "true")
+		  fprintf(output, "109 1 1\n");
+		 else
+		  fprintf(output, "109 1 0\n");
+		}
+		| IVSUPP TNUMBER NUMBER	{ fprintf(output, "109 2 %s\n", $3.getString().c_str()); }
+		| IVSUPP TCHARACTER CHARACTER
+		{
+		 char * dup = strdup($3.getString().c_str());
+		 int ch = (int)dup[1];
+		 fprintf(output, "109 3 %i\n", ch);
+		}
+		| IVSUPP TSTRING STRING
+		{
+		 fprintf(output, "109 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IVPRINT TVOID VOID		{ fprintf(output, "110 0 0\n"); }
+		| IVPRINTLN TVOID VOID		{ fprintf(output, "111 0 0\n"); }
+		| IISUPP TNUMBER NUMBER		{ fprintf(output, "112 2 %s\n", $3.getString().c_str()); }
+		| ITSUPP TNUMBER NUMBER		{ fprintf(output, "113 2 %s\n", $3.getString().c_str()); }
+		| ICOMMENT TSTRING STRING
+		{
+		 fprintf(output, "114 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IFIMODE TSTRING STRING
+		{
+		 fprintf(output, "115 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IFOMODE TSTRING STRING
+		{
+		 fprintf(output, "116 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IFIOPEN TVOID VOID		{ fprintf(output, "117 0 0\n"); }
+		| IFIOPEN TSTRING STRING
+		{
+		 fprintf(output, "117 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IFOOPEN TVOID VOID		{ fprintf(output, "118 0 0\n"); }
+		| IFOOPEN TSTRING STRING
+		{
+		 fprintf(output, "118 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IFREAD TBOOLEAN VOID		{ fprintf(output, "119 1 0\n"); }
+		| IFREAD TNUMBER VOID		{ fprintf(output, "119 2 0\n"); }
+		| IFREAD TCHARACTER VOID	{ fprintf(output, "119 3 0\n"); }
+		| IFREAD TSTRING VOID		{ fprintf(output, "119 4 0\n"); }
+		| IFPRINT TVOID VOID		{ fprintf(output, "120 0 0\n"); }
+		| IFPRINT TBOOLEAN BOOLEAN	{
+						 if ($3 == "true")
+						  fprintf(output, "120 1 1\n");
+						 else
+						  fprintf(output, "120 1 0\n");
+					        }
+		| IFPRINT TNUMBER NUMBER	{ fprintf(output, "120 2 %s\n", $3.getString().c_str()); }
+		| IFPRINT TCHARACTER CHARACTER	{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "120 3 %i\n", ch);
+						}
+		| IFPRINT TSTRING STRING	{ 
+						 fprintf(output, "120 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IFPRINTLN TVOID VOID		{ fprintf(output, "121 0 0\n"); }
+		| IFPRINTLN TBOOLEAN BOOLEAN	{
+						 if ($3 == "true")
+						  fprintf(output, "121 1 1\n");
+						 else
+						  fprintf(output, "121 1 0\n");
+					        }
+		| IFPRINTLN TNUMBER NUMBER	{ fprintf(output, "121 2 %s\n", $3.getString().c_str()); }
+		| IFPRINTLN TCHARACTER CHARACTER	{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "121 3 %i\n", ch);
+						}
+		| IFPRINTLN TSTRING STRING	{ 
+						 fprintf(output, "121 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IFICLOSE TVOID VOID		{ fprintf(output, "122 0 0\n"); }
+		| IFOCLOSE TVOID VOID		{ fprintf(output, "123 0 0\n"); }
+		| IMEML TVOID VOID		{ fprintf(output, "124 0 0\n"); }
+		| IFIEOF TVOID VOID		{ fprintf(output, "125 0 0\n"); }
+		| IARNLOAD TVOID VOID		{ fprintf(output, "126 0 0\n"); }
+		| IRDSTART1 TSTRING STRING	{ 
+						 fprintf(output, "127 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRFROM1 TNUMBER NUMBER	{ fprintf(output, "128 2 %s\n", $3.getString().c_str()); }
+		| IRTO1 TNUMBER NUMBER		{ fprintf(output, "129 2 %s\n", $3.getString().c_str()); }
+		| IRDEND1 TVOID VOID		{ fprintf(output, "130 0 0\n"); }
+		| IRSTART1 TSTRING STRING	{ 
+						 fprintf(output, "131 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRANGE1 TNUMBER NUMBER	{ fprintf(output, "132 2 %s\n", $3.getString().c_str()); }
+		| IREND1 TSTRING STRING	{ 
+						 fprintf(output, "133 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRLOAD1 TSTRING STRING	{ 
+						 fprintf(output, "134 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRSTORE1 TSTRING STRING	{ 
+						 fprintf(output, "135 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IHEADDB TVOID NUMBER	{ fprintf(output, "136 0 %s\n", $3.getString().c_str()); }
+		| ISHEADDB TVOID NUMBER	{ fprintf(output, "137 0 %s\n", $3.getString().c_str()); }
+		| IEADDB TVOID NUMBER	{ fprintf(output, "138 0 %s\n", $3.getString().c_str()); }
+		| IEXADDB TVOID NUMBER	{ fprintf(output, "139 0 %s\n", $3.getString().c_str()); }
+		| IIADDB TVOID NUMBER	{ fprintf(output, "140 0 %s\n", $3.getString().c_str()); }
+		| IRDSTART2 TSTRING STRING	{ 
+						 fprintf(output, "141 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRFROM2 TNUMBER NUMBER	{ fprintf(output, "142 2 %s\n", $3.getString().c_str()); }
+		| IRTO2 TNUMBER NUMBER		{ fprintf(output, "143 2 %s\n", $3.getString().c_str()); }
+		| IRDEND2 TVOID VOID		{ fprintf(output, "144 0 0\n"); }
+		| IRSTART2 TSTRING STRING	{ 
+						 fprintf(output, "145 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRANGE2 TSTRING STRING	{ 
+						 fprintf(output, "146 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRPREP2 TSTRING STRING	{ 
+						 fprintf(output, "147 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IRLOAD2 TNUMBER NUMBER	{ fprintf(output, "148 2 %s\n", $3.getString().c_str()); }
+		| IESTART TSTRING STRING	{ 
+						 fprintf(output, "149 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IENAME TSTRING STRING	{ 
+						 fprintf(output, "150 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IEEND TVOID VOID		{ fprintf(output, "151 0 0\n"); }
+		| IENUMS TSTRING STRING		{ 
+						 fprintf(output, "152 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IENUM TSTRING STRING		{ 
+						 fprintf(output, "153 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ISENUM TSTRING STRING		{ 
+						 fprintf(output, "154 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IEPREP TSTRING STRING		{ 
+						 fprintf(output, "155 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ILOADE TVOID VOID		{ fprintf(output, "156 0 0\n"); }
+		| ISTOREE TVOID VOID		{ fprintf(output, "157 0 0\n"); }
+		| IASTART TSTRING STRING	{ 
+						 fprintf(output, "158 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}		
+		| IAEND TNUMBER NUMBER		{ fprintf(output, "159 2 %s\n", $3.getString().c_str()); }
+		| IAPREP TSTRING STRING	{ 
+						 fprintf(output, "160 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IAIPREP TNUMBER NUMBER	{ fprintf(output, "161 2 %s\n", $3.getString().c_str()); }
+		| IAIPREP TVOID VOID		{ fprintf(output, "161 0 0\n"); }
+		| ILOADIA TVOID VOID		{ fprintf(output, "162 0 0\n"); }
+		| ISTOREIA TVOID VOID		{ fprintf(output, "163 0 0\n"); }
+		| ISTOREIA TBOOLEAN VOID	{ fprintf(output, "163 1 0\n"); }
+		| ISTOREIA TNUMBER VOID		{ fprintf(output, "163 2 0\n"); }
+		| ISTOREIA TCHARACTER VOID	{ fprintf(output, "163 3 0\n"); }
+		| ISTOREIA TSTRING VOID		{ fprintf(output, "163 4 0\n"); }
+		| IALENGTH TVOID VOID		{ fprintf(output, "164 0 0\n"); }
+		| IAPRINT TVOID VOID		{ fprintf(output, "165 0 0\n"); }
+		| IDUP TVOID VOID		{ fprintf(output, "166 0 0\n"); }
+		| ICDUP TVOID VOID		{ fprintf(output, "167 0 0\n"); }
+		| IIF TVOID VOID		{ fprintf(output, "168 0 0\n"); }
+		| IENDIF TVOID VOID		{ fprintf(output, "169 0 0\n"); }
+		| IIFELSE TVOID VOID		{ fprintf(output, "170 0 0\n"); }
+		| IENDIFELSE TVOID VOID		{ fprintf(output, "171 0 0\n"); }
+		| IEIF TVOID VOID		{ fprintf(output, "172 0 0\n"); }
+		| IIFBEGIN TVOID VOID		{ fprintf(output, "173 0 0\n"); }
+		| IIFEND TVOID VOID		{ fprintf(output, "174 0 0\n"); }
+		| ISWITCH2 TVOID VOID		{ fprintf(output, "175 0 0\n");	}						 
+		| ISWBEGIN TVOID VOID		{ fprintf(output, "176 0 0\n");	}
+		| ISWEND TVOID VOID		{ fprintf(output, "177 0 0\n");	}
+		| ISWCASE TVOID VOID		{ fprintf(output, "178 0 0\n"); }
+		| ISWCASE TBOOLEAN BOOLEAN	{ fprintf(output, "178 1 %s\n", $3.getString().c_str());	}
+		| ISWCASE TNUMBER NUMBER	{ fprintf(output, "178 2 %s\n", $3.getString().c_str());	}
+		| ISWCASE TCHARACTER CHARACTER	{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "178 3 %i\n", ch);
+						}
+		| ISWCASE TSTRING STRING	{ 
+						 fprintf(output, "178 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ISWCBEGIN TVOID VOID		{ fprintf(output, "179 0 0\n");	}
+		| ISWCEND TVOID VOID		{ fprintf(output, "180 0 0\n");	}
+		| ISWDEFAULT TVOID VOID		{ fprintf(output, "181 0 0\n");	}
+		| ISWBREAK TVOID VOID		{ fprintf(output, "182 0 0\n");	}
+		| ILOADSP TNUMBER NUMBER	{ fprintf(output, "183 2 %s\n", $3.getString().c_str()); }
+		| ISTORESP TNUMBER NUMBER	{ fprintf(output, "184 2 %s\n", $3.getString().c_str()); }
+		| ILOADSTACK TVOID VOID		{ fprintf(output, "185 0 0\n"); }
+		| ISTORESTACK TVOID VOID	{ fprintf(output, "186 0 0\n"); }
+		| IATOSP TVOID VOID		{ fprintf(output, "187 0 0\n"); }
+		| ISPTOA TVOID VOID		{ fprintf(output, "188 0 0\n"); }
+		| IPATCH TVOID VOID		{ fprintf(output, "189 0 0\n"); }
+		| INATIVE TSTRING STRING	{ 
+						 fprintf(output, "190 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IFRET TVOID VOID		{ fprintf(output, "191 0 0\n"); }
+		| IFCALL TSTRING STRING		{ 
+						 fprintf(output, "192 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IFCPARAMS TVOID VOID		{ fprintf(output, "193 0 0\n"); }
+		| IFECPARAMS TVOID VOID		{ fprintf(output, "194 0 0\n"); }
+		| IFECALL TVOID VOID		{ fprintf(output, "195 0 0\n"); }
+		| IPNUM TNUMBER NUMBER		{ fprintf(output, "196 2 %s\n", $3.getString().c_str()); }
+		| IPARAMF TVOID VOID		{ fprintf(output, "197 0 0\n"); }
+		| IPARAMF TBOOLEAN BOOLEAN	
+						{
+			 			 if ($3 == "true")
+		 	  			  fprintf(output, "197 1 1\n");
+			 			 else
+			  			  fprintf(output, "197 1 0\n");
+						}
+		| IPARAMF TNUMBER NUMBER	{ fprintf(output, "197 2 %s\n", $3.getString().c_str()); }
+		| IPARAMF TCHARACTER CHARACTER	
+						{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "197 3 %i\n", ch);
+						}
+		| IPARAMF TSTRING STRING
+						{		
+						 fprintf(output, "197 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IPARAMF2 TVOID VOID		{ fprintf(output, "198 0 0\n"); }
+		| IPARAMF2 TBOOLEAN VOID	{ fprintf(output, "198 1 0\n"); }
+		| IPARAMF2 TNUMBER VOID		{ fprintf(output, "198 2 0\n"); }
+		| IPARAMF2 TCHARACTER VOID	{ fprintf(output, "198 3 0\n"); }
+		| IPARAMF2 TSTRING VOID		{ fprintf(output, "198 4 0\n"); }
+		| IPARAMF3 TVOID VOID		{ fprintf(output, "199 0 0\n"); }
+		| IPARAMF3 TBOOLEAN VOID	{ fprintf(output, "199 1 0\n"); }
+		| IPARAMF3 TNUMBER VOID		{ fprintf(output, "199 2 0\n"); }
+		| IPARAMF3 TCHARACTER VOID	{ fprintf(output, "199 3 0\n"); }
+		| IPARAMF3 TSTRING VOID		{ fprintf(output, "199 4 0\n"); }
+		| IRNUM TNUMBER NUMBER		{ fprintf(output, "200 2 %s\n", $3.getString().c_str()); }
+		| IRETURNF TVOID VOID		{ fprintf(output, "201 0 0\n"); }
+		| IRETURNF TBOOLEAN VOID	{ fprintf(output, "201 1 0\n"); }
+		| IRETURNF TNUMBER VOID		{ fprintf(output, "201 2 0\n"); }
+		| IRETURNF TCHARACTER VOID	{ fprintf(output, "201 3 0\n"); }
+		| IRETURNF TSTRING VOID		{ fprintf(output, "201 4 0\n"); }
+		| IRETURNF2 TVOID VOID		{ fprintf(output, "202 0 0\n"); }
+		| IRETURNF2 TBOOLEAN VOID	{ fprintf(output, "202 1 0\n"); }
+		| IRETURNF2 TNUMBER VOID	{ fprintf(output, "202 2 0\n"); }
+		| IRETURNF2 TCHARACTER VOID	{ fprintf(output, "202 3 0\n"); }
+		| IRETURNF2 TSTRING VOID	{ fprintf(output, "202 4 0\n"); }
+		| IRETURNF3 TVOID VOID		{ fprintf(output, "203 0 0\n"); }
+		| IRETURNF3 TBOOLEAN VOID	{ fprintf(output, "203 1 0\n"); }
+		| IRETURNF3 TNUMBER VOID	{ fprintf(output, "203 2 0\n"); }
+		| IRETURNF3 TCHARACTER VOID	{ fprintf(output, "203 3 0\n"); }
+		| IRETURNF3 TSTRING VOID	{ fprintf(output, "203 4 0\n"); }
+		
+		| IFNAME TSTRING STRING
+						{		
+						 fprintf(output, "204 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IRETURNV TVOID VOID		{ fprintf(output, "205 0 0\n"); }
+		| IFNCLOAD TNUMBER NUMBER	{ fprintf(output, "206 2 %s\n", $3.getString().c_str()); }
+		| IFNCSTORE TVOID VOID		{ fprintf(output, "207 0 0\n"); }
+		| IFNCSTORE TNUMBER NUMBER	{ fprintf(output, "207 2 %s\n", $3.getString().c_str()); }
+		| IFNCNEW TVOID VOID		{ fprintf(output, "208 0 0\n"); }
+		| IFNCDELETE TVOID VOID		{ fprintf(output, "209 0 0\n"); }
+		| IFNCSNAME TVOID VOID		{ fprintf(output, "210 0 0\n"); }
+		| IFNCSRET TVOID VOID		{ fprintf(output, "211 0 0\n"); }
+		| IFNCSRET TBOOLEAN VOID	{ fprintf(output, "211 1 0\n"); }
+		| IFNCSRET TNUMBER VOID		{ fprintf(output, "211 2 0\n"); }
+		| IFNCSRET TCHARACTER VOID	{ fprintf(output, "211 3 0\n"); }
+		| IFNCSRET TSTRING VOID		{ fprintf(output, "211 4 0\n"); }
+		| IFNCSPARAM TVOID VOID		{ fprintf(output, "212 0 0\n"); }
+		| IFNCSPARAM TBOOLEAN VOID	{ fprintf(output, "212 1 0\n"); }
+		| IFNCSPARAM TNUMBER VOID	{ fprintf(output, "212 2 0\n"); }
+		| IFNCSPARAM TCHARACTER VOID	{ fprintf(output, "212 3 0\n"); }
+		| IFNCSPARAM TSTRING VOID	{ fprintf(output, "212 4 0\n"); }
+		| IFNCSDEF TNUMBER NUMBER	{ fprintf(output, "213 2 %s\n", $3.getString().c_str()); }
+		| IFNCSDEF TSTRING STRING	{		
+						 fprintf(output, "213 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IFNCGNAME TVOID VOID		{ fprintf(output, "214 0 0\n"); }
+		| IFNCGRET TNUMBER NUMBER	{ fprintf(output, "215 2 %s\n", $3.getString().c_str()); }
+		| IFNCGPARAM TNUMBER NUMBER	{ fprintf(output, "216 2 %s\n", $3.getString().c_str()); }
+		| IFNCGDEF TVOID VOID		{ fprintf(output, "217 0 0\n"); }
+		| IFNCPOINT TVOID VOID		{ fprintf(output, "218 0 0\n"); }
+		| IFNCLENGTH TVOID VOID		{ fprintf(output, "219 0 0\n"); }
+		| IFNCSYNCR TVOID VOID		{ fprintf(output, "220 0 0\n"); }
+		| IFNCFIND TVOID VOID		{ fprintf(output, "221 0 0\n"); }
+		| IFNCFRET TVOID VOID		{ fprintf(output, "222 0 0\n"); }
+		| IFNCFRET TBOOLEAN VOID	{ fprintf(output, "222 1 0\n"); }
+		| IFNCFRET TNUMBER VOID		{ fprintf(output, "222 2 0\n"); }
+		| IFNCFRET TCHARACTER VOID	{ fprintf(output, "222 3 0\n"); }
+		| IFNCFRET TSTRING VOID		{ fprintf(output, "222 4 0\n"); }
+		| IFNCFPARAM TVOID VOID		{ fprintf(output, "223 0 0\n"); }
+		| IFNCFPARAM TBOOLEAN VOID	{ fprintf(output, "223 1 0\n"); }
+		| IFNCFPARAM TNUMBER VOID	{ fprintf(output, "223 2 0\n"); }
+		| IFNCFPARAM TCHARACTER VOID	{ fprintf(output, "223 3 0\n"); }
+		| IFNCFPARAM TSTRING VOID	{ fprintf(output, "223 4 0\n"); }
+		| IFNCFBRET TVOID VOID		{ fprintf(output, "224 0 0\n"); }
+		| IFNCFBPARAM TVOID VOID	{ fprintf(output, "225 0 0\n"); }
+		
+		| ASMVERSION TVOID VOID		{ /* Do nothing... */ }
+		| PNF NUMBER NUMBER NUMBER	{ fprintf(output, "%s %s %s\n", $2.getString().c_str(), $3.getString().c_str(), $4.getString().c_str()); }
+		;
+
+lines:	line
+	| lines line
+	;
+
+pinstruction:	
+		;
+
+variable:	IVAR TVOID VOID			{ fprintf(output, "57 0 %s\n", $3.getString().c_str()); }
+		| IVAR TBOOLEAN BOOLEAN	
+						{
+			 			 if ($3 == "true")
+		 	  			  fprintf(output, "57 1 1\n");
+			 			 else
+			  			  fprintf(output, "57 1 0\n");
+						}
+		| IVAR TNUMBER NUMBER		{ fprintf(output, "57 2 %s\n", $3.getString().c_str()); }
+		| IVAR TCHARACTER CHARACTER	
+						{
+			 			 char * dup = strdup($3.getString().c_str());
+			 			 int ch = (int)dup[1];
+			 			 fprintf(output, "57 3 %i\n", ch);
+						}
+		| IVAR TSTRING STRING
+						{		
+						 fprintf(output, "57 4 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IVAR TBOOLEAN VOID		{ fprintf(output, "57 1 0\n"); }
+		| IVAR TNUMBER VOID		{ fprintf(output, "57 2 0\n"); }
+		| IVAR TCHARACTER VOID		{ fprintf(output, "57 3 0\n"); }
+		| IVAR TSTRING VOID		{ fprintf(output, "57 4 0\n"); }
+		| IVAR TVOID STRING
+						{		
+						 fprintf(output, "57 0 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IVAR TBOOLEAN STRING
+						{		
+						 fprintf(output, "57 1 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IVAR TNUMBER STRING
+						{		
+						 fprintf(output, "57 2 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		| IVAR TCHARACTER STRING
+						{		
+						 fprintf(output, "57 3 ");				 
+		 	 			 for (unsigned long i = 1; $3[i] != '"'; ++i)
+				  	  	  fprintf(output, "%i ", (int)$3[i]);
+		 	 			 fprintf(output, "0\n");
+						}
+		
+		;
+
+pp:		PINCLUDE STRING 	  { if (mode == 1 || mode == 2) fprintf(output, "#include %s\n", $2.getString().c_str()); }
+		| PINCLUDE "<" STRING ">" { if (mode == 1 || mode == 2) fprintf(output, "#include <%s>\n", $2.getString().c_str()); }
+		| PIMPORT STRING	  { if (mode == 1 || mode == 2) fprintf(output, "#import %s \n", $2.getString().c_str()); }
+		| PIMPORT "<" STRING ">"  { if (mode == 1 || mode == 2) fprintf(output, "#import <%s> \n", $2.getString().c_str()); }
+		| PDEFINE STRING STRING	  { if (mode == 1 || mode == 2) fprintf(output, "#define %s %s\n", $2.getString().c_str(), $3.getString().c_str()); }
+		| PMACRO STRING		  { if (mode == 1 || mode == 2) fprintf(output, "#macro %s\n", $2.getString().c_str()); }
+		| PENDM			  { if (mode == 1 || mode == 2) fprintf(output, "#endm\n"); }
+		| PUNDEF STRING		  { if (mode == 1 || mode == 2) fprintf(output, "#undef %s\n", $2.getString().c_str()); }
+		| PIFDEF STRING		  { if (mode == 1 || mode == 2) fprintf(output, "#ifdef %s\n", $2.getString().c_str()); }
+		| PIFNDEF STRING	  { if (mode == 1 || mode == 2) fprintf(output, "#ifndef %s\n", $2.getString().c_str()); }
+		| PELSE			  { if (mode == 1 || mode == 2) fprintf(output, "#else\n"); }
+		| PENDIF		  { if (mode == 1 || mode == 2) fprintf(output, "#endif\n"); }
+		| PPDATE		  { if (mode == 1 || mode == 2) fprintf(output, "_DATE()\n"); }
+		| PPTIME		  { if (mode == 1 || mode == 2) fprintf(output, "_TIME()\n"); }
+		| PPLINE		  { if (mode == 1 || mode == 2) fprintf(output, "_LINE()\n"); }
+		| PPFILE		  { if (mode == 1 || mode == 2) fprintf(output, "_FILE()\n"); }
+		| PPCDATE		  { if (mode == 1 || mode == 2) fprintf(output, "_CDATE()\n"); }
+		| PPCTIME		  { if (mode == 1 || mode == 2) fprintf(output, "_CTIME()\n"); }
+		| PPCOMMENT		  { if (mode == 1 || mode == 2) fprintf(output, "\' %s\n", $1.getString().c_str()); }
+		;
+
+directive:	BIN	{ mode = 0; }
+		| PBIN	{ mode = 1; }
+		| LIB	{ mode = 2; }
+		;
+
+%%
+/* Additional C/C++ Code */
+void yyerror(char const * c)
+{
+ cout << "* ERROR: " << yylineno << ": " << c << endl;
+}

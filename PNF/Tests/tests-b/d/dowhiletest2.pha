@@ -1,0 +1,13 @@
+var loopcount;
+var loopuntil;
+
+
+print "Loop Until: ";
+read number loopuntil;
+println "";
+
+
+do ; whileb (;);
+
+
+end 0;

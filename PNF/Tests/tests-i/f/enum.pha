@@ -1,0 +1,11 @@
+enum days_of_week = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+
+
+enumv "days_of_week" "a" = "Sunday";
+
+load venum "a";
+print "a: ";
+println;
+
+
+end 0;

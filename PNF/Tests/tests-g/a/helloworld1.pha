@@ -1,0 +1,2 @@
+asm "PRINTLN" "TNUMBER" "52";
+end 0;

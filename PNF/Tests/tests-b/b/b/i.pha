@@ -1,0 +1,4 @@
+print "Read a boolean: ";
+var a;
+read void a;
+end 0;

@@ -1,0 +1,376 @@
+%{
+/* Prologue */
+/*
+Copyright (C) 2019 Dennis Earl Smiley
+
+This file is part of pnfpp.
+
+    pnfpp is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    pnfpp is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with pnfpp.  If not, see <https://www.gnu.org/licenses/>. 
+*/
+/*
+CHANGELOG
+=========
+
+5/3/19 Origional a-a-a - 1. The first version.
+			 2. Made Linux compatable.
+*/
+#include <stdarg.h>
+
+
+#include "pnfpp.tab.cpp"
+
+
+char * _memblock_;
+
+
+Array<String> out;
+char outbuffer[256];
+char linebuf[256];
+%}
+/* Flex Definitions */
+%x escape_sequence
+
+
+OPLT		"<"
+
+OPGT		">"
+
+OPST		"#"
+
+OPTK		"##"
+
+OPPAREN		"()"
+
+TCHARACTER	[^"\n]
+
+STRING		\"{TCHARACTER}*\"
+
+TSTRING		[^ \n\"]+
+
+INCLUDE 	"#include "
+
+IMPORT		"#import "
+
+DEFINE		"#define"
+
+MACRO		"#macro"
+
+ENDM		"#endm"
+
+UNDEF		"#undef"
+
+IFDEF		"#ifdef"
+
+IFNDEF		"#ifndef"
+
+ELSE		"#else"
+
+ENDIF		"#endif"
+
+PDATE		"_DATE()"
+
+PTIME		"_TIME()"
+
+PLINE		"_LINE()"
+
+PFILE		"_FILE()"
+
+PCDATE		"_CDATE()"
+
+PCTIME		"_CTIME()"
+
+COMMENT		"' ".*
+
+
+/* Flex Patterns Below %% */
+%%
+
+{OPLT}		yylval = "0"; return OPLT;
+
+{OPGT}		yylval = "1"; return OPGT;
+
+{OPST}		yylval = "2"; return OPST;
+
+{OPTK}		yylval = "3"; return OPTK;
+
+{OPPAREN}	yylval = "4"; return OPPAREN;
+
+"("		yylval = "6"; return LPAREN;
+
+")"		yylval = "7"; return RPAREN;
+
+","		yylval = "8"; return COMMA;
+
+{INCLUDE}	yylval = "9"; return INCLUDE;
+
+{IMPORT}	yylval = "10"; return IMPORT;
+
+{DEFINE}	yylval = "11"; return DEFINE;
+
+{MACRO}		yylval = "12"; return MACRO;
+
+{ENDM}		yylval = "13"; return ENDM;
+
+{UNDEF}		yylval = "14"; return UNDEF;
+
+{IFDEF}		yylval = "15"; return IFDEF;
+
+{IFNDEF}	yylval = "16"; return IFNDEF;
+
+{ELSE}		yylval = "17"; return ELSE;
+
+{ENDIF}		yylval = "18"; return ENDIF;
+
+{PDATE}		yylval = "19"; return PDATE;
+
+{PTIME}		yylval = "20"; return PTIME;
+
+{PLINE}		yylval = "21"; return PLINE;
+
+{PFILE}		yylval = "22"; return PFILE;
+
+{PCDATE}	yylval = "23"; return PCDATE;
+
+{PCTIME}	yylval = "24"; return PCTIME;
+
+{STRING}	yylval = yytext; return STRING;
+
+{TSTRING}	strncpy(linebuf, yytext, sizeof(linebuf)); yylval = linebuf; return TSTRING;
+
+{COMMENT}	// Eat up...
+
+[ ]		conprint("%s", yytext);
+
+[\n]		lineno++; conprint("%s", yytext);
+
+
+%%
+/* Additional Code */
+int main(int argc, char ** argv)
+{
+ try
+ {
+  // Boiler plate code...
+  _memblock_ = new char[5000];
+
+
+  // main program...
+  Array<String> args;
+  
+  for (unsigned long i = 0; i < argc; ++i)
+  {
+   if (i != 0)
+    args.insert();
+   args[i] = argv[i];
+  }
+   
+  int ret = Main(args);
+
+
+  return ret;
+ }
+ catch (Exception e)
+ {
+  e.display();
+  exit(1);
+ }
+ catch (bad_alloc e)
+ {
+  delete _memblock_;
+  error(ERRORMSG, (char *)"Out of Memory.");
+  exit(1);
+ }
+ catch (...)
+ {
+  error(ERRORMSG, (char *)"Uncaught Exception.");
+  exit(1);
+ }
+}
+
+
+int Main(Array<String> args)
+{
+ if (args.length() == 3)
+ {
+  FILE * input = fopen(args[1].getString().c_str(), "r");
+  if (!input)
+  {
+   yyerror("can't open file");
+   return -1;
+  }
+  yyin = input;
+  input_file = args[1];
+  output = fopen(args[2].getString().c_str(), "w+");
+  if (!output)
+  {
+   yyerror("can't open file for write");
+   return -1;
+  }
+    
+  int ret = yyparse();
+
+  generate_defines();
+  strip_spaces();
+  generate_code();
+
+
+  return ret;
+ }
+ else
+  yyerror("can't find input file or output file.");
+}
+
+void yyerror(char const * c)
+{
+ printf("%s", "* ERROR: ");
+ printf("%d: ", yylloc.first_line);
+ printf("@ '%s' yylval = '%s': ", yytext, yylval.getString().c_str());
+ printf("yychar = '%d': ", yychar);
+ printf("%s", c);
+ printf("%s", "\n");
+}
+
+int conprint(const char * format, ...)
+{
+ va_list arg;
+ int done = 0;
+
+ va_start(arg, format);
+
+ out.insert();
+ done = vsnprintf(outbuffer, 256, format, arg);
+ String str = "";
+ if (outbuffer != NULL)
+  str += outbuffer;
+ out[outcount] = str;
+ ++outcount;
+
+ va_end(arg);
+
+
+ return done;
+}
+
+
+void generate_code()
+{
+ unsigned long len = out.length();
+ for (unsigned long i = 0; i < out.length(); ++i)
+ {
+  if (out[i].getString() == "")
+   out.remove(i);
+ }
+
+ for (unsigned long i = 0; i < out.length(); ++i)
+ {
+  fprintf(output, "%s", out[i].getString().c_str());
+ }
+}
+
+void generate_defines()
+{
+ for (unsigned long i = 0; i < out.length(); ++i)
+ {
+  unsigned long index = out[i].getString().find("#define");
+
+  if (index == string::npos)
+  {
+   continue;
+  }
+  else
+  {
+   index += 7;
+   String str = out[i].getString().substr(index);
+   str = strip_quotes(str);
+   unsigned long index2 = str.getString().find('\"');
+   str = str.getString().substr(index2 + 1);
+   unsigned long index3 = str.getString().find('\"');
+   unsigned long len = index3 - index2;
+   str = str.getString().substr(index2, len);
+
+   bool found = false;
+   unsigned long index4 = 0;
+   for (unsigned long j = 0; j < definitions.length(); ++j)
+   {
+    if (definitions[j].name() == str)
+    {
+     found = true;
+     index4 = j;
+    }
+   }
+
+   if (found == true)
+   {
+    String name = definitions[index4].name();
+    String value = definitions[index4].value();
+    unsigned long line = definitions[index4].line();
+
+    for (unsigned long j = i; j < out.length(); ++j)
+    {
+     if (line > 0)
+     {
+      if (j >= line)
+       ;
+      else
+      {
+       if (name == out[j])
+        out[j] = value;
+      }
+     }
+     else
+     {
+      if (name == out[j])
+       out[j] = value;
+     }
+    }   
+   }
+   out.remove(i);
+   out.remove(i - 1);
+  }
+ }
+}
+
+void strip_spaces()
+{
+ unsigned long macroindex2 = 0;
+ for (unsigned long i = 0; i < out.length(); ++i)
+ {
+  unsigned long index = out[i].getString().find("macro:");
+
+  if (index == string::npos)
+   continue;
+  else
+  {
+   out[i - 1].remove();
+   unsigned long parameters2 = macros[macroindex2].parameters().length();
+
+   bool init = true;
+   for (unsigned j = 0, k = i - 2; j < parameters2; ++j, --k)
+   {
+    if (parameters2 == 7)
+    {
+     if (init == true)
+      j += 3;
+     init = false;
+    }
+
+    out[k].remove();
+   }
+
+   String str = out[i].getString().substr(index + 7);
+   out[i] = str;
+   macroindex2++;
+  }
+ }
+}

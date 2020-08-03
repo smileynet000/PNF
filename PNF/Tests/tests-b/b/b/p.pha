@@ -1,0 +1,9 @@
+var a = 1;
+var b = 2;
+println a;
+println b;
+a + b;
+var c = a + b;
+println c;
+println -c;
+end 0;

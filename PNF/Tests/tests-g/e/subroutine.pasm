@@ -1,0 +1,13 @@
+VERSION TVOID 0V
+
+
+PRINTLN TSTRING "In main()..."
+CALLL TVOID 0
+PRINTLN TSTRING "Back in main()..."
+QUIT TVOID 0
+LBL TVOID 0V
+PRINTLN TSTRING "In demonstration function..."
+RET TVOID 0V
+
+
+END TVOID 0V

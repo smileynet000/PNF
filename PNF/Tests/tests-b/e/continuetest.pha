@@ -1,0 +1,29 @@
+var num;
+
+
+forever
+{
+ print "Num: ";
+ read number num;
+ println "";
+
+ {
+  load %accumulator aload 1;
+  atoc;
+  addressof avariable num;
+  add2v;
+  ==;
+ } 
+ ?
+  continue;
+ :
+ {
+  addressof avariable num;
+  add2v;
+  print "num: ";
+  println;
+  break;
+ };
+}
+
+end 0;

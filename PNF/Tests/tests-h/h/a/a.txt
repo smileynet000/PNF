@@ -1,0 +1,22 @@
+#macro "a"()
+a * b
+#endm
+
+
+"a"()
+
+
+#macro "str"("a")
+a
+#endm
+
+
+"str"("Hello")
+
+
+#macro "times" ("a", "b")
+a * b
+#endm
+
+
+"times"("2", "3")

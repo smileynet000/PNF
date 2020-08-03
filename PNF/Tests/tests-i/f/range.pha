@@ -1,0 +1,23 @@
+// Type1 ranges
+range rtype1 "a" = "5".."7";
+
+rangev rtype1 "a" "a" = "6";
+
+
+load range rtype1 "a";
+print "The value of the type1 range is: ";
+println;
+
+
+// Type 2 ranges
+range rtype2 "b" = "3".."7";
+
+rangev rtype2 "b" "b";
+
+
+load range rtype2 "b"[2];
+print "The 2nd index of the type2 range is: ";
+println;
+
+
+end 0;

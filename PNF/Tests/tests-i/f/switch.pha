@@ -1,0 +1,33 @@
+var i;
+
+print "Enter a number: ";
+read number i;
+
+
+switch (i)
+{
+ case 0: {
+  println "Too small!";
+  break;
+ }
+
+ case 5: { println "Good job!"; // Fall through... 
+ }
+ case 4: { println "Nice pick!"; // Fall through... 
+ }
+ case 3: { println "Excelent!"; // Fall through... 
+ }
+ case 2: { println "Masterful!"; // Fall through... 
+ }
+ case 1: { 
+  println "Incredible!";
+  break;
+ }
+
+
+ default:
+  println "Too big!";  
+}
+
+
+end 0;

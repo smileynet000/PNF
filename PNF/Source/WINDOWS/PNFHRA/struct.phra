@@ -1,0 +1,8 @@
+struct A
+{
+ struct var a;
+ struct var b;
+ ;
+};
+
+structd A a;

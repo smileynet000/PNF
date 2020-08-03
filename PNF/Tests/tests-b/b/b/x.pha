@@ -1,0 +1,3 @@
+var a = 'a';
+println a + 'b';
+end 0;

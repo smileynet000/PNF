@@ -1,0 +1,10 @@
+0V hello_world(0V);
+
+hello_world();
+end 0;
+
+function 0V hello_world(0V)
+{
+ println "Hello World!";
+ return;
+};

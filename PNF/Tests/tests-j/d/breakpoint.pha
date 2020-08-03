@@ -1,0 +1,20 @@
+event breakpoint;
+
+println "Before breakpoint.";
+register exe breakpoint;
+println "After breakpoint.";
+unregister exe;
+println "After breakpoint disabled.";
+
+end 0;
+
+event breakpoint:
+ subroutine hello_world;
+
+
+ gosub sub hello_world;
+ return;
+
+subroutine hello_world:
+ println "Hello World!";
+ return;

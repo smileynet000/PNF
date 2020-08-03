@@ -1,0 +1,21 @@
+event ex;
+event ex2;
+
+
+println "Outside of exception.";
+register exe ex;
+gosub exe ex;
+println "Back outside of exception.";
+reregister exe ex ex2;
+gosub exe ex2;
+println "Back outside of exception.";
+end 0;
+
+
+event ex:
+ println "Inside of exception.";
+ return;
+
+event ex2:
+ println "Inside of exception number 2.";
+ return;

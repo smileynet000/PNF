@@ -1,0 +1,8 @@
+fvar a;
+var a = "Hello World!";
+
+
+println a;
+
+
+end 0;

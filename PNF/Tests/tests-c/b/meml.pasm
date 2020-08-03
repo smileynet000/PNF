@@ -1,0 +1,14 @@
+VERSION TVOID 0V
+
+
+MEML TVOID 0V
+PRINT TSTRING "The amount of memory is: "
+PRINTLN TVOID 0V
+DEC TVOID 0V
+PRINT TSTRING "The maximum memory location is: "
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V

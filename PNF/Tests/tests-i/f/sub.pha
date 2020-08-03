@@ -1,0 +1,10 @@
+subroutine hello_world;
+
+
+gosub sub hello_world;
+end 0;
+
+
+subroutine hello_world:
+ println "Hello World!";
+ return;

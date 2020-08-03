@@ -1,0 +1,30 @@
+var a = 5;
+
+
+load %accumulator variable a;
+++;
+atoc;
+load aload 5;
+switch;
+
+
+==; ?
+{
+ print "a = ";
+ println a;
+}
+:
+println "Other value.";
+;
+
+
+if (a == 5)
+{
+ print "a = ";
+ println a;
+}
+else
+ println "Other value.";
+
+
+end 0;

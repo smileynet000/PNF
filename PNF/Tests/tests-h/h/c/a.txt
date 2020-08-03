@@ -1,0 +1,29 @@
+#macro "times"("a", "b")
+a * b
+#endm
+
+#macro "times2"("a", "b", "c")
+a * b * c
+#endm
+
+#macro "times3"("a", "b", "c", "d")
+a * b * c * d
+#endm
+
+#macro "times4"("a", "b", "c", "d", "e")
+a * b * c * d * e
+#endm
+
+#macro "times5"("a", "b", "c", "d", "e", "f")
+a * b * c * d * e * f
+#endm
+
+"times"("2", "3")
+
+"times2"("2", "3", "4")
+
+"times3"("2", "3", "4", "5")
+
+"times4"("2", "3", "4", "5", "6")
+
+"times5"("2", "3", "4", "5", "6", "7")

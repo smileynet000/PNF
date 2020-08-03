@@ -1,0 +1,35 @@
+var i = "";
+
+print "Enter a name: ";
+read string i;
+
+
+cswitch ( load %accumulator variable i; )
+{
+ ccase "Dennis":
+ {
+  println "Cool name!";
+  break;
+ }
+
+ ccase "Amy":
+ {
+  println "That's my sister!";
+  break;
+ }
+
+ ccase "Michael":
+ {
+  println "He's my friend!";
+  break;
+ }
+
+ cdefault:
+ {
+  println "I didn't recognize the name.";
+  break;
+ }
+}
+
+
+end 0;
