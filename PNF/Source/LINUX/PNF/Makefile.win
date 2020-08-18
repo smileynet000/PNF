@@ -1,23 +1,22 @@
 # Project: PNF
-# Makefile created by Dev-C++ 5.3.0.3
+# Makefile created by Dev-C++ 5.11
 
-CPP      = g++.exe -D__DEBUG__
-CC       = gcc.exe -D__DEBUG__
+CPP      = g++.exe
+CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o $(RES)
-LINKOBJ  = main.o $(RES)
-LIBS     = -L"lib" -static-libgcc -g3
-INCS     = -I"include"
-CXXINCS  = -I"lib/gcc/mingw32/3.4.2/include" -I"include/c++/3.4.2/backward" -I"include/c++/3.4.2/mingw32" -I"include/c++/3.4.2" -I"include"
+OBJ      = main.o
+LINKOBJ  = main.o
+LIBS     = -L"C:/Dev-Cpp/MinGW64/lib" -L"C:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"C:/Dev-Cpp/MinGW64/include" -I"C:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/Dev-Cpp/MinGW64/include" -I"C:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = PNF.exe
-CXXFLAGS = $(CXXINCS)  -g3
-CFLAGS   = $(INCS)  -g3
-RM       = rm -f
+CXXFLAGS = $(CXXINCS) -std=gnu++11 -Wno-write-strings -fpermissive -static
+CFLAGS   = $(INCS) -std=gnu++11
+RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
 
 all: all-before $(BIN) all-after
-
 
 clean: clean-custom
 	${RM} $(OBJ) $(BIN)

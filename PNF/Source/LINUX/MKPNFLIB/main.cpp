@@ -7,12 +7,11 @@
 
  Author: Dennis Earl Smiley
 
- Enviroment: g++ 4.3
+ Enviroment: Dev-C++ 5.5.3
 
  Notes:
 
- Revisons: 4/1/17 Origional a - 1. The first version.
-	   			2. Made Linux compatable.
+ Revisons: 4/1/17 Origional a - The first version.
 */
 /* 
 Copyright 2019 Dennis Earl Smiley

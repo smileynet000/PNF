@@ -18,7 +18,6 @@ REM    GNU General Public License for more details.
 REM    You should have received a copy of the GNU General Public License
 REM    along with pnfasm.  If not, see <https://www.gnu.org/licenses/>.
  
- 
 REM CHANGELOG
 REM =========
  

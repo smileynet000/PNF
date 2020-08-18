@@ -62,9 +62,6 @@ This file is part of pnfasm.
 			6. Added FNCPOINT and FNCLENGTH.
 			7. Fixed bugs...
 			8. Took out "extra" instructions.
-			9. Took out extra instructions.
-		       10. Added FNCFIND.
-		       11. Added FNCFRET and FNCFPARAM.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -1216,17 +1213,15 @@ IFNCPOINT	"FNCPOINT"
 
 IFNCLENGTH	"FNCLENGTH"
 
+IFCALL2		"FCALL2"
+
+IFCPARAMS2	"FCPARAMS2"
+
+IFECPARAMS2	"FECPARAMS2"
+
+IFECALL2	"FECALL2"
+
 IFNCSYNCR	"FNCSYNCR"
-
-IFNCFIND	"FNCFIND"
-
-IFNCFRET	"FNCFRET"
-
-IFNCFPARAM	"FNCFPARAM"
-
-IFNCFBRET	"FNCFBRET"
-
-IFNCFBPARAM	"FNCFBPARAM"
 
 
 TVOID		"TVOID"
@@ -1785,17 +1780,15 @@ PPCOMMENT		"'! "{TCHARACTER2}*
 
 {IFNCLENGTH}		yylval = "219"; return IFNCLENGTH;
 
-{IFNCSYNCR}		yylval = "220"; return IFNCSYNCR;
+{IFCALL2}		yylval = "220"; return IFCALL2;
 
-{IFNCFIND}		yylval = "221"; return IFNCFIND;
+{IFCPARAMS2}		yylval = "221"; return IFCPARAMS2;
 
-{IFNCFRET}		yylval = "222"; return IFNCFRET;
+{IFECPARAMS2}		yylval = "222"; return IFECPARAMS2;
 
-{IFNCFPARAM}		yylval = "223"; return IFNCFPARAM;
+{IFECALL2}		yylval = "223"; return IFECALL2;
 
-{IFNCFBRET}		yylval = "224"; return IFNCFBRET;
-
-{IFNCFBPARAM}		yylval = "225"; return IFNCFBPARAM;
+{IFNCSYNCR}		yylval = "224"; return IFNCSYNCR;
 
 
 {TVOID}			yylval = yytext; return TVOID;
@@ -1905,13 +1898,23 @@ String strip_extension(String fileName)
 }
 
 void preprocess(String arg)
-{ 
+{
+ #ifdef OS_WINDOWS 
  _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(arg) + (char *)".pppasm").getString().c_str(), 
  		 (strip_extension(arg) + (char *)".pasm").getString().c_str(), NULL);
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+ system(("./pnfpp " + (strip_extension(arg) + (char *)".pppasm") + " " + (strip_extension(arg) + (char *)".pasm")).getString().c_str());
+ #endif // OS_LINUX
 }
 
 void mklib(String arg)
 {
+ #ifdef OS_WINDOWS
  _spawnl(_P_WAIT, "mkpnflib.exe", "mkpnflib.exe", (strip_extension(arg) + (char *)".pnf").getString().c_str(), 
 	 (strip_extension(arg) + (char *)".plib").getString().c_str(), NULL);
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+ system(("./mkpnflib" + (strip_extension(arg) + (char *)".pnf") + " " + (strip_extension(arg) + (char*)".plib")).getString().c_str());
+ #endif // OS_LINUX
 }

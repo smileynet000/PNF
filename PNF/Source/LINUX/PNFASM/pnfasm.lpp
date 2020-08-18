@@ -20,9 +20,8 @@ This file is part of pnfasm.
     You should have received a copy of the GNU General Public License
     along with pnfasm.  If not, see <https://www.gnu.org/licenses/>. 
 */
- 
 
-/* 
+/*
  CHANGELOG
  =========
  
@@ -53,6 +52,16 @@ This file is part of pnfasm.
 			 8. Added switches.
 			 9. Added more stack instructions.
 			10. Made Linux compatable.
+			11. Added PATCH and NATIVE.
+
+12/9/19 Origional a-a-d 1. Added FDECL and FRETS instructions.
+			2. Added FDEF, FDEF2, FEDEF2 and FEDEF instructions.
+			3. Added PARAMF2 instruction.
+			4. Added more function instructions.
+			5. Added documentation.
+			6. Added FNCPOINT and FNCLENGTH.
+			7. Fixed bugs...
+			8. Took out "extra" instructions.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -677,6 +686,85 @@ ISWITCH2    - Specifies that what follows is a switch statement.
  ISPTOA	     - Sends %stackp to %accumulator.
 	       SPTOA TVOID 0V
 
+ IPATCH	     - Applies a patch.
+	       PATCH [type] [value]
+
+ INATIVE     - Runs a native subroutine.
+	       NATIVE TSTRING [subroutine name]
+
+ IFRET	      - Returns from a function.
+		FRET TVOID 0V
+
+ IFCALL	      - Prepares to call function [name]
+		FCALL TSTRING [name]
+
+ IFCPARAMS    - The actual parameter block start.
+		FCPARAMS TVOID 0V
+
+ IFECPARAMS   - The actual parameter block end.
+		FECPARAMS TVOID 0V
+
+ IFECALL      - Makes the call to the function.
+		FECALL TVOID 0V
+
+ IPUNUM       - Allows us to specify an actual parameter number.
+		PNUM TNUMBER [num]
+
+ IPARAMF      - Specify an actual parameter.
+		PARAMF [type] [value]
+
+ IPARAMF2     - Load parameter specified by %pnum to %accumulator
+		PARAMF2 TVOID 0V
+
+ IRNUM	      - Specify a return value number
+		RNUM TNUMBER [num]
+
+ IRETURNF     - Modifies a value for return
+		RETURNF [type] [value]
+
+ IFNAME	      - Sets %fname
+		FNAME TSTRING [name]
+
+ IRETURNV     - Loads %accumulator with return value %rnum
+		RETURNV TVOID 0V
+
+ IFNCLOAD     - Loads a function from %fpointer1 to %fpointer2.
+		FNCLOAD TNUMBER [num]
+
+ IFNCSTORE    - Stores a function from %fpointer2 to %fpointer1
+		FNCSTORE TNUMBER [num]
+		FNCSTORE TVOID 0V
+
+ IFNCNEW      - Adds a new Function on the C++ heap.
+		FNCNEW TVOID 0V
+
+ IFNCDELETE   - Deletes a new Function on the C++ heap.
+		FNCDELETE TVOID 0V
+
+ IFNCSNAME    - Sets the name of the function %fpointer2
+		FNCSNAME TVOID 0V
+
+ IFNCSRET     - Sets the return type of a return value in %fpointer.
+		FNCSRET [type] 0V
+
+ IFNCSPARAM   - Adds a parameter of type [type] to %fpointer2 with value %accumulator
+		FNCSPARAM [type] 0V
+
+ IFNCSDEF      - Adds a definition beginning at [where] or [label] to %fpointer2.
+		 FNCSDEF TNUMBER [where]
+		 FNCSDEF TSTRING [label]
+
+ IFNCGNAME     - Gets the name of %fpointer2
+		 FNCGNAME TVOID 0V
+
+ IFNCGRET      - Gets a return value from %fpointer2
+		 FNCGRET TNUMBER [num]
+
+ IFNCGPARAM    - Gets a parameter value from %fpointer2
+		 FNCGPARAM TNUMBER [num]
+
+ IFNCGDEF      - Gets a definition address for %fpointer2
+		 FNCGDEF TVOID 0V
 */
 #include "pnfasm.tab.cpp"
 %}
@@ -1062,6 +1150,78 @@ ISTORESTACK	"STORESTACK"
 IATOSP		"ATOSP"
 
 ISPTOA		"SPTOA"
+
+IPATCH		"PATCH"
+
+INATIVE		"NATIVE"
+
+IFRET		"FRET"
+
+IFCALL		"FCALL"
+
+IFCPARAMS	"FCPARAMS"
+
+IFECPARAMS	"FECPARAMS"
+
+IFECALL		"FECALL"
+
+IPNUM		"PNUM"
+
+IPARAMF		"PARAMF"
+
+IPARAMF2	"PARAMF2"
+
+IPARAMF3	"PARAMF3"
+
+IRNUM		"RNUM"
+
+IRETURNF	"RETURNF"
+
+IRETURNF2	"RETURNF2"
+
+IRETURNF3	"RETURNF3"
+
+IFNAME		"FNAME"
+
+IRETURNV	"RETURNV"
+
+IFNCLOAD	"FNCLOAD"
+
+IFNCSTORE	"FNCSTORE"
+
+IFNCNEW		"FNCNEW"
+
+IFNCDELETE	"FNCDELETE"
+
+IFNCSNAME	"FNCSNAME"
+
+IFNCSRET	"FNCSRET"
+
+IFNCSPARAM	"FNCSPARAM"
+
+IFNCSDEF	"FNCSDEF"
+
+IFNCGNAME	"FNCGNAME"
+
+IFNCGRET	"FNCGRET"
+
+IFNCGPARAM	"FNCGPARAM"
+
+IFNCGDEF	"FNCGDEF"
+
+IFNCPOINT	"FNCPOINT"
+
+IFNCLENGTH	"FNCLENGTH"
+
+IFCALL2		"FCALL2"
+
+IFCPARAMS2	"FCPARAMS2"
+
+IFECPARAMS2	"FECPARAMS2"
+
+IFECALL2	"FECALL2"
+
+IFNCSYNCR	"FNCSYNCR"
 
 
 TVOID		"TVOID"
@@ -1558,6 +1718,78 @@ PPCOMMENT		"'! "{TCHARACTER2}*
 
 {ISPTOA}		yylval = "188"; return ISPTOA;
 
+{IPATCH}		yylval = "189"; return IPATCH;
+
+{INATIVE}		yylval = "190"; return INATIVE;
+
+{IFRET}			yylval = "191"; return IFRET;
+
+{IFCALL}		yylval = "192"; return IFCALL;
+
+{IFCPARAMS}		yylval = "193"; return IFCPARAMS;
+
+{IFECPARAMS}		yylval = "194"; return IFECPARAMS;
+
+{IFECALL}		yylval = "195"; return IFECALL;
+
+{IPNUM}			yylval = "196"; return IPNUM;
+
+{IPARAMF}		yylval = "197"; return IPARAMF;
+
+{IPARAMF2}		yylval = "198"; return IPARAMF2;
+
+{IPARAMF3}		yylval = "199"; return IPARAMF3;
+
+{IRNUM}			yylval = "200"; return IRNUM;
+
+{IRETURNF}		yylval = "201"; return IRETURNF;
+
+{IRETURNF2}		yylval = "202"; return IRETURNF2;
+
+{IRETURNF3}		yylval = "203"; return IRETURNF3;
+
+{IFNAME}		yylval = "204"; return IFNAME;
+
+{IRETURNV}		yylval = "205"; return IRETURNV;
+
+{IFNCLOAD}		yylval = "206"; return IFNCLOAD;
+
+{IFNCSTORE}		yylval = "207"; return IFNCSTORE;
+
+{IFNCNEW}		yylval = "208"; return IFNCNEW;
+
+{IFNCDELETE}		yylval = "209"; return IFNCDELETE;
+
+{IFNCSNAME}		yylval = "210"; return IFNCSNAME;
+
+{IFNCSRET}		yylval = "211"; return IFNCSRET;
+
+{IFNCSPARAM}		yylval = "212"; return IFNCSPARAM;
+
+{IFNCSDEF}		yylval = "213"; return IFNCSDEF;
+
+{IFNCGNAME}		yylval = "214"; return IFNCGNAME;
+
+{IFNCGRET}		yylval = "215"; return IFNCGRET;
+
+{IFNCGPARAM}		yylval = "216"; return IFNCGPARAM;
+
+{IFNCGDEF}		yylval = "217"; return IFNCGDEF;
+
+{IFNCPOINT}		yylval = "218"; return IFNCPOINT;
+
+{IFNCLENGTH}		yylval = "219"; return IFNCLENGTH;
+
+{IFCALL2}		yylval = "220"; return IFCALL2;
+
+{IFCPARAMS2}		yylval = "221"; return IFCPARAMS2;
+
+{IFECPARAMS2}		yylval = "222"; return IFECPARAMS2;
+
+{IFECALL2}		yylval = "223"; return IFECALL2;
+
+{IFNCSYNCR}		yylval = "224"; return IFNCSYNCR;
+
 
 {TVOID}			yylval = yytext; return TVOID;
 
@@ -1666,15 +1898,23 @@ String strip_extension(String fileName)
 }
 
 void preprocess(String arg)
-{ 
- String cmd = "./pnfpp" + (strip_extension(arg) + (char *)".pppasm") + 
-              (strip_extension(arg) + (char *)".pasm");
- system(cmd.getString().c_str());
+{
+ #ifdef OS_WINDOWS 
+ _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(arg) + (char *)".pppasm").getString().c_str(), 
+ 		 (strip_extension(arg) + (char *)".pasm").getString().c_str(), NULL);
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+ system(("./pnfpp " + (strip_extension(arg) + (char *)".pppasm") + " " + (strip_extension(arg) + (char *)".pasm")).getString().c_str());
+ #endif // OS_LINUX
 }
 
 void mklib(String arg)
 {
- String cmd = "./mkpnflib" + (strip_extension(arg) + (char *)".pnf") + 
-	      (strip_extension(arg) + (char *)".plib");
- system(cmd.getString().c_str());
+ #ifdef OS_WINDOWS
+ _spawnl(_P_WAIT, "mkpnflib.exe", "mkpnflib.exe", (strip_extension(arg) + (char *)".pnf").getString().c_str(), 
+	 (strip_extension(arg) + (char *)".plib").getString().c_str(), NULL);
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+ system(("./mkpnflib" + (strip_extension(arg) + (char *)".pnf") + " " + (strip_extension(arg) + (char*)".plib")).getString().c_str());
+ #endif // OS_LINUX
 }

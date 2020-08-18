@@ -24,6 +24,7 @@ REM =========
  
 REM 5/25/15 Origional a-a-j - 1. The first version.
 REM			      2. Made it clean first...
+REM			      3. Need -fpermissive
 
 
 ECHO Cleaning...
@@ -37,4 +38,4 @@ ECHO Flex...
 flex -opnfha.cpp pnfha.lpp
 
 ECHO C++...
-g++ pnfha.cpp -opnfha.exe -lfl -Wno-write-strings -static
+g++ pnfha.cpp -opnfha.exe -lfl -Wno-write-strings -fpermissive -static

@@ -23,7 +23,7 @@ CHANGELOG
 */
 
 
-#include <desLib/desLib.hpp>
+#include <desLib/deslib.hpp>
 
 
 int main(int argc, char ** argv)
