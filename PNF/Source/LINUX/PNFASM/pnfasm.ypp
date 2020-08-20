@@ -65,6 +65,7 @@ This file is part of pnfasm.
 			 6. Added FNCPOINT and FNCLENGTH.
 			 7. Fixed bugs...
 			 8. Took out "extra" instructions.
+			 9. Fixed to add new instructions again...
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -811,7 +812,7 @@ unsigned long pifend = 0;
 /* Bison Declarations */
 %error-verbose
 
-%expect 250
+%expect 257
 
 
 %token ASMVERSION
@@ -1064,6 +1065,17 @@ unsigned long pifend = 0;
 %token IFECPARAMS2
 %token IFECALL2
 %token IFNCSYNCR
+%token IFNCFIND
+%token IFNCFRET
+%token IFNCFPARAM
+%token IFNCFBRET
+%token IFNCFBPARAM
+%token IFNCDEFAULT
+%token IFNCDEFAULT2
+%token IFNCSDEFAULTV
+%token IFNCSDEFAULTV2
+%token IFNCGDEFAULTV2
+%token IFNCDEFAULTSYNC
 
 
 %token TVOID
@@ -1818,7 +1830,7 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 		| IFECPARAMS TVOID VOID		{ fprintf(output, "194 0 0\n"); }
 		| IFECALL TVOID VOID		{ fprintf(output, "195 0 0\n"); }
 		| IPNUM TNUMBER NUMBER		{ fprintf(output, "196 2 %s\n", $3.getString().c_str()); }
-		| IPARAMF TVOID VOID		{ fprintf(output, "197 0 %s\n", $3.getString().c_str()); }
+		| IPARAMF TVOID VOID		{ fprintf(output, "197 0 0\n"); }
 		| IPARAMF TBOOLEAN BOOLEAN	
 						{
 			 			 if ($3 == "true")
@@ -1841,6 +1853,10 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 		 	 			 fprintf(output, "0\n");
 						}
 		| IPARAMF2 TVOID VOID		{ fprintf(output, "198 0 0\n"); }
+		| IPARAMF2 TBOOLEAN VOID	{ fprintf(output, "198 1 0\n"); }
+		| IPARAMF2 TNUMBER VOID		{ fprintf(output, "198 2 0\n"); }
+		| IPARAMF2 TCHARACTER VOID	{ fprintf(output, "198 3 0\n"); }
+		| IPARAMF2 TSTRING VOID		{ fprintf(output, "198 4 0\n"); }
 		| IPARAMF3 TVOID VOID		{ fprintf(output, "199 0 0\n"); }
 		| IPARAMF3 TBOOLEAN VOID	{ fprintf(output, "199 1 0\n"); }
 		| IPARAMF3 TNUMBER VOID		{ fprintf(output, "199 2 0\n"); }
@@ -1900,19 +1916,30 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 		| IFNCGDEF TVOID VOID		{ fprintf(output, "217 0 0\n"); }
 		| IFNCPOINT TVOID VOID		{ fprintf(output, "218 0 0\n"); }
 		| IFNCLENGTH TVOID VOID		{ fprintf(output, "219 0 0\n"); }
-		| IFCALL2 TSTRING STRING		{ 
-						 fprintf(output, "220 4 ");
-						 for (unsigned long i = 0; i < $3.length(); ++i)
-						 {
-						  if ($3[i] != '\"')
-						   fprintf(output, "%d ", (int)($3[i]));
-						 }
-						 fprintf(output, "0\n");
-						}
-		| IFCPARAMS2 TVOID VOID		{ fprintf(output, "221 0 0\n"); }
-		| IFECPARAMS2 TVOID VOID	{ fprintf(output, "222 0 0\n"); }
-		| IFECALL2 TVOID VOID		{ fprintf(output, "223 0 0\n"); }
-		| IFNCSYNCR TVOID VOID		{ fprintf(output, "224 0 0\n"); }
+		| IFNCSYNCR TVOID VOID		{ fprintf(output, "220 0 0\n"); }
+		| IFNCFIND TVOID VOID		{ fprintf(output, "221 0 0\n"); }
+		| IFNCFRET TVOID VOID		{ fprintf(output, "222 0 0\n"); }
+		| IFNCFRET TBOOLEAN VOID	{ fprintf(output, "222 1 0\n"); }
+		| IFNCFRET TNUMBER VOID		{ fprintf(output, "222 2 0\n"); }
+		| IFNCFRET TCHARACTER VOID	{ fprintf(output, "222 3 0\n"); }
+		| IFNCFRET TSTRING VOID		{ fprintf(output, "222 4 0\n"); }
+		| IFNCFPARAM TVOID VOID		{ fprintf(output, "223 0 0\n"); }
+		| IFNCFPARAM TBOOLEAN VOID	{ fprintf(output, "223 1 0\n"); }
+		| IFNCFPARAM TNUMBER VOID	{ fprintf(output, "223 2 0\n"); }
+		| IFNCFPARAM TCHARACTER VOID	{ fprintf(output, "223 3 0\n"); }
+		| IFNCFPARAM TSTRING VOID	{ fprintf(output, "223 4 0\n"); }
+		| IFNCFBRET TVOID VOID		{ fprintf(output, "224 0 0\n"); }
+		| IFNCFBPARAM TVOID VOID	{ fprintf(output, "225 0 0\n"); }
+		| IFNCDEFAULT TVOID VOID	{ fprintf(output, "226 0 0\n"); }
+		| IFNCDEFAULT2 TVOID VOID	{ fprintf(output, "227 0 0\n"); }
+		| IFNCSDEFAULTV TVOID VOID	{ fprintf(output, "228 0 0\n"); }
+		| IFNCSDEFAULTV TBOOLEAN VOID	{ fprintf(output, "228 1 0\n"); }
+		| IFNCSDEFAULTV TNUMBER VOID	{ fprintf(output, "228 2 0\n"); }
+		| IFNCSDEFAULTV TCHARACTER VOID	{ fprintf(output, "228 3 0\n"); }
+		| IFNCSDEFAULTV TSTRING VOID	{ fprintf(output, "228 4 0\n"); }
+		| IFNCSDEFAULTV2 TVOID VOID	{ fprintf(output, "229 0 0\n"); }
+		| IFNCGDEFAULTV2 TVOID VOID	{ fprintf(output, "230 0 0\n"); }
+		| IFNCDEFAULTSYNC TVOID VOID	{ fprintf(output, "231 0 0\n"); }
 		| ASMVERSION TVOID VOID		{ /* Do nothing... */ }
 		| PNF NUMBER NUMBER NUMBER	{ fprintf(output, "%s %s %s\n", $2.getString().c_str(), $3.getString().c_str(), $4.getString().c_str()); }
 		;
@@ -1924,7 +1951,7 @@ lines:	line
 pinstruction:	
 		;
 
-variable:	IVAR TVOID VOID			{ fprintf(output, "57 0 %s\n", $3.getString().c_str()); }
+variable:	IVAR TVOID VOID			{ fprintf(output, "57 0 0\n"); }
 		| IVAR TBOOLEAN BOOLEAN	
 						{
 			 			 if ($3 == "true")

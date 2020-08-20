@@ -249,11 +249,11 @@ funccall : 17 (0V) r(false, defaultv2: number);
 println "";
 funccall : 18 (0V) s(false, 67);
 funccall : 18 (0V) s(false, defaultv2: number);
-//funccall : 18 (0V) s(defaultv2: boolean, 67); - Function not found error.
+funccall : 18 (0V) s(defaultv2: boolean, 67);
 
 println "";
 funccall : 19 (0V) t(false, 92, true);
-//funccall : 19 (0V) t(false, defaultv2: number, true);
+funccall : 19 (0V) t(false, defaultv2: number, true);
 funccall : 19 (0V) t(false, defaultv2: number, defaultv2: boolean);
 
 

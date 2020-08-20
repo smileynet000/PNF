@@ -4786,10 +4786,11 @@ void PNF::preprocess()
  #ifdef OS_WINDOWS 
  _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(reg.args[0]) + (char *)".pppnf").getString().c_str(), 
  		 (strip_extension(reg.args[0]) + (char *)".pnf").getString().c_str(), NULL);
- #else
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
  String str = (char *)"pnfpp " + (strip_extension(reg.args[0]) + (char *)".pppnf") + (strip_extension(reg.args[0]) + (char *)".pnf");
  system(str.getString().c_str());
- #endif // OS_WINDOWS
+ #endif // OS_LINUX
 }
 
 void PNF::check()

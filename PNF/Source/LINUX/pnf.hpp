@@ -91,6 +91,7 @@ This program is free software: you can redistribute it and/or modify
 					       16. Added default values...
 					       17. Added try...catch to PNF::execute()
 					       18. Debugged...
+					       19. Debugged...
 */
 #include <desLib/deslib.hpp>
 #include <cstdlib>
@@ -4120,6 +4121,7 @@ class Function_Stack
   void add_function(Function f);
   Function & get_function(unsigned long i);
   Function & get_function(String n, bool & f);
+  Function & last_function();
   void mod_function(unsigned long i, Function f);
 
   unsigned long length();
@@ -4192,6 +4194,11 @@ Function & Function_Stack::get_function(String n, bool & f)
   f = true;
   return itsstk[i];
  }
+}
+
+Function & Function_Stack::last_function()
+{
+ return itsstk[itsstk.length() - 1];
 }
 
 void Function_Stack::mod_function(unsigned long i, Function f)
@@ -4779,10 +4786,11 @@ void PNF::preprocess()
  #ifdef OS_WINDOWS 
  _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(reg.args[0]) + (char *)".pppnf").getString().c_str(), 
  		 (strip_extension(reg.args[0]) + (char *)".pnf").getString().c_str(), NULL);
- #else
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
  String str = (char *)"pnfpp " + (strip_extension(reg.args[0]) + (char *)".pppnf") + (strip_extension(reg.args[0]) + (char *)".pnf");
  system(str.getString().c_str());
- #endif // OS_WINDOWS
+ #endif // OS_LINUX
 }
 
 void PNF::check()

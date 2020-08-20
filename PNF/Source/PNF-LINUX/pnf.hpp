@@ -69,7 +69,29 @@ This program is free software: you can redistribute it and/or modify
 
 3/23/19 Origional a-a-e				 1. Added switches.
 						 2. Added stack registers.
-						 3. Made Linux compatable.
+						 3. Added PATCH instruction.
+						 4. Added NATIVE instruction.
+						 5. Made work with class Array.
+
+11/22/19 Origional a-a-f			1. Made new version
+						2. Added FDEF, FDEF2, FEDEF2 and FEDEF instructions.
+						3. Added function calls.
+						4. Added more instructions for functions.
+						5. Added documentation for instructions.
+						6. An attempt at overloaded functions.
+						7. Fixed bugs...
+						8. Took out "extra" instructions.
+						9. Debugged...
+					       10. Debugged...
+					       11. Removed extra instructions.
+					       12. Debugged...
+					       13. Finished debugging function parameters.
+					       14. Debugged function parameters further...
+					       15. Found the bug...
+					       16. Added default values...
+					       17. Added try...catch to PNF::execute()
+					       18. Debugged...
+					       19. Debugged...
 */
 #include <desLib/deslib.hpp>
 #include <cstdlib>
@@ -77,10 +99,15 @@ This program is free software: you can redistribute it and/or modify
 #include <stack>
 #include <cctype>
 
+#ifdef OS_WINDOWS
+#include <process.h>
+#endif // OS_WINDOWS
+
 
 /*
- IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
+ IVERSION   - Switches versions. Default version is 0V.
               VERSION TVOID 0V
+	      VERSION TVOID 1
 
  IVOID      - Does nothing.
               VOID TVOID 0V
@@ -698,6 +725,86 @@ This program is free software: you can redistribute it and/or modify
 
  ISPTOA	     - Sends %stackp to %accumulator.
 	       SPTOA TVOID 0V
+
+ IPATCH	     - Applies a patch.
+	       PATCH [type] [value]
+
+ INATIVE     - Runs a native subroutine.
+	       NATIVE TSTRING [subroutine name]
+
+ IFRET	      - Returns from a function.
+		FRET TVOID 0V
+
+ IFCALL	      - Prepares to call function [name]
+		FCALL TSTRING [name]
+
+ IFCPARAMS    - The actual parameter block start.
+		FCPARAMS TVOID 0V
+
+ IFECPARAMS   - The actual parameter block end.
+		FECPARAMS TVOID 0V
+
+ IFECALL      - Makes the call to the function.
+		FECALL TVOID 0V
+
+ IPNUM        - Allows us to specify an actual parameter number.
+		PNUM TNUMBER [num]
+
+ IPARAMF      - Specify an actual parameter.
+		PARAMF [type] [value]
+
+ IPARAMF2     - Load parameter specified by %pnum to %accumulator
+		PARAMF2 TVOID 0V
+
+ IRNUM	      - Specify a return value number
+		RNUM TNUMBER [num]
+
+ IRETURNF     - Modifies a value for return
+		RETURNF [type] [value]
+
+ IFNAME	      - Sets %fname
+		FNAME TSTRING [name]
+
+ IRETURNV     - Loads %accumulator with return value %rnum
+		RETURNV TVOID 0V
+
+ IFNCLOAD     - Loads a function from %fpointer1 to %fpointer2.
+		FNCLOAD TNUMBER [num]
+
+ IFNCSTORE    - Stores a function from %fpointer2 to %fpointer1
+		FNCSTORE TNUMBER [num]
+		FNCSTORE TVOID 0V
+
+ IFNCNEW      - Adds a new Function on the C++ heap.
+		FNCNEW TVOID 0V
+
+ IFNCDELETE   - Deletes a new Function on the C++ heap.
+		FNCDELETE TVOID 0V
+
+ IFNCSNAME    - Sets the name of the function %fpointer2
+		FNCSNAME TVOID 0V
+
+ IFNCSRET     - Sets the return type of a return value in %fpointer.
+		FNCSRET [type] 0V
+
+ IFNCSPARAM   - Adds a parameter of type [type] to %fpointer2 with value %accumulator
+		FNCSPARAM [type] 0V
+
+ IFNCSDEF      - Adds a definition beginning at [where] or [label] to %fpointer2.
+		 FNCSDEF TNUMBER [where]
+		 FNCSDEF TSTRING [label]
+
+ IFNCGNAME     - Gets the name of %fpointer2
+		 FNCGNAME TVOID 0V
+
+ IFNCGRET      - Gets a return value from %fpointer2
+		 FNCGRET TNUMBER [num]
+
+ IFNCGPARAM    - Gets a parameter value from %fpointer2
+		 FNCGPARAM TNUMBER [num]
+
+ IFNCGDEF      - Gets a definition address for %fpointer2
+		 FNCGDEF TVOID 0V
 */
 enum PNF_Instruction_Enum
 {
@@ -890,6 +997,49 @@ enum PNF_Instruction_Enum
  ISTORESTACK,
  IATOSP,
  ISPTOA,
+ IPATCH,
+ INATIVE,
+ IFRET,
+ IFCALL,
+ IFCPARAMS,
+ IFECPARAMS,
+ IFECALL,
+ IPNUM,
+ IPARAMF,
+ IPARAMF2,
+ IPARAMF3,
+ IRNUM,
+ IRETURNF,
+ IRETURNF2,
+ IRETURNF3,
+ IFNAME,
+ IRETURNV,
+ IFNCLOAD,
+ IFNCSTORE,
+ IFNCNEW,
+ IFNCDELETE,
+ IFNCSNAME,
+ IFNCSRET,
+ IFNCSPARAM,
+ IFNCSDEF,
+ IFNCGNAME,
+ IFNCGRET,
+ IFNCGPARAM,
+ IFNCGDEF,
+ IFNCPOINT,
+ IFNCLENGTH,
+ IFNCSYNCR,
+ IFNCFIND,
+ IFNCFRET,
+ IFNCFPARAM,
+ IFNCFBRET,
+ IFNCFBPARAM,
+ IFNCDEFAULT,
+ IFNCDEFAULT2,
+ IFNCSDEFAULTV,
+ IFNCSDEFAULTV2,
+ IFNCGDEFAULTV2,
+ IFNCDEFAULTSYNC,
  IENDI
 };
 
@@ -1621,7 +1771,7 @@ class PNF_Variable
 
 
  public:
- 		PNF_Variable();
+ 		PNF_Variable(int n = 0);
  		PNF_Variable(PNF_Void v);
  		PNF_Variable(PNF_Boolean b);
  		PNF_Variable(PNF_Number n);
@@ -1655,17 +1805,17 @@ class PNF_Variable
         void fread(ifstream & fin);
 
 
-        PNF_Void to_void() const;
-        PNF_Boolean to_boolean() const;
-        PNF_Number to_number() const;
-        PNF_Character to_character() const;
-        PNF_String to_string() const;
+        PNF_Void & to_Void();
+        PNF_Boolean & to_boolean();
+        PNF_Number & to_number();
+        PNF_Character & to_character();
+        PNF_String & to_string();
 
 
         PNF_Variable operator=(const PNF_Variable & v);
 };
 
-PNF_Variable::PNF_Variable()
+PNF_Variable::PNF_Variable(int n)
 {
  type = TVOID;
 }
@@ -1724,7 +1874,7 @@ void PNF_Variable::setType(long t)
 
    	case TBOOLEAN:
    	{
-     b = to_boolean();
+         b = to_boolean();
    	}
    	break;
 
@@ -1755,7 +1905,7 @@ void PNF_Variable::setType(long t)
    {
    	case TVOID:
    	{
-   	 v = to_void();
+   	 v = to_Void();
    	}
    	break;
 
@@ -1792,7 +1942,7 @@ void PNF_Variable::setType(long t)
    {
    	case TVOID:
    	{
-   	 v = to_void();
+   	 v = to_Void();
    	}
    	break;
 
@@ -1829,7 +1979,7 @@ void PNF_Variable::setType(long t)
    {
    	case TVOID:
    	{
-   	 v = to_void();
+   	 v = to_Void();
    	}
    	break;
 
@@ -1866,7 +2016,7 @@ void PNF_Variable::setType(long t)
    {
    	case TVOID:
    	{
-   	 v = to_void();
+   	 v = to_Void();
    	}
    	break;
 
@@ -1939,7 +2089,7 @@ void PNF_Variable::put(const PNF_Variable & v)
  switch (getType())
  {
   case TVOID:
-   put(v.to_void());
+   put(v.to_Void());
    break;
 
   case TBOOLEAN:
@@ -2245,75 +2395,75 @@ void PNF_Variable::fread(ifstream & fin)
  }
 }
 
-PNF_Void PNF_Variable::to_void() const
+PNF_Void & PNF_Variable::to_Void()
 {
- PNF_Void v;
- return v;
+ PNF_Void * v = new PNF_Void();
+ return (*v);
 }
 
-PNF_Boolean PNF_Variable::to_boolean() const
+PNF_Boolean & PNF_Variable::to_boolean()
 {
- PNF_Boolean b;
+ PNF_Boolean * b = new PNF_Boolean();
 
  switch (getType())
  {
   case TVOID:
-       b.put(false);
+       b->put(false);
        break;
 
   case TBOOLEAN:
-       b = this->b;
+       *b = this->b;
        break;
 
   case TNUMBER:
-       b.put(n.get());
+       b->put(n.get());
        break;
 
   case TCHARACTER:
   	   if (c.get() == 't')
-  	    b.put(true);
+  	    b->put(true);
   	   else if (c.get() == 'f')
-  	    b.put(false);
+  	    b->put(false);
   	   else
-  	    b.put(false);
+  	    b->put(false);
        break;
 
   case TSTRING:
   	   if (s.get().getString() == "true")
-  	    b.put(true);
+  	    b->put(true);
   	   else if (s.get().getString() == "false")
-  	    b.put(false);
+  	    b->put(false);
   	   else
-  	    b.put(false);
+  	    b->put(false);
        break;
  }
 
- return b;
+ return (*b);
 }
 
-PNF_Number PNF_Variable::to_number() const
+PNF_Number & PNF_Variable::to_number()
 {
- PNF_Number n;
+ PNF_Number * n = new PNF_Number();
 
  switch (getType())
  {
   case TVOID:
-       n.put(0);
+       n->put(0);
        break;
 
   case TBOOLEAN:
        if (b.get().getString() == "true")
-          n.put(1);
+          n->put(1);
        else
-          n.put(0);
+          n->put(0);
        break;
 
   case TNUMBER:
-       n = this->n;
+       *n = this->n;
        break;
 
   case TCHARACTER:
-       n.put(c.get());
+       n->put(c.get());
        break;
 
   case TSTRING:
@@ -2321,77 +2471,77 @@ PNF_Number PNF_Variable::to_number() const
    unsigned long value = 0;
    for (unsigned long i = 0; i < s.get().length(); ++i)
     value += (unsigned long)s.get()[i];
-   n.put(value);
+   n->put(value);
   }
   break;
  }
 
- return n;
+ return (*n);
 }
 
-PNF_Character PNF_Variable::to_character() const
+PNF_Character & PNF_Variable::to_character()
 {
- PNF_Character c;
+ PNF_Character * c = new PNF_Character();
 
  switch (getType())
  {
   case TVOID:
-       c = '\0';
+       *c = '\0';
        break;
 
   case TBOOLEAN:
        if (b.get().getString() == "true")
-        c = 't';
+        *c = 't';
        else
-        c = 'f';
+        *c = 'f';
        break;
 
   case TNUMBER:
-       c = (char)n.get();
+       *c = (char)n.get();
        break;
 
   case TCHARACTER:
-       c = this->c;
+       *c = this->c;
        break;
 
   case TSTRING:
-       c = s.get()[0];
+       *c = s.get()[0];
        break;
  }
 
 
- return c;
+ return (*c);
 }
 
-PNF_String PNF_Variable::to_string() const
+PNF_String & PNF_Variable::to_string()
 {
- PNF_String s;
+ PNF_String * s = new PNF_String();
 
  switch (getType())
  {
   case TVOID:
-       s.put((char *)"");
+       s->put((char *)"");
        break;
 
   case TBOOLEAN:
-       s = b.get();
+       *s = b.get();
        break;
 
   case TNUMBER:
-       s.put((char)n.get());
+       s->put((char)n.get());
        break;
 
   case TCHARACTER:
-       s.put(c.get());
+       s->put(c.get());
        break;
 
   case TSTRING:
-       s = this->s;
+       *s = this->s;
        break;
  }
 
 
- return s;
+ return (*s);
 }
 
 PNF_Variable PNF_Variable::operator=(const PNF_Variable & v)
@@ -3321,7 +3471,7 @@ Label::Label(unsigned long n = 0, String s = (char *)"")
  string = s;
 }
 
-void Label::setLabel(unsigned long n = 0, String s = "")
+void Label::setLabel(unsigned long n = 0, String s = (char *)"")
 {
  num = n;
  string = s;
@@ -3419,6 +3569,9 @@ class PNF_Version
 
 
   PNF_Version(unsigned long d);
+
+
+ bool check(PNF_Variable v, double t);
 };
 
 PNF_Version::PNF_Version(unsigned long d = 0)
@@ -3426,6 +3579,40 @@ PNF_Version::PNF_Version(unsigned long d = 0)
  PNF_Void v;
  base.put(v);
  top = d;
+}
+
+bool PNF_Version::check(PNF_Variable v, double t)
+{
+ if (t == top)
+ {
+  switch (base.getType())
+  {
+   case TVOID:
+    if (v.getType() == TVOID) return true;
+    break;
+
+   case TBOOLEAN:
+    if (base.to_boolean().get() == v.to_boolean().get()) return true;
+    break;
+    
+   case TNUMBER:
+    if (base.to_number().get() == v.to_number().get()) return true;
+    break;
+
+   case TCHARACTER:
+    if (base.to_character().get() == v.to_character().get()) return true;
+    break;
+
+   case TSTRING:
+    if (base.to_string().get() == v.to_string().get()) return true;
+    break;
+
+   default:
+    return false;
+  };
+ }
+ else
+  return false;
 }
 
 class iftypestruct
@@ -3468,6 +3655,673 @@ ifstruct::ifstruct(int n)
 {
 
 }
+
+class Param
+{
+ protected:
+  String itsname;
+  PNF_Variable itsparam;
+  PNF_Variable itsdefault;
+
+
+ public:
+  Param(int i = 0);
+
+  Param(const Param & p);
+
+
+  String name();
+  void name(String n);
+
+  PNF_Variable & param();
+  void param(PNF_Variable v);
+
+  PNF_Variable & defaultv();
+  void defaultv(PNF_Variable v);
+
+  void syncdefault();
+};
+
+Param::Param(int i)
+{
+ itsname = (char *)"";
+ PNF_Void v;
+ itsparam.put(v);
+ itsdefault.put(v);
+}
+
+Param::Param(const Param & p)
+{
+ itsname = p.itsname;
+ itsparam = p.itsparam;
+ itsdefault = p.itsdefault;
+}
+
+String Param::name()
+{
+ return itsname;
+}
+
+void Param::name(String n)
+{
+ itsname = n;
+}
+
+PNF_Variable & Param::param()
+{
+ return itsparam;
+}
+
+void Param::param(PNF_Variable v)
+{
+ switch (v.getType())
+ {
+  case TVOID:
+   itsparam.put(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+  {
+   PNF_Boolean b(v.to_boolean());
+   itsparam.put(b);
+  }
+  break;
+
+  case TNUMBER:
+   itsparam.put(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsparam.put(v.to_character());
+   break;
+
+  case TSTRING:
+   itsparam.put(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.";
+ }
+}
+
+PNF_Variable & Param::defaultv()
+{
+ return itsdefault;
+}
+
+void Param::defaultv(PNF_Variable v)
+{
+ switch (v.getType())
+ {
+  case TVOID:
+   itsdefault.put(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+  {
+   PNF_Boolean b(v.to_boolean());
+   itsdefault.put(b);
+  }
+  break;
+
+  case TNUMBER:
+   itsdefault.put(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsdefault.put(v.to_character());
+   break;
+
+  case TSTRING:
+   itsdefault.put(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.";
+ }
+
+ syncdefault();
+}
+
+void Param::syncdefault()
+{
+ itsparam = itsdefault;
+}
+
+class Function
+{
+ protected:
+  Array<Param> itsret;
+  String itsname;
+  Array<Param> itsparam;
+  unsigned long itsdef;
+
+ public:
+  Function(int i = 0);
+
+  Function(const Function & f);
+
+
+  ~Function();
+
+
+ PNF_Variable ret(unsigned long i);
+ PNF_Variable retdefaultv(unsigned long i);
+ Array<Param> rets();
+ String name();
+ String rname();
+ Array<Param> params();
+ PNF_Variable & param(unsigned long i);
+ String pname(unsigned long i);
+ PNF_Variable & defaultv(unsigned long i);
+ unsigned long definition();
+
+ void ret(unsigned long i, PNF_Variable r);
+ void retdefaultv(unsigned long i, PNF_Variable r);
+ void name(String n);
+ void rname(String n);
+ void params(Array<Param> p);
+ void param(unsigned long i, PNF_Variable v);
+ void pname(unsigned long i, String n);
+ void defaultv(unsigned long i, PNF_Variable v);
+ void definition(unsigned long d);
+
+ void syncdefaultr(unsigned long i);
+ void syncdefaultp(unsigned long i);
+
+ String & mangle();
+ String & unmangle();
+};
+
+Function::Function(int i) : itsdef(0)
+{
+ itsname = (char *)"";
+
+ PNF_Variable v;
+ itsparam[0].param(v);
+ itsret[0].param(v);
+}
+
+Function::Function(const Function & f)
+{
+ itsname = f.itsname;
+ itsret = f.itsret;
+ itsparam = f.itsparam;
+ itsdef = f.itsdef;
+}
+
+Function::~Function()
+{
+
+}
+
+PNF_Variable Function::ret(unsigned long i)
+{
+ return itsret[i].param();
+}
+
+PNF_Variable Function::retdefaultv(unsigned long i)
+{
+ return itsret[i].defaultv();
+}
+
+Array<Param> Function::rets()
+{
+ return itsret;
+}
+
+String Function::name()
+{
+ return unmangle();
+}
+
+String Function::rname()
+{
+ return itsname;
+}
+
+Array<Param> Function::params()
+{
+ return itsparam;
+}
+
+PNF_Variable & Function::param(unsigned long i)
+{
+ return itsparam[i].param();
+}
+
+String Function::pname(unsigned long i)
+{
+ return itsparam[i].name();
+}
+
+PNF_Variable & Function::defaultv(unsigned long i)
+{
+ return itsparam[i].defaultv();
+}
+
+unsigned long Function::definition()
+{
+ return itsdef;
+}
+
+void Function::ret(unsigned long i, PNF_Variable r)
+{
+ for (unsigned long is = i; is > itsret.length() - 1; --is)
+  itsret.insert();
+
+ itsret[i].param(r);
+}
+
+void Function::retdefaultv(unsigned long i, PNF_Variable r)
+{
+ for (unsigned long is = i; is > itsret.length() - 1; --is)
+  itsret.insert();
+
+ itsret[i].defaultv(r);
+}
+
+void Function::name(String n)
+{
+ itsname = n;
+ String str = mangle();
+ itsname = str;
+}
+
+void Function::rname(String n)
+{
+ itsname = n;
+}
+
+void Function::params(Array<Param> p)
+{
+ itsparam = p;
+}
+
+void Function::param(unsigned long i, PNF_Variable v)
+{
+ for (unsigned long is = i; is > itsparam.length() - 1; --is)
+  itsparam.insert();
+
+ switch (v.getType())
+ {
+  case TVOID:
+   itsparam[i].param(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+   itsparam[i].param(v.to_boolean());
+   break;
+
+  case TNUMBER:
+   itsparam[i].param(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsparam[i].param(v.to_character());
+   break;
+
+  case TSTRING:
+   itsparam[i].param(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.\n";
+ }
+}
+
+void Function::pname(unsigned long i, String n)
+{
+ for (unsigned long is = i; is > itsparam.length() - 1; --is)
+  itsparam.insert();
+
+ itsparam[i].name(n);
+}
+
+void Function::defaultv(unsigned long i, PNF_Variable v)
+{
+ for (unsigned long is = i; is > itsparam.length() - 1; --is)
+  itsparam.insert();
+
+ switch (v.getType())
+ {
+  case TVOID:
+   itsparam[i].defaultv(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+   itsparam[i].defaultv(v.to_boolean());
+   break;
+
+  case TNUMBER:
+   itsparam[i].defaultv(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsparam[i].defaultv(v.to_character());
+   break;
+
+  case TSTRING:
+   itsparam[i].defaultv(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.\n";
+ }
+}
+
+void Function::definition(unsigned long d)
+{
+ itsdef = d;
+}
+
+void Function::syncdefaultr(unsigned long i)
+{
+ itsret[i].syncdefault();
+}
+
+void Function::syncdefaultp(unsigned long i)
+{
+ itsparam[i].syncdefault();
+}
+
+String & Function::mangle()
+{
+ String * str = new String();
+ *str = unmangle();
+
+ for (unsigned long i = 0; i < itsret.length(); ++i)
+ {
+  switch (itsret[i].param().getType())
+  {
+   case TVOID:
+    *str += (char *)"_rVOID";
+    break;
+
+   case TBOOLEAN:
+    *str += (char *)"_rBOOLEAN";
+    break;
+
+   case TNUMBER:
+    *str += (char *)"_rNUMBER";
+    break;
+
+   case TCHARACTER:
+    *str += (char *)"_rCHARACTER";
+    break;
+
+   case TSTRING:
+    *str += (char *)"_rSTRING";
+    break;
+
+   default:
+    *str += (char *)"_rNONE";
+  }
+ }
+
+ for (unsigned long i = 0; i < itsparam.length(); ++i)
+ {
+  switch (itsparam[i].param().getType())
+  {
+   case TVOID:
+    *str += (char *)"_VOID";
+    break;
+
+   case TBOOLEAN:
+    *str += (char *)"_BOOLEAN";
+    break;
+
+   case TNUMBER:
+    *str += (char *)"_NUMBER";
+    break;
+
+   case TCHARACTER:
+    *str += (char *)"_CHARACTER";
+    break;
+
+   case TSTRING:
+    *str += (char *)"_STRING";
+    break;
+
+   default:
+    *str += (char *)"_NONE";
+  }
+ }
+
+ return *str;
+}
+
+String & Function::unmangle()
+{
+ String *str = new String((char *)"");
+
+ for (unsigned long i = 0; i < itsname.length(); ++i)
+ {
+  if (itsname[i] == '_')
+   break;
+  *str += itsname[i];
+ }
+
+ return *str;
+}
+
+class Function_Stack
+{
+ protected:
+  Array<Function> itsstk;
+
+ 
+ public:
+  Function_Stack(int i = 0);
+
+  Array<Function> get();
+  
+  void set(Array<Function> f);
+
+  void add_function(Function f);
+  Function & get_function(unsigned long i);
+  Function & get_function(String n, bool & f);
+  Function & last_function();
+  void mod_function(unsigned long i, Function f);
+
+  unsigned long length();
+
+ unsigned long find(String name);
+ unsigned long find(String name, Array<String> rets, Array<String> params);
+ unsigned long find_duplicate(Function f, bool & b);
+};
+
+Function_Stack::Function_Stack(int i)
+{
+
+}
+
+Array<Function> Function_Stack::get()
+{
+ return itsstk;
+}
+  
+void Function_Stack::set(Array<Function> f)
+{
+ itsstk = f;
+}
+
+void Function_Stack::add_function(Function f)
+{
+ try
+ {
+  mod_function(itsstk.length(), f);
+ }
+ catch (Exception e)
+ {
+  e.file((char *)__FILE__);
+  e.line(__LINE__);
+  e.display();
+  exit(1);
+ }
+}
+
+Function & Function_Stack::get_function(unsigned long i)
+{
+ for (unsigned long is = i; is > itsstk.length(); --is)
+  itsstk.insert();
+
+ return itsstk[i];
+}
+
+Function & Function_Stack::get_function(String n, bool & f)
+{
+ Function * itsnull = new Function();
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  String name = itsstk[i].rname();
+  if (name == n)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == false)
+ {
+  f = false;
+  return *itsnull;
+ }
+ else
+ {
+  f = true;
+  return itsstk[i];
+ }
+}
+
+Function & Function_Stack::last_function()
+{
+ return itsstk[itsstk.length() - 1];
+}
+
+void Function_Stack::mod_function(unsigned long i, Function f)
+{
+ for (unsigned long j = i; j >= itsstk.length(); --i)
+  itsstk.insert();
+
+ itsstk[i] = f;
+}
+
+unsigned long Function_Stack::length()
+{
+ return itsstk.length();
+}
+
+unsigned long Function_Stack::find(String n)
+{
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  String str = itsstk[i].name();
+  if (str == n)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == true)
+  return i;
+ else
+  return -1;
+}
+
+unsigned long Function_Stack::find(String name, Array<String> rets, Array<String> params)
+{
+ rets.remove();
+ params.remove();
+
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  bool params2 = false, params3 = false;
+  String str = itsstk[i].rname();
+  if (i == 0)
+  {
+   for (unsigned long j = 0; j < rets.length(); ++j)
+   {
+    if (j == 0)
+     params3 = true;
+    name += ((char *)"_r" + rets[j]);
+   }
+
+   if (params3 == false)
+    name += (char *)"_rVOID";
+
+   for (unsigned long j = 0; j < params.length(); ++j)
+   {
+    if (j == 0)
+     params2 = true;
+    name += ((char *)"_" + params[j]);
+   }
+
+   if (params2 == false)
+    name += (char *)"_VOID";
+
+
+   // DEBUG: cout << "str: " << str << " name: " << name << endl;
+  }
+
+  if (str == name)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == true)
+  return i;
+ else
+  return -1;
+}
+
+unsigned long Function_Stack::find_duplicate(Function f, bool & b)
+{
+ try
+ {
+  unsigned long ret;
+  b = false;
+  unsigned long i;
+  for (i = 0; i < itsstk.length(); ++i)
+  {
+   if (itsstk[i].rname() == f.rname())
+   {
+    b = false;
+    for (unsigned long j = 0; j < itsstk[i].rets().length(); ++j)
+    {
+     if (itsstk[i].ret(j).getm() == f.ret(j).getm())
+     {
+      for (unsigned k = 0; k < itsstk[i].params().length(); ++k)
+      {
+       if (itsstk[i].param(k).getm() != f.param(k).getm())
+        b = true;
+      }
+     }
+    }
+   }
+  }
+
+  ret = i;
+  return ret;
+ }
+ catch (Exception e)
+ {
+  e.file((char *)__FILE__);
+  e.line(__LINE__);
+  e.display();
+  exit(1);
+ }
+}
+
 
 struct Registers
 {
@@ -3565,6 +4419,31 @@ struct Registers
  unsigned long switchindex;
  bool switchcond;
  bool switcht;
+
+
+ Function_Stack fpointer1;
+ unsigned long fpointer1c;
+ unsigned long fpointer1c2;
+ Function * fpointer2;
+ Function * fpointer3;
+ String fname;
+ String fname2;
+ Array<String> frets;
+ Array<String> fparams;
+ Array<String> frets2;
+ Array<String> fparams2;
+ Array<String> frets3;
+ Array<String> fparams3;
+ unsigned long pnum;
+ unsigned long rnum;
+
+ bool infunc;
+ unsigned long infuncc;
+ bool inparams;
+ unsigned long inparamsc;
+
+ bool fdefaultv;
+ PNF_Variable fdefaultvalue;
 };
 
 
@@ -3583,6 +4462,7 @@ class PNF
          Registers reg;
          Stack stk;
          Stack substk;
+	 Stack funcstk;
 
          ifstream pnffin;
          ofstream pnffout;
@@ -3902,10 +4782,15 @@ void PNF::loads3()
 }
 
 void PNF::preprocess()
-{ 
- String cmdline = (char *)"./pnfpp" + (strip_extension(reg.args[0]) + ".pppnf") + (strip_extension(reg.args[0]) + (char *)".pnf");
-
- system(cmdline.getString().c_str());
+{
+ #ifdef OS_WINDOWS 
+ _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(reg.args[0]) + (char *)".pppnf").getString().c_str(), 
+ 		 (strip_extension(reg.args[0]) + (char *)".pnf").getString().c_str(), NULL);
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+ String str = (char *)"pnfpp " + (strip_extension(reg.args[0]) + (char *)".pppnf") + (strip_extension(reg.args[0]) + (char *)".pnf");
+ system(str.getString().c_str());
+ #endif // OS_LINUX
 }
 
 void PNF::check()
@@ -3915,6 +4800,8 @@ void PNF::check()
 
 String PNF::execute()
 {
+ try
+ {
  // Variables needed
  bool inBreakpoint = false;
  unsigned long numBreakpoints = 0;
@@ -3937,6 +4824,10 @@ String PNF::execute()
   // Load the supported versions...
  reg.sversion[0].base.put(v);
  reg.sversion[0].top = 0;
+
+ reg.sversion.insert();
+ reg.sversion[1].base.put(v);
+ reg.sversion[1].top = 1;
 
   // Load the supported instructions...
   for (unsigned long is = 0; is <= IENDI - 1; ++is)
@@ -3986,6 +4877,24 @@ String PNF::execute()
   reg.ifcounter = 0;
   reg.ifcond = false;
   reg.eifsave = 0;
+
+ // Set up the function pointers...
+ reg.fpointer1c = 0;
+ reg.fpointer1c2 = 0;
+ reg.fpointer2 = NULL;
+ reg.fpointer3 = NULL;
+ reg.fname = (char *)"";
+ reg.fname2 = (char *)"";
+ reg.pnum = 0;
+ reg.rnum = 0;
+
+ reg.infunc = false;
+ reg.infuncc = 0;
+
+ reg.inparams = false;
+ reg.inparamsc = 0;
+
+ reg.fdefaultv = false;
  
   
  // First pass of execution
@@ -4233,6 +5142,9 @@ reg.switchindex = 0;
         switch (reg.type)
         {
          case TVOID:
+	  switch (reg.operand)
+	  {
+	   case 0: // 0V
                if (reg.operand != 0)
                 crash((char *)"Invalid VOID Value.");
                else
@@ -4241,7 +5153,62 @@ reg.switchindex = 0;
                	reg.version.base.put(v);
                	reg.version.top = 0;
                }
-               break;
+	  break;
+
+	  case 1:
+	   reg.version.top = 1;
+
+
+          if (reg.iname == (char *)"(COMPILED)")
+          {
+           // Load extra info for ifs...
+           unsigned long ifcounter = 0;
+           for (unsigned long i = 0; i != reg.ecount; i += 3)
+           {
+            if (mem.get(i + 1) == TSTRING)
+            {
+             unsigned long is = 0;
+             for (is = i + 2; mem.get(is) != 0; ++is)
+              ;
+            ++is;
+            i = is;
+            i -= 3;
+            continue;
+           }
+
+           if (mem.get(i) == IIF || mem.get(i) == IENDIF || mem.get(i) == IIFELSE || mem.get(i) == IENDIFELSE || mem.get(i) == IEIF)
+           {
+            if (mem.get(i) == IIF)
+            {
+             ++ifcounter;
+             reg.inif.insert();
+            }
+           }
+          }
+
+          // Load extra info for switches...
+          unsigned long switchcounter = 0;
+          for (unsigned long i = 0; i != reg.ecount; i += 3)
+          {
+           if (mem.get(i + 1) == TSTRING && mem.get(i) != ISWITCH2)
+           {
+            unsigned long is = 0;
+            for (is = i + 2; mem.get(is) != 0; ++is)
+             ;
+            ++is;
+            i = is;
+            i -= 3;
+            continue;
+           }
+
+           if (mem.get(i) == ISWITCH2)
+           {
+            ++switchcounter;
+           }
+          }
+         }
+	}        
+         break;
 
          default:
                crash((char *)"Invalid Type.");
@@ -6398,6 +7365,187 @@ case IESTOREC:
 
    case IVAR:
         {
+         PNF_Void v;
+         bool s = reg.version.check(v, 1);
+
+	 try
+	 {
+	  if (s == true && reg.infunc == true)
+	  {           
+	   if (reg.operand != 0)
+            crash((char *)"Invalid VAR instruction.");
+	   
+  	   ++reg.infuncc;
+	   switch (reg.type)
+	   {
+	    case TVOID:
+	    {
+	     PNF_Void v2;
+	     PNF_Variable v3(v2);
+
+ 	    reg.fpointer1.get_function(reg.fpointer1.length() - 1).ret(reg.infuncc - 1, v3);
+ 	    }
+	    break;
+
+	    case TBOOLEAN:
+	    {
+	     PNF_Boolean b(false);
+	     PNF_Variable v2(b);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).ret(reg.infuncc - 1, v2);
+	    }
+	    break;
+
+	    case TNUMBER:
+	    {
+	     PNF_Number n(0);
+	     PNF_Variable v2(n);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).ret(reg.infuncc - 1, v2);
+	    }
+	    break;
+
+	    case TCHARACTER:
+	    {
+	     PNF_Character c('\0');
+	     PNF_Variable v2(c);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).ret(reg.infuncc - 1, v2);
+	    }
+	    break;
+
+	    case TSTRING:
+	    {
+	     PNF_String str((char *)"");
+	     PNF_Variable v2(str);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).ret(reg.infuncc - 1, v2);
+	    }
+	    break;
+
+	    default:
+	     crash((char *)"Invalid type.");
+	   }
+	   reg.fpointer1.get_function(reg.fpointer1.length() - 1).name(reg.fname);
+
+           break;
+          } else if (s == true && reg.inparams == true)
+          {
+ 	   ++reg.inparamsc;
+	   switch (reg.type)
+	   {
+	    case TVOID:
+	    {
+	     PNF_Void v;
+	     PNF_Variable v2(v);
+	     String str = (char *)"";
+
+	     unsigned long is;
+	     for (is = k; mem.get(is) != 0; ++is)
+	      str += (char)mem.get(is);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).pname(reg.inparamsc - 1, str);
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).param(reg.inparamsc - 1, v2);
+	     i = is + 1;
+             j = i + 1;
+             k = j + 1;
+	     i -= 3, j -= 3, k -= 3;
+	    }
+	    break;
+
+	    case TBOOLEAN:
+	    {
+	     PNF_Boolean b;
+	     PNF_Variable v(b);
+	     String str = (char *)"";
+
+	     unsigned long is;
+	     for (is = k; mem.get(is) != 0; ++is)
+	      str += (char)mem.get(is);
+
+ 	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).pname(reg.inparamsc - 1, str);
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).param(reg.inparamsc - 1, v);
+	     i = is + 1;
+             j = i + 1;
+             k = j + 1;
+	     i -= 3, j -= 3, k -= 3;
+	    }
+	    break;
+
+	    case TNUMBER:
+	    {
+	     PNF_Number n;
+	     PNF_Variable v(n);
+	     String str = (char *)"";
+
+	     unsigned long is;
+	     for (is = k; mem.get(is) != 0; ++is)
+	      str += (char)mem.get(is);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).pname(reg.inparamsc - 1, str);
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).param(reg.inparamsc - 1, v);
+	     i = is + 1;
+             j = i + 1;
+             k = j + 1;
+	     i -= 3, j -= 3, k -= 3;
+	    }
+	    break;
+
+	    case TCHARACTER:
+	    {
+	     PNF_Character c;
+	     PNF_Variable v(c);
+	     String str = (char *)"";
+
+	     unsigned long is;
+	     for (is = k; mem.get(is) != 0; ++is)
+	      str += (char)mem.get(is);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).pname(reg.inparamsc - 1, str);
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).param(reg.inparamsc - 1, v);
+	     i = is + 1;
+             j = i + 1;
+             k = j + 1;
+	     i -= 3, j -= 3, k -= 3;
+	    }
+	    break;
+
+	    case TSTRING:
+	    {
+	     PNF_String s;
+	     PNF_Variable v(s);
+	     String str = (char *)"";
+
+	     unsigned long is;
+	     for (is = k; mem.get(is) != 0; ++is)
+	      str += (char)mem.get(is);
+
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).pname(reg.inparamsc - 1, str);
+	     reg.fpointer1.get_function(reg.fpointer1.length() - 1).param(reg.inparamsc - 1, v);
+	     i = is + 1;
+             j = i + 1;
+             k = j + 1;
+	     i -= 3, j -= 3, k -= 3;
+	    }
+	    break;
+
+
+	    default:
+	     crash((char *)"Invalid type.");
+	   }
+	   reg.fpointer1.get_function(reg.fpointer1.length() - 1).name(reg.fname);
+
+ 	   break;
+	  }
+	 }
+	 catch (Exception e)
+	 {
+	  e.file((char *)__FILE__);
+	  e.line(__LINE__);
+	  e.display();
+	  exit(1);
+	 }
+
          if (reg.type == TSTRING)
          {
           // Skip the variable. Work done on loads2...
@@ -6406,13 +7554,13 @@ case IESTOREC:
            ;
 
           i = is + 1;
-   		  j = i + 1;
+   	  j = i + 1;
           k = i + 2;
 
           i = i - 3;
           j = i + 1;
           k = i + 2;
-	     }
+	 }
         }
         break;
 
@@ -7000,6 +8148,11 @@ case IESTOREC:
 
    case IALOAD:
    {
+    PNF_Void v;
+    bool s = reg.version.check(v, 1);
+
+    if (s == false)
+    {
    	switch (reg.type)
    	{
    	 case TVOID:
@@ -7073,6 +8226,83 @@ case IESTOREC:
    	  crash((char *)"Invalid Type.");
    	  break;
    	}
+    }
+    else
+    {
+   	switch (reg.type)
+   	{
+   	 case TVOID:
+   	 {
+   	  if (reg.operand != 0)
+   	   crash((char *)"Invalid VOID Value.");
+
+   	  PNF_Void v;
+   	  reg.accumulator.put(v);
+     }
+   	 break;
+
+   	 case TBOOLEAN:
+   	 {
+   	  PNF_Boolean b;
+   	  switch (reg.operand)
+   	  {
+   	   case 0:
+   	   	b.put(false);
+   	   	break;
+
+   	   case 1:
+   	   	b.put(true);
+   	   	break;
+
+   	   default:
+   	   	b.put(true);
+   	   	break;
+   	  }
+   	  reg.accumulator.put(b);
+   	 }
+   	 break;
+
+   	 case TNUMBER:
+   	 {
+   	  PNF_Number n(reg.operand);
+   	  reg.accumulator.put(n);
+   	 }
+   	 break;
+
+   	 case TCHARACTER:
+   	 {
+   	  PNF_Character c(reg.operand);
+   	  reg.accumulator.put(c);
+   	 }
+   	 break;
+
+   	 case TSTRING:
+   	 {
+   	  String str = (char *)"";
+   	  unsigned long is;
+   	  for (is = k; mem.get(is) != 0; ++is)
+   	  {
+   	   str += (char)mem.get(is);
+   	  }
+   	  PNF_String s(str);
+   	  reg.accumulator.put(s);
+
+
+      i = is + 1;
+      j = i + 1;
+      k = i + 2;
+
+      i = i - 3;
+      j = i + 1;
+      k = i + 2;
+   	 }
+   	 break;
+
+   	 default:
+   	  crash((char *)"Invalid Type.");
+   	  break;
+   	}
+    }
    }
    break;
 
@@ -7524,7 +8754,7 @@ case IESTOREC:
         default:
          crash((char *)"Invalid file input mode.");
        }
-       worked = (pnffin);
+       worked = (pnffin.is_open());
        PNF_Boolean b(worked);
        reg.accumulator.put(b);
    	  }
@@ -7550,7 +8780,7 @@ case IESTOREC:
        default:
         crash((char *)"Invalid file input mode.");
       }
-      worked = (pnffin);
+      worked = (pnffin.is_open());
       PNF_Boolean b(worked);
       reg.accumulator.put(b);
 
@@ -7609,7 +8839,7 @@ case IESTOREC:
         default:
          crash((char *)"Invalid file output mode.");
        }
-       worked = (pnffout);
+       worked = (pnffout.is_open());
        PNF_Boolean b(worked);
        reg.accumulator.put(b);
    	  }
@@ -7647,7 +8877,7 @@ case IESTOREC:
        default:
         crash((char *)"Invalid file output mode.");
       }
-      worked = (pnffout);
+      worked = (pnffout.is_open());
       PNF_Boolean b(worked);
       reg.accumulator.put(b);
 
@@ -8661,7 +9891,7 @@ case IESTOREC:
 	reg.savins = reg.mins;
 
 
-   	i = is + 1;
+     i = is + 1;
     j = i + 1;
     k = i + 2;
 
@@ -9638,6 +10868,1390 @@ case IESTOREC:
  }
  break;
 
+ case IPATCH:
+ {
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid patch.");
+
+  if (reg.iname == (char *)"(COMPILED)")
+  {
+   // Load extra info for ifs...
+   unsigned long ifcounter = 0;
+   for (unsigned long i = 0; i != reg.ecount; i += 3)
+   {
+    if (mem.get(i + 1) == TSTRING)
+    {
+     unsigned long is = 0;
+     for (is = i + 2; mem.get(is) != 0; ++is)
+      ;
+     ++is;
+     i = is;
+     i -= 3;
+     continue;
+    }
+
+    if (mem.get(i) == IIF || mem.get(i) == IENDIF || mem.get(i) == IIFELSE || mem.get(i) == IENDIFELSE || mem.get(i) == IEIF)
+    {
+     if (mem.get(i) == IIF)
+     {
+       ++ifcounter;
+       reg.inif.insert();
+     }
+    }
+   }
+
+   // Load extra info for switches...
+   unsigned long switchcounter = 0;
+   for (unsigned long i = 0; i != reg.ecount; i += 3)
+   {
+    if (mem.get(i + 1) == TSTRING && mem.get(i) != ISWITCH2)
+    {
+     unsigned long is = 0;
+     for (is = i + 2; mem.get(is) != 0; ++is)
+      ;
+     ++is;
+     i = is;
+     i -= 3;
+     continue;
+    }
+
+    if (mem.get(i) == ISWITCH2)
+    {
+     ++switchcounter;
+    }
+   }
+  }
+ }
+ break;
+
+ case INATIVE:
+ {
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid NATIVE instruction.");
+
+
+  String str = (char *)"";
+  unsigned long is;
+  for (is = i + 2; mem.get(is) != 0; ++is)
+  {
+   str += mem.get(is);
+  }
+  ++is;
+
+  system(((char *)".\\" + str + (char *)".exe").getString().c_str());
+
+  i = is;
+  j = i + 1;
+  k = i + 2;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case IFRET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type == 0 && reg.operand == 0)
+  {
+   PNF_Variable v2 = (funcstk.top());
+   i = (unsigned long)v2.to_number().get();
+   if (i == -1)
+    crash((char *)"Could Not Return.");
+
+   i += 3;
+   funcstk.pop();
+
+   // GOTO Address
+   j = i + 1;
+   k = i + 2;
+
+   i = i - 3;
+   j = i + 1;
+   k = i + 2;
+  }
+  else
+   crash((char *)"Invalid FRET.");
+ }
+ break;
+
+ case IFCALL:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid FCALL instruction.");
+
+  reg.fname = (char *)"";
+  unsigned long is;
+  for (is = k; mem.get(is) != 0; ++is)
+   reg.fname += (char)mem.get(is);
+
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case IFCPARAMS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FCPARAMS instruction.");
+ }
+ break;
+
+ case IFECPARAMS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FECPARAMS instruction.");
+ }
+ break;
+
+ case IFECALL:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FECALL instruction.");
+
+  unsigned long index = reg.fpointer1.find(reg.fname, reg.frets, reg.fparams);
+  if (index == -1)
+   crash((char *)"Function not found.");
+  reg.fpointer3 = &reg.fpointer1.get_function(index);
+
+  for (unsigned long is = reg.frets.length() - 1; is != 0; --is)
+   reg.frets.remove();
+
+  for (unsigned long is = reg.fparams.length() - 1; is != 0; --is)
+   reg.fparams.remove();
+
+
+  PNF_Number n(i);
+  PNF_Variable v2(n);
+  funcstk.push(v2);
+
+  i = reg.fpointer3->definition();
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case IPNUM:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invalid PNUM instruction.");
+
+  reg.pnum = reg.operand;
+ }
+ break;
+
+ case IPARAMF:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  double d = reg.accumulator.to_number().get();
+  unsigned long index = (unsigned long)d;
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    if (reg.operand != 0)
+     crash((char *)"Invalid operand.");
+
+    PNF_Void v2;
+    PNF_Variable v3(v);
+
+    reg.fpointer1.get_function(index).param(reg.pnum, v3);
+    reg.fparams[reg.fparams.length() - 1] = (char *)"VOID";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    if (reg.operand != 0 && reg.operand != 1)
+     crash((char *)"Invalid operand.");
+
+    bool b = reg.operand == 0 ? false : true;
+    PNF_Boolean b2;
+    b2.put(b);
+    PNF_Variable v2(b2);
+
+    reg.fpointer3 = &reg.fpointer1.get_function(index);
+    reg.fpointer3->param(reg.pnum, v2);
+    reg.fparams[reg.fparams.length() - 1] = (char *)"BOOLEAN";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TNUMBER:
+   {
+    PNF_Number n;
+    n.put(reg.operand);
+    PNF_Variable v2(n);
+
+    reg.fpointer3 = &reg.fpointer1.get_function(index);
+    reg.fpointer3->param(reg.pnum, v2);
+    reg.fparams[reg.fparams.length() - 1] = (char *)"NUMBER";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    char ch = (char)reg.operand;
+    PNF_Variable v2((PNF_Character)ch);
+
+    reg.fpointer1.get_function(index).param(reg.pnum, v2);
+    reg.fparams[reg.fparams.length() - 1] = (char *)"CHARACTER";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TSTRING:
+   {
+    PNF_String s;
+    
+    unsigned long is;
+    String str = (char *)"";
+    for (is = k; mem.get(is) != 0; ++is)
+     str += (char)mem.get(is);
+
+    s.put(str);
+    
+    PNF_Variable v2(s);
+
+    reg.fpointer1.get_function(index).param(reg.pnum, v2);
+    reg.fparams[reg.fparams.length() - 1] = (char *)"STRING";
+    reg.fparams.insert();
+
+    i = is + 1;
+    j = i + 1;
+    k = j + 1;
+    i -= 3, j -= 3, k -= 3;
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IPARAMF2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid PARAMF2 instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    PNF_Void v2;
+    PNF_Variable v3;
+
+    reg.accumulator.put(v3);
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    double d = reg.accumulator.to_number().get();
+    unsigned long index = (unsigned long)d;
+    bool b2 = reg.fpointer1.get_function(index).param(reg.pnum).to_boolean().get() == (char *)"false" ? false : true;
+    PNF_Boolean b(b2);
+    PNF_Variable v2(b);
+    reg.accumulator.put(v2);
+   }
+   break;
+
+   case TNUMBER:
+   {
+    double d = reg.accumulator.to_number().get();
+    unsigned long index = (unsigned long)d;
+    PNF_Number n(reg.fpointer1.get_function(index).param(reg.pnum).to_number().get());
+    PNF_Variable v2(n);
+    reg.accumulator.put(v2);
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    double d = reg.accumulator.to_number().get();
+    unsigned long index = (unsigned long)d;
+    reg.accumulator.put(reg.fpointer1.get_function(index).param(reg.pnum).to_character());
+   }
+   break;
+
+   case TSTRING:
+   {
+    double d = reg.accumulator.to_number().get();
+    unsigned long index = (unsigned long)d;
+    PNF_String s(reg.fpointer1.get_function(index).param(reg.pnum).to_string());
+    PNF_Variable v2(s);
+    reg.accumulator.put(v2);
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IPARAMF3:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid PARAMF3 instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    reg.fparams[reg.fparams.length() - 1] = (char *)"VOID";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    reg.fparams[reg.fparams.length() - 1] = (char *)"BOOLEAN";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TNUMBER:
+   {
+    reg.fparams[reg.fparams.length() - 1] = (char *)"NUMBER";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    reg.fparams[reg.fparams.length() - 1] = (char *)"CHARACTER";
+    reg.fparams.insert();
+   }
+   break;
+
+   case TSTRING:
+   {
+    reg.fparams[reg.fparams.length() - 1] = (char *)"STRING";
+    reg.fparams.insert();
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IRNUM:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invalid RNUM instruction.");
+
+  reg.rnum = reg.operand;
+ }
+ break;
+
+ case IRETURNF:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid RETURNF instruction.");
+
+
+  reg.frets.remove();
+  reg.fparams.remove();
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    unsigned long index = reg.fpointer1.find(reg.fname, reg.frets, reg.fparams);
+
+    if (index == -1)
+     crash((char *)"Function not found.");
+
+    reg.fpointer3 = &reg.fpointer1.get_function(index);
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_Void());
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    unsigned long index = reg.fpointer1.find(reg.fname, reg.frets, reg.fparams);
+
+    if (index == -1)
+     crash((char *)"Function not found.");
+
+    reg.fpointer3 = &reg.fpointer1.get_function(index);
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_boolean());
+   }
+   break;
+
+   case TNUMBER:
+   {
+    unsigned long index = reg.fpointer1.find(reg.fname, reg.frets, reg.fparams);
+
+    if (index == -1)
+     crash((char *)"Function not found.");
+
+    reg.fpointer3 = &reg.fpointer1.get_function(index);
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_number());
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    unsigned long index = reg.fpointer1.find(reg.fname, reg.frets, reg.fparams);
+\
+    if (index == -1)
+     crash((char *)"Function not found.");
+
+    reg.fpointer3 = &reg.fpointer1.get_function(index);
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_character());
+   }
+   break;
+
+   case TSTRING:
+   {
+    unsigned long index = reg.fpointer1.find(reg.fname, reg.frets, reg.fparams);
+
+    if (index == -1)
+     crash((char *)"Function not found.");
+
+    reg.fpointer3 = &reg.fpointer1.get_function(index);
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_string());
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IRETURNF2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid RETURNF2 instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    reg.frets[reg.frets.length() - 1] = (char *)"VOID";
+    reg.frets.insert();
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    reg.frets[reg.frets.length() - 1] = (char *)"BOOLEAN";
+    reg.frets.insert();
+   }
+   break;
+
+   case TNUMBER:
+   {
+    reg.frets[reg.frets.length() - 1] = (char *)"NUMBER";
+    reg.frets.insert();
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    reg.frets[reg.frets.length() - 1] = (char *)"CHARACTER";
+    reg.frets.insert();
+   }
+   break;
+
+   case TSTRING:
+   {
+    reg.frets[reg.frets.length() - 1] = (char *)"STRING";
+    reg.frets.insert();
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IRETURNF3:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid RETURNF3 instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    reg.frets2[reg.frets2.length() - 1] = (char *)"VOID";
+    reg.frets2.insert();
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    reg.frets2[reg.frets2.length() - 1] = (char *)"BOOLEAN";
+    reg.frets2.insert();
+   }
+   break;
+
+   case TNUMBER:
+   {
+    reg.frets2[reg.frets2.length() - 1] = (char *)"NUMBER";
+    reg.frets2.insert();
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    reg.frets2[reg.frets2.length() - 1] = (char *)"CHARACTER";
+    reg.frets2.insert();
+   }
+   break;
+
+   case TSTRING:
+   {
+    reg.frets2[reg.frets2.length() - 1] = (char *)"STRING";
+    reg.frets2.insert();
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IFNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid FNAME instruction.");
+
+  unsigned long is;
+  String str = (char *)"";
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+
+  reg.fname = str;
+
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case IRETURNV:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid RETURNV instruction.");
+
+
+  reg.accumulator.put(reg.fpointer3->ret(reg.rnum));
+ }
+ break;
+
+ case IFNCLOAD:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invalid FNCLOAD instruction.");
+
+  reg.fpointer2 = &reg.fpointer1.get_function(reg.operand);
+ }
+ break;
+
+ case IFNCSTORE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    reg.fpointer1.add_function((*reg.fpointer2));
+   }
+   break;
+
+   case TNUMBER:
+   {
+    reg.fpointer1.mod_function(reg.operand, (*reg.fpointer2));
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IFNCNEW:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCNEW intruction.");
+
+  reg.fpointer2 = new Function();
+ }
+ break;
+
+ case IFNCDELETE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCDELETE intruction.");
+
+  delete reg.fpointer2;
+  reg.fpointer2 = NULL;
+ }
+ break;
+
+ case IFNCSNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCSNAME intruction.");
+
+  reg.fpointer2->name(reg.accumulator.to_string().get());
+ }
+ break;
+
+ case IFNCSRET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid FNCSRET instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    PNF_Void v;
+    PNF_Variable v2(v);
+
+    reg.fpointer2->ret(reg.rnum, v2);
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    PNF_Variable v(reg.accumulator.to_boolean());
+
+    reg.fpointer2->ret(reg.rnum, v);
+   }
+   break;
+
+   case TNUMBER:
+   {
+    PNF_Variable v(reg.accumulator.to_number());
+
+    reg.fpointer2->ret(reg.rnum, v);
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    PNF_Variable v(reg.accumulator.to_character());
+
+    reg.fpointer2->ret(reg.rnum, v);
+   }
+   break;
+
+   case TSTRING:
+   {
+    PNF_Variable v(reg.accumulator.to_string());
+
+    reg.fpointer2->ret(reg.rnum, v);
+
+    unsigned long is;
+    for (is = k; mem.get(is) != 0; ++is)
+     ;
+    i = is + 1, j = i + 1, k = j + 1;
+    i -= 3, j -= 3, k -= 3;
+   }
+   break;
+
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IFNCSPARAM:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid FNCSPARAM instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    PNF_Void v;
+    PNF_Variable v2(v);
+
+    reg.fpointer2->param(reg.pnum, v2);
+
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"VOID";
+    reg.fparams3.insert();
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    PNF_Variable v(reg.accumulator.to_boolean());
+
+    reg.fpointer2->param(reg.pnum, v);
+
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"BOOLEAN";
+    reg.fparams3.insert();
+   }
+   break;
+
+   case TNUMBER:
+   {
+    PNF_Variable v(reg.accumulator.to_number());
+
+    reg.fpointer2->param(reg.pnum, v);
+
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"NUMBER";
+    reg.fparams3.insert();
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    PNF_Variable v(reg.accumulator.to_character());
+
+    reg.fpointer2->param(reg.pnum, v);
+
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"CHARACTER";
+    reg.fparams3.insert();
+   }
+   break;
+
+   case TSTRING:
+   {
+    PNF_Variable v(reg.accumulator.to_string());
+
+    reg.fpointer2->param(reg.pnum, v);
+
+    unsigned long is;
+    for (is = k; mem.get(is) != 0; ++is)
+     ;
+    i = is + 1, j = i + 1, k = j + 1;
+    i -= 3, j -= 3, k -= 3;
+
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"STRING";
+    reg.fparams3.insert();
+   }
+   break;
+
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IFNCSDEF:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  switch (reg.type)
+  {
+   case TNUMBER:
+   {
+    reg.fpointer2->definition(reg.operand);
+   }
+   break;
+
+   case TSTRING:
+   {
+    String str = (char *)"";
+    unsigned long is;
+    for (is = k; mem.get(is) != 0; ++is)
+     str += mem.get(is);
+
+    for (unsigned long is2 = 0; is2 < reg.labels.length(); ++is2)
+    {
+     if (reg.labels.get(is2).getString().getString() == str.getString())
+     {
+      reg.operand = reg.labels.get(is2).getNum();
+      break;
+     }
+     else
+      reg.operand = is + 1;
+    }
+    
+    
+    reg.fpointer2->definition(reg.operand);
+
+
+    i = is + 1, j = i + 1, k = j + 1;
+    i -= 3, j -= 3, k -= 3;
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IFNCGNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCGNAME instruction.");
+
+  PNF_String str(reg.fpointer2->name());
+  PNF_Variable v2(str);
+  reg.accumulator.put(v2);
+ }
+ break;
+
+ case IFNCGRET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invalid FNCGRET instruction.");
+
+  reg.accumulator.put(reg.fpointer2->ret(reg.operand));
+ }
+ break;
+
+ case IFNCGPARAM:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invalid FNCGPARAM instruction.");
+
+  reg.accumulator.put(reg.fpointer2->param(reg.operand));
+ }
+ break;
+
+ case IFNCGDEF:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCGNAME instruction.");
+
+  PNF_Number n(reg.fpointer2->definition());
+  PNF_Variable v2(n);
+  reg.accumulator.put(v2);
+ }
+ break;
+
+ case IFNCPOINT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+  
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCPOINT instruction.");
+
+  unsigned long p = reg.accumulator.to_number().get();
+  reg.fpointer3 = &reg.fpointer1.get_function(p);
+ }
+ break;
+
+ case IFNCLENGTH:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+  
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCPOINT instruction.");
+
+  PNF_Number n(reg.fpointer1.length());
+  PNF_Variable v2(n);
+  reg.accumulator.put(v2);
+ }
+ break;
+
+ case IFNCSYNCR:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCSYNCR instruction.");
+
+  reg.fname2 = reg.fname;
+  reg.frets2 = reg.frets;
+  reg.fparams2 = reg.fparams;
+ }
+ break;
+
+ case IFNCFIND:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID)
+   crash((char *)"Invalid FNCFIND instruction.");
+
+ if (reg.operand != 0)
+  crash((char *)"Invalid FNCFIND instruction.");
+
+  String str = reg.accumulator.to_string().get();
+  unsigned long index = reg.fpointer1.find(str, reg.frets3, reg.fparams3);
+  if (index == -1)
+   crash((char *)"Function not found.");
+
+  PNF_Number n(index);
+  reg.accumulator.put(n);
+
+
+  for (unsigned long is = reg.frets3.length() - 1; is != 0; --is)
+   reg.frets3.remove();
+
+  for (unsigned long is = reg.fparams3.length() - 1; is != 0; --is)
+   reg.fparams3.remove();
+ }
+ break;
+
+ case IFNCFRET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid FNCFRET instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+    reg.frets3[reg.frets3.length() - 1] = (char *)"VOID";
+    reg.frets3.insert();
+    break;
+
+   case TBOOLEAN:
+    reg.frets3[reg.frets3.length() - 1] = (char *)"BOOLEAN";
+    reg.frets3.insert();
+    break;
+
+   case TNUMBER:
+    reg.frets3[reg.frets3.length() - 1] = (char *)"NUMBER";
+    reg.frets3.insert();
+    break;
+
+   case TCHARACTER:
+    reg.frets3[reg.frets3.length() - 1] = (char *)"CHARACTER";
+    reg.frets3.insert();
+    break;
+
+   case TSTRING:
+    reg.frets3[reg.frets3.length() - 1] = (char *)"STRING";
+    reg.frets3.insert();
+    break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IFNCFPARAM:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid FNCFPARAM instruction.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"VOID";
+    reg.fparams3.insert();
+    break;
+
+   case TBOOLEAN:
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"BOOLEAN";
+    reg.fparams3.insert();
+    break;
+
+   case TNUMBER:
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"NUMBER";
+    reg.fparams3.insert();
+    break;
+
+   case TCHARACTER:
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"CHARACTER";
+    reg.fparams3.insert();
+    break;
+
+   case TSTRING:
+    reg.fparams3[reg.fparams3.length() - 1] = (char *)"STRING";
+    reg.fparams3.insert();
+    break;
+
+   default:
+    crash((char *)"Invalid type.");
+  }
+ }
+ break;
+
+ case IFNCFBRET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCFPARAM instruction.");
+
+
+  reg.frets3[reg.frets3.length() - 1] = (char *)"";
+ }
+ break;
+
+ case IFNCFBPARAM:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCFPARAM instruction.");
+
+
+  reg.fparams3[reg.fparams3.length() - 1] = (char *)"";
+ }
+ break;
+
+ case IFNCDEFAULT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCDEFAULT instruction.");
+
+  reg.fdefaultv = true;
+ }
+ break;
+
+ case IFNCDEFAULT2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCDEFAULT2 instruction.");
+
+  reg.fdefaultv = false;
+ }
+ break;
+
+ case IFNCSDEFAULTV:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.operand != 0)
+   crash((char *)"Invalid FNCSDEFAULTV instruction.");
+
+  double d = reg.accumulator.to_number().get();
+  unsigned long index = (unsigned long)d;
+
+  reg.fpointer3 = &reg.fpointer1.get_function(index);
+
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    if (reg.fdefaultv)
+    {
+     reg.fparams[reg.fparams.length() - 1] = (char *)"VOID";
+     reg.fparams.insert();
+    }
+   }
+   break;
+
+   case TBOOLEAN:
+   {
+    if (reg.fdefaultv)
+    {
+     reg.fparams[reg.fparams.length() - 1] = (char *)"BOOLEAN";
+     reg.fparams.insert();
+    }
+   }
+   break;
+
+   case TNUMBER:
+   {
+    if (reg.fdefaultv)
+    {
+     reg.fparams[reg.fparams.length() - 1] = (char *)"NUMBER";
+     reg.fparams.insert();
+    }
+   }
+   break;
+
+   case TCHARACTER:
+   {
+    if (reg.fdefaultv)
+    {
+     reg.fparams[reg.fparams.length() - 1] = (char *)"CHARACTER";
+     reg.fparams.insert();
+    }
+   }
+   break;
+
+   case TSTRING:
+   {
+    if (reg.fdefaultv)
+    {
+     reg.fparams[reg.fparams.length() - 1] = (char *)"STRING";
+     reg.fparams.insert();
+    }
+   }
+   break;
+
+   default:
+    crash((char *)"Invalid Type.");
+  }
+ }
+ break;
+
+ case IFNCSDEFAULTV2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCSDEFAULTV2 instruction.");
+
+  if (reg.fdefaultv)
+  {
+   reg.fdefaultvalue = reg.accumulator;
+   reg.fpointer2->defaultv(reg.pnum, reg.fdefaultvalue);
+  }
+ }
+ break;
+
+ case IFNCGDEFAULTV2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCGDEFAULTV2 instruction.");
+
+  if (reg.fdefaultv)
+  {
+   reg.fdefaultvalue.put(reg.fpointer2->defaultv(reg.pnum));
+   reg.accumulator = reg.fdefaultvalue;
+  }
+ }
+ break;
+
+ case IFNCDEFAULTSYNC:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid FNCDEFAULTSYNC instruction.");
+
+  reg.fpointer2->syncdefaultp(reg.pnum);
+ }
+ break;
    
    
    default:
@@ -9707,6 +12321,19 @@ case IESTOREC:
   // Variables
   if (inRet)
    inRet = false;
+ }
+ }
+ catch (Exception e)
+ {
+  e.file(__FILE__);
+  e.line(__LINE__);
+  e.display();
+  exit(-1);
+ }
+ catch (...)
+ {
+  error(ERRORMSG, "Uncaught Exception.");
+  exit(-1);
  }
 }
 

@@ -30,6 +30,7 @@ CHANGELOG
 			 3. Debugged...
 			 4. Added default values to functions.
 			 5. Debugged...
+			 6. Debugged...
 */
 #include <stdarg.h>
 
@@ -1017,9 +1018,14 @@ String strip_extension(String fileName)
 }
 
 void preprocess(String arg)
-{ 
+{
+ #ifdef OS_WINDOWS 
  _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(arg) + (char *)".pppha").getString().c_str(), 
  		 (strip_extension(arg) + (char *)".pha").getString().c_str(), NULL);
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+ system(("./pnfpp " + (strip_extension(arg) + (char *)".pppha") + (Strip_extension(arg) + (char *)".pha")).getString().c_str());
+ #endif // OS_LINUX
 }
 
 int conprint(const char * format, ...)
