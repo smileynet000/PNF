@@ -27,6 +27,10 @@ CHANGELOG
 
 5/3/19 Origional a-a-a - 1. The first version.
 			 2. Added new LTYPE for function return values...
+			 3. Debugged...
+			 4. Added default values to functions.
+			 5. Debugged...
+			 6. Debugged...
 */
 #include <stdarg.h>
 
@@ -206,10 +210,6 @@ CCASE		"ccase"
 
 DEFAULT		"default"
 
-DEFAULTV	"defaultv"
-
-DEFAULTV2	"defaultv2"
-
 CDEFAULT	"cdefault"
 
 BREAK		"break"
@@ -319,6 +319,10 @@ FUNCCALL	"funccall"
 FPARAMETER	"fparameter"
 
 FRET		"fret"
+
+DEFAULTV	"defaultv"
+
+DEFAULTV2	"defaultv2"
 
 ID		[[:alnum:]_$]*
 
@@ -575,10 +579,6 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 
 {DEFAULT}		lval.put("0"); yylval = lval; return DEFAULT;
 
-{DEFAULTV}		lval.put("0"); yylval = lval; return DEFAULTV;
-
-{DEFAULTV2}		lval.put("0"); yylval = lval; return DEFAULTV2;
-
 {CDEFAULT}		lval.put("0"); yylval = lval; return CDEFAULT;
 
 {BREAK}			lval.put("0"); yylval = lval; return BREAK;
@@ -650,6 +650,10 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 {DONEIF}		lval.put("0"); yylval = lval; return DONEIF;
 
 {FRET}			lval.put("0"); yylval = lval; return FRET;
+
+{DEFAULTV}		lval.put("0"); yylval = lval; return DEFAULTV;
+
+{DEFAULTV2}		lval.put("0"); yylval = lval; return DEFAULTV2;
 
 {TYPE}			{
 			 String str = yytext;
@@ -980,8 +984,6 @@ int main(int argc, char ** argv)
  }
  catch (Exception e)
  {
-  e.file(__FILE__);
-  e.line(__LINE__);
   e.display();
  }
 }
@@ -1016,13 +1018,13 @@ String strip_extension(String fileName)
 }
 
 void preprocess(String arg)
-{ 
- #ifdef OS_WINDOWS
+{
+ #ifdef OS_WINDOWS 
  _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(arg) + (char *)".pppha").getString().c_str(), 
  		 (strip_extension(arg) + (char *)".pha").getString().c_str(), NULL);
  #endif // OS_WINDOWS
  #ifdef OS_LINUX
- system(("./pnfpp " + (strip_extension(arg) + (char *)".pppha") + (strip_extension(arg) + (char *)".pha")).getString().c_str());
+ system(("./pnfpp " + (strip_extension(arg) + (char *)".pppha") + (Strip_extension(arg) + (char *)".pha")).getString().c_str());
  #endif // OS_LINUX
 }
 

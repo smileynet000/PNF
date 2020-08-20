@@ -26,7 +26,7 @@
 
 
 echo Cleaning...
-rm *.exe 2> NUL
+rm *.exe 2> /dev/null
 
 echo C++...
 g++ main.cpp -opnf -Wno-write-strings -fpermissive --static

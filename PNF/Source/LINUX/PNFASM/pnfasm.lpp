@@ -62,6 +62,7 @@ This file is part of pnfasm.
 			6. Added FNCPOINT and FNCLENGTH.
 			7. Fixed bugs...
 			8. Took out "extra" instructions.
+			9. Fixed to add instructions again...
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -1223,6 +1224,28 @@ IFECALL2	"FECALL2"
 
 IFNCSYNCR	"FNCSYNCR"
 
+IFNCFIND	"FNCFIND"
+
+IFNCFRET	"FNCFRET"
+
+IFNCFPARAM	"FNCFPARAM"
+
+IFNCFBRET	"FNCFBRET"
+
+IFNCFBPARAM	"FNCFBPARAM"
+
+IFNCDEFAULT	"FNCDEFAULT"
+
+IFNCDEFAULT2	"FNCDEFAULT2"
+
+IFNCSDEFAULTV	"FNCSDEFAULTV"
+
+IFNCSDEFAULTV2	"FNCSDEFAULTV2"
+
+IFNCGDEFAULTV2	"FNCGDEFAULTV2"
+
+IFNCDEFAULTSYNC	"FNCDEFAULTSYNC"
+
 
 TVOID		"TVOID"
 
@@ -1780,15 +1803,29 @@ PPCOMMENT		"'! "{TCHARACTER2}*
 
 {IFNCLENGTH}		yylval = "219"; return IFNCLENGTH;
 
-{IFCALL2}		yylval = "220"; return IFCALL2;
+{IFNCSYNCR}		yylval = "220"; return IFNCSYNCR;
 
-{IFCPARAMS2}		yylval = "221"; return IFCPARAMS2;
+IFNCFIND		yylval = "221"; return IFNCFIND;
 
-{IFECPARAMS2}		yylval = "222"; return IFECPARAMS2;
+{IFNCFRET}		yylval = "222"; return IFNCFRET;
 
-{IFECALL2}		yylval = "223"; return IFECALL2;
+{IFNCFPARAM}		yylval = "223"; return IFNCFPARAM;
 
-{IFNCSYNCR}		yylval = "224"; return IFNCSYNCR;
+{IFNCFBRET}		yylval = "224"; return IFNCFBRET;
+
+{IFNCFBPARAM}		yylval = "225"; return IFNCFBPARAM;
+
+{IFNCDEFAULT}		yylval = "226"; return IFNCDEFAULT;
+
+{IFNCDEFAULT2}		yylval = "227"; return IFNCDEFAULT2;
+
+{IFNCSDEFAULTV}		yylval = "228"; return IFNCSDEFAULTV;
+
+{IFNCSDEFAULTV2}	yylval = "229"; return IFNCSDEFAULTV2;
+
+{IFNCGDEFAULTV2}	yylval = "230"; return IFNCGDEFAULTV2;
+
+{IFNCDEFAULTSYNC}	yylval = "231"; return IFNCDEFAULTSYNC;
 
 
 {TVOID}			yylval = yytext; return TVOID;

@@ -29,9 +29,9 @@ CHANGELOG
 			 5. Finished debugging function parameters.
 			 6. Added return type specification instructions.
 			 7. Debugged...
-			 8. Debugged...
+			 8. Added default parameters...
 			 9. Debugged...
-			10. Debugged...
+			10. Bug fixes...
 			11. Debugged...
 */
 #include <desLib/deslib.hpp>
@@ -58,7 +58,7 @@ void sort_lines(Array<String> & array);
 int yylex();
 String strip_quotes(String str);
 
-void actual_parameters();
+void actual_parameters(PNF_Variable v);
 void actual_parameters2();
 
 FILE * output;
@@ -633,6 +633,7 @@ unsigned long ASTTree::nodenumber()
  return nodes.length();
 }
 
+
 unsigned long scope = 0;
 Array< Array<Var> > varTable;
 Array<CLabel> labelTable;
@@ -712,7 +713,10 @@ bool breakinforever = false;
 
 unsigned long pnum = 0;
 unsigned long pnum3 = 0;
+unsigned long pnum4 = 0;
+unsigned long pnum5 = 0;
 unsigned long rnum = 0;
+unsigned long funcnum = 0;
 
 
 Function_Stack funcstk;
@@ -751,10 +755,6 @@ unsigned long fsaveindex = 0;
 bool saw_12 = false;
 unsigned long fsavepindex = 0;
 unsigned long fsaveindex2 = 0;
-unsigned long fsaveindex3 = 0;
-unsigned long fsavepindex3 = 0;
-unsigned long fsaveindex4 = 0;
-unsigned long fsavepindex4 = 0;
 
 PNF_Variable savenumber;
 
@@ -762,21 +762,7 @@ PNF_Variable savenumber;
 Array < Array<Var> > funcps;
 
 
-bool default_value = false;
 bool fncdefault = false;
-bool fncdefault2 = true;
-
-PNF_Variable fsavedefaultvalue = 0;
-PNF_Variable fsavedefaultvalue2 = 0;
-
-unsigned long funcnum = 0;
-unsigned long funcpnum = 0;
-
-unsigned long funcnum2 = 0;
-
-
-Array<String> funcids;
-bool same_id = false;
 
 
 ASTTree tree;
@@ -895,8 +881,6 @@ ASTTree tree;
 %token CASE
 %token CCASE
 %token DEFAULT
-%token DEFAULTV
-%token DEFAULTV2
 %token CDEFAULT
 %token BREAK
 %token LABEL
@@ -944,6 +928,8 @@ ASTTree tree;
 %token FUNCCALL
 %token FRET
 %token FPARAMETER
+%token DEFAULTV
+%token DEFAULTV2
 
 
 %token PBIN
@@ -5292,73 +5278,173 @@ function_expression:	function_command
 			}
 			;
 
-function_command:	FUNCCALL
+function_command:	FUNCCALL OPCOLON NUMBERV
+			{
+			 funcnum = (unsigned long)$3.to_number().get();
+			}
 			LEFTP vars3 RIGHTP ID
 			{
-			 funcpnum = 0;
-			 fsaveid2 = $5;
+			 fsaveid2 = $8;
 
-			 bool declared = false;
-			 for (unsigned long i = 0; i < funcids.length() - 1; ++i)
-			 {
-			  if (funcids[i] == $5.to_string().get())
-			 {			  
-			   declared = true;
-			   funcnum = i;
-			   break;
-			  }
-			 }
-
-			 conprint("FCALL TSTRING \"%s\"\n", $5.to_string().get().getString().c_str());
+			 conprint("FCALL TSTRING \"%s\"\n", $8.to_string().get().getString().c_str());
 			 conprint("FCPARAMS TVOID 0V\n");
 			}
 			LEFTP
 			{
+			 pnum3 = 0;
+			 pnum4 = 0;
 			}
 			actual_function_parameters
-			{
-			 unsigned long index = funcnum;
-			 fsaveindex = index;
-
-
-			 if (!fncdefault2)
+			{		 
+			 unsigned long index = funcstk.find(fsaveid2.to_string().get(), frets3, fparams3);
+			 if (index == -1)
 			 {
-			  conprint("FNCDEFAULT2 TVOID 0V\n");
+			  fparams3.remove();
+			  index = funcstk.find(fsaveid2.to_string().get(), frets3, fparams3);
+			  if (index == -1)
+			  {
+			   fparams3.remove();
+			   index = funcstk.find(fsaveid2.to_string().get(), frets3, fparams3);
+			   if (index == -1)
+			   {
+			    yyerror("Function not found.");
+			    exit(-1);
+			   }
+			  }
 			 }
+			 fsaveindex = index;
 			}
 			{
+			 if(fncdefault)
+			 {
+			  fncdefault = false;
+			  conprint("FNCDEFAULT2 TVOID 0V\n");
+			 }
+
 			 conprint("FECPARAMS TVOID 0V\n");
 			}
 			RIGHTP
 			{
-			 conprint("FECALL TVOID 0V\n");		
+			 conprint("FECALL TVOID 0V\n");
 			}
 			nothing
 			{
 			 for (unsigned long i = frets3.length() - 1; i > 0; --i)
 			  frets3.remove();
+			 frets3[0] = "";
 
 			 for (unsigned long i = fparams3.length() - 1; i > 0; --i)
 			  fparams3.remove();
+			 fparams3[0] = "";
 			}
 			;
 
 actual_function_parameters:	dv
 				{
-				 
+
 				}
 				;
 
+
 dv:				opt_expressions
 				{
-				 ++funcpnum;
+				 $$ = $1;				 
+
+				 for (unsigned long i = 0; i < funcps[funcps.length() - 1].length(); ++i)
+			 	 {
+			 	  funcps[funcps.length() - 1][i].value($1);
+			 	 }
+				}				
+				;
+
+opt_expressions:		opt_expression
+				{
+ 				 switch (exptype)
+				 {
+				  case TVOID:
+				  {
+				  }
+				  break;
+				  
+				  case TBOOLEAN:
+				  {
+				   fparams3[fparams3.length() - 1] = "BOOLEAN";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TNUMBER:
+				  {
+				   fparams3[fparams3.length() - 1] = "NUMBER";
+			           fparams3.insert();			   
+				  }
+				  break;
+
+				  case TCHARACTER:
+				  {
+				   fparams3[fparams3.length() - 1] = "CHARACTER";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TSTRING:
+				  {
+				   fparams3[fparams3.length() - 1] = "STRING";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  default:
+				   yyerror("Invalid type.");
+				 }
+
+				 ++pnum4;
+				}
+				| opt_expressions COMMA opt_expression
+				{
+ 				 switch (exptype)
+				 {
+				  case TVOID:
+				  {
+				  }
+				  break;
+				  
+				  case TBOOLEAN:
+				  {
+				   fparams3[fparams3.length() - 1] = "BOOLEAN";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TNUMBER:
+				  {
+				   fparams3[fparams3.length() - 1] = "NUMBER";
+			           fparams3.insert();			   
+				  }
+				  break;
+
+				  case TCHARACTER:
+				  {
+				   fparams3[fparams3.length() - 1] = "CHARACTER";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TSTRING:
+				  {
+				   fparams3[fparams3.length() - 1] = "STRING";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  default:
+				   yyerror("Invalid type.");
+				 }
+
+				 ++pnum4;
 				}
 				| DEFAULTV2 OPCOLON TYPE
 				{
-				 ++funcpnum;
-				 ++funcnum;
-				 funcpnum = (funcnum >= 16) ? funcpnum - 1 : funcpnum;
-
 				 PNF_Type_Enum t;
 			  	 if ($3.to_string().get() == "void")
 				  t = TVOID;
@@ -5381,7 +5467,7 @@ dv:				opt_expressions
 				  case TVOID:
 				  {
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TVOID 0V\n");
 				   conprint("FNCDEFAULTSYNC TVOID 0V\n");				   
 				  }
@@ -5393,7 +5479,7 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TBOOLEAN false\n");
 				   conprint("FNCDEFAULTSYNC TVOID 0V\n");		
 				  }
@@ -5405,7 +5491,7 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TNUMBER 0\n");
 				   conprint("FNCDEFAULTSYNC TVOID 0V\n");		   
 				  }
@@ -5417,7 +5503,7 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TCHARACTER ''\n");
 				   conprint("FNCDEFAULTSYNC TVOID 0V\n");
 				  }
@@ -5429,7 +5515,7 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TSTRING \"\" 0\n");
 				   conprint("FNCDEFAULTSYNC TVOID 0V\n");
 				  }
@@ -5438,13 +5524,53 @@ dv:				opt_expressions
 				  default:
 				   yyerror("Invalid type.");
 				 }
+
+
+ 				 switch (exptype)
+				 {
+				  case TVOID:
+				  {
+				  }
+				  break;
+				  
+				  case TBOOLEAN:
+				  {
+				   fparams3[fparams3.length() - 1] = "BOOLEAN";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TNUMBER:
+				  {
+				   fparams3[fparams3.length() - 1] = "NUMBER";
+			           fparams3.insert();			   
+				  }
+				  break;
+
+				  case TCHARACTER:
+				  {
+				   fparams3[fparams3.length() - 1] = "CHARACTER";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TSTRING:
+				  {
+				   fparams3[fparams3.length() - 1] = "STRING";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  default:
+				   yyerror("Invalid type.");
+				 }
+
+
+				 ++pnum3;
+				 ++pnum4;
 				}
 				| opt_expressions COMMA DEFAULTV2 OPCOLON TYPE
 				{
-				 ++funcpnum;
-				 ++funcnum;
-				 funcpnum = (funcnum >= 16) ? funcpnum - 1 : funcpnum;
-
 				 PNF_Type_Enum t;
 			  	 if ($5.to_string().get() == "void")
 				  t = TVOID;
@@ -5467,9 +5593,9 @@ dv:				opt_expressions
 				  case TVOID:
 				  {
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TVOID 0V\n");
-				   conprint("FNCDEFAULTSYNC TVOID 0V\n");
+				   conprint("FNCDEFAULTSYNC TVOID 0V\n");				   
 				  }
 				  break;
 				  
@@ -5479,9 +5605,9 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TBOOLEAN false\n");
-				   conprint("FNCDEFAULTSYNC TVOID 0V\n");
+				   conprint("FNCDEFAULTSYNC TVOID 0V\n");		
 				  }
 				  break;
 
@@ -5491,9 +5617,9 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TNUMBER 0\n");
-				   conprint("FNCDEFAULTSYNC TVOID 0V\n");
+				   conprint("FNCDEFAULTSYNC TVOID 0V\n");		   
 				  }
 				  break;
 
@@ -5503,7 +5629,7 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
+				   conprint("PNUM TNUMBER %d\n", pnum3);
 				   conprint("PARAMF TCHARACTER ''\n");
 				   conprint("FNCDEFAULTSYNC TVOID 0V\n");
 				  }
@@ -5515,8 +5641,8 @@ dv:				opt_expressions
 			           fparams3.insert();
 
 				   conprint("ALOAD TNUMBER %d\n", funcnum);
-				   conprint("PNUM TNUMBER %d\n", funcpnum);
-				   conprint("PARAMF TSTRING \"\"\n");
+				   conprint("PNUM TNUMBER %d\n", pnum3);
+				   conprint("PARAMF TSTRING \"\" 0\n");
 				   conprint("FNCDEFAULTSYNC TVOID 0V\n");
 				  }
 				  break;
@@ -5524,24 +5650,52 @@ dv:				opt_expressions
 				  default:
 				   yyerror("Invalid type.");
 				 }
+
+
+ 				 switch (exptype)
+				 {
+				  case TVOID:
+				  {
+				  }
+				  break;
+				  
+				  case TBOOLEAN:
+				  {
+				   fparams3[fparams3.length() - 1] = "BOOLEAN";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TNUMBER:
+				  {
+				   fparams3[fparams3.length() - 1] = "NUMBER";
+			           fparams3.insert();			   
+				  }
+				  break;
+
+				  case TCHARACTER:
+				  {
+				   fparams3[fparams3.length() - 1] = "CHARACTER";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  case TSTRING:
+				  {
+				   fparams3[fparams3.length() - 1] = "STRING";
+			           fparams3.insert();
+				  }
+				  break;
+
+				  default:
+				   yyerror("Invalid type.");
+				 }
+
+
+				 ++pnum3;
+				 ++pnum4;
 				}
 				;
-
-opt_expressions:		opt_expression
-				{
-				 $$ = $1;
-				 saveexp = $$;
-
-				 for (unsigned long i = 0; i < funcps[funcps.length() - 1].length(); ++i)
-			 	 {
-			 	  funcps[funcps.length() - 1][i].value($1);
-			 	 }
-				}
-				| opt_expressions COMMA opt_expression
-				{
-				 $$ = $3;
-				}
-				;		
 
 actual_function_parameters2:	opt_expression2
 				{
@@ -5550,78 +5704,59 @@ actual_function_parameters2:	opt_expression2
 				}
 				nothing
 				{
-			 	 unsigned long index = fsaveindex4;
+			 	 unsigned long index = funcstk.find(fsaveid3.to_string().get(), frets4, fparams4);
+				 if (index == -1)
+				 {
+				  yyerror("Function not found.");
+				  exit(-1);
+				 }
 				 fsaveindex2 = index;
 				}			
 				;
 
-opt_expression:			{
-				 // Patch the code
-				 fsaveindex = ((fsaveindex >= 12) || !saw_12) ? fsaveindex + 1 : fsaveindex;
-				 if (!saw_12 && (fsaveindex == 12))
-				  saw_12 = true;
-
-			 	 conprint("FNCLOAD TNUMBER %d\n", fsaveindex);
-				 conprint("PNUM TNUMBER %d\n", fsavepindex);
-				}	
-				expression
+opt_expression:			expression
 				{
-				 $$ = savenumber;
-				 saveexp = $$;
+				 $$ = $1;
+				 saveexp = savenumber;
 
-				 pnum = 0;
- 				 switch (exptype)
+
+				 conprint("FNCLOAD TNUMBER %d\n", funcnum);
+
+				 conprint("PNUM TNUMBER %d\n", pnum4);
+				 switch (exptype)
 				 {
 				  case TVOID:
-				  {
-			           conprint("FNCSPARAM TVOID 0V\n");
-				  }
-				  break;
-				  
-				  case TBOOLEAN:
-				  {
-				   fparams3[fparams3.length() - 1] = "BOOLEAN";
-			           fparams3.insert();
+				   conprint("FNCSPARAM TVOID 0V\n");
+				   break;
 
+				  case TBOOLEAN:
 				   conprint("FNCSPARAM TBOOLEAN 0V\n");
-				  }
-				  break;
+				   break;
 
 				  case TNUMBER:
-				  {
-				   fparams3[fparams3.length() - 1] = "NUMBER";
-			           fparams3.insert();
-
-				   conprint("FNCSPARAM TNUMBER 0V\n");				   
-				  }
-				  break;
+				   conprint("FNCSPARAM TNUMBER 0V\n");
+				   break;
 
 				  case TCHARACTER:
-				  {
-				   fparams3[fparams3.length() - 1] = "CHARACTER";
-			           fparams3.insert();
-
 				   conprint("FNCSPARAM TCHARACTER 0V\n");
-				  }
-				  break;
+				   break;
 
 				  case TSTRING:
-				  {
-				   fparams3[fparams3.length() - 1] = "STRING";
-			           fparams3.insert();
-
 				   conprint("FNCSPARAM TSTRING 0V\n");
-				  }
-				  break;
+				   break;
 
 				  default:
+				  {
 				   yyerror("Invalid type.");
+				   exit(-1);
+				  }
 				 }
+
 	
-				 conprint("FNCSTORE TNUMBER %d\n", fsaveindex);
-				 actual_parameters();
+				 conprint("FNCSTORE TNUMBER %d\n", funcnum);
+				 actual_parameters(saveexp);
 				}
-				;								;
+				;
 
 opt_expression2:		{
 				 PNF_Number n(0);
@@ -6118,12 +6253,8 @@ label_declaration:	SUB ID
 			| function_declaration2
 			;
 
-function_declaration:	FUNCDEF LEFTP vars RIGHTP ID LEFTP
+function_declaration:	FUNCDEF LEFTP vars RIGHTP ID LEFTP parameter_declaration RIGHTP
 			{
-			 funcids[funcids.length() - 1] = $5.to_string().get();
-			 funcids.insert();
-
-			 ++funcnum2;
 			 funcps.insert();
 
 			 funcptr->name($5.to_string().get());			 
@@ -6132,27 +6263,25 @@ function_declaration:	FUNCDEF LEFTP vars RIGHTP ID LEFTP
 			 funcptr = NULL;			 
 	
 			 saveid3 = $5;
-			}
-			parameter_declaration RIGHTP
-			{			 
-			 unsigned long index = funcnum2;			 
+			 unsigned long index = funcstk.find($5.to_string().get(), frets, fparams);
+			 if (index == -1)
+			 {
+			  yyerror("Function not found.");
+			  exit(-1);
+			 }
 
 
-			 /*
 			 for (unsigned long i = 0; i < funcstk.get_function(index).params().length(); ++i)
 			 {
-			  if (i == 0)
-			   funcps[index].insert();
-			  funcps[index][i].name(funcstk.get_function(index).pname(i));
 			  funcps[index].insert();
+			  funcps[index][i].name(funcstk.get_function(index).pname(i));
 			 }
 
 			 for (unsigned long i = 0; i < funcstk.get_function(index).params().length(); ++i)
 			 {
 			  funcps[index][i].value(funcstk.get_function(index).param(i));
 			 }
-			 */
-	 
+			 
 			 
 			 conprint("ALOAD TSTRING \"%s\"\n", $5.to_string().get().getString().c_str());
 			 conprint("FNCSNAME TVOID 0V\n");
@@ -6175,7 +6304,6 @@ nothing:		;
 parameter_declaration:	opt_var
 			{
 			 $$ = $1;
-			 funcps[funcnum2].insert();
 
 			 pnum = 0;
 			 switch (exptype)
@@ -6184,11 +6312,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Void v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "VOID";
 			   fparams.insert();
@@ -6203,11 +6328,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Boolean v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "BOOLEAN";
 			   fparams.insert();
@@ -6222,11 +6344,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Number v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "NUMBER";
 			   fparams.insert();
@@ -6241,11 +6360,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Character v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "CHARACTER";
 			   fparams.insert();
@@ -6261,11 +6377,8 @@ parameter_declaration:	opt_var
 			  {			   
 			   PNF_String v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "STRING";
 			   fparams.insert();
@@ -6285,8 +6398,6 @@ parameter_declaration:	opt_var
 			{
 			 $$ = $4;
 
-			 funcps[funcnum2].insert();
-
 
 			 String type = $6.to_string().get();
 			 if (type == "void")
@@ -6308,11 +6419,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Void v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "VOID";
 			   fparams.insert();
@@ -6328,11 +6436,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Boolean v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "BOOLEAN";
 			   fparams.insert();
@@ -6348,11 +6453,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Number v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "NUMBER";
 			   fparams.insert();
@@ -6368,11 +6470,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_Character v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "CHARACTER";
 			   fparams.insert();
@@ -6388,11 +6487,8 @@ parameter_declaration:	opt_var
 			  {
 			   PNF_String v;
 			   PNF_Variable v2(v);
-			   funcstk.get_function(funcnum2).param(pnum, v2);
-			   funcstk.get_function(funcnum2).pname(pnum, $$.to_string().get());
-
-			   funcps[funcnum2][pnum].name($$.to_string().get());
-			   funcps[funcnum2][pnum].value(v2);
+			   funcptr->param(pnum, v2);
+			   funcptr->pname(pnum, $$.to_string().get());
 
 			   fparams[fparams.length() - 1] = "STRING";
 			   fparams.insert();
@@ -6412,7 +6508,8 @@ parameter_declaration:	opt_var
 
 parameter_declaration2:	opt_var2
 			{
-			 ++fsavepindex3;
+			 $$ = $1;
+
 			 switch (exptype)
 			 {
 			  case TVOID:
@@ -6453,12 +6550,66 @@ parameter_declaration2:	opt_var2
 			  default:
 			   yyerror("Invalid type.");
 			 }
+
+
+			 if (fncdefault)
+			 {
+			  conprint("FNCLOAD TNUMBER %d\n", fsaveindex + 1);
+
+			  switch (exptype)
+			  {
+			   case TVOID:
+			   {
+			    conprint("ALOAD TVOID 0V\n");
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TBOOLEAN:
+			   {
+			    conprint("ALOAD TBOOLEAN %s\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_boolean().get().getString().c_str());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TNUMBER:
+			   {
+			    conprint("ALOAD TNUMBER %g\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_number().get());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TCHARACTER:
+			   {
+			    conprint("ALOAD TCHARACTER %c\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_character().get());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TSTRING:
+			   {
+			    conprint("ALOAD TSTRING %s\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_string().get().getString().c_str());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   default:
+			   {
+			    yyerror((char *)"Invalid Type.");
+			    exit(-1);
+			   }
+			  }
+
+			  conprint("FNCSTORE TNUMBER %d\n", fsaveindex + 1);
+			 }
 			}
 			| parameter_declaration2 COMMA VAR ID OPCOLON TYPE opt_default_value
 			{
-			 ++fsavepindex3;
-			 $$ = $4;
-
 			 String type = $6.to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
@@ -6472,8 +6623,6 @@ parameter_declaration2:	opt_var2
 			  exptype = TSTRING;
 			 else
 			  yyerror("Invalid type.");
-
-			 fsavedefaultvalue = $7;
 
 			 switch (exptype)
 			 {
@@ -6514,6 +6663,63 @@ parameter_declaration2:	opt_var2
 
 			  default:
 			   yyerror("Invalid type.");
+			 }
+
+
+			 if (fncdefault)
+			 {
+			  conprint("FNCLOAD TNUMBER %d\n", fsaveindex + 1);
+
+			  switch (exptype)
+			  {
+			   case TVOID:
+			   {
+			    conprint("ALOAD TVOID 0V\n");
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TBOOLEAN:
+			   {
+			    conprint("ALOAD TBOOLEAN %s\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_boolean().get().getString().c_str());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TNUMBER:
+			   {
+			    conprint("ALOAD TNUMBER %g\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_number().get());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TCHARACTER:
+			   {
+			    conprint("ALOAD TCHARACTER %c\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_character().get());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   case TSTRING:
+			   {
+			    conprint("ALOAD TSTRING %s\n", funcstk.get_function(fsaveindex + 1).defaultv(pnum5).to_string().get().getString().c_str());
+			    conprint("PNUM TNUMBER %d\n", pnum5);
+			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
+			   }
+			   break;
+
+			   default:
+			   {
+			    yyerror((char *)"Invalid Type.");
+			    exit(-1);
+			   }
+			  }
+
+			  conprint("FNCSTORE TNUMBER %d\n", fsaveindex + 1);
 			 }
 			}
 			;
@@ -6742,19 +6948,18 @@ opt_var:		VAR ID OPCOLON TYPE
 			 else if (type == "string")
 			  exptype = TSTRING;
 			 else
-			  yyerror("Invalid type.");			}
+			  yyerror("Invalid type.");
+			}
 			| VOIDV
 			{
-			 PNF_String str("0V");
-			 PNF_Variable v(str);
-			 $$ = v;
+			 $$ = $1;
 
 			 exptype = TVOID;
 			}
 			;
 
 opt_var2:		VAR ID OPCOLON TYPE opt_default_value
-			{			 
+			{
 			 $$ = $2;
 
 			 String type = $4.to_string().get();
@@ -6769,11 +6974,12 @@ opt_var2:		VAR ID OPCOLON TYPE opt_default_value
 			 else if (type == "string")
 			  exptype = TSTRING;
 			 else
-			  yyerror("Invalid type.");			 
+			  yyerror("Invalid type.");
 			}
 			| VOIDV
 			{
 			 $$ = $1;
+
 			 exptype = TVOID;
 			}
 			;
@@ -6782,110 +6988,27 @@ opt_default_value:	| dvalue
 			{
 			 $$ = $1;
 
-			 funcps[funcps.length() - 1].insert();
-			 funcps[funcps.length() - 1][funcps[funcps.length() - 1].length() - 1].value($$);
+
+			 funcps[fsaveindex + 1].insert();
+			 funcps[fsaveindex + 1][pnum5].value($$);
 
 
-			 funcstk.get_function(funcps.length() - 1).defaultv(funcps[funcps.length() - 1].length() - 1, $$);
-
-
-			 if (fncdefault)
-			 {
-			  fncdefault = false;
-
-			  conprint("FNCLOAD TNUMBER %d\n", fsaveindex4);
-
-			  switch (exptype)
-			  {
-			   case TVOID:
-			   {
-			    conprint("ALOAD TVOID 0V\n");
-			    conprint("PNUM TNUMBER %d\n", fsavepindex4);
-			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
-			   }
-			   break;
-
-			   case TBOOLEAN:
-			   {
-			    conprint("ALOAD TBOOLEAN %s\n", funcstk.get_function(funcps.length() - 1).defaultv(funcps[funcps.length() - 1].length() - 1).to_boolean().get().getString().c_str());
-			    conprint("PNUM TNUMBER %d\n", fsavepindex4);
-			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
-			   }
-			   break;
-
-			   case TNUMBER:
-			   {
-			    conprint("ALOAD TNUMBER %g\n", funcstk.get_function(funcps.length() - 1).defaultv(funcps[funcps.length() - 1].length() - 1).to_number().get());
-			    conprint("PNUM TNUMBER %d\n", fsavepindex4);
-			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
-			   }
-			   break;
-
-			   case TCHARACTER:
-			   {
-			    conprint("ALOAD TCHARACTER %c\n", funcstk.get_function(funcps.length() - 1).defaultv(funcps[funcps.length() - 1].length() - 1).to_character().get());
-			    conprint("PNUM TNUMBER %d\n", funcps[funcps.length() - 1].length() - 1);
-			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
-			   }
-			   break;
-
-			   case TSTRING:
-			   {
-			    conprint("ALOAD TSTRING %s\n", funcstk.get_function(funcps.length() - 1).defaultv(funcps[funcps.length() - 1].length() - 1).to_string().get().getString().c_str());
-			    conprint("PNUM TNUMBER %d\n", fsavepindex4);
-			    conprint("FNCSDEFAULTV2 TVOID 0V\n");
-			   }
-			   break;
-
-			   default:
-			   {
-			    yyerror((char *)"Invalid Type.");
-			    exit(-1);
-			   }
-			  }
-
-			  conprint("FNCSTORE TNUMBER %d\n", fsaveindex4);
-			 }
-			}
-			nothing
-			{
-			 default_value = true;
+			 funcstk.get_function(fsaveindex + 1).defaultv(pnum5, $$);
+			 funcstk.get_function(fsaveindex + 1).syncdefaultp(pnum5);
 			}
 			;
 
-dvalue:			OPEQUAL expression
+dvalue:			OPEQUAL expression OPCOLON NUMBERV
 			{
 			 $$ = $2;
+			 pnum5 = (unsigned long)$4.to_number().get();
 			}
 			;
 
-opt_default_value2:	| dvalue2
+optdefaultv:		| DEFAULTV
 			{
-			 $$ = $1;			 
-			}
-			nothing
-			{
-			
-			}
-			;
-
-dvalue2:		OPEQUAL expression
-			{
-			 $$ = $2;
-			}
-			;
-
-
-opt_defaultv:		| DEFAULTV
-			{
-			 conprint("FNCDEFAULT TVOID 0V\n");
 			 fncdefault = true;
-			}
-			;
-
-opt_defaultv2:		| DEFAULTV
-			{
-			 fncdefault2 = false;
+			 conprint("FNCDEFAULT TVOID 0V\n");
 			}
 			;
 
@@ -6909,9 +7032,7 @@ opt_var5:		VAR ID OPCOLON TYPE
 			}
 			| VOIDV
 			{
-			 PNF_String str("0V");
-			 PNF_Variable v(str);
-			 $$ = v;
+			 $$ = $1;
 
 			 exptype = TVOID;
 			}
@@ -6943,28 +7064,34 @@ opt_var6:		VAR ID OPCOLON TYPE
 			}
 			;
 
-function_declaration2:	FUNCTION opt_defaultv
+function_declaration2:	FUNCTION optdefaultv LEFTP vars2 RIGHTP ID LEFTP parameter_declaration2 RIGHTP
 			{
-			 ++fsaveindex4;
-			}
-			LEFTP vars2 RIGHTP ID LEFTP parameter_declaration2
-			{			 
+			 pnum5 = 0;
+
+
 			 fsaveid = $6;
+			 unsigned long index = funcstk.find($6.to_string().get(), frets2, fparams2);
+			 if (index == -1)
+			 {
+			  yyerror("Function not found.");
+			  exit(-1);
+			 }
 
-			 unsigned long index = fsaveindex4;			 
+			 fsaveindex = index;
 
-			 fsaveindex3 = index;
-			
 			 conprint("GOTOL TSTRING \"%s_END\"\n", funcstk.get_function(index).rname().getString().c_str());
 			 conprint("LBL TSTRING \"%s\"\n", funcstk.get_function(index).rname().getString().c_str());
 			}
-			RIGHTP
-			{
-			
-			}			
 			function_body
 			{
-			 conprint("LBL TSTRING \"%s_END\"\n", funcstk.get_function(fsaveindex3).rname().getString().c_str());
+			 unsigned long index = funcstk.find(fsaveid.to_string().get(), frets2, fparams2);
+			 if (index == -1)
+			 {
+			  yyerror("Function not found.");
+			  exit(-1);
+			 }
+
+			 conprint("LBL TSTRING \"%s_END\"\n", funcstk.get_function(index).rname().getString().c_str());
 			}
 			nothing	
 			{
@@ -7160,9 +7287,6 @@ vars:			VOIDV
 vars2:			VOIDV
 			{
 			 exptype = TVOID;
-
-			 frets2[frets2.length() - 1] = "VOID";
-			 frets2.insert();
 			}
 			| VAR OPCOLON TYPE
 			{
@@ -8960,7 +9084,7 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
 			  {
-			   yyerror("Function not found. 1");
+			   yyerror("Function not found.");
 			   exit(-1);
 			  }
 
@@ -8993,7 +9117,7 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
 			  {
-			   yyerror("Function not found. 2");
+			   yyerror("Function not found.");
 			   exit(-1);
 			  }
 
@@ -9026,7 +9150,7 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
 			  {
-			   yyerror("Function not found. 3");
+			   yyerror("Function not found.");
 			   exit(-1);
 			  }
 
@@ -9059,7 +9183,7 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
 			  {
-			   yyerror("Function not found. 4");
+			   yyerror("Function not found.");
 			   exit(-1);
 			  }
 
@@ -10758,10 +10882,10 @@ parameter_command:	psig
 
 psig:			signature ID TYPE
 			{
-			 unsigned long index = funcstk.find($1.to_string().get(), frets5, fparams5);
+			 unsigned long index = funcstk.find(fsaveid.to_string().get(), frets5, fparams5);
 			 if (index == -1)
 			 {
-			  yyerror("Function not found. 5");
+			  yyerror("Function not found.");
 			  exit(-1);
 			 }
 
@@ -10779,7 +10903,7 @@ psig:			signature ID TYPE
 
 			 if (!declared)
 			 {
-			  yyerror("Parameter not declared. 1");
+			  yyerror("Parameter not declared.");
 			  exit(-1);
 			 }
 	
@@ -10812,27 +10936,12 @@ psig:			signature ID TYPE
 
 psig2:			signature ID TYPE TYPE
 			{
-			 fparams5.remove();
-			 cout << "$1: " << $1.to_string().get() << endl;
-
-			 for (unsigned i = 0; i < frets5.length(); ++i)
-			  cout << "frets5[" << i << "]: " << frets5[i] << endl;
-
-			 for (unsigned i = 0; i < fparams5.length(); ++i)
-			  cout << "fparams5[" << i << "]: " << fparams5[i] << endl;
-
-			 unsigned long index = funcstk.find($1.to_string().get(), frets5, fparams5);
+			 unsigned long index = funcstk.find(fsaveid.to_string().get(), frets5, fparams5);
 			 if (index == -1)
 			 {
-			  yyerror("Function not found. 6");
+			  yyerror("Function not found.");
 			  exit(-1);
 			 }
-
-			 cout << "index: " << index << endl;
-			 for (unsigned long i = 0; i < funcps[index].length(); ++i)
-			  cout << "funcps[index][" << i << "]: " << funcps[index][i].name() << endl;
-
-			 cout << "$2: " << $2.to_string().get() << endl;
 
 			 bool declared = false;
 			 unsigned long pindex = 0;
@@ -10848,7 +10957,7 @@ psig2:			signature ID TYPE TYPE
 
 			 if (!declared)
 			 {
-			  yyerror("Parameter not declared. 2");
+			  yyerror("Parameter not declared.");
 			  exit(-1);
 			 }
 
@@ -11135,50 +11244,51 @@ pp_statement:		PINCLUDE STRINGV
 
 %%
 /* Additional C/C++ Code */
-void actual_parameters()
+void actual_parameters(PNF_Variable v)
 {
- pnum3++;
  switch (exptype)
  {
   case TVOID:
-   conprint("ALOAD TNUMBER %d\n", fsaveindex);
-   conprint("PNUM TNUMBER %d\n", pnum++);
+   conprint("ALOAD TNUMBER %d\n", funcnum);
+   conprint("PNUM TNUMBER %d\n", pnum4);
    conprint("PARAMF TVOID 0V\n");
    break;
 
   case TBOOLEAN:
-   conprint("ALOAD TNUMBER %d\n", fsaveindex);
-   conprint("PNUM TNUMBER %d\n", pnum++);
-   conprint("PARAMF TBOOLEAN %s\n", saveexp.to_boolean().get().getString().c_str());
+   conprint("ALOAD TNUMBER %d\n", funcnum);
+   conprint("PNUM TNUMBER %d\n", pnum4);
+   conprint("PARAMF TBOOLEAN %s\n", v.to_boolean().get().getString().c_str());
    break;
 
   case TNUMBER:
   {
-   conprint("ALOAD TNUMBER %d\n", fsaveindex);
-   conprint("PNUM TNUMBER %d\n", pnum++);
-   double d = saveexp.to_number().get();
-   unsigned long n = (unsigned long)d;
-   conprint("PARAMF TNUMBER %d\n", n);
+   conprint("ALOAD TNUMBER %d\n", funcnum);
+   conprint("PNUM TNUMBER %d\n", pnum4);
+   double d = v.to_number().get();
+   conprint("PARAMF TNUMBER %g\n", d);
   }
   break;
 
   case TCHARACTER:
   {
-   conprint("ALOAD TNUMBER %d\n", fsaveindex);
-   conprint("PNUM TNUMBER %d\n", pnum++);
-   conprint("PARAMF TCHARACTER '%c'\n", saveexp.to_character().get());
+   conprint("ALOAD TNUMBER %d\n", funcnum);
+   conprint("PNUM TNUMBER %d\n", pnum4);
+   conprint("PARAMF TCHARACTER '%c'\n", v.to_character().get());
   }
   break;
 
   case TSTRING:
-   conprint("ALOAD TNUMBER %d\n", fsaveindex);
-   conprint("PNUM TNUMBER %d\n", pnum++);
-   conprint("PARAMF TSTRING \"%s\"\n", saveexp.to_string().get().getString().c_str());
+   conprint("ALOAD TNUMBER %d\n", funcnum);
+   conprint("PNUM TNUMBER %d\n", pnum4);
+   conprint("PARAMF TSTRING \"%s\"\n", v.to_string().get().getString().c_str());
    break;
 
  default:
   yyerror("Invalid type.");
-			 }
+ }
+
+
+ ++pnum3;
 }
 
 void actual_parameters2()

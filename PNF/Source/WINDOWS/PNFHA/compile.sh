@@ -28,8 +28,8 @@
 
 
 echo Cleaning...
-rm *.cpp 2> NUL
-rm *.exe 2> NUL
+rm *.cpp 2> /dev/null
+rm *.exe 2> /dev/null
 
 echo Bison...
 bison -t -opnfha.tab.cpp pnfha.ypp
