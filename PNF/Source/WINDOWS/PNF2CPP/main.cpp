@@ -26,7 +26,10 @@ This program is free software: you can redistribute it and/or modify
 */
 // Includes go here
 #include <stdlib.h>
-#include <windows.h>
+
+#ifdef OS_WINDOWS
+ #include <windows.h>
+#endif
 #include "../pnf.hpp"
 
 
@@ -63,7 +66,13 @@ int main(int argc, char ** argv)
   if (four)
    PNFHPP = argv[3];
   
-  int cp = CopyFile(PNFHPP, ".\\pnf.hpp", TRUE);
+  int cp = 0;
+  #ifdef OS_WINDOWS
+   cp = CopyFile(PNFHPP, ".\\pnf.hpp", TRUE);
+  #endif
+  #ifdef OS_LINUX
+   cp = system((PNFHPP + " ./pnf.hpp").getString().c_str());
+  #endif
   
   if (cp == 0)
    error(WARNINGMSG, "Cannot copy file. Does the file already exist?");

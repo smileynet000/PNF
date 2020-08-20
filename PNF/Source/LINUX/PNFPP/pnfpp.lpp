@@ -22,8 +22,7 @@ This file is part of pnfpp.
 CHANGELOG
 =========
 
-5/3/19 Origional a-a-a - 1. The first version.
-			 2. Made Linux compatable.
+5/3/19 Origional a-a-a - The first version.
 */
 #include <stdarg.h>
 

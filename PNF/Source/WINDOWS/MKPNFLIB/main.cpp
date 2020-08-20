@@ -34,7 +34,7 @@ This program is free software: you can redistribute it and/or modify
 
 
 // Includes go here...
-#include <desLib/desLib.hpp>
+#include <desLib/deslib.hpp>
 
 
 // Classes go here...

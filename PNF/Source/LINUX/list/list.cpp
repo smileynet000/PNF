@@ -14,12 +14,12 @@ This program is free software: you can redistribute it and/or modify
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+
 /*
 CHANGELOG
 =========
 
-5/3/19 Orgigional a-a-a - 1. The first version.
-			  2. Made Linux Compatable.
+5/3/19 Origional a-a-a - The first version.
 */
 
 

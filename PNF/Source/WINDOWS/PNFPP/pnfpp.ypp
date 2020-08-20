@@ -24,11 +24,18 @@ CHANGELOG
 
 5/3/19 Origional a-a-a - The first version.
 */
-#include <desLib/desLib.hpp>
+#include <desLib/deslib.hpp>
 
+#ifdef OS_WINDOWS
 #include <process.h>
+#endif // OS_WINDOWS
+
+
 #include <cctype>
 #include <ctime>
+
+
+#define OS_LINUx
 
 
 #define YYSTYPE String
@@ -205,7 +212,8 @@ String PNFPP_Macro::parameter(unsigned long index)
 {
  if (index >= itsparameters.length())
  {
-  char * num = ltoa(index, num, 10);
+  char * num = "";
+  sprintf(num, "%d", index);
   throw Exception((String)"get: Macro index out of bounds. index = " + num, __FILE__, __LINE__);
  }
  
@@ -233,7 +241,8 @@ String PNFPP_Macro::value(unsigned long index)
 {
  if (index >= itsvalues.length())
  {
-  char * num = ltoa(index, num, 10);
+  char * num = "";
+  sprintf(num, "%d", index);
   throw Exception((String)"get: Macro index out of bounds. index = " + num, __FILE__, __LINE__);
  }
 
@@ -244,7 +253,8 @@ void PNFPP_Macro::value(unsigned long index, String v)
 {
  if (index >= itsvalues.length())
  {
-  char * num = ltoa(index, num, 10);
+  char * num = "";
+  sprintf(num, "%d", index);
   throw Exception((String)"put: Macro index out of bounds. index = " + num, __FILE__, __LINE__);
  }
  itsvalues[index] = v;
@@ -372,8 +382,13 @@ include_command:	INCLUDE STRING
     
     			 args2[args.length() - 1] = NULL;
    
-   
-   			 int ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+   			int ret;
+			 #ifdef OS_WINDOWS
+   			 ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+			 #endif // OS_WINDOWS
+			 #ifdef OS_LINUX
+			 ret = system(("./pnfpp " + args2).getString().c_str());
+			 #endif // OS_LINUX
     			 delete args2;
    
    			 if (ret == -1 && errno != 0)
@@ -424,8 +439,13 @@ include_command:	INCLUDE STRING
     
     			 args2[args.length() - 1] = NULL;
    
-   
-   			 int ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+			 int ret;
+   			 #ifdef OS_WINDOWS
+   			 ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+			 #endif // OS_WINDOWS
+			 #ifdef OS_LINUX
+			 ret = systm(("./pnfpp " + args2).getString().c_str());
+			 #endif // OS_LINUX
     			 delete args2;
    
    			 if (ret == -1 && errno != 0)
@@ -488,7 +508,13 @@ import_command:		IMPORT STRING
     			  args2[args.length() - 1] = NULL;
    
    
-   			  int ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+			  int ret;
+			  #ifdef OS_WINDOWS
+   			  ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+			  #endif // OS_WINDOWS
+			  #ifdef OS_LINUX
+			  ret = systm(("./pnfpp " + args2).getString().c_str());
+			  #endif // OS_LINUX
     			  delete args2;
    
    			  if (ret == -1 && errno != 0)
@@ -558,8 +584,14 @@ import_command:		IMPORT STRING
     
     			  args2[args.length() - 1] = NULL;
    
-   
-   			  int ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+			  
+			  int ret;
+ 			  #ifdef OS_WINDOWS
+   			   ret = _spawnvp(_P_WAIT, "PNFPP", args2);
+			  #endif // OS_WINDOWS
+			  #ifdef OS_LINUX
+			   ret = systm(("./pnfpp " + args2).getString().c_str());
+			  #endif // OS_LINUX
     			  delete args2;
    
    			  if (ret == -1 && errno != 0)
@@ -1166,13 +1198,13 @@ String remove_extension(String file)
 {
  String ret;
 
- file = strrev((char *)file.getString().c_str());
+ file = file.reverse();
  unsigned long pos = file.getString().find('.');
  if (pos == string::npos)
-  ret = strrev((char *)file.getString().c_str());
+  ret = file.reverse();
 
  ret = file.getString().substr(pos + 1);
- ret = strrev((char *)ret.getString().c_str());
+ ret = file.reverse();
 
 
  return ret;

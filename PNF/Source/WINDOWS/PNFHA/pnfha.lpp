@@ -27,6 +27,9 @@ CHANGELOG
 
 5/3/19 Origional a-a-a - 1. The first version.
 			 2. Added new LTYPE for function return values...
+			 3. Debugged...
+			 4. Added default values to functions.
+			 5. Debugged...
 */
 #include <stdarg.h>
 
@@ -315,6 +318,10 @@ FUNCCALL	"funccall"
 FPARAMETER	"fparameter"
 
 FRET		"fret"
+
+DEFAULTV	"defaultv"
+
+DEFAULTV2	"defaultv2"
 
 ID		[[:alnum:]_$]*
 
@@ -642,6 +649,10 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 {DONEIF}		lval.put("0"); yylval = lval; return DONEIF;
 
 {FRET}			lval.put("0"); yylval = lval; return FRET;
+
+{DEFAULTV}		lval.put("0"); yylval = lval; return DEFAULTV;
+
+{DEFAULTV2}		lval.put("0"); yylval = lval; return DEFAULTV2;
 
 {TYPE}			{
 			 String str = yytext;

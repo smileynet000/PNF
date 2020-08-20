@@ -22,9 +22,14 @@ This program is free software: you can redistribute it and/or modify
  5/25/15 Origional a - The first version.
  6/26/15 Original a-a - 1. Fixed bugs...
 			2. Fixed bugs...
+			3. Fixed bugs...
 */
 // Includes go here
-#include <cstdlib>
+#include <stdlib.h>
+
+#ifdef OS_WINDOWS
+ #include <windows.h>
+#endif
 #include "../pnf.hpp"
 
 
@@ -57,12 +62,20 @@ int main(int argc, char ** argv)
     return -1;
    }
   }
- 
-  if (four)
-   PNFHPP=argv[3];
 
-  String cmd = (String)"cp " + PNFHPP + "/pnf.hpp .";
-  system(cmd.getString().c_str()); 
+  if (four)
+   PNFHPP = argv[3];
+  
+  int cp = 0;
+  #ifdef OS_WINDOWS
+   cp = CopyFile(PNFHPP, ".\\pnf.hpp", TRUE);
+  #endif
+  #ifdef OS_LINUX
+   cp = system((PNFHPP + " ./pnf.hpp").getString().c_str());
+  #endif
+  
+  if (cp == 0)
+   error(WARNINGMSG, "Cannot copy file. Does the file already exist?");
   
   
   Array<String> args;
@@ -90,7 +103,6 @@ int main(int argc, char ** argv)
    cout << "* ERROR: Cannot open output file.\n";
 
 
-  fout << "#include <cstring>\n\n";
   fout << "#include \"pnf.hpp\"\n\n\n";
 
 
@@ -118,8 +130,8 @@ int main(int argc, char ** argv)
   fout << "  program.loads3();\n";
   fout << "  program.loads2();\n";
   fout << "  program.check();\n";
-  fout << "  char * v;\n";
-  fout << "  int ret = strtol(program.execute().getString().c_str(), &v, 10);\n";
+  fout << "  char * strs;\n";
+  fout << "  int ret = strtol(program.execute().getString().c_str(), &strs, 10);\n";
   fout << "  return ret;\n";
   fout << "}\n";
 

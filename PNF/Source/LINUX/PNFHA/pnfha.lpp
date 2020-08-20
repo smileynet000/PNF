@@ -26,9 +26,8 @@ CHANGELOG
 =========
 
 5/3/19 Origional a-a-a - 1. The first version.
-			 2. Made Linux Compatable
+			 2. Added new LTYPE for function return values...
 */
-
 #include <stdarg.h>
 
 #include "pnfha.tab.cpp"
@@ -207,6 +206,10 @@ CCASE		"ccase"
 
 DEFAULT		"default"
 
+DEFAULTV	"defaultv"
+
+DEFAULTV2	"defaultv2"
+
 CDEFAULT	"cdefault"
 
 BREAK		"break"
@@ -283,7 +286,7 @@ SPTOA		"sptoa"
 
 TYPE		"void"|"boolean"|"number"|"character"|"string"
 
-LTYPE		"memory"|"variable"|"tend"|"type_of"|"iname"|"icount"|"args"|"aload"|"argn"|"stk"
+LTYPE		"memory"|"variable"|"tend"|"type_of"|"iname"|"icount"|"args"|"aload"|"argn"|"stk"|"rvalue"
 
 GTYPE		"normal"|"condition"|"zero"|"positive"|"negative"
 
@@ -306,6 +309,16 @@ FMODEC		"in"|"out"|"binary"|"ate"|"app"|"trunc"
 VTYPE2		"venum"
 
 RTYPE2		"rtype1"|"rtype2"
+
+FUNCTION	"function"
+
+FUNCDEF		"funcdef"
+
+FUNCCALL	"funccall"
+
+FPARAMETER	"fparameter"
+
+FRET		"fret"
 
 ID		[[:alnum:]_$]*
 
@@ -398,17 +411,19 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 			 else
  			  b = "true";
 
-			 lval.put(b); 
-			 yylval = lval.to_boolean(); 
+			 bool b2 = b == "true" ? true : false;
+			 PNF_Boolean b3(b2);
+
+			 lval.put(b3);
+			 yylval = lval.to_boolean();
 			 return BOOLEANV;
 			}
 
 {NUMBERV}		{
 			 double d = atof(yytext);
 			 PNF_Number n(d);
-			 PNF_Variable v(n);
-			 lval.put(v.to_number());
-			 yylval.put(lval.to_number());
+			 lval.put(n);
+			 yylval = lval.to_number();
 			 return NUMBERV;
 			}
 
@@ -560,6 +575,10 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 
 {DEFAULT}		lval.put("0"); yylval = lval; return DEFAULT;
 
+{DEFAULTV}		lval.put("0"); yylval = lval; return DEFAULTV;
+
+{DEFAULTV2}		lval.put("0"); yylval = lval; return DEFAULTV2;
+
 {CDEFAULT}		lval.put("0"); yylval = lval; return CDEFAULT;
 
 {BREAK}			lval.put("0"); yylval = lval; return BREAK;
@@ -629,6 +648,8 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 {ENDIF}			lval.put("0"); yylval = lval; return ENDIF;
 
 {DONEIF}		lval.put("0"); yylval = lval; return DONEIF;
+
+{FRET}			lval.put("0"); yylval = lval; return FRET;
 
 {TYPE}			{
 			 String str = yytext;
@@ -720,6 +741,35 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 			 yylval.put(lval.to_string());
 			 return RTYPE2;
 			}
+
+{FUNCTION}		{
+			 String str = yytext;
+			 lval.put(str);
+			 yylval.put(lval.to_string());
+			 return FUNCTION;
+			}
+
+{FUNCDEF}		{
+			 String str = yytext;
+			 lval.put(str);
+			 yylval.put(lval.to_string());
+			 return FUNCDEF;
+			}
+
+{FUNCCALL}		{
+			 String str = yytext;
+			 lval.put(str);
+			 yylval.put(lval.to_string());
+			 return FUNCCALL;
+			}
+
+{FPARAMETER}		{
+			 String str = yytext;
+			 lval.put(str);
+			 yylval.put(lval.to_string());
+			 return FPARAMETER;
+			}
+
 
 {READ}			lval.put("0"); yylval = lval; return READ;
 
@@ -884,47 +934,56 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 /* Additional Code */
 int main(int argc, char ** argv)
 {
- yydebug = 0;
-
-
- varTable[scope].insert();
-
-
- if (argc == 3)
+ try
  {
-  String extension = get_extension(argv[1]);
-  if (extension == ".pppha")
-   preprocess(argv[1]);
+  yydebug = 0;
 
-  FILE * input = fopen((strip_extension(argv[1]) + ".pha").getString().c_str(), "r");
-  if (!input)
+
+  varTable[scope].insert();
+
+
+  if (argc == 3)
   {
-   yyerror("can't open file");
-   return -1;
-  }
-  yyin = input;
-  output = fopen(argv[2], "w");
-  if (!output)
-  {
-   yyerror("can't open file for write");
-   return -1;
-  }
-  fprintf(output, "VERSION TVOID 0V\n\n\n");
+   String extension = get_extension(argv[1]);
+   if (extension == ".pppha")
+    preprocess(argv[1]);
+
+   FILE * input = fopen((strip_extension(argv[1]) + ".pha").getString().c_str(), "r");
+   if (!input)
+   {
+    yyerror("can't open file");
+    return -1;
+   }
+   yyin = input;
+   output = fopen(argv[2], "w");
+   if (!output)
+   {
+    yyerror("can't open file for write");
+    return -1;
+   }
+   fprintf(output, "VERSION TVOID 1\n\n\n");
 
   
-  int ret = yyparse();
-  //generate_pcode(false);
-  //generate_switch_code();
-  //generate_comment_code();
-  generate_code();
+   int ret = yyparse();
+   //generate_pcode(false);
+   //generate_switch_code();
+   //generate_comment_code();
+   generate_code();
 
 
-  fprintf(output, "\n\nEND TVOID 0V");
-  fclose(output);
-  return ret;
+   fprintf(output, "\n\nEND TVOID 0V");
+   fclose(output);
+   return ret;
+  }
+  else
+   yyerror("can't find input file or output file.");
  }
- else
-  yyerror("can't find input file or output file.");
+ catch (Exception e)
+ {
+  e.file(__FILE__);
+  e.line(__LINE__);
+  e.display();
+ }
 }
 
 void yyerror(char const * c)
@@ -958,9 +1017,13 @@ String strip_extension(String fileName)
 
 void preprocess(String arg)
 { 
- String cmd = (String)"./pnfpp" + (strip_extension(arg) + (char *)".pppha") + 
- 	      (strip_extension(arg) + (char *)".pha");
- system(cmd.getString().c_str());
+ #ifdef OS_WINDOWS
+ _spawnl(_P_WAIT, "pnfpp.exe", "pnfpp.exe", (strip_extension(arg) + (char *)".pppha").getString().c_str(), 
+ 		 (strip_extension(arg) + (char *)".pha").getString().c_str(), NULL);
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+ system(("./pnfpp " + (strip_extension(arg) + (char *)".pppha") + (strip_extension(arg) + (char *)".pha")).getString().c_str());
+ #endif // OS_LINUX
 }
 
 int conprint(const char * format, ...)
