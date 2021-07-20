@@ -1,4 +1,0 @@
-load aload false; ? println "true"; : println "false";;
-
-
-end 0;

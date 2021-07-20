@@ -1,3 +1,0 @@
-load %accumulator memory 0;
-println;
-end 0;

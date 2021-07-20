@@ -1,9 +1,0 @@
-var a = true;
-!a;
-println a;
-var b = false;
-var c = a || b;
-var d = a && b;
-println c;
-println d;
-end 0;

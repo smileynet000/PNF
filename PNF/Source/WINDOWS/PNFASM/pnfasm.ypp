@@ -66,6 +66,12 @@ This file is part of pnfasm.
 			 7. Fixed bugs...
 			 8. Took out "extra" instructions.
 			 9. Fixed to add new instructions again...
+			10. Added NTIMES instruction.
+			11. Added CMP instruction.
+			12. Added RUN, JRUN, & PNFRUN instructions.
+			13. Added struct instructions.
+			14. Added more struct instructions.
+			15. Implemented segment instructions.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -812,7 +818,7 @@ unsigned long pifend = 0;
 /* Bison Declarations */
 %error-verbose
 
-%expect 257
+%expect 311
 
 
 %token ASMVERSION
@@ -1060,10 +1066,6 @@ unsigned long pifend = 0;
 %token IFNCGDEF
 %token IFNCPOINT
 %token IFNCLENGTH
-%token IFCALL2
-%token IFCPARAMS2
-%token IFECPARAMS2
-%token IFECALL2
 %token IFNCSYNCR
 %token IFNCFIND
 %token IFNCFRET
@@ -1076,6 +1078,60 @@ unsigned long pifend = 0;
 %token IFNCSDEFAULTV2
 %token IFNCGDEFAULTV2
 %token IFNCDEFAULTSYNC
+%token INTIMES
+%token ICMP
+%token IRUN
+%token IJRUN
+%token IPNFRUN
+%token ISTRUCT
+%token ISTRUCTVAR
+%token IENDSTRUCT
+%token ISTRUCTNAME
+%token ISTRUCTONAME
+%token ISTRUCTD
+%token ISTRUCTUSE
+%token ISTRUCTUSING
+%token ISTRUCTUSINGNAME
+%token ISTRUCTGET
+%token ISTRUCTPUT
+%token ISTRUCTTYPE
+%token ISTRUCTTYPE2
+%token ISTRUCTNAME2
+%token ISTRUCTNAME3
+%token IUNION
+%token IUNIONVAR
+%token IENDUNION
+%token IUNIONNAME
+%token IUNIONONAME
+%token IUNIOND
+%token IUNIONUSE
+%token IUNIONUSING
+%token IUNIONUSINGNAME
+%token IUNIONGET
+%token IUNIONPUT
+%token IUNIONTYPE
+%token IUNIONTYPE2
+%token IUNIONNAME2
+%token IUNIONNAME3
+%token IMODE
+%token IEXTMODE
+%token IMCHECK
+%token IMSUPP
+%token IMEXTCHECK
+%token IMEXTSUPP
+%token ICPY
+%token IADDSEG
+%token IREMSEG
+%token ICOLLSEG
+%token IEXPSEG
+%token ICPYSEG
+%token ISEGLOAD
+%token ISEGSTORE
+%token ISEGPUSH
+%token ISEGPOP
+%token ISEGTOP
+%token ISEGVLOAD
+%token ISEGVSTORE
 
 
 %token TVOID
@@ -1118,6 +1174,7 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 		 fprintf(output, "0\n");
 		}
 		| IQUIT TVOID NUMBER 		{ fprintf(output, "3 0 %s\n", $3.getString().c_str()); }
+		| IQUIT TNUMBER VOID		{ fprintf(output, "3 2 0\n"); }
 		| IHALT TVOID VOID		{ fprintf(output, "4 0 0\n"); }
 		| IPRINT TVOID VOID		{ fprintf(output, "5 0 0\n"); }
 		| IPRINT TBOOLEAN BOOLEAN	{
@@ -1940,6 +1997,360 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 		| IFNCSDEFAULTV2 TVOID VOID	{ fprintf(output, "229 0 0\n"); }
 		| IFNCGDEFAULTV2 TVOID VOID	{ fprintf(output, "230 0 0\n"); }
 		| IFNCDEFAULTSYNC TVOID VOID	{ fprintf(output, "231 0 0\n"); }
+		| INTIMES TVOID VOID		{ fprintf(output, "232 0 0\n"); }
+		| ICMP TVOID VOID		{ fprintf(output, "233 0 0\n"); }
+		| IRUN TSTRING STRING		{ 
+						 fprintf(output, "234 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IJRUN TSTRING STRING		{ 
+						 fprintf(output, "235 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IPNFRUN TSTRING STRING	{ 
+						 fprintf(output, "236 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}						
+		| ISTRUCT TSTRING STRING	{ 
+						 fprintf(output, "237 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}	
+		| ISTRUCTVAR TSTRING STRING	{ 
+						 fprintf(output, "238 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}	
+		| IENDSTRUCT TVOID VOID	{ fprintf(output, "239 0 0\n"); }
+		| ISTRUCTNAME TSTRING STRING	{ 
+						 fprintf(output, "240 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ISTRUCTONAME TSTRING STRING	{ 
+						 fprintf(output, "241 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ISTRUCTD TSTRING STRING	{ 
+						 fprintf(output, "242 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ISTRUCTUSE TVOID VOID		{ 
+						 fprintf(output, "243 0 0\n");
+						}
+		| ISTRUCTUSE TNUMBER VOID	{	
+						fprintf(output, "243 2 0\n");
+						}
+		| ISTRUCTUSE TSTRING STRING	{ 
+						 fprintf(output, "243 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ISTRUCTUSING TVOID VOID	{ 
+						 fprintf(output, "244 0 0\n");
+						}
+		| ISTRUCTUSINGNAME TVOID VOID	{ 
+						 fprintf(output, "245 0 0\n");
+						}
+		| ISTRUCTGET TVOID VOID		{ 
+						 fprintf(output, "246 0 0\n");
+						}
+		| ISTRUCTPUT TVOID VOID		{ 
+						 fprintf(output, "247 0 0\n");
+						}
+
+		| ISTRUCTTYPE TVOID VOID	{ 
+						 fprintf(output, "248 0 0\n");
+						}
+		| ISTRUCTTYPE2 TVOID VOID	{ 
+						 fprintf(output, "249 0 0\n");
+						}
+		| ISTRUCTNAME2 TVOID VOID	{ 
+						 fprintf(output, "250 0 0\n");
+						}
+		| ISTRUCTNAME3 TVOID VOID	{ 
+						 fprintf(output, "251 0 0\n");
+						}
+
+		| IUNION TSTRING STRING	{ 
+						 fprintf(output, "252 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}	
+		| IUNIONVAR TSTRING STRING	{ 
+						 fprintf(output, "253 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}	
+		| IENDUNION TVOID VOID	{ fprintf(output, "254 0 0\n"); }
+		| IUNIONNAME TSTRING STRING	{ 
+						 fprintf(output, "255 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IUNIONONAME TSTRING STRING	{ 
+						 fprintf(output, "256 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IUNIOND TSTRING STRING	{ 
+						 fprintf(output, "257 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IUNIONUSE TVOID VOID		{ 
+						 fprintf(output, "258 0 0\n");
+						}
+		| IUNIONUSE TNUMBER VOID	{	
+						fprintf(output, "258 2 0\n");
+						}
+		| IUNIONUSE TSTRING STRING	{ 
+						 fprintf(output, "258 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| IUNIONUSING TVOID VOID	{ 
+						 fprintf(output, "259 0 0\n");
+						}
+		| IUNIONUSINGNAME TVOID VOID	{ 
+						 fprintf(output, "260 0 0\n");
+						}
+		| IUNIONGET TVOID VOID		{ 
+						 fprintf(output, "261 0 0\n");
+						}
+		| IUNIONPUT TVOID VOID		{ 
+						 fprintf(output, "262 0 0\n");
+						}
+
+		| IUNIONTYPE TVOID VOID	{ 
+						 fprintf(output, "263 0 0\n");
+						}
+		| IUNIONTYPE2 TVOID VOID	{ 
+						 fprintf(output, "264 0 0\n");
+						}
+		| IUNIONNAME2 TVOID VOID	{ 
+						 fprintf(output, "265 0 0\n");
+						}
+		| IUNIONNAME3 TVOID VOID	{ 
+						 fprintf(output, "266 0 0\n");
+						}
+
+		| IMODE TVOID NUMBER		{ 
+						 fprintf(output, "267 0 0\n");
+						}
+
+		| IEXTMODE TVOID NUMBER		{ 
+						 fprintf(output, "268 0 0\n");
+						}
+
+		| IMCHECK TVOID NUMBER		{ fprintf(output, "269 0 %s\n", $3.getString().c_str()); }
+		| IMCHECK TBOOLEAN BOOLEAN
+		{
+		 if ($3 == "true")
+		  fprintf(output, "269 1 1\n");
+		 else
+		  fprintf(output, "269 1 0\n");
+		}
+		| IMCHECK TNUMBER NUMBER	{ fprintf(output, "269 2 %s\n", $3.getString().c_str()); }
+		| IMCHECK TCHARACTER CHARACTER
+		{
+		 char * dup = strdup($3.getString().c_str());
+		 int ch = (int)dup[1];
+		 fprintf(output, "269 3 %i\n", ch);
+		}
+		| IMCHECK TSTRING STRING
+		{
+		 fprintf(output, "269 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IMSUPP TVOID NUMBER		{ fprintf(output, "270 0 %s\n", $3.getString().c_str()); }
+		| IMSUPP TBOOLEAN BOOLEAN
+		{
+		 if ($3 == "true")
+		  fprintf(output, "270 1 1\n");
+		 else
+		  fprintf(output, "270 1 0\n");
+		}
+		| IMSUPP TNUMBER NUMBER	{ fprintf(output, "270 2 %s\n", $3.getString().c_str()); }
+		| IMSUPP TCHARACTER CHARACTER
+		{
+		 char * dup = strdup($3.getString().c_str());
+		 int ch = (int)dup[1];
+		 fprintf(output, "270 3 %i\n", ch);
+		}
+		| IMSUPP TSTRING STRING
+		{
+		 fprintf(output, "270 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IMEXTCHECK TVOID NUMBER		{ fprintf(output, "271 0 %s\n", $3.getString().c_str()); }
+		| IMEXTCHECK TBOOLEAN BOOLEAN
+		{
+		 if ($3 == "true")
+		  fprintf(output, "271 1 1\n");
+		 else
+		  fprintf(output, "271 1 0\n");
+		}
+		| IMEXTCHECK TNUMBER NUMBER	{ fprintf(output, "271 2 %s\n", $3.getString().c_str()); }
+		| IMEXTCHECK TCHARACTER CHARACTER
+		{
+		 char * dup = strdup($3.getString().c_str());
+		 int ch = (int)dup[1];
+		 fprintf(output, "271 3 %i\n", ch);
+		}
+		| IMEXTCHECK TSTRING STRING
+		{
+		 fprintf(output, "271 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+		| IMEXTSUPP TVOID NUMBER		{ fprintf(output, "272 0 %s\n", $3.getString().c_str()); }
+		| IMEXTSUPP TBOOLEAN BOOLEAN
+		{
+		 if ($3 == "true")
+		  fprintf(output, "272 1 1\n");
+		 else
+		  fprintf(output, "272 1 0\n");
+		}
+		| IMEXTSUPP TNUMBER NUMBER	{ fprintf(output, "272 2 %s\n", $3.getString().c_str()); }
+		| IMEXTSUPP TCHARACTER CHARACTER
+		{
+		 char * dup = strdup($3.getString().c_str());
+		 int ch = (int)dup[1];
+		 fprintf(output, "272 3 %i\n", ch);
+		}
+		| IMEXTSUPP TSTRING STRING
+		{
+		 fprintf(output, "272 4 ");
+		 for (unsigned long i = 0; i < $3.length(); ++i)
+                 {
+		  if ($3[i] != '\"')
+                   fprintf(output, "%d ", (int)($3[i]));
+		 }
+		 fprintf(output, "0\n");
+		}
+
+		| ICPY TVOID VOID		{ 
+						 fprintf(output, "273 0 0\n");
+						}
+
+		| IADDSEG TVOID VOID		{ 
+						 fprintf(output, "274 0 0\n");
+						}
+
+		| IREMSEG TVOID VOID		{ 
+						 fprintf(output, "275 0 0\n");
+						}
+
+		| ICOLLSEG TNUMBER NUMBER	{ fprintf(output, "276 2 %s\n", $3.getString().c_str()); }
+
+		| IEXPSEG TNUMBER NUMBER	{ fprintf(output, "277 2 %s\n", $3.getString().c_str()); }
+
+		| ICPYSEG TVOID VOID		{ 
+						 fprintf(output, "278 0 0\n");
+						}
+
+		| ISEGLOAD TNUMBER NUMBER	{ fprintf(output, "279 2 %s\n", $3.getString().c_str()); }
+
+		| ISEGSTORE TNUMBER NUMBER	{ fprintf(output, "280 2 %s\n", $3.getString().c_str()); }
+		
+		| ISEGPUSH TVOID VOID		{ 
+						 fprintf(output, "281 0 0\n");
+						}
+
+		| ISEGPOP TVOID VOID		{ 
+						 fprintf(output, "282 0 0\n");
+						}
+
+		| ISEGTOP TVOID VOID		{ 
+						 fprintf(output, "283 0 0\n");
+						}
+		| ISEGVLOAD TBOOLEAN NUMBER	{ fprintf(output, "284 1 %s\n", $3.getString().c_str()); }
+		| ISEGVLOAD TNUMBER NUMBER		{ fprintf(output, "284 2 %s\n", $3.getString().c_str()); }
+		| ISEGVLOAD TCHARACTER NUMBER	{ fprintf(output, "284 3 %s\n", $3.getString().c_str()); }
+		| ISEGVLOAD TSTRING NUMBER		{ fprintf(output, "284 4 %s\n", $3.getString().c_str()); }
+		| ISEGVSTORE TVOID VOID		{ fprintf(output, "285 0 0\n"); }
+		| ISEGVSTORE TNUMBER NUMBER	{ fprintf(output, "285 2 %s\n", $3.getString().c_str()); }
+		
 		| ASMVERSION TVOID VOID		{ /* Do nothing... */ }
 		| PNF NUMBER NUMBER NUMBER	{ fprintf(output, "%s %s %s\n", $2.getString().c_str(), $3.getString().c_str(), $4.getString().c_str()); }
 		;

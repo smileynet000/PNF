@@ -1,9 +1,0 @@
-VERSION TVOID 0V
-
-
-LBL TSTRING "forever_1"
-PRINTLN TSTRING "a..."
-GOTOL TSTRING "forever_1"
-LBL TSTRING "forever_end_1"
-
-END TVOID 0V

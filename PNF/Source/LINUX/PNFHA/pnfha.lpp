@@ -31,6 +31,7 @@ CHANGELOG
 			 4. Added default values to functions.
 			 5. Debugged...
 			 6. Debugged...
+			 7. Implemented through segments...
 */
 #include <stdarg.h>
 
@@ -114,6 +115,8 @@ OPLEQU		"<="
 
 OPGEQU		">="
 
+OPCMP		"<=>"
+
 OPBTOR		"|"
 
 OPBTXOR		"^|"
@@ -133,6 +136,10 @@ OPLSQ		"["
 OPRSQ		"]"
 
 OPSTR		"$"
+
+OPSTRTIMES	"x"
+
+OPRUN		"R"
 
 LEFTP		"("
 
@@ -167,6 +174,8 @@ ST		"st"
 PUSH		"push"
 
 POP		"pop"
+
+TOP		"top"
 
 TYPEOF		"typeof"
 
@@ -284,9 +293,27 @@ ATOSP		"atosp"
 
 SPTOA		"sptoa"
 
+STRUCT		"struct"
+
+STRUCTVAR	"structvar"
+
+UNION		"union"
+
+UNIONVAR	"unionvar"
+
+USE		"use"
+
+MODE		"mode"
+
+EXTMODE		"extmode"
+
+COPY		"copy"
+
+SEGMENT		"segment"
+
 TYPE		"void"|"boolean"|"number"|"character"|"string"
 
-LTYPE		"memory"|"variable"|"tend"|"type_of"|"iname"|"icount"|"args"|"aload"|"argn"|"stk"|"rvalue"
+LTYPE		"memory"|"variable"|"tend"|"type_of"|"iname"|"icount"|"args"|"aload"|"argn"|"stk"|"rvalue"|"seg1"|"seg2"
 
 GTYPE		"normal"|"condition"|"zero"|"positive"|"negative"
 
@@ -298,7 +325,7 @@ STYPE		"sub"|"heve"|"sheve"|"eve"|"exe"|"int"
 
 ATYPE		"avariable"|"alabel"|"aevent"
 
-CTYPE		"ver"|"current_ver"|"instruction"|"type"
+CTYPE		"ver"|"current_ver"|"vmode"|"current_vmode"|"extvmode"|"current_extvmode"|"instruction"|"type"
 
 CMTYPE		"l1"|"l2"
 
@@ -306,9 +333,15 @@ BFMODEC		"input"|"output"
 
 FMODEC		"in"|"out"|"binary"|"ate"|"app"|"trunc"
 
+RUNOPOP		"run"|"jrun"|"pnfrun"
+
+OTYPE		"tstruct"|"tunion"
+
 VTYPE2		"venum"
 
 RTYPE2		"rtype1"|"rtype2"
+
+CETYPE		"collapse"|"expand"
 
 FUNCTION	"function"
 
@@ -323,6 +356,12 @@ FRET		"fret"
 DEFAULTV	"defaultv"
 
 DEFAULTV2	"defaultv2"
+
+UNTIL		"until"
+
+UNLESS		"unless"
+
+DOUNTIL		"dountil"
 
 ID		[[:alnum:]_$]*
 
@@ -499,6 +538,8 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 
 {OPGEQU}		lval.put("0"); yylval = lval; return OPGEQU;
 
+{OPCMP}			lval.put("0"); yylval = lval; return OPCMP;
+
 {OPQUES}		lval.put("0"); yylval = lval; return OPQUES;
 
 {OPDOT}			lval.put("0"); yylval = lval; return OPDOT;
@@ -508,6 +549,10 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 {OPRSQ}			lval.put("0"); yylval = lval; return OPRSQ;
 
 {OPSTR}			lval.put("0"); yylval = lval; return OPSTR;
+
+{OPSTRTIMES}		lval.put("0"); yylval = lval; return OPSTRTIMES;
+
+{OPRUN}			lval.put("0"); yylval = lval; return OPRUN;
 
 {VAR}			lval.put("0"); yylval = lval; return VAR;
 
@@ -532,6 +577,8 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 {PUSH}			lval.put("0"); yylval = lval; return PUSH;
 
 {POP}			lval.put("0"); yylval = lval; return POP;
+
+{TOP}			lval.put("0"); yylval = lval; return TOP;
 
 {TYPEOF}		lval.put("0"); yylval = lval; return TYPEOF;
 
@@ -655,6 +702,30 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 
 {DEFAULTV2}		lval.put("0"); yylval = lval; return DEFAULTV2;
 
+{UNTIL}			lval.put("0"); yylval = lval; return UNTIL;
+
+{UNLESS}		lval.put("0"); yylval = lval; return UNLESS;
+
+{DOUNTIL}		lval.put("0"); yylval = lval; return DOUNTIL;
+
+{STRUCT}		lval.put("0"); yylval = lval; return STRUCT;
+
+{STRUCTVAR}		lval.put("0"); yylval = lval; return STRUCTVAR;
+
+{UNION}			lval.put("0"); yylval = lval; return UNION;
+
+{UNIONVAR}		lval.put("0"); yylval = lval; return UNIONVAR;
+
+{USE}			lval.put("0"); yylval = lval; return USE;
+
+{MODE}			lval.put("0"); yylval = lval; return MODE;
+
+{EXTMODE}		lval.put("0"); yylval = lval; return EXTMODE;
+
+{COPY}			lval.put("0"); yylval = lval; return COPY;
+
+{SEGMENT}		lval.put("0"); yylval = lval; return SEGMENT;
+
 {TYPE}			{
 			 String str = yytext;
 			 lval.put(str);
@@ -744,6 +815,27 @@ PPPCOMMENT	"%%'! "{TCHARACTER2}*
 			 lval.put(str);
 			 yylval.put(lval.to_string());
 			 return RTYPE2;
+			}
+
+{CETYPE}		{
+			 String str = yytext;
+			 lval.put(str);
+			 yylval.put(lval.to_string());
+			 return CETYPE;
+			}
+
+{RUNOPOP}		{
+			 String str = yytext;
+			 lval.put(str);
+			 yylval.put(lval.to_string());
+			 return RUNOPOP;
+			}
+
+{OTYPE}			{
+			 String str = yytext;
+			 lval.put(str);
+			 yylval.put(lval.to_string());
+			 return OTYPE;
 			}
 
 {FUNCTION}		{

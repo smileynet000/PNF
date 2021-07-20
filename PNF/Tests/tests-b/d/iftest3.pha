@@ -1,4 +1,0 @@
-if (true)
- println "a...";
-
-end 0;

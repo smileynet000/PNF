@@ -1,7 +1,0 @@
-#macro "TWICE"("x")
-((x) * 2)
-#endm
-
-#macro "POWER"("x", "power")
-((x) ^ (power))
-#endm

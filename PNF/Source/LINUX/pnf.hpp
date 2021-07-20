@@ -1,7 +1,7 @@
 /*
- Copyright 2019 Dennis Earl Smiley
+    Copyright 2019 Dennis Earl Smiley
 
-This program is free software: you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -92,6 +92,24 @@ This program is free software: you can redistribute it and/or modify
 					       17. Added try...catch to PNF::execute()
 					       18. Debugged...
 					       19. Debugged...
+
+8/20/20 Origional a-a-g -			1. Added NTIMES instruction.
+						2. Added CMP instruction.
+						3. Added RUN, JRUN & PNFRUN instructions.
+						4. Added more basic types.
+						5. Changed the type of %accumulator and %calc, to greatly enhance features. Not using anywhere 							   yet.
+						6. Debugged...
+						7. Plopped a struct definition in there.
+						8. Because it wouldn't work, due to forward declarations, I restructured the files...
+						9. Files restructured, for now.
+					       10. Created structs instructions.
+					       11. Debugged structs instructions...
+					       12. Debugged...
+					       13. Completed struct instructions.
+					       14. Started working on unions
+					       15. Finished work on unions
+					       16. Added segments and some simple instructions for them.
+					       17. Implemented segment instructions.
 */
 #include <desLib/deslib.hpp>
 #include <cstdlib>
@@ -806,2449 +824,8 @@ This program is free software: you can redistribute it and/or modify
  IFNCGDEF      - Gets a definition address for %fpointer2
 		 FNCGDEF TVOID 0V
 */
-enum PNF_Instruction_Enum
-{
- IVERSION = 0,
- IVOID,
- ICRASH,
- IQUIT,
- IHALT,
- IPRINT,
- IPRINTLN,
- IREAD,
- ILOAD,
- ISTORE,
- ILOADC,
- ISTOREC,
- IELOAD,
- IESTORE,
- IELOADC,
- IESTOREC,
- IVLOAD,
- IVSTORE,
- IVLOADC,
- IVSTOREC,
- ISTOREA,
- IMODT,
- IMODCT,
- IADD,
- ISUB,
- IMUL,
- IDIV,
- IMOD,
- IPOW,
- IROOT,
- IINC,
- IDEC,
- IEQU,
- INEQU,
- IGTR,
- ILSS,
- IGEQU,
- ILEQU,
- IAND,
- IOR,
- INOT,
- IGOTO,
- ICGOTO,
- IZGOTO,
- IPGOTO,
- INGOTO,
- IGOTOL,
- ICGOTOL,
- IZGOTOL,
- IPGOTOL,
- INGOTOL,
- IST,
- IPUSH,
- IPOP,
- ICALL,
- ICALLL,
- IRET,
- IVAR,
- ILBL,
- IEPRINT,
- IEPRINTLN,
- IEND,
- IELBL,
- IEVLOAD,
- IHEADD,
- IHEREM,
- IHEED,
- IHEGET,
- ISHEADD,
- ISHEREM,
- ISHEED,
- ISHEGET,
- IEADD,
- IEREM,
- IEED,
- IEGET,
- IEXADD,
- IEXREM,
- IEXED,
- IEXGET,
- IIADD,
- IIREM,
- IIED,
- IIGET,
- IHEVENT,
- ISHEVENT,
- IEVENT,
- IEXCEPTION,
- IINT,
- ITYPEOF,
- ICTYPEOF,
- ITLOAD,
- IALOAD,
- IINLOAD,
- IICLOAD,
- IARLOAD,
- IATOC,
- ISWITCH,
- IVADD,
- ILADD,
- IELADD,
- IADD2V,
- IBTAND,
- IBTOR,
- IBTEXOR,
- IBTNOT,
- IBTSL,
- IBTSR,
- IVCHECK,
- IVSUPP,
- IVPRINT,
- IVPRINTLN,
- IISUPP,
- ITSUPP,
- ICOMMENT,
- IFIMODE,
- IFOMODE,
- IFIOPEN,
- IFOOPEN,
- IFREAD,
- IFPRINT,
- IFPRINTLN,
- IFICLOSE,
- IFOCLOSE,
- IMEML,
- IFIEOF,
- IARNLOAD,
- IRDSTART1,
- IRFROM1,
- IRTO1,
- IRDEND1,
- IRSTART1,
- IRANGE1,
- IREND1,
- IRLOAD1,
- IRSTORE1,
- IHEADDB,
- ISHEADDB,
- IEADDB,
- IEXADDB,
- IIADDB,
- IRDSTART2,
- IRFROM2,
- IRTO2,
- IRDEND2,
- IRSTART2,
- IRANGE2,
- IRPREP2,
- IRLOAD2,
- IESTART,
- IENAME,
- IEEND,
- IENUMS,
- IENUM,
- ISENUM,
- IEPREP,
- ILOADE,
- ISTOREE,
- IASTART,
- IAEND,
- IAPREP,
- IAIPREP,
- ILOADIA,
- ISTOREIA,
- IALENGTH,
- IAPRINT,
- IDUP,
- ICDUP,
- IIF,
- IENDIF,
- IIFELSE,
- IENDIFELSE,
- IEIF,
- IIFBEGIN,
- IIFEND,
- ISWITCH2,
- ISWBEGIN,
- ISWEND,
- ISWCASE,
- ISWCBEGIN,
- ISWCEND,
- ISWDEFAULT,
- ISWBREAK,
- ILOADSP,
- ISTORESP,
- ILOADSTACK,
- ISTORESTACK,
- IATOSP,
- ISPTOA,
- IPATCH,
- INATIVE,
- IFRET,
- IFCALL,
- IFCPARAMS,
- IFECPARAMS,
- IFECALL,
- IPNUM,
- IPARAMF,
- IPARAMF2,
- IPARAMF3,
- IRNUM,
- IRETURNF,
- IRETURNF2,
- IRETURNF3,
- IFNAME,
- IRETURNV,
- IFNCLOAD,
- IFNCSTORE,
- IFNCNEW,
- IFNCDELETE,
- IFNCSNAME,
- IFNCSRET,
- IFNCSPARAM,
- IFNCSDEF,
- IFNCGNAME,
- IFNCGRET,
- IFNCGPARAM,
- IFNCGDEF,
- IFNCPOINT,
- IFNCLENGTH,
- IFNCSYNCR,
- IFNCFIND,
- IFNCFRET,
- IFNCFPARAM,
- IFNCFBRET,
- IFNCFBPARAM,
- IFNCDEFAULT,
- IFNCDEFAULT2,
- IFNCSDEFAULTV,
- IFNCSDEFAULTV2,
- IFNCGDEFAULTV2,
- IFNCDEFAULTSYNC,
- IENDI
-};
-
-enum PNF_Type_Enum
-{
- TVOID = 0,
- TBOOLEAN,
- TNUMBER,
- TCHARACTER,
- TSTRING
-};
-
-enum PNF_Object_Type
-{
- TOSIMPLE = 0,
- TORANGET1,
- TORANGET2,
- TOENUM
-};
-
-enum PNF_FMODE
-{
- FMIN = 0,
- FMOUT,
- FMBINARY,
- FMATE,
- FMAPP,
- FMTRUNC
-};
-
-enum BREAKPOINT_CONTROL
-{
- BCONE = 0,
- BCTWO,
- BCTHREE
-};
-
-
-class PNF_Void
-{
- public:
-        void put();
-        void get() const;
-
-        double to_mem();
-        void from_mem(double i);
-
-        void print();
-        void eprint();
-        void read();
-
-        void fprint(ofstream & fout);
-        void fread(ifstream & fin);
-
-
-        PNF_Void operator=(const PNF_Void & v) const;
-};
-
-void PNF_Void::put()
-{
- // Does nothing
-}
-
-void PNF_Void::get() const
-{
- // Does nothing
-}
-
-double PNF_Void::to_mem()
-{
- return 0;
-}
-
-void PNF_Void::from_mem(double i)
-{
- if (i != 0)
-  error(ERRORMSG, (char *)"Not Void.");
-}
-
-void PNF_Void::print()
-{
- cout << 0;
-}
-
-void PNF_Void::fprint(ofstream & fout)
-{
- fout << 0;
-}
-
-void PNF_Void::eprint()
-{
- cerr << 0;
-}
-
-void PNF_Void::read()
-{
- // Does nothing
-}
-
-void PNF_Void::fread(ifstream & fin)
-{
- // Does nothing
-}
-
-PNF_Void PNF_Void::operator=(const PNF_Void & v) const
-{
- if (this == &v)
-  return *this;
-
- return (*this);
-}
-
-
-class PNF_Boolean
-{
- protected:
-           bool data;
-
- public:
-        PNF_Boolean();
-        PNF_Boolean(bool d);
-        ~PNF_Boolean();
-
-
-        void put(bool d);
-        String get() const;
-
-        double to_mem();
-        void from_mem(double i);
-
-        void print();
-        void eprint();
-        void read();
-
-        void fprint(ofstream & fout);
-        void fread(ifstream & fin);
-
-
-        void opnot();
-        void opand(bool b);
-        void opor(bool b);
-
-
-        PNF_Boolean operator=(const PNF_Boolean & b);
-};
-
-PNF_Boolean::PNF_Boolean()
-{
- data = false;
-}
-
-PNF_Boolean::PNF_Boolean(bool d)
-{
- data = d;
-}
-
-PNF_Boolean::~PNF_Boolean()
-{
-
-}
-
-void PNF_Boolean::put(bool d)
-{
- data = d;
-}
-
-String PNF_Boolean::get() const
-{
- if (data == true)
-  return (char *)"true";
- else
-  return (char *)"false";
-}
-
-double PNF_Boolean::to_mem()
-{
- return data;
-}
-
-void PNF_Boolean::from_mem(double i)
-{
- data = (bool)i;
-}
-
-void PNF_Boolean::print()
-{
- cout << get();
-}
-
-void PNF_Boolean::fprint(ofstream & fout)
-{
- fout << get();
-}
-
-void PNF_Boolean::eprint()
-{
- cerr << get();
-}
-
-void PNF_Boolean::read()
-{
- string data2;
-
- cin >> data2;
-
- if (data2 == "false")
-  data = false;
- else if (data2 == "true")
-  data = true;
- else
-  data = false;
-}
-
-void PNF_Boolean::fread(ifstream & fin)
-{
- string data2;
-
- fin >> data2;
-
- if (data2 == "false")
-  data = false;
- else if (data2 == "true")
-  data = true;
- else
-  data = false;
-}
-
-void PNF_Boolean::opnot()
-{
- if (data == false)
-  data = true;
- else if (data == true)
-  data = false;
- else
-  data = false;
-}
-
-void PNF_Boolean::opand(bool b)
-{
- data = data && b;
-}
-
-void PNF_Boolean::opor(bool b)
-{
- data = data || b;
-}
-
-PNF_Boolean PNF_Boolean::operator=(const PNF_Boolean & b)
-{
- if (this == &b)
-  return *this;
-
- data = b.data;
-
-
- return (*this);
- }
-
-
-class PNF_Number
-{
- protected:
-           double data;
-
-
- public:
-        PNF_Number();
-        PNF_Number(double d);
-        ~PNF_Number();
-
-        void put(double d);
-        double get() const;
-
-
-        double to_mem();
-        void from_mem(double d);
-
-        void print();
-        void eprint();
-        void read();
-
-        void fprint(ofstream & fout);
-        void fread(ifstream & fin);
-
-
-        void add(double d);
-        void sub(double d);
-        void mul(double d);
-        void div(double d);
-        void mod(double d);
-
-        void pow(double d);
-        void root(double d);
-        void inc(double d);
-        void dec(double d);
-
-
-        PNF_Number operator=(const PNF_Number & n);
-};
-
-PNF_Number::PNF_Number()
-{
- data = 0;
-}
-
-PNF_Number::PNF_Number(double d)
-{
- data = d;
-}
-
-PNF_Number::~PNF_Number()
-{
-
-}
-
-void PNF_Number::put(double d)
-{
- data = d;
-}
-
-double PNF_Number::get() const
-{
- return data;
-}
-
-double PNF_Number::to_mem()
-{
- return get();
-}
-
-void PNF_Number::from_mem(double d)
-{
- put(d);
-}
-
-void PNF_Number::print()
-{
- cout << data;
-}
-
-void PNF_Number::fprint(ofstream & fout)
-{
- fout << data;
-}
-
-void PNF_Number::eprint()
-{
- cerr << data;
-}
-
-void PNF_Number::read()
-{
- cin >> data;
-}
-
-void PNF_Number::fread(ifstream & fin)
-{
- fin >> data;
-}
-
-void PNF_Number::add(double d)
-{
- data += d;
-}
-
-void PNF_Number::sub(double d)
-{
- data -= d;
-}
-
-void PNF_Number::mul(double d)
-{
- data *= d;
-}
-
-void PNF_Number::div(double d)
-{
- data /= d;
-}
-
-void PNF_Number::mod(double d)
-{
- long l = (long)data % (long)d;
- data = l;
-}
-
-void PNF_Number::pow(double d)
-{
- data = ::pow(data, (int)d);
-}
-
-void PNF_Number::root(double d)
-{
- if (d == 2)
-  data = ::sqrt(data);
- else
- {
-  int data2 = (int)data;
-  for (int i = (int)d - 1; i != 0; --i)
-   data2 = data2 / d;
-  data = data2;
- }
-}
-
-void PNF_Number::inc(double d)
-{
- data += d;
-}
-
-void PNF_Number::dec(double d)
-{
- data -= d;
-}
-
-PNF_Number PNF_Number::operator=(const PNF_Number & n)
-{
- if (this == &n)
-  return *this;
-
- this->data = n.data;
-
-
- return (*this);
-}
-
-
-class PNF_Character
-{
- protected:
-           char data;
-
-
- public:
-        PNF_Character();
-        PNF_Character(char d);
-        ~PNF_Character();
-
-        void put(char d);
-        char get() const;
-
-        double to_mem();
-        void from_mem(double c);
-
-        void print();
-        void eprint();
-        void read();
-
-        void fprint(ofstream & fout);
-        void fread(ifstream & fin);
-
-
-        void add(char d);
-        void sub(char d);
-        void mul(char d);
-        void div(char d);
-        void mod(char d);
-
-        void pow(char d);
-        void root(char d);
-        void inc(char d);
-        void dec(char d);
-
-
-        PNF_Character operator=(const PNF_Character & c);
-};
-
-PNF_Character::PNF_Character()
-{
- data = '\0';
-}
-
-PNF_Character::PNF_Character(char d)
-{
- data = d;
-}
-
-PNF_Character::~PNF_Character()
-{
-
-}
-
-void PNF_Character::put(char d)
-{
- data = d;
-}
-
-char PNF_Character::get() const
-{
- return data;
-}
-
-double PNF_Character::to_mem()
-{
- return (double)data;
-}
-
-void PNF_Character::from_mem(double c)
-{
- data = (char)c;
-}
-
-void PNF_Character::print()
-{
- cout << data;
-}
-
-void PNF_Character::fprint(ofstream & fout)
-{
- fout << data;
-}
-
-void PNF_Character::eprint()
-{
- cerr << data;
-}
-
-void PNF_Character::read()
-{
- cin >> data;
-}
-
-void PNF_Character::fread(ifstream & fin)
-{
- fin >> data;
-}
-
-void PNF_Character::add(char d)
-{
- data += d;
-}
-
-void PNF_Character::sub(char d)
-{
- data -= d;
-}
-
-void PNF_Character::mul(char d)
-{
- data *= d;
-}
-
-void PNF_Character::div(char d)
-{
- data = data / d;
-}
-
-void PNF_Character::mod(char d)
-{
- data = data % d;
-}
-
-void PNF_Character::pow(char d)
-{
- double n1 = (int)data;
- double n2 = (int)d;
- double r;
- r = ::pow(n1, n2);
- int r2 = (int)r;
- data = (char)r2;
-}
-
-void PNF_Character::root(char d)
-{
- double d2 = (double)d;
- if (d2 == 2)
-  data = ::sqrt(data);
- else
- {
-  int data2 = (int)data;
-  for (int i = (int)d2 - 1; i != 0; --i)
-   data2 = data2 / d2;
-  data = data2;
- }
-}
-
-void PNF_Character::inc(char d)
-{
- data += d;
-}
-
-void PNF_Character::dec(char d)
-{
- data -= d;
-}
-
-PNF_Character PNF_Character::operator=(const PNF_Character & c)
-{
- if (this == &c)
-  return *this;
-
- this->data = c.data;
-
-
- return (*this);
-}
-
-
-class PNF_String
-{
- protected:
-           String data;
-
- public:
-        PNF_String();
-        PNF_String(String d);
-        ~PNF_String();
-
-        void put(String d);
-        String get() const;
-
-        double * to_mem();
-        void from_mem(double * w);
-
-        void print();
-        void eprint();
-        void read();
-
-        void fprint(ofstream & fout);
-        void fread(ifstream & fin);
-
-
-        void add(String d);
-
-
-        PNF_String operator=(const PNF_String & s);
-};
-
-PNF_String::PNF_String()
-{
- data = (char *)"";
-}
-
-PNF_String::PNF_String(String d)
-{
- data = d;
-}
-
-PNF_String::~PNF_String()
-{
-
-}
-
-void PNF_String::put(String d)
-{
- data = d;
-}
-
-String PNF_String::get() const
-{
- return data;
-}
-
-double * PNF_String::to_mem()
-{
- double * ret = new double[data.size()];
-
- for (unsigned long i = 0; i < data.size(); ++i)
- {
-  if ((data.getString().data()[i]) == '\0')
-   break;
-  ret[i] = (long)data.getString().data()[i];
- }
- ret[data.size()] = 0;
-
-
- return ret;
-}
-
-void PNF_String::from_mem(double * w)
-{
- unsigned long i;
- for (i = 0; w[i] != 0; ++i)
-  data[i] = (char)w[i];
-}
-
-void PNF_String::print()
-{
- cout << data;
-}
-
-void PNF_String::fprint(ofstream & fout)
-{
- fout << data;
-}
-
-void PNF_String::eprint()
-{
- cerr << data;
-}
-
-void PNF_String::read()
-{
- cin >> data;
-}
-
-void PNF_String::fread(ifstream & fin)
-{
- fin >> data;
-}
-
-void PNF_String::add(String d)
-{
- data += d;
-}
-
-PNF_String PNF_String::operator=(const PNF_String & s)
-{
- if (this == &s)
-  return *this;
-
- this->data = s.data;
-
-
- return (*this);
-}
-
-
-class PNF_Variable
-{
- private:
-         PNF_Void v;
-         PNF_Boolean b;
-         PNF_Number n;
-         PNF_Character c;
-         PNF_String s;
-
-
-         long type;
-
-
- public:
- 		PNF_Variable(int n = 0);
- 		PNF_Variable(PNF_Void v);
- 		PNF_Variable(PNF_Boolean b);
- 		PNF_Variable(PNF_Number n);
- 		PNF_Variable(PNF_Character c);
- 		PNF_Variable(PNF_String s);
-
- 		PNF_Variable(const PNF_Variable & v);
-
-
-        long getType() const;
-        void setType(long t);
-
-
-        void put(PNF_Void v);
-        void put(PNF_Boolean b);
-        void put(PNF_Number n);
-        void put(PNF_Character c);
-        void put(PNF_String s);
-        void put(const PNF_Variable & v);
-
-        double * getm();
-        void putm(double * d);
-
-        void print();
-        void println();
-        void eprint();
-        void eprintln();
-        void read();
-
-        void fprint(ofstream & fout);
-        void fread(ifstream & fin);
-
-
-        PNF_Void & to_Void();
-        PNF_Boolean & to_boolean();
-        PNF_Number & to_number();
-        PNF_Character & to_character();
-        PNF_String & to_string();
-
-
-        PNF_Variable operator=(const PNF_Variable & v);
-};
-
-PNF_Variable::PNF_Variable(int n)
-{
- type = TVOID;
-}
-
-PNF_Variable::PNF_Variable(PNF_Void v)
-{
- put(v);
-}
-
-PNF_Variable::PNF_Variable(PNF_Boolean b)
-{
- put(b);
-}
-
-PNF_Variable::PNF_Variable(PNF_Number n)
-{
- put(n);
-}
-
-PNF_Variable::PNF_Variable(PNF_Character c)
-{
- put(c);
-}
-
-PNF_Variable::PNF_Variable(PNF_String s)
-{
- put(s);
-}
-
-PNF_Variable::PNF_Variable(const PNF_Variable & v)
-{
- put(v);
-}
-
-long PNF_Variable::getType() const
-{
- return type;
-}
-
-void PNF_Variable::setType(long t)
-{
- long t2 = type;
- type = t;
-
- switch (t2)
- {
-  case TVOID:
-  {
-   switch (t)
-   {
-   	case TVOID:
-   	{
-   	 // Do nothing...
-   	}
-   	break;
-
-   	case TBOOLEAN:
-   	{
-         b = to_boolean();
-   	}
-   	break;
-
-   	case TNUMBER:
-   	{
-   	 n = to_number();
-   	}
-   	break;
-
-   	case TCHARACTER:
-   	{
-   	 c = to_character();
-   	}
-   	break;
-
-   	case TSTRING:
-   	{
-   	 s = to_string();
-   	}
-   	break;
-   }
-  }
-  break;
-
-  case TBOOLEAN:
-  {
-   switch (t)
-   {
-   	case TVOID:
-   	{
-   	 v = to_Void();
-   	}
-   	break;
-
-   	case TBOOLEAN:
-   	{
-   	 // Do nothing...
-   	}
-   	break;
-
-   	case TNUMBER:
-   	{
-   	 n = to_number();
-   	}
-   	break;
-
-   	case TCHARACTER:
-   	{
-   	 c = to_character();
-   	}
-   	break;
-
-   	case TSTRING:
-   	{
-   	 s = to_string();
-   	}
-   	break;
-   }
-  }
-  break;
-
-  case TNUMBER:
-  {
-   switch (t)
-   {
-   	case TVOID:
-   	{
-   	 v = to_Void();
-   	}
-   	break;
-
-   	case TBOOLEAN:
-   	{
-   	 b = to_boolean();
-   	}
-   	break;
-
-   	case TNUMBER:
-   	{
-   	 // Do nothing...
-   	}
-   	break;
-
-   	case TCHARACTER:
-   	{
-   	 c = to_character();
-   	}
-   	break;
-
-   	case TSTRING:
-   	{
-   	 s = to_string();
-   	}
-   	break;
-   }
-  }
-  break;
-
-  case TCHARACTER:
-  {
-   switch (t)
-   {
-   	case TVOID:
-   	{
-   	 v = to_Void();
-   	}
-   	break;
-
-   	case TBOOLEAN:
-   	{
-   	 b = to_boolean();
-   	}
-   	break;
-
-   	case TNUMBER:
-   	{
-   	 n = to_number();
-   	}
-   	break;
-
-   	case TCHARACTER:
-   	{
-   	 // Do nothing...
-   	}
-   	break;
-
-   	case TSTRING:
-   	{
-   	 s = to_string();
-   	}
-   	break;
-   }
-  }
-  break;
-
-  case TSTRING:
-  {
-   switch (t)
-   {
-   	case TVOID:
-   	{
-   	 v = to_Void();
-   	}
-   	break;
-
-   	case TBOOLEAN:
-   	{
-   	 b = to_boolean();
-   	}
-   	break;
-
-   	case TNUMBER:
-   	{
-   	 n = to_number();
-   	}
-   	break;
-
-   	case TCHARACTER:
-   	{
-   	 c = to_character();
-   	}
-   	break;
-
-   	case TSTRING:
-   	{
-   	 // Do nothing...
-   	}
-   	break;
-   }
-  }
-  break;
-
-
-  default:
-   break;
- }
-}
-
-void PNF_Variable::put(PNF_Void v)
-{
- setType(TVOID);
- this->v = v;
-}
-
-void PNF_Variable::put(PNF_Boolean b)
-{
- setType(TBOOLEAN);
- this->b = b;
-}
-
-void PNF_Variable::put(PNF_Number n)
-{
- setType(TNUMBER);
- this->n = n;
-}
-
-void PNF_Variable::put(PNF_Character c)
-{
- setType(TCHARACTER);
- this->c = c;
-}
-
-void PNF_Variable::put(PNF_String s)
-{
- setType(TSTRING);
- this->s = s;
-}
-
-void PNF_Variable::put(const PNF_Variable & v)
-{
- setType(v.getType());
- switch (getType())
- {
-  case TVOID:
-   put(v.to_Void());
-   break;
-
-  case TBOOLEAN:
-   put(v.to_boolean());
-   break;
-
-  case TNUMBER:
-   put(v.to_number());
-   break;
-
-  case TCHARACTER:
-   put(v.to_character());
-   break;
-
-  case TSTRING:
-   put(v.to_string());
-   break;
-
-  default:
-  {
-   error(ERRORMSG, (char *)"Invalid Type.");
-  }
- }
-}
-
-double * PNF_Variable::getm()
-{
- double * ret = new double;
-
- switch (type)
- {
-  case TVOID:
-       *ret = v.to_mem();
-       break;
-
-  case TBOOLEAN:
-       *ret = b.to_mem();
-       break;
-
-  case TNUMBER:
-       *ret = n.to_mem();
-       break;
-
-  case TCHARACTER:
-       *ret = c.to_mem();
-       break;
-
-  case TSTRING:
-       ret = s.to_mem();
-       break;
- };
-
- return ret;
-}
-
-void PNF_Variable::putm(double * d)
-{
- switch (type)
- {
-  case TVOID:
-       v.from_mem(*d);
-       break;
-
-  case TBOOLEAN:
-       b.from_mem(*d);
-       break;
-
-  case TNUMBER:
-       n.from_mem(*d);
-       break;
-
-  case TCHARACTER:
-       c.from_mem(*d);
-       break;
-
-  case TSTRING:
-       s.from_mem(d);
-       break;
- };
-}
-
-void PNF_Variable::print()
-{
- switch (type)
- {
-  case TVOID:
-   v.print();
-   break;
-
-  case TBOOLEAN:
-   b.print();
-   break;
-
-  case TNUMBER:
-   n.print();
-   break;
-
-  case TCHARACTER:
-   c.print();
-   break;
-
-  case TSTRING:
-   s.print();
-   break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid Type.");
-   break;
- }
-}
-
-void PNF_Variable::println()
-{
- switch (type)
- {
-  case TVOID:
-   v.print();
-   cout << endl;
-   break;
-
-  case TBOOLEAN:
-   b.print();
-   cout << endl;
-   break;
-
-  case TNUMBER:
-   n.print();
-   cout << endl;
-   break;
-
-  case TCHARACTER:
-   c.print();
-   cout << endl;
-   break;
-
-  case TSTRING:
-   s.print();
-   cout << endl;
-   break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid Type.");
-   break;
- }
-}
-
-void PNF_Variable::fprint(ofstream & fout)
-{
- switch (type)
- {
-  case TVOID:
-   v.fprint(fout);
-   break;
-
-  case TBOOLEAN:
-   b.fprint(fout);
-   break;
-
-  case TNUMBER:
-   n.fprint(fout);
-   break;
-
-  case TCHARACTER:
-   c.fprint(fout);
-   break;
-
-  case TSTRING:
-   s.fprint(fout);
-   break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid Type.");
-   break;
- }
-}
-
-void PNF_Variable::eprint()
-{
- switch (type)
- {
-  case TVOID:
-   v.eprint();
-   break;
-
-  case TBOOLEAN:
-   b.eprint();
-   break;
-
-  case TNUMBER:
-   n.eprint();
-   break;
-
-  case TCHARACTER:
-   c.eprint();
-   break;
-
-  case TSTRING:
-   s.eprint();
-   break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid Type.");
-   break;
- }
-}
-
-void PNF_Variable::eprintln()
-{
- switch (type)
- {
-  case TVOID:
-   v.eprint();
-   cerr << endl;
-   break;
-
-  case TBOOLEAN:
-   b.eprint();
-   cerr << endl;
-   break;
-
-  case TNUMBER:
-   n.eprint();
-   cerr << endl;
-   break;
-
-  case TCHARACTER:
-   c.eprint();
-   cerr << endl;
-   break;
-
-  case TSTRING:
-   s.eprint();
-   cerr << endl;
-   break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid Type.");
-   break;
- }
-}
-
-void PNF_Variable::read()
-{
- switch (getType())
- {
-  case TVOID:
-   v.read();
-   break;
-
-  case TBOOLEAN:
-   b.read();
-   break;
-
-  case TNUMBER:
-   n.read();
-   break;
-
-  case TCHARACTER:
-   c.read();
-   break;
-
-  case TSTRING:
-  {
-   s.read();
-   }
-   break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid Type.");
-   break;
- }
-}
-
-void PNF_Variable::fread(ifstream & fin)
-{
- switch (getType())
- {
-  case TVOID:
-   v.fread(fin);
-   break;
-
-  case TBOOLEAN:
-   b.fread(fin);
-   break;
-
-  case TNUMBER:
-   n.fread(fin);
-   break;
-
-  case TCHARACTER:
-   c.fread(fin);
-   break;
-
-  case TSTRING:
-  {
-   s.fread(fin);
-   }
-   break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid Type.");
-   break;
- }
-}
-
-PNF_Void & PNF_Variable::to_Void()
-{
- PNF_Void * v = new PNF_Void();
- return (*v);
-}
-
-PNF_Boolean & PNF_Variable::to_boolean()
-{
- PNF_Boolean * b = new PNF_Boolean();
-
- switch (getType())
- {
-  case TVOID:
-       b->put(false);
-       break;
-
-  case TBOOLEAN:
-       *b = this->b;
-       break;
-
-  case TNUMBER:
-       b->put(n.get());
-       break;
-
-  case TCHARACTER:
-  	   if (c.get() == 't')
-  	    b->put(true);
-  	   else if (c.get() == 'f')
-  	    b->put(false);
-  	   else
-  	    b->put(false);
-       break;
-
-  case TSTRING:
-  	   if (s.get().getString() == "true")
-  	    b->put(true);
-  	   else if (s.get().getString() == "false")
-  	    b->put(false);
-  	   else
-  	    b->put(false);
-       break;
- }
-
- return (*b);
-}
-
-PNF_Number & PNF_Variable::to_number()
-{
- PNF_Number * n = new PNF_Number();
-
- switch (getType())
- {
-  case TVOID:
-       n->put(0);
-       break;
-
-  case TBOOLEAN:
-       if (b.get().getString() == "true")
-          n->put(1);
-       else
-          n->put(0);
-       break;
-
-  case TNUMBER:
-       *n = this->n;
-       break;
-
-  case TCHARACTER:
-       n->put(c.get());
-       break;
-
-  case TSTRING:
-  {
-   unsigned long value = 0;
-   for (unsigned long i = 0; i < s.get().length(); ++i)
-    value += (unsigned long)s.get()[i];
-   n->put(value);
-  }
-  break;
- }
-
- return (*n);
-}
-
-PNF_Character & PNF_Variable::to_character()
-{
- PNF_Character * c = new PNF_Character();
-
- switch (getType())
- {
-  case TVOID:
-       *c = '\0';
-       break;
-
-  case TBOOLEAN:
-       if (b.get().getString() == "true")
-        *c = 't';
-       else
-        *c = 'f';
-       break;
-
-  case TNUMBER:
-       *c = (char)n.get();
-       break;
-
-  case TCHARACTER:
-       *c = this->c;
-       break;
-
-  case TSTRING:
-       *c = s.get()[0];
-       break;
- }
-
-
- return (*c);
-}
-
-PNF_String & PNF_Variable::to_string()
-{
- PNF_String * s = new PNF_String();
-
- switch (getType())
- {
-  case TVOID:
-       s->put((char *)"");
-       break;
-
-  case TBOOLEAN:
-       *s = b.get();
-       break;
-
-  case TNUMBER:
-       s->put((char)n.get());
-       break;
-
-  case TCHARACTER:
-       s->put(c.get());
-       break;
-
-  case TSTRING:
-       *s = this->s;
-       break;
- }
-
-
- return (*s);
-}
-
-PNF_Variable PNF_Variable::operator=(const PNF_Variable & v)
-{
- if (this == &v)
-  return *this;
-
-  this->v = v.v;
-  this->b = v.b;
-  this->n = v.n;
-  this->c = v.c;
-  this->s = v.s;
-  this->type = v.type;
-
-  return (*this);
-}
-
-
-class PNF_RangeD
-{
- protected:
- 	PNF_Number itsfrom;
- 	PNF_Number itsto;
- 	String itsname;
-
-
- public:
- 	PNF_RangeD(String nm, PNF_Number f, PNF_Number t);
- 	PNF_RangeD(int e);
- 	~PNF_RangeD();
-
-
- 	String name();
- 	void name(String n);
-
-
- 	PNF_Number from();
- 	void from(PNF_Number n);
-
- 	PNF_Number to();
- 	void to(PNF_Number n);
- 	
- 	virtual void print();
- 	virtual void println();
-};
-
-PNF_RangeD::PNF_RangeD(String nm = (char *)"", PNF_Number f = -1, PNF_Number t = -1)
-{
- itsname = nm;
- itsfrom = f;
- itsto = t;
-}
-
-PNF_RangeD::PNF_RangeD(int e)
-{
- itsname = (char *)"";
- itsfrom = -1;
- itsto = -1;
-}
-
-PNF_RangeD::~PNF_RangeD()
-{
-
-}
-
-String PNF_RangeD::name()
-{
- return itsname;
-}
-
-void PNF_RangeD::name(String n)
-{
- itsname = n;
-}
-
-PNF_Number PNF_RangeD::from()
-{
- return itsfrom;
-}
-
-void PNF_RangeD::from(PNF_Number n)
-{
- itsfrom = n;
-}
-
-PNF_Number PNF_RangeD::to()
-{
- return itsto;
-}
-
-void PNF_RangeD::to(PNF_Number n)
-{
- itsto = n;
-}
-
-void PNF_RangeD::print()
-{
-	
-}
-
-void PNF_RangeD::println()
-{
-	
-}
-
-
-class PNF_RangeT1 : public PNF_RangeD
-{
- private:
- 	PNF_Number data;
-
-
- public:
- 	PNF_RangeT1(String nm, PNF_Number f, PNF_Number t, PNF_Number n);
- 	PNF_RangeT1(int e);
- 	~PNF_RangeT1();
-
-
- 	PNF_Number get();
- 	bool put(PNF_Number n);
- 	
- 	virtual void print();
- 	virtual void println();
-};
-
-PNF_RangeT1::PNF_RangeT1(String nm = (char *)"", PNF_Number f = -1, PNF_Number t = -1, PNF_Number n = 0) : PNF_RangeD(nm, f, t)
-{
- put(n);
-}
-
-PNF_RangeT1::PNF_RangeT1(int e)
-{
- PNF_RangeT1();
-}
-
-PNF_RangeT1::~PNF_RangeT1()
-{
-
-}
-
-PNF_Number PNF_RangeT1::get()
-{
- return data;
-}
-
-bool PNF_RangeT1::put(PNF_Number n)
-{
- bool ret = false;
- double f = itsfrom.get();
- double t = itsto.get();
- double d = n.get();
-
- if (d >= f && d <= t)
- {
-  data.put(d);
-  ret = true;
- }
- else if (f == -1 && t == -1)
-  ret = false;
- else
-  ret = false;
-
-
- return ret;
-}
-
-void PNF_RangeT1::print()
-{
- cout << data.get();
-}
-
-void PNF_RangeT1::println()
-{
- cout << data.get() << endl;
-}
-
-
-class PNF_RangeT2 : public PNF_RangeD
-{
- private:
-  Array<PNF_RangeT1> data;
-
-
- public:
-  PNF_RangeT2();
-  PNF_RangeT2(unsigned long e);
-  ~PNF_RangeT2();
-
-
-  bool put(unsigned long index, PNF_Number d);
-  PNF_Number get(unsigned long index);
-  bool fill();
-
-
-  unsigned long length();
-  
-  
-  virtual void print();
-  virtual void println();
-};
-
-PNF_RangeT2::PNF_RangeT2()
-{
-
-}
-
-PNF_RangeT2::PNF_RangeT2(unsigned long e)
-{
-
-}
-
-PNF_RangeT2::~PNF_RangeT2()
-{
-
-}
-
-bool PNF_RangeT2::put(unsigned long index, PNF_Number d)
-{
- if (index >= data.length())
- {
-  for (unsigned long i = data.length(); i <= index; ++i)
-   data.insert();
-
-  data[index].from(itsfrom);
-  data[index].to(itsto);
-  return data[index].put(d);
- }
- else
- {
-  data[index].from(itsfrom);
-  data[index].to(itsto);
-  return data[index].put(d);
- }
-}
-
-PNF_Number PNF_RangeT2::get(unsigned long index)
-{
- if (index >= data.length())
- {
-  String num = (char *)"";
-  num.from_long(index);
-  String msg = "Type2 Range index out of bounds, index = " + num.getString();
-  msg += (char *)"\n";
-  error(ERRORMSG, msg);
- }
- else
-  return data[index].get();
-}
-
-bool PNF_RangeT2::fill()
-{
- bool ret = false;
-
- for (unsigned long i = data.length() - 1; i > 0; --i)
-  data.remove();
-
- double f = itsfrom.get();
- double t = itsto.get();
- double d = f;
-
- for (unsigned long i = 0; d >= f && d <= t; ++i, ++d)
- {
-  ret = put(i, d);
- }
-
- return ret;
-}
-
-unsigned long PNF_RangeT2::length()
-{
- return data.length();
-}
-
-void PNF_RangeT2::print()
-{
- for (unsigned long i = 0; i < length(); ++i)
-  cout << i << ": " << data[i].get().get();
-}
- 
-void PNF_RangeT2::println()
-{
- for (unsigned long i = 0; i < length(); ++i)
-  cout << i << ": " << data[i].get().get() << endl;
-}
-
-
-class PNF_EnumD
-{
- protected:
-  Array<String> itsnames;
-  String itsname;
-
-
- public:
-  PNF_EnumD(String name);
-  PNF_EnumD(unsigned long e);
-  ~PNF_EnumD();
-
-
-  unsigned long length();
-
-  String get(unsigned long index);
-  void set(unsigned long index, String str);
-
-  String name();
-  void name(String name);
-
-  Array<String> names();
-  void names(Array<String> n);
-};
-
-PNF_EnumD::PNF_EnumD(String name = (char *)"") : itsnames()
-{
- itsname = (char *)"";
-}
-
-PNF_EnumD::PNF_EnumD(unsigned long e)
-{
- PNF_EnumD();
-}
-
-PNF_EnumD::~PNF_EnumD()
-{
-
-}
-
-unsigned long PNF_EnumD::length()
-{
- return itsnames.length();
-}
-
-String PNF_EnumD::get(unsigned long index)
-{
- if (index > length())
- {
-  error(ERRORMSG, (char *)"Bad Enum index.");
-  return (char *)"";
- }
- else
-  return itsnames[index];
-}
-
-void PNF_EnumD::set(unsigned long index, String str)
-{
- if (index >= length())
- {
-  for (unsigned long i = length(); i <= index; ++i)
-   itsnames.insert();
-
-  itsnames[index] = str;
- }
- else
-  itsnames[index] = str;
-}
-
-String PNF_EnumD::name()
-{
- return itsname;
-}
-
-void PNF_EnumD::name(String name)
-{
- itsname = name;
-}
-
-Array<String> PNF_EnumD::names()
-{
- return itsnames;
-}
-
-void PNF_EnumD::names(Array<String> n)
-{
- itsnames = n;
-}
-
-
-class PNF_Enum : public PNF_EnumD
-{
- private:
-  String itsvalue;
-
-
- public:
-  PNF_Enum(String value);
-  PNF_Enum(unsigned long e);
-
-  ~PNF_Enum();
-
-  String value();
-  bool value(String v);
-  
-  void print();
-  void println();
-};
-
-
-PNF_Enum::PNF_Enum(String value = (char *)"")
-{
- itsvalue = value;
-}
-
-PNF_Enum::PNF_Enum(unsigned long e)
-{
- PNF_Enum();
-}
-
-PNF_Enum::~PNF_Enum()
-{
-
-}
-
-String PNF_Enum::value()
-{
- return itsvalue;
-}
-
-bool PNF_Enum::value(String v)
-{
- bool found = false;
- String n = (char *)"";
- for (unsigned long i = 0; i < itsnames.length(); ++i)
- {
-  n = itsnames[i];
-  if (v == n)
-  {
-   itsvalue = v;
-   found = true;
-   break;
-  }
- }
-
- return found;
-}
-
-void PNF_Enum::print()
-{
- cout << itsvalue;
-}
-
-void PNF_Enum::println()
-{
- cout << itsvalue << endl;
-}
-
-
-class PNF_Object
-{
- private:
-  PNF_Variable itssimple;
-  PNF_RangeT1 itst1range;
-  PNF_RangeT2 itst2range;
-  PNF_Enum itsenum;
-
-  PNF_Object_Type itstype;
-
-
- public:
-  PNF_Object(unsigned long e);
-  ~PNF_Object();
-
-
-  PNF_Variable simple();
-  void simple(PNF_Variable s);
-
-  PNF_RangeT1 t1range();
-  void t1range(PNF_RangeT1 t1);
-
-  PNF_RangeT2 t2range();
-  void t2range(PNF_RangeT2 t2);
-
-  PNF_Enum Enum();
-  void Enum(PNF_Enum e);
-
-  PNF_Object_Type type();
-  void type(PNF_Object_Type type);
-  
-  void print();
-  void println();
-};
-
-PNF_Object::PNF_Object(unsigned long e = 0)
-{
- itstype = TOSIMPLE;
-}
-
-PNF_Object::~PNF_Object()
-{
-
-}
-
-PNF_Variable PNF_Object::simple()
-{
- switch (type())
- {
-  case TOSIMPLE:
-   return itssimple;
-
-  default:
-   PNF_Number n(0);
-   PNF_Variable v(n);
-   return v;
- }
-}
-
-void PNF_Object::simple(PNF_Variable s)
-{
- itstype = TOSIMPLE;
-
- PNF_Void v;
- itssimple.put(v);
-
- switch (s.getType())
- {
-  case TVOID:
-  {
-   PNF_Void v;
-   itssimple.put(v);
-  }
-  break;
-
-  case TBOOLEAN:
-  {
-   itssimple.put(s.to_boolean());
-  }
-  break;
-
-  case TNUMBER:
-  {
-   itssimple.put(s.to_number());
-  }
-  break;
-
-  case TCHARACTER:
-  {
-   itssimple.put(s.to_character());
-  }
-  break;
-
-  case TSTRING:
-  {
-   itssimple.put(s.to_string());
-  }
-  break;
-
-  default:
-   error(ERRORMSG, (char *)"Invalid type.");
- }
-}
-
-PNF_RangeT1 PNF_Object::t1range()
-{
- switch (type())
- {
-  case TORANGET1:
-   return itst1range;
-
-  default:
-   PNF_RangeT1 r;
-   return r;
- }
-}
-
-void PNF_Object::t1range(PNF_RangeT1 t1)
-{
- itst1range = t1;
- itstype = TORANGET1;
-}
-
-PNF_RangeT2 PNF_Object::t2range()
-{
- switch (type())
- {
-  case TORANGET2:
-   return itst2range;
-
-  default:
-   PNF_RangeT2 r;
-   return r;
- }
-}
-
-void PNF_Object::t2range(PNF_RangeT2 t2)
-{
- itst2range = t2;
- itstype = TORANGET2;
-}
-
-PNF_Enum PNF_Object::Enum()
-{
- switch (type())
- {
-  case TOENUM:
-   return itsenum;
-
-  default:
-   PNF_Enum e;
-   return e;
- }
-}
-
-void PNF_Object::Enum(PNF_Enum e)
-{
- itsenum = e;
- itstype = TOENUM;
-}
-
-PNF_Object_Type PNF_Object::type()
-{
- return itstype;
-}
-
-void PNF_Object::type(PNF_Object_Type type)
-{
- itstype = type;
-}
-
-void PNF_Object::print()
-{
- switch (type())
- {
-  case TOSIMPLE:
-   itssimple.print();
-   break;
-   
-  case TORANGET1:
-  	itst1range.print();
-  	break;
-  	
-  case TORANGET2:
-  	itst2range.print();
-  	break;
-  	
-  case TOENUM:
-  	itsenum.print();
-  	break;
-  	
-  default:
-   throw new Exception((char *)"Invalid Object Type.", (char *)__FILE__, __LINE__);
- }
-}
-
-void PNF_Object::println()
-{
- switch (type())
- {
-  case TOSIMPLE:
-   itssimple.println();
-   break;
-   
-  case TORANGET1:
-  	itst1range.println();
-  	break;
-  	
-  case TORANGET2:
-  	itst2range.println();
-  	break;
-  	
-  case TOENUM:
-  	itsenum.println();
-  	break;
-  	
-  default:
-   throw new Exception((char *)"Invalid Object Type.", (char *)__FILE__, __LINE__);
- }
-}
-
-
-template <class T>
-class PNF_Array : public Array<T>
-{
- private:
-  String itsname;
-
-
- public:
-  PNF_Array(unsigned long s);
-  ~PNF_Array();
-
-
-  String name();
-  void name(String name);
-};
-
-template <class T>
-PNF_Array<T>::PNF_Array(unsigned long s = 1)
-{
- itsname = (char *)"";
-}
-
-template <class T>
-PNF_Array<T>::~PNF_Array()
-{
-
-}
-
-template <class T>
-String PNF_Array<T>::name()
-{
- return itsname;
-}
-
-template <class T>
-void PNF_Array<T>::name(String name)
-{
- itsname = name;
-}
-
+#include "CPP/include/PNF_Enums.cpp"
+#include "CPP/include/PNF_Types.hpp"
 
 class PNF_Var
 {
@@ -3446,6 +1023,50 @@ long Stack::length()
 {
  return stk.size();
 }
+
+class Segment
+{
+ protected:
+  Memory itsmem;
+  Stack itsstk;
+
+
+ public:
+  Segment(int i = 0);
+
+
+  Memory & mem();
+  void mem(const Memory mem);
+
+  Stack & stk();
+  void stk(const Stack stk);
+};
+
+Segment::Segment(int i)
+{
+
+}
+
+Memory & Segment::mem()
+{
+ return itsmem;
+}
+
+void Segment::mem(const Memory mem)
+{
+ itsmem = mem;
+}
+
+Stack & Segment::stk()
+{
+ return itsstk;
+}
+
+void Segment::stk(const Stack stk)
+{
+ itsstk = stk;
+}
+
 
 class Label
 {
@@ -4323,136 +1944,320 @@ unsigned long Function_Stack::find_duplicate(Function f, bool & b)
 }
 
 
-struct Registers
+class Registers
 {
- bool quit;
+ public:
+  bool quit;
 
- Memory extrai;
+  Memory extrai;
  
- unsigned long icount;
+  unsigned long icount;
 
- unsigned long instruction;
- unsigned long type;
- unsigned long operand;
- unsigned long ninstruction;
- unsigned long pinstruction;
- unsigned long pins;
+  unsigned long instruction;
+  unsigned long type;
+  unsigned long operand;
+  unsigned long ninstruction;
+  unsigned long pinstruction;
+  unsigned long pins;
 
- unsigned long savins;
- unsigned long savins2;
- unsigned long savins3;
+  unsigned long savins;
+  unsigned long savins2;
+  unsigned long savins3;
 
- unsigned long mins;
- unsigned long pmins;
-
-
- String iname;
- Array<String> args;
+  unsigned long mins;
+  unsigned long pmins;
 
 
- unsigned long ecount;
- Array<PNF_Var> varcount;
- Array<Label> labels;
- Array<unsigned long> elabels;
+  String iname;
+  Array<String> args;
 
 
- Array<PNF_RangeD> rt1defs;
- Array<PNF_RangeT1> rt1vars;
-
- Array<PNF_RangeD> rt2defs;
- Array<PNF_RangeT2> rt2vars;
- unsigned long rt2prep;
+  unsigned long ecount;
+  Array<PNF_Var> varcount;
+  Array<Label> labels;
+  Array<unsigned long> elabels;
 
 
- Array<PNF_EnumD> edefs;
- unsigned long eptr;
- Array<PNF_Enum> evars;
- unsigned long eprep;
+  Array<PNF_RangeD> rt1defs;
+  Array<PNF_RangeT1> rt1vars;
 
- Array< PNF_Array<PNF_Object> > avars;
- bool usingarray;
- bool inarray;
- unsigned long aoffset;
- unsigned long aoffset2;
- unsigned long aoffset3;
- String aprep;
- unsigned long aiprep;
+  Array<PNF_RangeD> rt2defs;
+  Array<PNF_RangeT2> rt2vars;
+  unsigned long rt2prep;
 
 
- unsigned long evalue;
- ETable hevents;
- ETable shevents;
- ETable events;
- ETable exceptions;
- ETable interrupts;
+  Array<PNF_EnumD> edefs;
+  unsigned long eptr;
+  Array<PNF_Enum> evars;
+  unsigned long eprep;
+
+  Array< PNF_Array<PNF_Object> > avars;
+  bool usingarray;
+  bool inarray;
+  unsigned long aoffset;
+  unsigned long aoffset2;
+  unsigned long aoffset3;
+  String aprep;
+  unsigned long aiprep;
 
 
- String type_of;
+  unsigned long evalue;
+  ETable hevents;
+  ETable shevents;
+  ETable events;
+  ETable exceptions;
+  ETable interrupts;
 
 
- PNF_Variable accumulator;
- PNF_Variable calc;
-
- PNF_Variable stackp;
- Stack savestack;
-
- PNF_Version version;
- Array<PNF_Version> sversion;
-
- Array<unsigned long> sinstruction;
- Array<unsigned long> stype;
+  String type_of;
 
 
- PNF_FMODE fimode;
- PNF_FMODE fomode;
+  PNF_Object2 accumulator;
+  PNF_Object2 calc;
+
+  PNF_Variable stackp;
+  Stack savestack;
+
+  PNF_Version version;
+  Array<PNF_Version> sversion;
+
+  Array<unsigned long> sinstruction;
+  Array<unsigned long> stype;
+
+
+  PNF_FMODE fimode;
+  PNF_FMODE fomode;
  
  
- unsigned long ifcounter;
- bool ifcond;
- unsigned long eifsave;
- unsigned long ifscope;
- Array<ifstruct> inif;
- unsigned long ifindex;
+  unsigned long ifcounter;
+  bool ifcond;
+  unsigned long eifsave;
+  unsigned long ifscope;
+  Array<ifstruct> inif;
+  unsigned long ifindex;
 
- Array<unsigned long> switches;
- unsigned long switchcounter;
- unsigned long switchindex;
- bool switchcond;
- bool switcht;
+  Array<unsigned long> switches;
+  unsigned long switchcounter;
+  unsigned long switchindex;
+  bool switchcond;
+  bool switcht;
 
 
- Function_Stack fpointer1;
- unsigned long fpointer1c;
- unsigned long fpointer1c2;
- Function * fpointer2;
- Function * fpointer3;
- String fname;
- String fname2;
- Array<String> frets;
- Array<String> fparams;
- Array<String> frets2;
- Array<String> fparams2;
- Array<String> frets3;
- Array<String> fparams3;
- unsigned long pnum;
- unsigned long rnum;
+  Function_Stack fpointer1;
+  unsigned long fpointer1c;
+  unsigned long fpointer1c2;
+  Function * fpointer2;
+  Function * fpointer3;
+  String fname;
+  String fname2;
+  Array<String> frets;
+  Array<String> fparams;
+  Array<String> frets2;
+  Array<String> fparams2;
+  Array<String> frets3;
+  Array<String> fparams3;
+  unsigned long pnum;
+  unsigned long rnum;
 
- bool infunc;
- unsigned long infuncc;
- bool inparams;
- unsigned long inparamsc;
+  bool infunc;
+  unsigned long infuncc;
+  bool inparams;
+  unsigned long inparamsc;
 
- bool fdefaultv;
- PNF_Variable fdefaultvalue;
+  bool fdefaultv;
+  PNF_Object2 fdefaultvalue;
+ 
+ 
+  Array2<PNF_Struct> structs;
+  Array2<PNF_Struct> ostructs;
+  String struct_type;
+  String struct_name;
+
+
+  Array2<PNF_Union> unions;
+  Array2<PNF_Union> ounions;
+  String union_type;
+  String union_name;
+
+
+  PNF_Version mode;
+  Array<PNF_Version> smode;
+
+  PNF_Version extmode;
+  Array<PNF_Version> sextmode;
+
+
+
+ Registers();
+ Registers(const Registers & r);
+
+ Registers & operator=(const Registers & r);
+
+ Registers & copy(const Registers & r);
 };
 
-
-struct ProgramState
+Registers::Registers()
 {
- Registers reg;
- Memory mem;
- Stack stk;
+
+}
+
+Registers::Registers(const Registers & r)
+{
+ this->copy(r);
+}
+
+Registers & Registers::operator=(const Registers & r)
+{
+ if (this == &r)
+  return *this;
+
+ return copy(r);
+}
+
+Registers & Registers::copy(const Registers & r)
+{
+ quit = r.quit;
+
+ extrai = r.extrai;
+ 
+ icount = r.icount;
+
+ instruction = r.instruction;
+ type = r.type;
+ operand = r.operand;
+ ninstruction = r.ninstruction;
+ pinstruction = r.pinstruction;
+ pins = r.pins;
+
+ savins = r.savins;
+ savins2 = r.savins2;
+ savins3 = r.savins3;
+
+ mins = r.mins;
+ pmins = r.pmins;
+
+
+ iname = r.iname;
+ args = r.args;
+
+
+ ecount = r.ecount;
+ varcount = r.varcount;
+ labels = r.labels;
+ elabels = r.elabels;
+
+
+ rt1defs = r.rt1defs;
+ rt1vars = r.rt1vars;
+
+ rt2defs = r.rt2defs;
+ rt2vars = r.rt2vars;
+ rt2prep = r.rt2prep;
+
+
+ edefs = r.edefs;
+ eptr = r.eptr;
+ evars = r.evars;
+ eprep = r.eprep;
+
+  Array< PNF_Array<PNF_Object> > avars;
+  bool usingarray;
+  bool inarray;
+  unsigned long aoffset;
+  unsigned long aoffset2;
+  unsigned long aoffset3;
+  String aprep;
+  unsigned long aiprep;
+
+
+  unsigned long evalue;
+  ETable hevents;
+  ETable shevents;
+  ETable events;
+  ETable exceptions;
+  ETable interrupts;
+
+
+  String type_of;
+
+
+  PNF_Object2 accumulator;
+  PNF_Object2 calc;
+
+  PNF_Variable stackp;
+  Stack savestack;
+
+  PNF_Version version;
+  Array<PNF_Version> sversion;
+
+  Array<unsigned long> sinstruction;
+  Array<unsigned long> stype;
+
+
+  PNF_FMODE fimode;
+  PNF_FMODE fomode;
+ 
+ 
+  unsigned long ifcounter;
+  bool ifcond;
+  unsigned long eifsave;
+  unsigned long ifscope;
+  Array<ifstruct> inif;
+  unsigned long ifindex;
+
+  Array<unsigned long> switches;
+  unsigned long switchcounter;
+  unsigned long switchindex;
+  bool switchcond;
+  bool switcht;
+
+
+  Function_Stack fpointer1;
+  unsigned long fpointer1c;
+  unsigned long fpointer1c2;
+  Function * fpointer2;
+  Function * fpointer3;
+  String fname;
+  String fname2;
+  Array<String> frets;
+  Array<String> fparams;
+  Array<String> frets2;
+  Array<String> fparams2;
+  Array<String> frets3;
+  Array<String> fparams3;
+  unsigned long pnum;
+  unsigned long rnum;
+
+  bool infunc;
+  unsigned long infuncc;
+  bool inparams;
+  unsigned long inparamsc;
+
+  bool fdefaultv;
+  PNF_Object2 fdefaultvalue;
+ 
+ 
+  Array2<PNF_Struct> structs;
+  Array2<PNF_Struct> ostructs;
+  String struct_type;
+  String struct_name;
+}
+
+
+class ProgramState
+{
+ public:
+  Registers reg;
+  Memory mem;
+  Stack stk;
+
+ ProgramState();
 };
+
+ProgramState::ProgramState()
+{
+
+}
 
 
 class PNF
@@ -4463,6 +2268,9 @@ class PNF
          Stack stk;
          Stack substk;
 	 Stack funcstk;
+
+	Array<Segment> segments;
+
 
          ifstream pnffin;
          ofstream pnffout;
@@ -4528,9 +2336,6 @@ String PNF::strip_extension(String fileName)
 
 PNF::PNF(Array<String> args)
 {
- double l = 0;
- double * pl = &l;
-
  reg.icount = 0;
  reg.instruction = 0;
  reg.type = 0;
@@ -4545,11 +2350,13 @@ PNF::PNF(Array<String> args)
  }
  reg.args.remove(reg.args.length() - 1);
 
- reg.accumulator.setType(TVOID);
- reg.accumulator.putm(pl);
 
- reg.calc.setType(TVOID);
- reg.calc.putm(pl);
+ static PNF_Basic_Object2 temp;
+ 
+ reg.accumulator.object(temp);
+
+ reg.calc.object(temp);
+
 
  reg.aoffset = -1;
  reg.aoffset2 = 0;
@@ -4603,10 +2410,10 @@ void PNF::crash(String str)
  reg.version.base.print();
  cout << " " << reg.version.top << endl;
  cout << "%accumulator         = ";
- reg.accumulator.print();
+ reg.accumulator.object().simple().print();
  cout << endl;
  cout << "%calc                = ";
- reg.calc.print();
+ reg.calc.object().simple().print();
  cout << endl;
  cout << "%iname               = " << reg.iname;
  cout << "\n\n";
@@ -4642,9 +2449,10 @@ void PNF::load()
  fin.open((strip_extension(reg.args.get(0)) + (char *)".pnf").getString().c_str());
  if (!fin)
   crash((char *)"Program Not Found or File Not Readable.");
+  
 
  String signature = (char *)"!@.PNF";
- String str;
+ String str = "";
  fin >> str;
 
  if (str == (char *)"")
@@ -4829,6 +2637,26 @@ String PNF::execute()
  reg.sversion[1].base.put(v);
  reg.sversion[1].top = 1;
 
+ // Modes
+ PNF_Void m;
+ reg.mode.base.put(m);
+ reg.mode.top = 0;
+
+  // Load the supported modes..
+ reg.smode[0].base.put(m);
+ reg.smode[0].top = 0;
+
+ // EXT Modes
+ PNF_Void m2;
+ reg.extmode.base.put(m2);
+ reg.extmode.top = 0;
+
+  // Load the supported EXT Modes...
+ reg.sextmode[0].base.put(m2);
+ reg.sextmode[0].top = 0;
+
+
+
   // Load the supported instructions...
   for (unsigned long is = 0; is <= IENDI - 1; ++is)
   {
@@ -4839,7 +2667,7 @@ String PNF::execute()
   }
 
   // Load the supported types...
-  for (unsigned long is = 0; is <= 4; ++is)
+  for (unsigned long is = 0; is <= TENDT; ++is)
   {
    if (is != 0)
     reg.stype.insert();
@@ -4895,6 +2723,16 @@ String PNF::execute()
  reg.inparamsc = 0;
 
  reg.fdefaultv = false;
+ 
+ // Set up structs
+ reg.struct_type = "";
+ reg.struct_name = "";
+
+ // Set up unions
+ reg.union_type = "";
+ reg.union_name = "";
+
+
  
   
  // First pass of execution
@@ -5142,20 +2980,21 @@ reg.switchindex = 0;
         switch (reg.type)
         {
          case TVOID:
+          PNF_Void v;
+          reg.version.base.put(v);
+          
 	  switch (reg.operand)
 	  {
 	   case 0: // 0V
                if (reg.operand != 0)
                 crash((char *)"Invalid VOID Value.");
                else
-               {
-               	PNF_Void v;
-               	reg.version.base.put(v);
+               {               	
                	reg.version.top = 0;
                }
 	  break;
 
-	  case 1:
+	  case 1:	   
 	   reg.version.top = 1;
 
 
@@ -5255,6 +3094,12 @@ reg.switchindex = 0;
         break;
 
    case IQUIT:
+   {
+    PNF_Void v;
+    bool s = reg.version.check(v, 1);
+
+    if (s == false)
+    {   
         switch (reg.type)
         {
          case TVOID:
@@ -5265,7 +3110,54 @@ reg.switchindex = 0;
          default:
           crash((char *)"Invalid Type.");
         }
-        break;
+   }
+   else
+   {
+    PNF_Boolean b;
+    for (unsigned long is = 0; is < reg.sinstruction.length(); ++is)
+    {
+     bool icheck = false;
+
+     if (reg.sinstruction[is] == IPNFRUN)
+     {
+      icheck = true;
+      b.put(icheck);
+      break;
+     }
+     else
+     {
+      icheck = false;
+      b.put(icheck);
+     }
+    }
+
+    if (b.get() == "false")
+     crash((char *)"PNFRUN Not Supported.");
+     
+     
+     switch (reg.type)
+        {
+         case TVOID:
+          quitValue = reg.operand;
+          quitFound = true;
+          break;
+          
+         case TNUMBER:
+         {
+          if (reg.operand != 0)
+           crash((char *)"Invalid QUIT instruction.");
+           
+          quitValue = (int)reg.accumulator.object().simple().to_number().get();
+          quitFound = true;
+         }
+         break;
+
+         default:
+          crash((char *)"Invalid Type.");
+        }
+   }
+  }
+  break;
 
 
    case IHALT:
@@ -5409,13 +3301,13 @@ reg.switchindex = 0;
    break;
 
    case IREAD:
-        reg.accumulator.setType(reg.type);
+        reg.accumulator.object().simple().setType(reg.type);
 
         if (reg.operand != 0)
          crash((char *)"Invalid Parameter.");
         else
         {
-         reg.accumulator.read();
+         reg.accumulator.object().simple().read();
         }
 
         break;
@@ -5426,28 +3318,28 @@ reg.switchindex = 0;
          double * pm;
 
 
-         reg.accumulator.setType(reg.type);
+         reg.accumulator.object().simple().setType(reg.type);
 
-         switch (reg.accumulator.getType())
+         switch (reg.accumulator.object().simple().getType())
          {
           case TBOOLEAN:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TNUMBER:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TCHARACTER:
                pm = &m;
                *pm = mem.get(reg.operand);
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TSTRING:
@@ -5461,7 +3353,7 @@ reg.switchindex = 0;
                 str += ch;
                }
                PNF_String str2(str.getString());
-               reg.accumulator.put(str2);
+               reg.accumulator.object().simple().put(str2);
           }
           break;
 
@@ -5478,9 +3370,9 @@ reg.switchindex = 0;
           crash((char *)"Invalid Type Identifier.");
 
          double * pm;
-         pm = reg.accumulator.getm();
+         pm = reg.accumulator.object().simple().getm();
 
-         switch (reg.accumulator.getType())
+         switch (reg.accumulator.object().simple().getType())
          {
           case TVOID:
            mem.put(reg.operand, *pm);
@@ -5516,28 +3408,28 @@ reg.switchindex = 0;
          double * pm;
 
 
-         reg.calc.setType(reg.type);
+         reg.calc.object().simple().setType(reg.type);
 
-         switch (reg.calc.getType())
+         switch (reg.calc.object().simple().getType())
          {
           case TBOOLEAN:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TNUMBER:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TCHARACTER:
                pm = &m;
                *pm = mem.get(reg.operand);
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TSTRING:
@@ -5551,7 +3443,7 @@ reg.switchindex = 0;
                 str += ch;
                }
                PNF_String str2(str.getString());
-               reg.calc.put(str2);
+               reg.calc.object().simple().put(str2);
           }
           break;
 
@@ -5568,9 +3460,9 @@ reg.switchindex = 0;
           crash((char *)"Invalid Type Identifier.");
 
          double * pm;
-         pm = reg.calc.getm();
+         pm = reg.calc.object().simple().getm();
 
-         switch (reg.calc.getType())
+         switch (reg.calc.object().simple().getType())
          {
           case TVOID:
            mem.put(reg.operand, *pm);
@@ -5606,28 +3498,28 @@ reg.switchindex = 0;
          double * pm;
 
 
-         reg.accumulator.setType(reg.type);
+         reg.accumulator.object().simple().setType(reg.type);
 
-         switch (reg.accumulator.getType())
+         switch (reg.accumulator.object().simple().getType())
          {
           case TBOOLEAN:
                m = mem.get(reg.ecount);
                pm = &m;
 
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TNUMBER:
                m = mem.get(reg.ecount);
                pm = &m;
 
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TCHARACTER:
                pm = &m;
                *pm = mem.get(reg.ecount);
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TSTRING:
@@ -5641,7 +3533,7 @@ reg.switchindex = 0;
                 str += ch;
                }
                PNF_String str2(str.getString());
-               reg.accumulator.put(str2);
+               reg.accumulator.object().simple().put(str2);
           }
           break;
 
@@ -5660,9 +3552,9 @@ reg.switchindex = 0;
           crash((char *)"Invalid Type Identifier.");
 
          double * pm;
-         pm = reg.accumulator.getm();
+         pm = reg.accumulator.object().simple().getm();
 
-         switch (reg.accumulator.getType())
+         switch (reg.accumulator.object().simple().getType())
          {
           case TVOID:
            mem.insert();
@@ -5722,28 +3614,28 @@ reg.switchindex = 0;
          double * pm;
 
 
-         reg.calc.setType(reg.type);
+         reg.calc.object().simple().setType(reg.type);
 
-         switch (reg.calc.getType())
+         switch (reg.calc.object().simple().getType())
          {
           case TBOOLEAN:
                m = mem.get(reg.ecount);
                pm = &m;
 
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TNUMBER:
                m = mem.get(reg.ecount);
                pm = &m;
 
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TCHARACTER:
                pm = &m;
                *pm = mem.get(reg.ecount);
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TSTRING:
@@ -5757,7 +3649,7 @@ reg.switchindex = 0;
                 str += ch;
                }
                PNF_String str2(str.getString());
-               reg.calc.put(str2);
+               reg.calc.object().simple().put(str2);
           }
           break;
 
@@ -5776,9 +3668,9 @@ case IESTOREC:
           crash((char *)"Invalid Type Identifier.");
 
          double * pm;
-         pm = reg.calc.getm();
+         pm = reg.calc.object().simple().getm();
 
-         switch (reg.calc.getType())
+         switch (reg.calc.object().simple().getType())
          {
           case TVOID:
            mem.insert();
@@ -5838,29 +3730,29 @@ case IESTOREC:
          double * pm;
 
 
-         reg.accumulator.setType(reg.type);
+         reg.accumulator.object().simple().setType(reg.type);
          reg.operand = reg.varcount.get(reg.operand).address();
 
-         switch (reg.accumulator.getType())
+         switch (reg.accumulator.object().simple().getType())
          {
           case TBOOLEAN:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TNUMBER:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TCHARACTER:
                pm = &m;
                *pm = mem.get(reg.operand);
-               reg.accumulator.putm(pm);
+               reg.accumulator.object().simple().putm(pm);
                break;
 
           case TSTRING:
@@ -5872,7 +3764,7 @@ case IESTOREC:
                 str += ch;
                }
                PNF_String str2(str.getString());
-               reg.accumulator.put(str2);
+               reg.accumulator.object().simple().put(str2);
           }
           break;
 
@@ -5896,13 +3788,13 @@ case IESTOREC:
            mem.put(j, IVAR);
            mem.put(j + 1, TVOID);
            double * pm;
-           pm = reg.accumulator.getm();
+           pm = reg.accumulator.object().simple().getm();
 
 
            reg.varcount.insert();
            reg.varcount.put(j + 2, reg.varcount.length() - 1);
 
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TVOID:
              mem.put(j + 2, *pm);
@@ -5953,9 +3845,9 @@ case IESTOREC:
           {
            long j = reg.varcount.get(reg.operand).address();
            double * pm;
-           pm = reg.accumulator.getm();
+           pm = reg.accumulator.object().simple().getm();
 
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TVOID:
              mem.put(j, *pm);
@@ -5999,29 +3891,29 @@ case IESTOREC:
          double * pm;
 
 
-         reg.calc.setType(reg.type);
+         reg.calc.object().simple().setType(reg.type);
          reg.operand = reg.varcount.get(reg.operand).address();
 
-         switch (reg.calc.getType())
+         switch (reg.calc.object().simple().getType())
          {
           case TBOOLEAN:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TNUMBER:
                m = mem.get(reg.operand);
                pm = &m;
 
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TCHARACTER:
                pm = &m;
                *pm = mem.get(reg.operand);
-               reg.calc.putm(pm);
+               reg.calc.object().simple().putm(pm);
                break;
 
           case TSTRING:
@@ -6035,7 +3927,7 @@ case IESTOREC:
                 str += ch;
                }
                PNF_String str2(str.getString());
-               reg.calc.put(str2);
+               reg.calc.object().simple().put(str2);
           }
           break;
 
@@ -6059,13 +3951,13 @@ case IESTOREC:
            mem.put(j, IVAR);
            mem.put(j + 1, TVOID);
            double * pm;
-           pm = reg.calc.getm();
+           pm = reg.calc.object().simple().getm();
 
 
            reg.varcount.insert();
            reg.varcount.put(j + 2, reg.varcount.length() - 1);
 
-           switch (reg.calc.getType())
+           switch (reg.calc.object().simple().getType())
            {
             case TVOID:
              mem.put(j + 2, *pm);
@@ -6115,9 +4007,9 @@ case IESTOREC:
           {
            long j = reg.varcount.get(reg.operand).address();
            double * pm;
-           pm = reg.calc.getm();
+           pm = reg.calc.object().simple().getm();
 
-           switch (reg.calc.getType())
+           switch (reg.calc.object().simple().getType())
            {
             case TVOID:
              mem.put(j, *pm);
@@ -6160,8 +4052,8 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid STOREA instruction.");
 
-   	unsigned long address = (unsigned long)reg.calc.to_number().get();
-   	String str = reg.accumulator.to_string().get();
+   	unsigned long address = (unsigned long)reg.calc.object().simple().to_number().get();
+   	String str = reg.accumulator.object().simple().to_string().get();
    	
    	unsigned long j = address;
    	for (unsigned long i = 0; i < str.length(); ++i, ++j)
@@ -6173,7 +4065,7 @@ case IESTOREC:
    case IMODT:
         {
          if (reg.operand == 0)
-          reg.accumulator.setType(reg.type);
+          reg.accumulator.object().simple().setType(reg.type);
          else
           crash((char *)"Invalid Operand.");
         }
@@ -6182,7 +4074,7 @@ case IESTOREC:
    case IMODCT:
         {
          if (reg.operand == 0)
-          reg.calc.setType(reg.type);
+          reg.calc.object().simple().setType(reg.type);
          else
           crash((char *)"Invalid Operand.");
         }
@@ -6192,23 +4084,23 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TNUMBER:
             {
-             PNF_Number tn = reg.accumulator.to_number();
-             tn.add(reg.calc.to_number().get());
-             reg.accumulator.put(tn);
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.add(reg.calc.object().simple().to_number().get());
+             reg.accumulator.object().simple().put(tn);
              break;
             }
 
             case TSTRING:
             {
-             PNF_String ts = reg.accumulator.to_string();
-             ts.add(reg.calc.to_string().get());
-             reg.accumulator.put(ts);
+             PNF_String ts = reg.accumulator.object().simple().to_string();
+             ts.add(reg.calc.object().simple().to_string().get());
+             reg.accumulator.object().simple().put(ts);
              break;
             }
 
@@ -6226,19 +4118,19 @@ case IESTOREC:
           {
            case TNUMBER:
            {
-            reg.accumulator.to_number().add(reg.operand);
+            reg.accumulator.object().simple().to_number().add(reg.operand);
            }
            break;
 
            case TCHARACTER:
-            reg.accumulator.to_character().add(reg.operand);
+            reg.accumulator.object().simple().to_character().add(reg.operand);
             break;
 
            case TSTRING:
            {
             unsigned long i2 = 0;
             for (i2 = k; mem.get(i2) != 0; ++i2)
-             reg.accumulator.to_character().add((char)mem.get(i2));
+             reg.accumulator.object().simple().to_character().add((char)mem.get(i2));
             i = i2;
             j = i + 1;
             k = i + 2;
@@ -6256,15 +4148,15 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TNUMBER:
             {
-             PNF_Number tn = reg.accumulator.to_number();
-             tn.sub(reg.calc.to_number().get());
-             reg.accumulator.put(tn);
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.sub(reg.calc.object().simple().to_number().get());
+             reg.accumulator.object().simple().put(tn);
              break;
             }
 
@@ -6281,7 +4173,7 @@ case IESTOREC:
           switch (reg.type)
           {
            case TNUMBER:
-            reg.accumulator.to_number().sub(reg.operand);
+            reg.accumulator.object().simple().to_number().sub(reg.operand);
             break;
 
            default:
@@ -6295,15 +4187,15 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TNUMBER:
             {
-             PNF_Number tn = reg.accumulator.to_number();
-             tn.mul(reg.calc.to_number().get());
-             reg.accumulator.put(tn);
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.mul(reg.calc.object().simple().to_number().get());
+             reg.accumulator.object().simple().put(tn);
              break;
             }
 
@@ -6320,7 +4212,7 @@ case IESTOREC:
           switch (reg.type)
           {
            case TNUMBER:
-            reg.accumulator.to_number().mul(reg.operand);
+            reg.accumulator.object().simple().to_number().mul(reg.operand);
             break;
 
            default:
@@ -6334,15 +4226,15 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TNUMBER:
             {
-             PNF_Number tn = reg.accumulator.to_number();
-             tn.div(reg.calc.to_number().get());
-             reg.accumulator.put(tn);
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.div(reg.calc.object().simple().to_number().get());
+             reg.accumulator.object().simple().put(tn);
              break;
             }
 
@@ -6359,7 +4251,7 @@ case IESTOREC:
           switch (reg.type)
           {
            case TNUMBER:
-            reg.accumulator.to_number().div(reg.operand);
+            reg.accumulator.object().simple().to_number().div(reg.operand);
             break;
 
            default:
@@ -6373,15 +4265,15 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TNUMBER:
             {
-             PNF_Number tn = reg.accumulator.to_number();
-             tn.mod(reg.calc.to_number().get());
-             reg.accumulator.put(tn);
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.mod(reg.calc.object().simple().to_number().get());
+             reg.accumulator.object().simple().put(tn);
              break;
             }
 
@@ -6398,7 +4290,7 @@ case IESTOREC:
           switch (reg.type)
           {
            case TNUMBER:
-            reg.accumulator.to_number().sub(reg.operand);
+            reg.accumulator.object().simple().to_number().sub(reg.operand);
             break;
 
            default:
@@ -6412,15 +4304,15 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           switch (reg.accumulator.getType())
+           switch (reg.accumulator.object().simple().getType())
            {
             case TNUMBER:
             {
-             PNF_Number tn = reg.accumulator.to_number();
-             tn.pow(reg.calc.to_number().get());
-             reg.accumulator.put(tn);
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.pow(reg.calc.object().simple().to_number().get());
+             reg.accumulator.object().simple().put(tn);
              break;
             }
 
@@ -6437,7 +4329,7 @@ case IESTOREC:
           switch (reg.type)
           {
            case TNUMBER:
-            reg.accumulator.to_number().pow(reg.operand);
+            reg.accumulator.object().simple().to_number().pow(reg.operand);
             break;
 
            default:
@@ -6451,13 +4343,13 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          switch (reg.accumulator.getType())
+          switch (reg.accumulator.object().simple().getType())
           {
            case TNUMBER:
            {
-            PNF_Number tn = reg.accumulator.to_number();
-            tn.root(reg.accumulator.to_number().get());
-            reg.accumulator.put(tn);
+            PNF_Number tn = reg.accumulator.object().simple().to_number();
+            tn.root(reg.accumulator.object().simple().to_number().get());
+            reg.accumulator.object().simple().put(tn);
             break;
            }
 
@@ -6471,7 +4363,7 @@ case IESTOREC:
           switch (reg.type)
           {
            case TNUMBER:
-            reg.accumulator.to_number().root(reg.operand);
+            reg.accumulator.object().simple().to_number().root(reg.operand);
             break;
 
            default:
@@ -6485,13 +4377,13 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          switch (reg.accumulator.getType())
+          switch (reg.accumulator.object().simple().getType())
           {
            case TNUMBER:
            {
-            PNF_Number tn = reg.accumulator.to_number();
+            PNF_Number tn = reg.accumulator.object().simple().to_number();
             tn.inc(1);
-            reg.accumulator.put(tn);
+            reg.accumulator.object().simple().put(tn);
             break;
            }
 
@@ -6509,13 +4401,13 @@ case IESTOREC:
         {
          if (reg.operand == 0 && reg.type == 0)
          {
-          switch (reg.accumulator.getType())
+          switch (reg.accumulator.object().simple().getType())
           {
            case TNUMBER:
            {
-            PNF_Number tn = reg.accumulator.to_number();
+            PNF_Number tn = reg.accumulator.object().simple().to_number();
             tn.dec(1);
-            reg.accumulator.put(tn);
+            reg.accumulator.object().simple().put(tn);
             break;
            }
 
@@ -6533,12 +4425,12 @@ case IESTOREC:
         {
          if (reg.type == TVOID && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_number().get() == reg.calc.to_number().get());
+           bool b = (reg.accumulator.object().simple().to_number().get() == reg.calc.object().simple().to_number().get());
            PNF_Boolean b2;
            b2.put(b);
-           reg.accumulator.put(b2);
+           reg.accumulator.object().simple().put(b2);
           }
          }
          else
@@ -6547,30 +4439,30 @@ case IESTOREC:
           {
            case TBOOLEAN:
            {
-             bool b = (reg.accumulator.to_boolean().get().getString() == "true" ? true : false);
+             bool b = (reg.accumulator.object().simple().to_boolean().get().getString() == "true" ? true : false);
              bool b2 = (reg.operand == 0 ? false : true);
              bool b3 = b && b2;
              PNF_Boolean b4;
              b4.put(b3);
-             reg.accumulator.put(b4);
+             reg.accumulator.object().simple().put(b4);
             }
             break;
 
            case TNUMBER:
            {
-            bool b = (reg.accumulator.to_number().get() == reg.operand);
+            bool b = (reg.accumulator.object().simple().to_number().get() == reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
            case TCHARACTER:
            {
-            bool b = (reg.accumulator.to_character().get() == (char)reg.operand);
+            bool b = (reg.accumulator.object().simple().to_character().get() == (char)reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
@@ -6585,14 +4477,14 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_number().get() != reg.calc.to_number().get());
+           bool b = (reg.accumulator.object().simple().to_number().get() != reg.calc.object().simple().to_number().get());
            if (b == true)
            {
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
           }
          }
@@ -6602,30 +4494,30 @@ case IESTOREC:
           {
            case TBOOLEAN:
            {
-             bool b = (reg.accumulator.to_boolean().get().getString() != "true" ? true : false);
+             bool b = (reg.accumulator.object().simple().to_boolean().get().getString() != "true" ? true : false);
              bool b2 = (reg.operand == 0 ? false : true);
              bool b3 = b && b2;
              PNF_Boolean b4;
              b4.put(b3);
-             reg.accumulator.put(b4);
+             reg.accumulator.object().simple().put(b4);
             }
             break;
 
            case TNUMBER:
            {
-            bool b = (reg.accumulator.to_number().get() != reg.operand);
+            bool b = (reg.accumulator.object().simple().to_number().get() != reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
            case TCHARACTER:
            {
-            bool b = (reg.accumulator.to_character().get() != (char)reg.operand);
+            bool b = (reg.accumulator.object().simple().to_character().get() != (char)reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
@@ -6640,14 +4532,14 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_number().get() > reg.calc.to_number().get());
+           bool b = (reg.accumulator.object().simple().to_number().get() > reg.calc.object().simple().to_number().get());
            if (b == true)
            {
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
           }
          }
@@ -6657,19 +4549,19 @@ case IESTOREC:
           {
            case TNUMBER:
            {
-            bool b = (reg.accumulator.to_number().get() > reg.operand);
+            bool b = (reg.accumulator.object().simple().to_number().get() > reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
            case TCHARACTER:
            {
-            bool b = (reg.accumulator.to_character().get() > (char)reg.operand);
+            bool b = (reg.accumulator.object().simple().to_character().get() > (char)reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
@@ -6684,12 +4576,12 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_number().get() < reg.calc.to_number().get());
+           bool b = (reg.accumulator.object().simple().to_number().get() < reg.calc.object().simple().to_number().get());
            PNF_Boolean b2;
            b2.put(b);
-           reg.accumulator.put(b2);
+           reg.accumulator.object().simple().put(b2);
           }
          }
          else
@@ -6698,19 +4590,19 @@ case IESTOREC:
           {
            case TNUMBER:
            {
-            bool b = (reg.accumulator.to_number().get() < reg.operand);
+            bool b = (reg.accumulator.object().simple().to_number().get() < reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
            case TCHARACTER:
            {
-            bool b = (reg.accumulator.to_character().get() < (char)reg.operand);
+            bool b = (reg.accumulator.object().simple().to_character().get() < (char)reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
@@ -6725,14 +4617,14 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_number().get() >= reg.calc.to_number().get());
+           bool b = (reg.accumulator.object().simple().to_number().get() >= reg.calc.object().simple().to_number().get());
            if (b == true)
            {
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
           }
          }
@@ -6742,19 +4634,19 @@ case IESTOREC:
           {
            case TNUMBER:
            {
-            bool b = (reg.accumulator.to_number().get() >= reg.operand);
+            bool b = (reg.accumulator.object().simple().to_number().get() >= reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
            case TCHARACTER:
            {
-            bool b = (reg.accumulator.to_character().get() >= (char)reg.operand);
+            bool b = (reg.accumulator.object().simple().to_character().get() >= (char)reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
@@ -6769,14 +4661,14 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_number().get() <= reg.calc.to_number().get());
+           bool b = (reg.accumulator.object().simple().to_number().get() <= reg.calc.object().simple().to_number().get());
            if (b == true)
            {
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
           }
          }
@@ -6786,19 +4678,19 @@ case IESTOREC:
           {
            case TNUMBER:
            {
-            bool b = (reg.accumulator.to_number().get() <= reg.operand);
+            bool b = (reg.accumulator.object().simple().to_number().get() <= reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
            case TCHARACTER:
            {
-            bool b = (reg.accumulator.to_character().get() <= (char)reg.operand);
+            bool b = (reg.accumulator.object().simple().to_character().get() <= (char)reg.operand);
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
            break;
 
@@ -6813,14 +4705,14 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_boolean().get().getString() == "true" && reg.calc.to_boolean().get().getString() == "true");
+           bool b = (reg.accumulator.object().simple().to_boolean().get().getString() == "true" && reg.calc.object().simple().to_boolean().get().getString() == "true");
            if (b == true)
            {
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
           }
          }
@@ -6831,14 +4723,14 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.getType() == reg.calc.getType())
+          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
           {
-           bool b = (reg.accumulator.to_boolean().get().getString() == "true" || reg.calc.to_boolean().get().getString() == "true");
+           bool b = (reg.accumulator.object().simple().to_boolean().get().getString() == "true" || reg.calc.object().simple().to_boolean().get().getString() == "true");
            if (b == true)
            {
             PNF_Boolean b2;
             b2.put(b);
-            reg.accumulator.put(b2);
+            reg.accumulator.object().simple().put(b2);
            }
           }
          }
@@ -6847,13 +4739,62 @@ case IESTOREC:
 
         case INOT:
         {
-         if (reg.type == 0 && reg.operand == 0)
-         {
-          if (reg.accumulator.to_boolean().get().getString() == "true")
-           reg.accumulator.to_boolean().put(false);
-          else
-           reg.accumulator.to_boolean().put(true);
-         }
+	 PNF_Void v;
+         bool s = reg.version.check(v, 1);
+
+         if (s == true)
+	 {
+ 	  PNF_Boolean b;
+	  for (unsigned long is = 0; is < reg.sinstruction.length(); ++is)
+   	  {
+   	   bool icheck = false;
+
+   	   if (reg.sinstruction[is] == ICMP)
+   	   {
+   	    icheck = true;
+   	    b.put(icheck);
+   	    break;
+   	   }
+   	   else
+   	   {
+   	    icheck = false;
+   	    b.put(icheck);
+   	   }
+   	  }
+
+	  if (b.get() == "false")
+	   crash((char *)"CMP Not Supported.");
+
+          if (reg.type == 0 && reg.operand == 0)
+          {
+	   PNF_Boolean b2;
+           if (reg.accumulator.object().simple().to_boolean().get() == "true")
+	   {
+	    b2.put(false);
+            reg.accumulator.object().simple().put(b2);
+           }
+           else
+	   {
+	    b2.put(true);
+            reg.accumulator.object().simple().put(b2);
+	   }
+          }
+	 }
+	 else if (s == false)
+	 {
+	  if (reg.type == 0 && reg.operand == 0)
+          {
+	   PNF_Boolean b2;
+           if (reg.accumulator.object().simple().to_boolean().get() == "true")
+	   {
+            reg.accumulator.object().simple().to_boolean().put(false);
+           }
+           else
+	   {
+            reg.accumulator.object().simple().to_boolean().put(true);
+	   }
+          }
+	 }
         }
         break;
 
@@ -6875,7 +4816,7 @@ case IESTOREC:
   case ICGOTO:
         if (reg.type == 0)
         {
-         if (reg.accumulator.to_boolean().get().getString() == "true")
+         if (reg.accumulator.object().simple().to_boolean().get().getString() == "true")
          {
           i = reg.operand;
           j = reg.operand + 1;
@@ -6891,7 +4832,7 @@ case IESTOREC:
         break;
 
    case IZGOTO:
-        if (reg.accumulator.to_number().get() == 0)
+        if (reg.accumulator.object().simple().to_number().get() == 0)
         {
          if (reg.type == 0)
          {
@@ -6909,7 +4850,7 @@ case IESTOREC:
         break;
 
    case IPGOTO:
-        if (reg.accumulator.to_number().get() > 0)
+        if (reg.accumulator.object().simple().to_number().get() > 0)
         {
          if (reg.type == 0)
          {
@@ -6927,7 +4868,7 @@ case IESTOREC:
         break;
 
    case INGOTO:
-        if (reg.accumulator.to_number().get() < 0)
+        if (reg.accumulator.object().simple().to_number().get() < 0)
         {
          if (reg.type == 0)
          {
@@ -6990,7 +4931,7 @@ case IESTOREC:
   case ICGOTOL:
         if (reg.type == 0)
         {
-         if (reg.accumulator.to_boolean().get().getString() == "true")
+         if (reg.accumulator.object().simple().to_boolean().get().getString() == "true")
          {
           reg.operand = reg.labels.get(reg.operand).getNum();
 
@@ -7005,7 +4946,7 @@ case IESTOREC:
         }
         else if (reg.type == TSTRING)
         {
-         if (reg.accumulator.to_boolean().get().getString() == "true")
+         if (reg.accumulator.object().simple().to_boolean().get().getString() == "true")
          {
           String lblname = (char *)"";
           unsigned long is;
@@ -7055,7 +4996,7 @@ case IESTOREC:
         break;
 
    case IZGOTOL:
-        if (reg.accumulator.to_number().get() == 0)
+        if (reg.accumulator.object().simple().to_number().get() == 0)
         {
          if (reg.type == 0)
          {
@@ -7101,7 +5042,7 @@ case IESTOREC:
         break;
 
    case IPGOTOL:
-        if (reg.accumulator.to_number().get() > 0)
+        if (reg.accumulator.object().simple().to_number().get() > 0)
         {
          if (reg.type == 0)
          {
@@ -7147,7 +5088,7 @@ case IESTOREC:
         break;
 
    case INGOTOL:
-        if (reg.accumulator.to_number().get() < 0)
+        if (reg.accumulator.object().simple().to_number().get() < 0)
         {
          if (reg.type == 0)
          {
@@ -7196,9 +5137,9 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          reg.calc.to_number().dec(1);
-          if (reg.calc.to_number().get() == 0)
-           reg.accumulator.put(reg.calc.to_number());
+          reg.calc.object().simple().to_number().dec(1);
+          if (reg.calc.object().simple().to_number().get() == 0)
+           reg.accumulator.object().simple().put(reg.calc.object().simple().to_number());
          }
         }
         break;
@@ -7210,7 +5151,7 @@ case IESTOREC:
          {
           case TVOID:
                   {
-                   stk.push(reg.accumulator);
+                   stk.push(reg.accumulator.object().simple());
                   }
                   break;
 
@@ -7231,7 +5172,7 @@ case IESTOREC:
           {
            case TVOID:
            {
-                   reg.accumulator = stk.top();
+                   reg.accumulator.object().simple() = stk.top();
                    stk.pop();
                    break;
            }
@@ -7594,7 +5535,7 @@ case IESTOREC:
            crash((char *)"Invalid VOID Value.");
           else
           {
-           reg.accumulator.eprint();
+           reg.accumulator.object().simple().eprint();
           }
          }
          break;
@@ -7656,7 +5597,7 @@ case IESTOREC:
                crash((char *)"Invalid VOID Value.");
               else
               {
-               reg.accumulator.eprintln();
+               reg.accumulator.object().simple().eprintln();
               }
               break;
 
@@ -7711,7 +5652,8 @@ case IESTOREC:
 
    case IEND:
    {
-    // Do nothing, just a marker for the end.
+    if (reg.type != TVOID && reg.operand != 0)
+     crash((char *)"Invalid END instruction.");
    }
    break;
 
@@ -8067,7 +6009,7 @@ case IESTOREC:
    	if (reg.type != TVOID && reg.operand != 0)
    	 crash((char *)"Invalid TYPEOF.");
 
-   	long ttype = reg.accumulator.getType();
+   	long ttype = reg.accumulator.object().simple().getType();
    	String type;
    	switch (ttype)
    	{
@@ -8104,7 +6046,7 @@ case IESTOREC:
    	if (reg.type != TVOID && reg.operand != 0)
    	 crash((char *)"Invalid CTYPEOF.");
 
-   	long ttype = reg.calc.getType();
+   	long ttype = reg.calc.object().simple().getType();
    	String type;
    	switch (ttype)
    	{
@@ -8141,7 +6083,7 @@ case IESTOREC:
    	if (reg.type != TVOID && reg.operand != 0)
    	 crash((char *)"Invalid TLOAD.");
 
-   	reg.accumulator.put(reg.type_of);
+   	reg.accumulator.object().simple().put(reg.type_of);
    }
    break;
 
@@ -8161,7 +6103,7 @@ case IESTOREC:
    	   crash((char *)"Invalid VOID Value.");
 
    	  PNF_Void v;
-   	  reg.accumulator.put(v);
+   	  reg.accumulator.object().simple().put(v);
      }
    	 break;
 
@@ -8182,21 +6124,21 @@ case IESTOREC:
    	   	b.put(true);
    	   	break;
    	  }
-   	  reg.accumulator.put(b);
+   	  reg.accumulator.object().simple().put(b);
    	 }
    	 break;
 
    	 case TNUMBER:
    	 {
    	  PNF_Number n(mem.get(k));
-   	  reg.accumulator.put(n);
+   	  reg.accumulator.object().simple().put(n);
    	 }
    	 break;
 
    	 case TCHARACTER:
    	 {
    	  PNF_Character c(reg.operand);
-   	  reg.accumulator.put(c);
+   	  reg.accumulator.object().simple().put(c);
    	 }
    	 break;
 
@@ -8209,7 +6151,7 @@ case IESTOREC:
    	   str += (char)mem.get(is);
    	  }
    	  PNF_String s(str);
-   	  reg.accumulator.put(s);
+   	  reg.accumulator.object().simple().put(s);
 
 
       i = is + 1;
@@ -8237,7 +6179,7 @@ case IESTOREC:
    	   crash((char *)"Invalid VOID Value.");
 
    	  PNF_Void v;
-   	  reg.accumulator.put(v);
+   	  reg.accumulator.object().simple().put(v);
      }
    	 break;
 
@@ -8258,21 +6200,21 @@ case IESTOREC:
    	   	b.put(true);
    	   	break;
    	  }
-   	  reg.accumulator.put(b);
+   	  reg.accumulator.object().simple().put(b);
    	 }
    	 break;
 
    	 case TNUMBER:
    	 {
    	  PNF_Number n(reg.operand);
-   	  reg.accumulator.put(n);
+   	  reg.accumulator.object().simple().put(n);
    	 }
    	 break;
 
    	 case TCHARACTER:
    	 {
    	  PNF_Character c(reg.operand);
-   	  reg.accumulator.put(c);
+   	  reg.accumulator.object().simple().put(c);
    	 }
    	 break;
 
@@ -8285,7 +6227,7 @@ case IESTOREC:
    	   str += (char)mem.get(is);
    	  }
    	  PNF_String s(str);
-   	  reg.accumulator.put(s);
+   	  reg.accumulator.object().simple().put(s);
 
 
       i = is + 1;
@@ -8313,7 +6255,7 @@ case IESTOREC:
    	 crash((char *)"Invalid INLOAD instruction.");
 
    	PNF_String s(reg.iname);
-   	reg.accumulator.put(s);
+   	reg.accumulator.object().simple().put(s);
    }
    break;
 
@@ -8324,7 +6266,7 @@ case IESTOREC:
    	 crash((char *)"Invalid ICLOAD instruction.");
 
    	PNF_Number n(reg.icount);
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8335,7 +6277,7 @@ case IESTOREC:
    	 crash((char *)"Invalid ARLOAD instruction.");
 
    	PNF_String s(reg.args.get(reg.operand));
-   	reg.accumulator.put(s);
+   	reg.accumulator.object().simple().put(s);
    }
    break;
 
@@ -8355,9 +6297,9 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid SWITCH instruction.");
 
-   	PNF_Variable v = reg.accumulator;
+   	PNF_Variable v = reg.accumulator.object().simple();
    	reg.accumulator = reg.calc;
-   	reg.calc = v;
+   	reg.calc.object().simple() = v;
    }
    break;
 
@@ -8367,7 +6309,7 @@ case IESTOREC:
    	if (reg.type == TVOID)
    	{
    	PNF_Number n(reg.varcount.get(reg.operand).address());
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
     }
     else
      crash((char *)"Invalid VADD instruction.");
@@ -8381,7 +6323,7 @@ case IESTOREC:
    	 crash((char *)"Invalid LADD instruction.");
 
    	PNF_Number n(reg.labels.get(reg.operand).getNum());
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8392,7 +6334,7 @@ case IESTOREC:
    	 crash((char *)"Invalid ELADD instruction.");
 
    	PNF_Number n(reg.elabels.get(reg.operand));
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8400,11 +6342,11 @@ case IESTOREC:
    {
    	if (reg.type == TVOID && reg.operand == 0)
    	{
-   	 unsigned long address = (unsigned long)reg.accumulator.to_number().get();
+   	 unsigned long address = (unsigned long)reg.accumulator.object().simple().to_number().get();
    	 double value = mem.get(address);
 
    	 PNF_Number n(value);
-   	 reg.accumulator.put(n);
+   	 reg.accumulator.object().simple().put(n);
    	}
    	else
    	 crash((char *)"Invalid ADD2V instruction.");
@@ -8416,11 +6358,11 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid BTAND instruction.");
 
-   	unsigned long n1 = (unsigned long)reg.accumulator.to_number().get();
-   	unsigned long n2 = (unsigned long)reg.calc.to_number().get();
+   	unsigned long n1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
+   	unsigned long n2 = (unsigned long)reg.calc.object().simple().to_number().get();
    	unsigned long n3 = n1 & n2;
    	PNF_Number n(n3);
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8430,11 +6372,11 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid BTOR instruction.");
 
-   	unsigned long n1 = (unsigned long)reg.accumulator.to_number().get();
-   	unsigned long n2 = (unsigned long)reg.calc.to_number().get();
+   	unsigned long n1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
+   	unsigned long n2 = (unsigned long)reg.calc.object().simple().to_number().get();
    	unsigned long n3 = n1 | n2;
    	PNF_Number n(n3);
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8444,11 +6386,11 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid BTEXOR instruction.");
 
-   	unsigned long n1 = (unsigned long)reg.accumulator.to_number().get();
-   	unsigned long n2 = (unsigned long)reg.calc.to_number().get();
+   	unsigned long n1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
+   	unsigned long n2 = (unsigned long)reg.calc.object().simple().to_number().get();
    	unsigned long n3 = n1 ^ n2;
    	PNF_Number n(n3);
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8458,10 +6400,10 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid BTNOT instruction.");
 
-   	unsigned long n1 = (unsigned long)reg.accumulator.to_number().get();
+   	unsigned long n1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
    	unsigned long n3 = ~n1;
    	PNF_Number n(n3);
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8471,11 +6413,11 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid BTSL instruction.");
 
-   	unsigned long n1 = (unsigned long)reg.accumulator.to_number().get();
-   	unsigned long n2 = (unsigned long)reg.calc.to_number().get();
+   	unsigned long n1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
+   	unsigned long n2 = (unsigned long)reg.calc.object().simple().to_number().get();
    	unsigned long n3 = n1 << n2;
    	PNF_Number n(n3);
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8485,11 +6427,11 @@ case IESTOREC:
    	if (reg.type != 0 || reg.operand != 0)
    	 crash((char *)"Invalid BTSR instruction.");
 
-   	unsigned long n1 = (unsigned long)reg.accumulator.to_number().get();
-   	unsigned long n2 = (unsigned long)reg.calc.to_number().get();
+   	unsigned long n1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
+   	unsigned long n2 = (unsigned long)reg.calc.object().simple().to_number().get();
    	unsigned long n3 = n1 >> n2;
    	PNF_Number n(n3);
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -8505,13 +6447,13 @@ case IESTOREC:
    	  {
    	   vcheck = true;
    	   b.put(vcheck);
-   	   reg.accumulator.put(b);
+   	   reg.accumulator.object().simple().put(b);
    	  }
    	  else
    	  {
    	   vcheck = false;
    	   b.put(vcheck);
-   	   reg.accumulator.put(b);
+   	   reg.accumulator.object().simple().put(b);
    	  }
    	 }
    	 break;
@@ -8520,7 +6462,7 @@ case IESTOREC:
    	 {
    	  vcheck = false;
    	  b.put(vcheck);
-   	  reg.accumulator.put(b);
+   	  reg.accumulator.object().simple().put(b);
    	 }
     }
    }
@@ -8541,14 +6483,14 @@ case IESTOREC:
    	   {
    	   	vcheck = true;
         b.put(vcheck);
-        reg.accumulator.put(b);
+        reg.accumulator.object().simple().put(b);
         goto endloop;
        }
    	   else
    	   {
         vcheck = false;
         b.put(vcheck);
-        reg.accumulator.put(b);
+        reg.accumulator.object().simple().put(b);
        }
    	  }
       break;
@@ -8557,7 +6499,7 @@ case IESTOREC:
       {
        vcheck = false;
    	   b.put(vcheck);
-   	   reg.accumulator.put(b);
+   	   reg.accumulator.object().simple().put(b);
    	  }
      }
     }
@@ -8600,14 +6542,14 @@ case IESTOREC:
    	 {
    	  icheck = true;
    	  b.put(icheck);
-   	  reg.accumulator.put(b);
+   	  reg.accumulator.object().simple().put(b);
    	  break;
    	 }
    	 else
    	 {
    	  icheck = false;
    	  b.put(icheck);
-   	  reg.accumulator.put(b);
+   	  reg.accumulator.object().simple().put(b);
    	 }
    	}
    }
@@ -8627,14 +6569,14 @@ case IESTOREC:
    	 {
    	  tcheck = true;
    	  b.put(tcheck);
-   	  reg.accumulator.put(b);
+   	  reg.accumulator.object().simple().put(b);
    	  break;
    	 }
    	 else
    	 {
    	  tcheck = false;
    	  b.put(tcheck);
-   	  reg.accumulator.put(b);
+   	  reg.accumulator.object().simple().put(b);
    	 }
    	}
    }
@@ -8740,7 +6682,7 @@ case IESTOREC:
    	   crash((char *)"Invalid FIOPEN instruction.");
    	  else
    	  {
-   	   str = reg.accumulator.to_string().get();
+   	   str = reg.accumulator.object().simple().to_string().get();
    	   switch (reg.fimode)
        {
         case FMIN:
@@ -8756,7 +6698,7 @@ case IESTOREC:
        }
        worked = (pnffin.is_open());
        PNF_Boolean b(worked);
-       reg.accumulator.put(b);
+       reg.accumulator.object().simple().put(b);
    	  }
    	 }
    	 break;
@@ -8782,7 +6724,7 @@ case IESTOREC:
       }
       worked = (pnffin.is_open());
       PNF_Boolean b(worked);
-      reg.accumulator.put(b);
+      reg.accumulator.object().simple().put(b);
 
       i = is + 1;
       j = i + 1;
@@ -8813,7 +6755,7 @@ case IESTOREC:
    	   crash((char *)"Invalid file output mode.");
    	  else
    	  {
-   	   str = reg.accumulator.to_string().get();
+   	   str = reg.accumulator.object().simple().to_string().get();
    	   switch (reg.fomode)
        {
         case FMOUT:
@@ -8841,7 +6783,7 @@ case IESTOREC:
        }
        worked = (pnffout.is_open());
        PNF_Boolean b(worked);
-       reg.accumulator.put(b);
+       reg.accumulator.object().simple().put(b);
    	  }
    	 }
    	 break;
@@ -8879,7 +6821,7 @@ case IESTOREC:
       }
       worked = (pnffout.is_open());
       PNF_Boolean b(worked);
-      reg.accumulator.put(b);
+      reg.accumulator.object().simple().put(b);
 
       i = is + 1;
       j = i + 1;
@@ -8899,13 +6841,13 @@ case IESTOREC:
 
    case IFREAD:
    {
-    reg.accumulator.setType(reg.type);
+    reg.accumulator.object().simple().setType(reg.type);
 
     if (reg.operand != 0)
      crash((char *)"Invalid Parameter.");
     else
     {
-     reg.accumulator.fread(pnffin);
+     reg.accumulator.object().simple().fread(pnffin);
     }
    }
    break;
@@ -8920,7 +6862,7 @@ case IESTOREC:
        crash((char *)"Invalid VOID Value.");
       else
       {
-       reg.accumulator.fprint(pnffout);
+       reg.accumulator.object().simple().fprint(pnffout);
       }
      }
      break;
@@ -8983,7 +6925,7 @@ case IESTOREC:
        crash((char *)"Invalid VOID Value.");
       else
       {
-       reg.accumulator.fprint(pnffout);
+       reg.accumulator.object().simple().fprint(pnffout);
       }
      }
      break;
@@ -9061,7 +7003,7 @@ case IESTOREC:
    	 crash((char *)"Invalid MEML instruction.");
 
    	PNF_Number n(mem.length());
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -9081,7 +7023,7 @@ case IESTOREC:
    	 eofstate2 = true;
    	}
    	PNF_Boolean b(eof);
-   	reg.accumulator.put(b);
+   	reg.accumulator.object().simple().put(b);
    }
    break;
 
@@ -9092,7 +7034,7 @@ case IESTOREC:
 
 
    	PNF_Number n(reg.args.length());
-   	reg.accumulator.put(n);
+   	reg.accumulator.object().simple().put(n);
    }
    break;
 
@@ -9397,7 +7339,7 @@ case IESTOREC:
    	if (found == true)
    	{
    	 PNF_Number n = reg.rt1vars[index].get();
-   	 reg.accumulator.put(n);
+   	 reg.accumulator.object().simple().put(n);
    	}
    	else
    	 crash((char *)"Range not implemented.");
@@ -9436,7 +7378,7 @@ case IESTOREC:
    	 }
    	}
 
-   	PNF_Number n = reg.accumulator.to_number();
+   	PNF_Number n = reg.accumulator.object().simple().to_number();
    	bool ret;
    	if (found == true)
    	{
@@ -9870,7 +7812,7 @@ case IESTOREC:
 	 crash((char *)"RLOAD index out of bounds.");
 
    	PNF_Number num = reg.rt2vars[reg.rt2prep].get(reg.operand);
-   	reg.accumulator.put(num);
+   	reg.accumulator.object().simple().put(num);
    }
    break;
 
@@ -10150,7 +8092,7 @@ case IESTOREC:
 
    	String str = reg.evars[reg.eprep].value();
     PNF_String str2(str);
-    reg.accumulator.put(str2);
+    reg.accumulator.object().simple().put(str2);
    }
    break;
 
@@ -10162,7 +8104,7 @@ case IESTOREC:
    	if (reg.eprep == -1)
 	 crash((char *)"First do EPREP");
 
-   	String str = reg.accumulator.to_string().get();
+   	String str = reg.accumulator.object().simple().to_string().get();
    	bool ret = reg.evars[reg.eprep].value(str);
 
 
@@ -10296,7 +8238,7 @@ case IESTOREC:
    	  break;
    	  
    	 case TVOID:
-   	  reg.aiprep = (unsigned long)reg.accumulator.to_number().get();
+   	  reg.aiprep = (unsigned long)reg.accumulator.object().simple().to_number().get();
    	  break;
    	  
    	 default:
@@ -10336,9 +8278,9 @@ case IESTOREC:
    	  {
        // Clear the accumulator...
        PNF_Void v;
-       reg.accumulator.put(v);
+       reg.accumulator.object().simple().put(v);
 
-   	   reg.accumulator.put(reg.avars[index][reg.aiprep].simple());
+   	   reg.accumulator.object().simple().put(reg.avars[index][reg.aiprep].simple());
    	  }
    	  break;
 
@@ -10376,7 +8318,7 @@ case IESTOREC:
 
 	if (found == true)
 	{
-  	 reg.avars[index][reg.aiprep].simple(reg.accumulator);
+  	 reg.avars[index][reg.aiprep].simple(reg.accumulator.object().simple());
 	}
     else
      crash((char *)"Array not found.");
@@ -10409,7 +8351,7 @@ case IESTOREC:
 	if (found == true)
 	{
 	 PNF_Number n(reg.avars[index].length());
-  	 reg.accumulator.put(n);
+  	 reg.accumulator.object().simple().put(n);
 	}
     else
      crash((char *)"Array not found.");
@@ -10475,7 +8417,7 @@ case IESTOREC:
     if (reg.type != TVOID || reg.operand != 0)
      crash((char *)"Invalid IF instruction.");
 
-    if (reg.accumulator.to_boolean().get() == (char *)"true")
+    if (reg.accumulator.object().simple().to_boolean().get() == (char *)"true")
     {
      reg.inif[reg.extrai.get(i)].type.value = true;    
     }
@@ -10610,43 +8552,43 @@ case IESTOREC:
        {
         case TBOOLEAN:
         {
-	 if (reg.accumulator.getType() != mem.get(is + 1))
+	 if (reg.accumulator.object().simple().getType() != mem.get(is + 1))
 	  crash((char *)"Invalid SWCASE type.");
 
          PNF_Boolean b((long)mem.get(is + 2));
 
-         if (reg.accumulator.to_boolean().get() == b.get())
+         if (reg.accumulator.object().simple().to_boolean().get() == b.get())
           reg.switchcond = true;
         }
         break;
 
         case TNUMBER:
         {
-	 if (reg.accumulator.getType() != mem.get(is + 1))
+	 if (reg.accumulator.object().simple().getType() != mem.get(is + 1))
 	  crash((char *)"Invalid SWCASE type.");
 
 	 PNF_Number n(mem.get(is + 2));
 
-         if (reg.accumulator.to_number().get() == n.get())
+         if (reg.accumulator.object().simple().to_number().get() == n.get())
           reg.switchcond = true;
         }
         break;
 
         case TCHARACTER:
         {
-	 if (reg.accumulator.getType() != mem.get(is + 1))
+	 if (reg.accumulator.object().simple().getType() != mem.get(is + 1))
 	  crash((char *)"Invalid SWCASE type.");
 
 	 PNF_Character c((long)mem.get(is + 2));
 
-         if (reg.accumulator.to_character().get() == c.get())
+         if (reg.accumulator.object().simple().to_character().get() == c.get())
           reg.switchcond = true;
         }
         break;
 
         case TSTRING:
         {
-	 if (reg.accumulator.getType() != mem.get(is + 1))
+	 if (reg.accumulator.object().simple().getType() != mem.get(is + 1))
 	  crash((char *)"Invalid SWCASE type.");
 
          String str = (char *)"";
@@ -10657,7 +8599,7 @@ case IESTOREC:
 
          PNF_String s(str);
          
-         if (reg.accumulator.to_string().get() == s.get())
+         if (reg.accumulator.object().simple().to_string().get() == s.get())
           reg.switchcond = true;
         }
         break;
@@ -10818,7 +8760,7 @@ case IESTOREC:
   {
    if (is2 == is)
    {
-    stk.push(reg.accumulator);
+    stk.push(reg.accumulator.object().simple());
     break;
    }
    else
@@ -10855,7 +8797,7 @@ case IESTOREC:
   if (reg.type != TVOID && reg.operand != 0)
    crash((char *)"Invalid ATOSP instruction.");
 
-  reg.stackp = reg.accumulator;
+  reg.stackp = reg.accumulator.object().simple();
  }
  break;
 
@@ -10864,7 +8806,7 @@ case IESTOREC:
   if (reg.type != TVOID && reg.operand != 0)
    crash((char *)"Invalid SPTOA instruction.");
 
-  reg.accumulator = reg.stackp;
+  reg.accumulator.object().simple() = reg.stackp;
  }
  break;
 
@@ -11084,7 +9026,7 @@ case IESTOREC:
   if (s == false)
    crash((char *)"Invalid instruction. Not in this version.");
 
-  double d = reg.accumulator.to_number().get();
+  double d = reg.accumulator.object().simple().to_number().get();
   unsigned long index = (unsigned long)d;
 
   switch (reg.type)
@@ -11192,46 +9134,46 @@ case IESTOREC:
     PNF_Void v2;
     PNF_Variable v3;
 
-    reg.accumulator.put(v3);
+    reg.accumulator.object().simple().put(v3);
    }
    break;
 
    case TBOOLEAN:
    {
-    double d = reg.accumulator.to_number().get();
+    double d = reg.accumulator.object().simple().to_number().get();
     unsigned long index = (unsigned long)d;
     bool b2 = reg.fpointer1.get_function(index).param(reg.pnum).to_boolean().get() == (char *)"false" ? false : true;
     PNF_Boolean b(b2);
     PNF_Variable v2(b);
-    reg.accumulator.put(v2);
+    reg.accumulator.object().simple().put(v2);
    }
    break;
 
    case TNUMBER:
    {
-    double d = reg.accumulator.to_number().get();
+    double d = reg.accumulator.object().simple().to_number().get();
     unsigned long index = (unsigned long)d;
     PNF_Number n(reg.fpointer1.get_function(index).param(reg.pnum).to_number().get());
     PNF_Variable v2(n);
-    reg.accumulator.put(v2);
+    reg.accumulator.object().simple().put(v2);
    }
    break;
 
    case TCHARACTER:
    {
-    double d = reg.accumulator.to_number().get();
+    double d = reg.accumulator.object().simple().to_number().get();
     unsigned long index = (unsigned long)d;
-    reg.accumulator.put(reg.fpointer1.get_function(index).param(reg.pnum).to_character());
+    reg.accumulator.object().simple().put(reg.fpointer1.get_function(index).param(reg.pnum).to_character());
    }
    break;
 
    case TSTRING:
    {
-    double d = reg.accumulator.to_number().get();
+    double d = reg.accumulator.object().simple().to_number().get();
     unsigned long index = (unsigned long)d;
     PNF_String s(reg.fpointer1.get_function(index).param(reg.pnum).to_string());
     PNF_Variable v2(s);
-    reg.accumulator.put(v2);
+    reg.accumulator.object().simple().put(v2);
    }
    break;
 
@@ -11336,7 +9278,7 @@ case IESTOREC:
      crash((char *)"Function not found.");
 
     reg.fpointer3 = &reg.fpointer1.get_function(index);
-    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_Void());
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.object().simple().to_Void());
    }
    break;
 
@@ -11348,7 +9290,7 @@ case IESTOREC:
      crash((char *)"Function not found.");
 
     reg.fpointer3 = &reg.fpointer1.get_function(index);
-    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_boolean());
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.object().simple().to_boolean());
    }
    break;
 
@@ -11360,7 +9302,7 @@ case IESTOREC:
      crash((char *)"Function not found.");
 
     reg.fpointer3 = &reg.fpointer1.get_function(index);
-    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_number());
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.object().simple().to_number());
    }
    break;
 
@@ -11372,7 +9314,7 @@ case IESTOREC:
      crash((char *)"Function not found.");
 
     reg.fpointer3 = &reg.fpointer1.get_function(index);
-    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_character());
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.object().simple().to_character());
    }
    break;
 
@@ -11384,7 +9326,7 @@ case IESTOREC:
      crash((char *)"Function not found.");
 
     reg.fpointer3 = &reg.fpointer1.get_function(index);
-    reg.fpointer3->ret(reg.rnum, reg.accumulator.to_string());
+    reg.fpointer3->ret(reg.rnum, reg.accumulator.object().simple().to_string());
    }
    break;
 
@@ -11539,7 +9481,7 @@ case IESTOREC:
    crash((char *)"Invalid RETURNV instruction.");
 
 
-  reg.accumulator.put(reg.fpointer3->ret(reg.rnum));
+  reg.accumulator.object().simple().put(reg.fpointer3->ret(reg.rnum));
  }
  break;
 
@@ -11628,7 +9570,7 @@ case IESTOREC:
   if (reg.type != TVOID && reg.operand != 0)
    crash((char *)"Invalid FNCSNAME intruction.");
 
-  reg.fpointer2->name(reg.accumulator.to_string().get());
+  reg.fpointer2->name(reg.accumulator.object().simple().to_string().get());
  }
  break;
 
@@ -11656,7 +9598,7 @@ case IESTOREC:
 
    case TBOOLEAN:
    {
-    PNF_Variable v(reg.accumulator.to_boolean());
+    PNF_Variable v(reg.accumulator.object().simple().to_boolean());
 
     reg.fpointer2->ret(reg.rnum, v);
    }
@@ -11664,7 +9606,7 @@ case IESTOREC:
 
    case TNUMBER:
    {
-    PNF_Variable v(reg.accumulator.to_number());
+    PNF_Variable v(reg.accumulator.object().simple().to_number());
 
     reg.fpointer2->ret(reg.rnum, v);
    }
@@ -11672,7 +9614,7 @@ case IESTOREC:
 
    case TCHARACTER:
    {
-    PNF_Variable v(reg.accumulator.to_character());
+    PNF_Variable v(reg.accumulator.object().simple().to_character());
 
     reg.fpointer2->ret(reg.rnum, v);
    }
@@ -11680,7 +9622,7 @@ case IESTOREC:
 
    case TSTRING:
    {
-    PNF_Variable v(reg.accumulator.to_string());
+    PNF_Variable v(reg.accumulator.object().simple().to_string());
 
     reg.fpointer2->ret(reg.rnum, v);
 
@@ -11726,7 +9668,7 @@ case IESTOREC:
 
    case TBOOLEAN:
    {
-    PNF_Variable v(reg.accumulator.to_boolean());
+    PNF_Variable v(reg.accumulator.object().simple().to_boolean());
 
     reg.fpointer2->param(reg.pnum, v);
 
@@ -11737,7 +9679,7 @@ case IESTOREC:
 
    case TNUMBER:
    {
-    PNF_Variable v(reg.accumulator.to_number());
+    PNF_Variable v(reg.accumulator.object().simple().to_number());
 
     reg.fpointer2->param(reg.pnum, v);
 
@@ -11748,7 +9690,7 @@ case IESTOREC:
 
    case TCHARACTER:
    {
-    PNF_Variable v(reg.accumulator.to_character());
+    PNF_Variable v(reg.accumulator.object().simple().to_character());
 
     reg.fpointer2->param(reg.pnum, v);
 
@@ -11759,7 +9701,7 @@ case IESTOREC:
 
    case TSTRING:
    {
-    PNF_Variable v(reg.accumulator.to_string());
+    PNF_Variable v(reg.accumulator.object().simple().to_string());
 
     reg.fpointer2->param(reg.pnum, v);
 
@@ -11843,7 +9785,7 @@ case IESTOREC:
 
   PNF_String str(reg.fpointer2->name());
   PNF_Variable v2(str);
-  reg.accumulator.put(v2);
+  reg.accumulator.object().simple().put(v2);
  }
  break;
 
@@ -11858,7 +9800,7 @@ case IESTOREC:
   if (reg.type != TNUMBER)
    crash((char *)"Invalid FNCGRET instruction.");
 
-  reg.accumulator.put(reg.fpointer2->ret(reg.operand));
+  reg.accumulator.object().simple().put(reg.fpointer2->ret(reg.operand));
  }
  break;
 
@@ -11873,7 +9815,7 @@ case IESTOREC:
   if (reg.type != TNUMBER)
    crash((char *)"Invalid FNCGPARAM instruction.");
 
-  reg.accumulator.put(reg.fpointer2->param(reg.operand));
+  reg.accumulator.object().simple().put(reg.fpointer2->param(reg.operand));
  }
  break;
 
@@ -11890,7 +9832,7 @@ case IESTOREC:
 
   PNF_Number n(reg.fpointer2->definition());
   PNF_Variable v2(n);
-  reg.accumulator.put(v2);
+  reg.accumulator.object().simple().put(v2);
  }
  break;
 
@@ -11905,7 +9847,7 @@ case IESTOREC:
   if (reg.type != TVOID && reg.operand != 0)
    crash((char *)"Invalid FNCPOINT instruction.");
 
-  unsigned long p = reg.accumulator.to_number().get();
+  unsigned long p = reg.accumulator.object().simple().to_number().get();
   reg.fpointer3 = &reg.fpointer1.get_function(p);
  }
  break;
@@ -11923,7 +9865,7 @@ case IESTOREC:
 
   PNF_Number n(reg.fpointer1.length());
   PNF_Variable v2(n);
-  reg.accumulator.put(v2);
+  reg.accumulator.object().simple().put(v2);
  }
  break;
 
@@ -11958,13 +9900,13 @@ case IESTOREC:
  if (reg.operand != 0)
   crash((char *)"Invalid FNCFIND instruction.");
 
-  String str = reg.accumulator.to_string().get();
+  String str = reg.accumulator.object().simple().to_string().get();
   unsigned long index = reg.fpointer1.find(str, reg.frets3, reg.fparams3);
   if (index == -1)
    crash((char *)"Function not found.");
 
   PNF_Number n(index);
-  reg.accumulator.put(n);
+  reg.accumulator.object().simple().put(n);
 
 
   for (unsigned long is = reg.frets3.length() - 1; is != 0; --is)
@@ -12136,7 +10078,7 @@ case IESTOREC:
   if (reg.operand != 0)
    crash((char *)"Invalid FNCSDEFAULTV instruction.");
 
-  double d = reg.accumulator.to_number().get();
+  double d = reg.accumulator.object().simple().to_number().get();
   unsigned long index = (unsigned long)d;
 
   reg.fpointer3 = &reg.fpointer1.get_function(index);
@@ -12214,7 +10156,7 @@ case IESTOREC:
   if (reg.fdefaultv)
   {
    reg.fdefaultvalue = reg.accumulator;
-   reg.fpointer2->defaultv(reg.pnum, reg.fdefaultvalue);
+   reg.fpointer2->defaultv(reg.pnum, reg.fdefaultvalue.object().simple());
   }
  }
  break;
@@ -12232,7 +10174,7 @@ case IESTOREC:
 
   if (reg.fdefaultv)
   {
-   reg.fdefaultvalue.put(reg.fpointer2->defaultv(reg.pnum));
+   reg.fdefaultvalue.object().simple().put(reg.fpointer2->defaultv(reg.pnum));
    reg.accumulator = reg.fdefaultvalue;
   }
  }
@@ -12252,13 +10194,1689 @@ case IESTOREC:
   reg.fpointer2->syncdefaultp(reg.pnum);
  }
  break;
+
+ case INTIMES:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid NTIMES instruction.");
+
+
+  String str = reg.accumulator.object().simple().to_string().get();
+  String str2 = str;
+  
+  for (unsigned long i = 1; i < (unsigned long)reg.calc.object().simple().to_number().get(); ++i)
+   str += str2;
+
+  PNF_String str3(str);
+  reg.accumulator.object().simple().put(str3);
+ }
+ break;
+
+ case ICMP:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid CMP instruction.");
+
+
+  double d = reg.accumulator.object().simple().to_number().get();
+  double d2 = reg.calc.object().simple().to_number().get();
+
+  bool b1 = d < d2;
+  bool b2 = d == d2;
+  bool b3 = d > d2;
+
+  double result = 0;
+
+  if (b1)
+   result = -1;
+  else if (b2)
+   result = 0;
+  else if (b3)
+   result = 1;
+  else
+   crash((char *)"Bad data in CMP.");
+
+  PNF_Number n(result);
+  reg.accumulator.object().simple().put(n);
+ }
+ break;
+ 
+ case IRUN:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid RUN instruction.");
+   
+   
+  String str = "";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+  int ret = system(str.getString().c_str());
+  if (ret == -1)
+   crash((char *)"Unable to run command.");
+  ret = ret >> 8;
+  PNF_Number n(ret);
+  reg.accumulator.object().simple().put(n);
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IJRUN:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid JRUN instruction.");
+   
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+  {
+   str += (char)mem.get(is);
+  }
+   
+  char * java = getenv("JRUN");
+  if (java == NULL)
+   crash((char *)"JRUN enviroment variable not set.");
+ String java2 = java;
+  
+  String str2 = "\"" + java2  + "\"" +  " " + str;
+  
+  int ret = system(str2.getString().c_str());
+  if (ret == -1)
+   crash((char *)"Unable to run command.");
+  ret = ret >> 8;
+
+  PNF_Number n(ret);
+  reg.accumulator.object().simple().put(n);
+   
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IPNFRUN:
+ {
+   PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid PNFRUN instruction.");
+   
+   
+  String str = "";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+   
+ String pnf = "";
+ #ifdef OS_WINDOWS
+  pnf = "pnf";
+ #endif // OS_WINDOWS
+ #ifdef OS_LINUX
+  pnf = "./pnf";
+ #endif // OS_LINUX
+  
+  String str2 = pnf + " " + str;
+  
+  int ret = system(str2.getString().c_str());
+  if (ret == -1)
+   crash((char *)"Unable to run command.");
+  ret = ret >> 8;
+
+  PNF_Number n(ret);
+  reg.accumulator.object().simple().put(n);
+
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ISTRUCT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid STRUCT instruction.");
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+   
+ 
+  reg.structs.insert();
+  reg.structs[reg.structs.length() - 1].type(str);
+   
+  i = is + 1;
+  j = i + 1;
+  k = i + 2;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ISTRUCTVAR:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild STRUCTVAR instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  PNF_Object2 o;
+  reg.structs[reg.structs.length() - 1].Use(reg.structs[reg.structs.length() - 1].mlength() - 1);
+  reg.structs[reg.structs.length() - 1].put(o, str);
+  reg.structs[reg.structs.length() - 1].add();
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IENDSTRUCT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild ENDSTRUCT instruction.");
+ }
+ break;
+ 
+ case ISTRUCTNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild STRUCTNAME instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  reg.struct_type = str;
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ISTRUCTONAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild STRUCTONAME instruction.");
+  
+   
+  String str = "";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  reg.struct_name = str;
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ISTRUCTD:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild STRUCTD instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  unsigned long is2 = 0;
+  bool found = false;
+  for (is2 = 0; is2 < reg.structs.length(); ++is2)
+  {
+   if (reg.structs[is2].type() == reg.struct_type)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"struct: " + reg.struct_type + " undefined.");
+   
+  reg.ostructs.insert();
+  reg.ostructs[reg.ostructs.length() - 1] = reg.structs[is2];
+  reg.ostructs[reg.ostructs.length() - 1].name(str);
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ISTRUCTUSE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    if (reg.operand != 0)
+     crash((char *)"Invaild STRUCTUSE instruction.");
+  
+    
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.ostructs.length(); ++is2)
+    {
+     if (reg.ostructs[is2].name() == reg.struct_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.struct_name + " not found.");
+   
+    bool uvalue = reg.ostructs[is2].Use(reg.struct_name);
+
+    if (!uvalue)
+     crash(reg.struct_name + (char *)"." + reg.struct_name + (char *)": not found.");
+   }
+   break;
+
+   case TNUMBER:
+   {
+    if (reg.operand != 0)
+     crash((char *)"Invaild STRUCTUSE instruction.");
+
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.ostructs.length(); ++is2)
+    {
+     if (reg.ostructs[is2].name() == reg.struct_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.struct_name + " not found.");
+  
+    bool uvalue = reg.ostructs[is2].Use((unsigned long)reg.accumulator.object().simple().to_number().get());
+
+    char str1[1000];
+    sprintf(str1, "%lu", (unsigned long)reg.accumulator.object().simple().to_number().get());
+    String str = str1;
+
+    if (!uvalue)
+     crash(reg.struct_name + (char *)"." + str + (char *)": not found.");
+   }
+   break;
+
+   case TSTRING:
+   {
+    String str = (char *)"";
+    unsigned long is;
+    for (is = k; mem.get(is) != 0; ++is)
+     str += (char)mem.get(is);
+  
+    
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.ostructs.length(); ++is2)
+    {
+     if (reg.ostructs[is2].name() == reg.struct_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.struct_name + " not found.");
+   
+    bool uvalue = reg.ostructs[is2].Use(str);
+ 
+    if (!uvalue)
+     crash(reg.struct_name + (char *)"." + str + (char *)": not found.");
+
+
+    i = is + 1;
+    j = i + 1;
+    k = i + 2;
+
+    i -= 3, j -= 3, k -= 3;
+   }
+   break;
+
+
+   default:
+    crash((char *)"Invalid STRUCTUSE instruction.");
+  };
+ }
+ break;
+
+ case ISTRUCTUSING:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTUSING instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.ostructs.length(); ++is2)
+  {
+   if (reg.ostructs[is2].name() == reg.struct_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.struct_name + " not found.");
+
+  reg.accumulator.object().simple().put((PNF_Number)reg.ostructs[is2].Using());
+ }
+ break;
+
+ case ISTRUCTUSINGNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTUSINGNAME instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.ostructs.length(); ++is2)
+  {
+   if (reg.ostructs[is2].name() == reg.struct_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.struct_name + " not found.");
+
+  reg.accumulator.object().simple().put(reg.ostructs[is2].UsingName());
+ }
+ break;
+
+ case ISTRUCTGET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTGET instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.ostructs.length(); ++is2)
+  {
+   if (reg.ostructs[is2].name() == reg.struct_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.struct_name + " not found.");
+
+  reg.accumulator.object(reg.ostructs[is2].get().object());
+ }
+ break;
+
+case ISTRUCTPUT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTPUT instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.ostructs.length(); ++is2)
+  {
+   if (reg.ostructs[is2].name() == reg.struct_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.struct_name + " not found.");
+
+  reg.ostructs[is2].put(reg.accumulator, reg.ostructs[is2].UsingName());
+ }
+ break;
+
+ case ISTRUCTTYPE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTTYPE instruction.");
+
+  reg.accumulator.object().simple().put(reg.struct_type);
+ }
+ break;
+
+ case ISTRUCTTYPE2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTTYPE2 instruction.");
+
+  reg.struct_type = reg.accumulator.object().simple().to_string().get();
+ }
+ break;
+
+ case ISTRUCTNAME2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTNAME2 instruction.");
+
+  reg.accumulator.object().simple().put(reg.struct_name);
+ }
+ break;
+
+ case ISTRUCTNAME3:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild STRUCTNAME3 instruction.");
+
+  reg.struct_name = reg.accumulator.object().simple().to_string().get();
+ }
+ break;
+
+ case IUNION:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid UNION instruction.");
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+   
+ 
+  reg.unions.insert();
+  reg.unions[reg.unions.length() - 1].type(str);
+   
+  i = is + 1;
+  j = i + 1;
+  k = i + 2;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IUNIONVAR:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild UNIONVAR instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  PNF_Object2 o;
+  reg.unions[reg.unions.length() - 1].Use(reg.unions[reg.unions.length() - 1].mlength() - 1);
+  reg.unions[reg.unions.length() - 1].put(o, str);
+  reg.unions[reg.unions.length() - 1].add();
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IENDUNION:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild ENDUNION instruction.");
+ }
+ break;
+ 
+ case IUNIONNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild UNIONNAME instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  reg.union_type = str;
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IUNIONONAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild UNIONONAME instruction.");
+  
+   
+  String str = "";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  reg.union_name = str;
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IUNIOND:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild UNIOND instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  unsigned long is2 = 0;
+  bool found = false;
+  for (is2 = 0; is2 < reg.unions.length(); ++is2)
+  {
+   if (reg.unions[is2].type() == reg.union_type)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"struct: " + reg.union_type + " undefined.");
+   
+  reg.ounions.insert();
+  reg.ounions[reg.unions.length() - 1] = reg.unions[is2];
+  reg.ounions[reg.unions.length() - 1].name(str);
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IUNIONUSE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    if (reg.operand != 0)
+     crash((char *)"Invaild UNIONSUSE instruction.");
+  
+    
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.unions.length(); ++is2)
+    {
+     if (reg.unions[is2].name() == reg.union_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.union_name + " not found.");
+   
+    bool uvalue = reg.ounions[is2].Use(reg.union_name);
+
+    if (!uvalue)
+     crash(reg.union_name + (char *)"." + reg.union_name + (char *)": not found.");
+   }
+   break;
+
+   case TNUMBER:
+   {
+    if (reg.operand != 0)
+     crash((char *)"Invaild UNIONUSE instruction.");
+
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.ounions.length(); ++is2)
+    {
+     if (reg.ounions[is2].name() == reg.union_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.union_name + " not found.");
+  
+    bool uvalue = reg.ounions[is2].Use((unsigned long)reg.accumulator.object().simple().to_number().get());
+
+    char str1[1000];
+    sprintf(str1, "%lu", (unsigned long)reg.accumulator.object().simple().to_number().get());
+    String str = str1;
+
+    if (!uvalue)
+     crash(reg.union_name + (char *)"." + str + (char *)": not found.");
+   }
+   break;
+
+   case TSTRING:
+   {
+    String str = (char *)"";
+    unsigned long is;
+    for (is = k; mem.get(is) != 0; ++is)
+     str += (char)mem.get(is);
+  
+    
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.ounions.length(); ++is2)
+    {
+     if (reg.ounions[is2].name() == reg.union_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.union_name + " not found.");
+   
+    bool uvalue = reg.ounions[is2].Use(str);
+ 
+    if (!uvalue)
+     crash(reg.union_name + (char *)"." + str + (char *)": not found.");
+
+
+    i = is + 1;
+    j = i + 1;
+    k = i + 2;
+
+    i -= 3, j -= 3, k -= 3;
+   }
+   break;
+
+
+   default:
+    crash((char *)"Invalid UNIONUSE instruction.");
+  };
+ }
+ break;
+
+ case IUNIONUSING:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONUSING instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.ounions.length(); ++is2)
+  {
+   if (reg.ounions[is2].name() == reg.union_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.union_name + " not found.");
+
+  reg.accumulator.object().simple().put((PNF_Number)reg.ounions[is2].Using());
+ }
+ break;
+
+ case IUNIONUSINGNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONUSINGNAME instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.ounions.length(); ++is2)
+  {
+   if (reg.ounions[is2].name() == reg.union_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.union_name + " not found.");
+
+  reg.accumulator.object().simple().put(reg.ounions[is2].UsingName());
+ }
+ break;
+
+ case IUNIONGET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONGET instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.unions.length(); ++is2)
+  {
+   if (reg.ounions[is2].name() == reg.union_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.union_name + " not found.");
+
+  reg.accumulator.object(reg.ounions[is2].get().object());
+ }
+ break;
+
+case IUNIONPUT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONPUT instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.ounions.length(); ++is2)
+  {
+   if (reg.ounions[is2].name() == reg.union_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.union_name + " not found.");
+
+  reg.ounions[is2].put(reg.accumulator, reg.ounions[is2].UsingName());
+ }
+ break;
+
+ case IUNIONTYPE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONTYPE instruction.");
+
+  reg.accumulator.object().simple().put(reg.union_type);
+ }
+ break;
+
+ case IUNIONTYPE2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONTYPE2 instruction.");
+
+  reg.union_type = reg.accumulator.object().simple().to_string().get();
+ }
+ break;
+
+ case IUNIONNAME2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONNAME2 instruction.");
+
+  reg.accumulator.object().simple().put(reg.union_name);
+ }
+ break;
+
+ case IUNIONNAME3:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild UNIONNAME3 instruction.");
+
+  reg.union_name = reg.accumulator.object().simple().to_string().get();
+ }
+ break;
+
+ case IMODE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild MODE instruction.");
+
+  // One mode so far, so does nothing...
+ }
+ break;
+
+ case IEXTMODE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild EXTMODE instruction.");
+
+  // One extmode so far, so does nothing...
+ }
+ break;
+
+   case IMCHECK:
+   {
+    PNF_Void v;
+    bool s = reg.version.check(v, 1);
+
+    if (s == false)
+     crash((char *)"Invalid instruction. Not in this version.");
+
+
+    bool vcheck = false;
+    PNF_Boolean b;
+    switch (reg.mode.base.getType())
+    {
+   	 case TVOID:
+   	 {
+   	  if ((unsigned long)reg.mode.top == reg.operand)
+   	  {
+   	   vcheck = true;
+   	   b.put(vcheck);
+   	   reg.accumulator.object().simple().put(b);
+   	  }
+   	  else
+   	  {
+   	   vcheck = false;
+   	   b.put(vcheck);
+   	   reg.accumulator.object().simple().put(b);
+   	  }
+   	 }
+   	 break;
+
+   	 default:
+   	 {
+   	  vcheck = false;
+   	  b.put(vcheck);
+   	  reg.accumulator.object().simple().put(b);
+   	 }
+    }
+   }
+   break;
+
+   case IMSUPP:
+   {
+    PNF_Void v;
+    bool s = reg.version.check(v, 1);
+
+    if (s == false)
+     crash((char *)"Invalid instruction. Not in this version.");
+
+
+    bool vcheck = false;
+    PNF_Boolean b;
+
+    for (unsigned long l = 0; l < reg.smode.length(); ++l)
+    {
+     switch (reg.smode[l].base.getType())
+     {
+      case TVOID:
+      {
+   	   if ((unsigned long)reg.smode[l].top == reg.operand)
+   	   {
+   	   	vcheck = true;
+        b.put(vcheck);
+        reg.accumulator.object().simple().put(b);
+        goto endloop2;
+       }
+   	   else
+   	   {
+        vcheck = false;
+        b.put(vcheck);
+        reg.accumulator.object().simple().put(b);
+       }
+   	  }
+      break;
+
+      default:
+      {
+       vcheck = false;
+   	   b.put(vcheck);
+   	   reg.accumulator.object().simple().put(b);
+   	  }
+     }
+    }
+    endloop2:
+     ;
+   }
+   break;
+
+   case IMEXTCHECK:
+   {
+    PNF_Void v;
+    bool s = reg.version.check(v, 1);
+
+    if (s == false)
+     crash((char *)"Invalid instruction. Not in this version.");
+
+
+    bool vcheck = false;
+    PNF_Boolean b;
+    switch (reg.extmode.base.getType())
+    {
+   	 case TVOID:
+   	 {
+   	  if ((unsigned long)reg.extmode.top == reg.operand)
+   	  {
+   	   vcheck = true;
+   	   b.put(vcheck);
+   	   reg.accumulator.object().simple().put(b);
+   	  }
+   	  else
+   	  {
+   	   vcheck = false;
+   	   b.put(vcheck);
+   	   reg.accumulator.object().simple().put(b);
+   	  }
+   	 }
+   	 break;
+
+   	 default:
+   	 {
+   	  vcheck = false;
+   	  b.put(vcheck);
+   	  reg.accumulator.object().simple().put(b);
+   	 }
+    }
+   }
+   break;
+
+   case IMEXTSUPP:
+   {
+    PNF_Void v;
+    bool s = reg.version.check(v, 1);
+
+    if (s == false)
+     crash((char *)"Invalid instruction. Not in this version.");
+
+
+    bool vcheck = false;
+    PNF_Boolean b;
+
+    for (unsigned long l = 0; l < reg.sextmode.length(); ++l)
+    {
+     switch (reg.sextmode[l].base.getType())
+     {
+      case TVOID:
+      {
+   	   if ((unsigned long)reg.sextmode[l].top == reg.operand)
+   	   {
+   	   	vcheck = true;
+        b.put(vcheck);
+        reg.accumulator.object().simple().put(b);
+        goto endloop3;
+       }
+   	   else
+   	   {
+        vcheck = false;
+        b.put(vcheck);
+        reg.accumulator.object().simple().put(b);
+       }
+   	  }
+      break;
+
+      default:
+      {
+       vcheck = false;
+   	   b.put(vcheck);
+   	   reg.accumulator.object().simple().put(b);
+   	  }
+     }
+    }
+    endloop3:
+     ;
+   }
+   break;
+
+ case ICPY:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CPY instruction.");
+  
+  unsigned long addr1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
+  unsigned long addr2 = (unsigned long)reg.calc.object().simple().to_number().get();
+
+  double m = mem.get(addr1);
+  mem.put(addr2, m);
+ }
+ break;
+
+ case IADDSEG:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild ADDSEG instruction.");
+
+  segments.insert();
+ }
+ break;
+
+ case IREMSEG:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild REMSEG instruction.");
+
+  segments.remove();
+ }
+ break;
+
+ case ICOLLSEG:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invaild COLLSEG instruction.");
+
+  mem = segments[reg.operand].mem();
+  stk = segments[reg.operand].stk();
+
+  i = -3;
+  j = i + 1;
+  k = i + 1;
+ }
+ break;
+
+ case IEXPSEG:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invaild EXPSEG instruction.");
+
+  segments[reg.operand].mem(mem);
+  segments[reg.operand].stk(stk);
+ }
+ break;
+
+ case ICPYSEG:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CPYSEG instruction.");
+
+  unsigned long seg1 = (unsigned long)reg.accumulator.object().simple().to_number().get();
+  unsigned long seg2 = (unsigned long)reg.calc.object().simple().to_number().get();
+
+  segments[seg2] = segments[seg1];
+ }
+ break;
+
+ case ISEGLOAD:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invaild SEGLOAD instruction.");
+
+  unsigned long seg = (unsigned long)reg.calc.object().simple().to_number().get();
+  reg.accumulator.object().simple().put((PNF_Number)segments[seg].mem().get(reg.operand));
+ }
+ break;
+
+ case ISEGSTORE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invaild SEGLOAD instruction.");
+
+  unsigned long seg = (unsigned long)reg.calc.object().simple().to_number().get();
+  segments[seg].mem().put(reg.operand, reg.accumulator.object().simple().to_number().get());
+ }
+ break;
+
+ case ISEGPUSH:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild SEGPUSH instruction.");
+
+  unsigned long seg = (unsigned long)reg.calc.object().simple().to_number().get();
+  segments[seg].stk().push(reg.accumulator.object().simple());
+ }
+ break;
+
+ case ISEGPOP:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild SEGPOP instruction.");
+
+  unsigned long seg = (unsigned long)reg.calc.object().simple().to_number().get();
+  reg.accumulator = segments[seg].stk().pop();
+ }
+ break;
+
+ case ISEGTOP:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild SEGTOP instruction.");
+
+  unsigned long seg = (unsigned long)reg.calc.object().simple().to_number().get();
+  reg.accumulator = segments[seg].stk().top();
+ }
+ break;
+
+ case ISEGVLOAD:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  unsigned long seg = (unsigned long)reg.calc.object().simple().to_number().get();
+
+  
+	 double m;
+         double * pm;
+
+
+         reg.accumulator.object().simple().setType(reg.type);
+         reg.operand = reg.varcount.get(reg.operand).address();
+
+         switch (reg.accumulator.object().simple().getType())
+         {
+          case TBOOLEAN:
+               m = segments[seg].mem().get(reg.operand);
+               pm = &m;
+
+               reg.accumulator.object().simple().putm(pm);
+               break;
+
+          case TNUMBER:
+               m = segments[seg].mem().get(reg.operand);
+               pm = &m;
+
+               reg.accumulator.object().simple().putm(pm);
+               break;
+
+          case TCHARACTER:
+               pm = &m;
+               *pm = segments[seg].mem().get(reg.operand);
+               reg.accumulator.object().simple().putm(pm);
+               break;
+
+          case TSTRING:
+          {
+               String str = (char *)"";
+               for (unsigned long n = reg.operand; segments[seg].mem().get(n) != 0; ++n)
+               {
+                char ch = (char)segments[seg].mem().get(n);
+                str += ch;
+               }
+               PNF_String str2(str.getString());
+               reg.accumulator.object().simple().put(str2);
+          }
+          break;
+
+          default:
+           crash((char *)"Invalid Type.");
+           break;
+         }
+         break;
+ }
+ break;
+
+ case ISEGVSTORE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  unsigned long seg = (unsigned long)reg.calc.object().simple().to_number().get();
+
+
+        switch (reg.type)
+         {
+          case TVOID:
+          {
+           if (reg.operand != 0)
+            crash((char *)"Invalid Operand.");
+
+           long j = (segments[seg].mem().length() - 4) < 0 ? (segments[seg].mem().length() - 1) : (segments[seg].mem().length() - 4);
+           segments[seg].mem().put(j, IVAR);
+           segments[seg].mem().put(j + 1, TVOID);
+           double * pm;
+           pm = reg.accumulator.object().simple().getm();
+
+
+           reg.varcount.insert();
+           reg.varcount.put(j + 2, reg.varcount.length() - 1);
+
+           switch (reg.accumulator.object().simple().getType())
+           {
+            case TVOID:
+             segments[seg].mem().put(j + 2, *pm);
+             break;
+
+            case TBOOLEAN:
+             segments[seg].mem().put(j + 2, *pm);
+             break;
+
+            case TNUMBER:
+             segments[seg].mem().put(j + 2, *pm);
+             break;
+
+            case TCHARACTER:
+             segments[seg].mem().put(j + 2, *pm);
+             break;
+
+            case TSTRING:
+             unsigned long i;
+             for (i = 0; pm[i] != 0; ++i)
+              segments[seg].mem().put((j + 2) + i, pm[i]);
+             segments[seg].mem().put((j + 2) + i, 0);
+             break;
+
+
+            default:
+             crash((char *)"Invalid Type.");
+           }
+
+           for (unsigned long j = 0, k = 0; j != segments[seg].mem().length(); ++j)
+           {
+            if (mem.get(j) == IVAR && mem.get(j + 1) == TVOID)
+            {
+      	     reg.varcount[k].address(j + 2);
+             reg.varcount.put(j + 2, k);
+             reg.varcount.insert();
+             ++k;
+            }
+           }
+          }
+          break;
+
+          case TNUMBER:
+          {
+           long j = reg.varcount.get(reg.operand).address();
+           double * pm;
+           pm = reg.accumulator.object().simple().getm();
+
+           switch (reg.accumulator.object().simple().getType())
+           {
+            case TVOID:
+             segments[seg].mem().put(j, *pm);
+             break;
+
+            case TBOOLEAN:
+             segments[seg].mem().put(j, *pm);
+             break;
+
+            case TNUMBER:
+             segments[seg].mem().put(j, *pm);
+             break;
+
+            case TCHARACTER:
+             segments[seg].mem().put(j, *pm);
+             break;
+
+            case TSTRING:
+             unsigned long i;
+             for (i = 0; pm[i] != 0; ++i)
+              segments[seg].mem().put((j) + i, pm[i]);
+             break;
+
+
+            default:
+             crash((char *)"Invalid Type.");
+            }
+           }
+           break;
+
+           default:
+            crash((char *)"Invalid Type Identifier.");
+            break;
+          }
+
+
+    // Put the address of the variables in varcount.
+    for (unsigned long j = 0, k = 0; j != segments[segments.length() - 1].mem().length(); ++j)
+    {
+     if (segments[segments.length() - 1].mem().get(j) == IVAR)
+     {
+      reg.varcount[k].address(j + 2);
+      reg.varcount[k].type(segments[segments.length() - 1].mem().get(j + 1));
+      reg.varcount.insert();
+      ++k;
+     }
+    }
+   }
+   break;
    
    
    default:
     crash((char *)"Invalid Instruction.");
     break;
   }
-
 
   // Execute breakpoint Exception
   if (!inBreakpoint && !inRet)
@@ -12301,11 +11919,13 @@ case IESTOREC:
     ++numBreakpoints;
     inBreakpoint = false;
 
+
     reg = state.reg;
     mem = state.mem;
     stk = state.stk;
    }
   }
+
 
 
   // Load the previous instruction register
@@ -12321,7 +11941,7 @@ case IESTOREC:
   // Variables
   if (inRet)
    inRet = false;
- }
+  }
  }
  catch (Exception e)
  {

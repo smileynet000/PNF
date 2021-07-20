@@ -16,12 +16,14 @@ CHANGELOG
 			  2. Added information about preprocessing...
 			  3. Added information about IFs...
 			  4. Added information about SWITCHes...
+			  5. Revised document, including adding function documentation.
+			  6. Updated document...
 
 
 INTRODUCTION
 ============
 
-	This tutorial is for the language PNF (Portable Numbers Format). It assumes no previous programming experience. It will take you from square one, to some simple working programs. By the time you are done, you should be able to write simple programs in PNF. I recommend that you follow this tutorial, and then try to come up with a working program of your own at the end of it.
+	This tutorial is for the language PNF (Portable Numbers Format). It assumes no previous programming experience or light experience. It will take you from square one, to some simple working programs. By the time you are done, you should be able to write simple programs in PNF. I recommend that you follow this tutorial, and then try to come up with a working program of your own at the end of it.
 	So what is PNF? It is a binary format, run able by the PNF interpreter. It is a very low level language. However, it is the easiest to use of it's level of languages.
 	What are some uses of PNF? PNF can be used to run programs in a platform-independent manor. That is, you can run a PNF program anywhere an interpreter has been written for it. PNF is designed to be a language, which an assembler can be assembled to. But you might want to write directly in PNF to "tweak" your program, and perhaps make it more efficient. It has been designed for such ease of use in modifying it.
 
@@ -34,7 +36,7 @@ THE BASICS
 	The signature is simply, "!@.PNF". It is read as, "not at dot PNF". The purpose of this signature is to tell the computer that this is indeed a PNF file, and not something else carrying the same extension.
 	Then you have the numbers, and that's all there is to it! However, there are some numbers, you have to have. Each number, is a decimal number in the range of 2.22507e-308 - 1.79769e+308, where everything after 'e' is the exponent part. What are those numbers? Read on and I'll show you what they are.
 	The "numbers" are made up of 3 parts. An instruction opcode, a type (opcode), and an operand. First, I'll start with telling you about the types. There are 5 types possible. They are, TVOID, TBOOLEAN, TNUMBER, TCHARACTER, and TSTRING. Their opcodes are, 0-4, with TVOID being 0, and TSTRING being 4. These are type descriptors for values. If you forget what types there are, and their opcodes, you can look it up in "instruction_set.txt".
-	TVOID is the easiest to explain. It is a 0, and that's it. Wherever you need a void value, use 0. That's all there is to using a VOID value. A VOID value is the absence of all values. It is used when such an absence of values occurs.
+	TVOID is the easiest to explain. It is a 0, and that's it. Wherever you need a void value, use 0. That's all there is to using a VOID value. A VOID value is the absence of all values. It is used when such an absence of values occurs. By convention, I will sometimes refer to a VOID value as 0V.
 	TBOOLEAN is the next easiest to explain. It signifies a true/false value. 0 is false, and any non-zero value is true. This is used for Boolean logic, like ands and ors. Some of the instructions put true or false in %accumulator. You can then jump to a spot in your code, based off of that value. By convention, you should use 1 to signify true, however.
 	TNUMBER is a number. It is a decimal number. You can make numeric calculations with this type. It has the range of: 2.22507e-308 - 1.79769e+308. Everything after 'e' is the exponent.
 	TCHARACTER is a character. It is an ASCII compliant character. You specify a character in PNF, by it's ASCII value. For example, 'a', would be '97'. That is a character value.
@@ -47,7 +49,7 @@ REQUIRED INSTRUCTIONS
 =====================
 
 	In your basic framework for any program, there are 2 instructions that are required in any program. These 2 instructions are required for any program to function. You will get crashes with errors if you do not include them.
-	The first, is the version instruction. It's format is VERSION [type] [operand]. Right now there is only the first version, so the type must be TVOID, and the operand must be 0V, where 0V is a VOID value. You can lookup the opcodes to make it work in "instruction_set.txt".
+	The first, is the version instruction. It's format is VERSION [type] [operand]. Some instructions will only work in certain versions of PNF. You can lookup the opcodes to make it work in "instruction_set.txt".
 	The second, is the END instruction. END takes TVOID as a type, and 0V as an operand. I should point out, that 0V, is the friendly name for a VOID value. Wherever you see 0V, you know it is a void value, and will be the number 0, in PNF.
 	These are the required instructions. A file with all the basic components in it, will look like this:
 
@@ -66,14 +68,14 @@ Where "..." is any other instructions you wish to include for your program to wo
 BASIC CONCEPTS
 ==============
 
-	The way the interpreter works, is modeled after the way computer hardware works. The interpreter, is essentially, trying to act like it's own type of computer. All the parts that computer hardware needs to function, are present in the interpreter. These are the parts in the interpreter:
+	The way the interpreter works, is modeled after the way computer hardware works. There are design differences between a real computer, and this virtual one, however. One design difference is the "register rich" archetecture. The interpreter, is essentially, trying to act like it's own type of computer. All the parts that computer hardware needs to function, are present in the interpreter. These are the parts in the interpreter:
 
 * Registers
 * Memory
 * The Stack
 
 	First I'll talk briefly about memory in PNF. The amount of memory in PNF available to your program, depends upon how much your program has asked for. You can ask for as much as you want, up to your physical limits.
-	Instructions, are the basic unit of an action in PNF. As you recall, each instruction requires the instruction, the type, and then the operand to function. Each supported instruction does a different task. You can use any combination of instructions you desire to make your program function. Depending on what's necessary, you can put them in any order you wish.
+	Instructions, are the basic unit of an action in PNF. As you recall, each instruction requires the instruction, the type, and then the operand to function. Each supported instruction does a different task. You can use any combination of instructions you desire to make your program function. Depending on what's necessary, you can put them in any order you wish. There are some combinations though, that don't make any sense or may not quite work as expected. See the documentation in "instruction_set.txt", for proper usage of instructions.
 	Instructions are stored in memory. The minimum amount of memory you have available, is the minimum amount of memory that your instructions take up. You can get the amount of memory available to your program, by using the MEML instruction. It takes TVOID and a VOID value. It will store it's result in %accumulator. By decrementing the accumulator, using the DEC instruction, you can see the maximum memory location which you can work with. DEC takes TVOID and a VOID value.
 	Now I'll get ready to show you an example program, using the MEML instruction, and the DEC instruction. But before I do, I'll explain how I'm going to show you the program. I'll display the friendly names, of the components required to create the program, and you will have to look up the opcodes yourself. This is so that the tutorial does NOT have to be rewritten, in the event that an opcode changes anytime soon. Not that they will change all the time, but they may change while a version to be released is being created. After that, backwards compatibility with that version will be strived for. Now without further ado, here is the first program I will show you:
 
@@ -208,7 +210,7 @@ REGISTERS
 
 %pmins		(pmins)		   - The instruction memory address. For debugging purposes.
 
-%iname		(iname)		- The name of the PNF interpreter.
+%iname		(iname)		   - The name of the PNF interpreter.
 
 ---
 
@@ -371,7 +373,7 @@ args[0]: version.pnf
 
 ---
 
-	The magic here, is the VERSION instruction. Note that it crashes. This is what it looks like when a PNF program crashes. Why does it crash? Because this is the first version, and switching versions is not supported yet.
+	The magic here, is the VERSION instruction. Note that it crashes. This is what it looks like when a PNF program crashes. Why does it crash? Because this is the first version, and switching versions is not supported yet. Note, however, that by the time you read this, some of that may be outdated information, and actually at the time of my writing, it is already. I'm already at version TVOID 1 at the time of writing/updating this.
 	Now, I'll show you a safer way to do this. You can check to see if a version is supported or not with the VSUPP instruction. You can then make a decision, based off of that, what you want to do. Here is the modified program:
 
 ---
@@ -1202,7 +1204,16 @@ Your modified number: 2
 
 ---
 
-	There are only two instructions you may not yet understand here. They are there to load %calc and %accumulator with values. The first is ATOC, which takes a TVOID and a VOID value. This puts whatever is in %accumulator in %calc. The second, is SWITCH, which also takes TVOID and a VOID value. This one switches %accumulator and %calc's values around.
+	There are only two instructions you may not yet understand here. They are there to load %calc and %accumulator with values. The first is ATOC, which takes a TVOID and a VOID value. This puts whatever is in %accumulator in %calc. The second, is SWITCH, which also takes TVOID and a VOID value. This one switches %accumulator and %calc's values around. While not really math, here is a string operation:
+
+---
+ INTIMES	 - Sets %accumulator to a string %calc number of times. %accumulator MUST BE A STRING!
+		   NTIMES TVOID 0V
+---
+
+	This instruction, copys the %accumulator as a string, %calc number of times. %accumulator MUST BE A STRING!
+
+That's all to that!
 
 
 LESSON 16 - Relational Operations
@@ -1244,7 +1255,13 @@ LESSON 16 - Relational Operations
               LEQU TCHARACTER [data]
 ---
 
-	I won't spend any more time than this on these, because you should already understand how they work and what they do.
+	I won't spend any more time than this on these, because you should already understand how they work and what they do. Here, is one more:
+
+---
+ ICMP		 - Sets %accumulator to -1 if %accumulator < %calc. Sets %accumulator to 0 if %accumulator == %calc. Sets %accumulator to 1 if 			   %accumulator > %calc. Stores results in %accumulator.
+
+		   CMP TVOID 0V
+---
 
 
 LESSON 17 - Logical Operations
@@ -1447,7 +1464,344 @@ Hello World!
 	Now you know how to use a subroutine.
 
 
-LESSON 21 - Displaying the Type of %accumulator or %calc
+LESSON 21 - Functions
+=====================
+
+In addition to a concept of subroutines, there is also a concept of a "function". A function is like a subroutine, except it can return one or more values and take one or more parameters. Here are the relivant instructions.
+
+
+---
+ IFRET	      - Returns from a function.
+		FRET TVOID 0V
+
+ IFCALL	      - Prepares to call function [name]
+		FCALL TSTRING [name]
+
+ IFCPARAMS    - The actual parameter block start.
+		FCPARAMS TVOID 0V
+
+ IFECPARAMS   - The actual parameter block end.
+		FECPARAMS TVOID 0V
+
+ IFECALL      - Makes the call to the function.
+		FECALL TVOID 0V
+
+ IPNUM       - Allows us to specify an actual parameter number.
+   	       PNUM TNUMBER [num]
+
+ IPARAMF      - Specify an actual parameter.
+		PARAMF [type] [value]
+
+ IPARAMF2     - Load parameter specified by %pnum to %accumulator
+		PARAMF2 [type] 0V
+
+ IPARAMF3     - Loads %fparams with the type.
+                PARAMF3 [type] 0V
+
+ IRNUM	      - Specify a return value number
+		RNUM TNUMBER [num]
+
+ IRETURNF     - Modifies a value for return
+		RETURNF [type] [value]
+
+ IRETURNF2    - Loads %frets with the type.
+		RETURNF2 [type] 0V
+
+ IRETURNF3    - Loads %frets2 with the type.
+		RETURNF3 [type] 0V
+
+ IFNAME	      - Sets %fname
+		FNAME TSTRING [name]
+
+ IRETURNV     - Loads %accumulator with return value %rnum
+		RETURNV TVOID 0V
+
+ IFNCLOAD     - Loads a function from %fpointer1 to %fpointer2.
+		FNCLOAD TNUMBER [num]
+
+ IFNCSTORE    - Stores a function from %fpointer2 to %fpointer1
+		FNCSTORE TNUMBER [num]
+		FNCSTORE TVOID 0V
+
+ IFNCNEW      - Adds a new Function on the C++ heap.
+		FNCNEW TVOID 0V
+
+ IFNCDELETE   - Deletes a new Function on the C++ heap.
+		FNCDELETE TVOID 0V
+
+ IFNCSNAME    - Sets the name of the function %fpointer2
+		FNCSNAME TVOID 0V
+
+ IFNCSRET     - Sets the return type of a return value in %fpointer.
+		FNCSRET [type] 0V
+
+ IFNCSPARAM   - Adds a parameter of type [type] to %fpointer2 with value %accumulator
+		FNCSPARAM [type] 0V
+
+ IFNCSDEF      - Adds a definition beginning at [where] or [label] to %fpointer2.
+		 FNCSDEF TNUMBER [where]
+		 FNCSDEF TSTRING [label]
+
+ IFNCGNAME     - Gets the name of %fpointer2
+		 FNCGNAME TVOID 0V
+
+ IFNCGRET      - Gets a return value from %fpointer2
+		 FNCGRET TNUMBER [num]
+
+ IFNCGPARAM    - Gets a parameter value from %fpointer2
+		 FNCGPARAM TNUMBER [num]
+
+ IFNCGDEF      - Gets a definition address for %fpointer2
+		 FNCGDEF TVOID 0V
+
+ IFNCPOINT     - Gets a function by it's number. It's number should be in %accumulator. Puts it in %fpointer3.
+		 FNCPOINT TVOID 0V
+
+ IFNCLENGTH    - Gets the length of %fpointer1. Puts it in %accumulator.
+		 FNCLENGTH TVOID 0V
+
+ IFNCSYNCR     - Syncrhonizes %fname, %frets, and %fparams to %fname2, %frets2, and %fparams2.
+		 FNCSYNCR TVOID 0V
+
+ IFNCFIND      - Finds the function with %accumulator as the name, and %frets3 and %fparams3 as the return values and parameters.
+		 FNCFIND TVOID 0V
+
+ IFNCFRET      - Adds [type] to %frets3.
+		 FNCFRET [type] 0V
+
+ IFNCFPARAM    - Adds [type] to %fparams3.
+		 FNCFPARAM [type] 0V
+
+ IFNCBRET      - Adds blank to %frets3.
+		 FNCBRET TVOID 0V
+
+ IFNCBPARAM    - Adds blank to %fparams3.
+		 FNCBPARAM TVOID 0V
+
+ IFNCDEFAULT   - Sets %fdefaultv to true.
+		 FNCDEFAULT TVOID 0V
+
+ IFNCDEFAULT2  - Sets %fdefaultv to false.
+		 FNCDEFAULT2 TVOID 0V
+
+ IFNCSDEFAULTV - Gets function number from %accumulator. Adds [type] to %fparams if %fdefaultv is true.
+		 FNCSDEFAULTV [type] 0V
+
+ IFNCSDEFAULTV2 - Sets %fdefaultvalue to %accumulator. Sets the the default value at %pnum to %fdefaultvalue if %fdefaultv is true.
+		  FNCSDEFAULTV2 TVOID 0V
+
+ IFNCGDEFAULTV2 - Sets %fdefaultvalue to the %fpointer2->[default value] at %pnum if %fdefaultv is true. Sets %accumulator to %fdefaultvaalue.
+		  FNCGDEFAULTV2 TVOID 0V
+
+ IFNCDEFAULTSYNC - Syncs %fpointer2->[default parameter value] at %pnum.
+		   FNCDEFAULTSYNC TVOID 0V
+---
+
+Don't worry. This may look confusing, but it's actually easy. OK, let's jump in and I'll explain functions to you!
+
+A function, has a "function signature" or just "signature". Every function MUST have a unique signature to be able to be valid. No 2 functions can have the same signature.
+
+Here, in human readable format, is an example function signature:
+
+---
+(var: boolean, var: number) examplefunc(var a: boolean, var b: string);
+---
+
+Here's another example:
+
+---
+(0V) examplefunc2(0V);
+---
+
+So now let's get into how to create and use a function. To create a function, there are 2 steps. The first is the function declaration. That allows the computer to always be able to find our function. It is required!
+
+A function declaration looks like this:
+
+---
+FNCNEW TVOID 0V
+; Parameter 0 definition
+PNUM TNUMBER 0
+ALOAD TVOID 0V
+FNCSPARAM TVOID 0V
+; End Parameter 0 definition
+; More parameters may follow here...
+...
+; Until here...
+ALOAD TSTRING "[funcname]"
+FNCSNAME TVOID 0V
+FNCSDEF TSTRING "[funcdef_label]"
+FNCSTORE TVOID 0V
+FNCDELETE TVOID 0V
+---
+
+Once you declare your function, you must implement your function. A function implementation done the proper way, looks as follows:
+
+---
+GOTOL TSTRING "[skip_label]"
+LBL TSTRING "[definition label]"
+; Function code goes here
+...
+; End function code
+FRET TVOID 0V
+LBL TSTRING "[skip_label]"
+---
+
+
+Then wherever you need to, you can call the function, as follows:
+
+---
+FCALL TSTRING "[function name]"
+FCPARAMS TVOID 0V
+; If parameters
+FNCLOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+FNCSPARAM TVOID 0V
+FNCSTORE TNUMBER [function number]
+ALOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+PARAMF TVOID 0V
+; Repeat here for other parameters
+...
+FNCDEFAULT2 TVOID 0V
+FECPARAMS TVOID 0V
+FECALL TVOID 0V
+---
+
+That's how you use a function!
+
+
+LESSON 22 - Return Values
+=========================
+
+A function, may have one or more return values. Here's how you use them:
+
+In a function, you may load the return type value with a value, as follows:
+
+---
+FNCLOAD TNUMBER [function number]
+RNUM TNUMBER [return value number]
+ALOAD [type] [return value value]
+FNCSRET TNUMBER 0V
+---
+
+Then, after you call the function, you may do:
+
+---
+RNUM TNUMBER [return value number]
+RETURNV TVOID 0V
+---
+
+This will load %accumulator with the return value.
+
+
+LESSON 23 - Parameters
+======================
+
+Functions can take, one or more parameters. Here is how that works:
+
+You first pass parameters, when you call a function, like this:
+
+---
+FNCLOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+FNCSPARAM TNUMBER 0V
+FNCSTORE TNUMBER [function number]
+ALOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+PARAMF [type] [parameter value]
+---
+
+Then, in the function implementation, you can change the parameter like this:
+
+---
+ALOAD [type] [new parameter value]
+FNCLOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+FNCSPARAM TNUMBER 0V
+FNCSTORE TNUMBER [function number]
+---
+
+Then, in the function, you can get the value to %accumulator, as follows.
+
+---
+PNUM TNUMBER [parameter number]
+ALOAD TNUMBER [function number]
+PARAMF2 TNUMBER 0V
+---
+
+LESSON 24 - Function Overloading
+================================
+
+A function may have the same name as another function, as long as the signature is different between the functions.
+
+
+LESSON 25 - Default Parameters
+==============================
+
+A function may have one or more default parameters. These are values you can use, instead of specifying actual parameters. To do this, you have to have this additional code in a function implementation. This goes right before the GOTOL instruction.
+
+---
+FNCDEFAULT TVOID 0V
+FNCLOAD TNUMBER [function number]
+ALOAD [type] [default value]
+PNUM TNUMBER [parameter number]
+FNCSDEFAULTV2 TVOID 0V
+FNCSTORE TNUMBER [function number]
+---
+
+Then, if you want to use the default parameter, then instead of as before with the parameter, you put:
+
+---
+ALOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+PARAMF [type] [0 value]
+FNCDEFAULTSYNC TVOID 0V
+---
+
+That's all there is to function default values!
+
+
+LESSON 26 - Function Registers
+==============================
+
+Here are the function registers:
+
+---
+%fpointer1	(fpointer1)	- Function pointer #1.
+
+%fpointer2	(fpointer2)	- Function pointer #2.
+
+%fpointer3	(fpointer3)	- Function pointer #3.
+
+%fname		(fname)		- Function name register.
+
+%fname2		(fname2)	- Function name register #2.
+
+%frets		(frets)		- Function return value type pointer #1.
+
+%fparams	(fparams)	- Function parameter type pointer #1.
+
+%frets2		(frets2)	- Function return value type pointer #2.
+
+%fparams2	(fparams2)	- Function parameter type pointer #2.
+
+%frets3		(frets3)	- Function return value type pointer #3.
+
+%fparams3	(fparams3)	- Function parameter type pointer #3.
+
+%rnum		(rnum)		- Return number register.
+
+%pnum		(pnum)		- Parameter number register.
+
+%fdefaultv	(fdefaultv)	- Set to true if you need to use default parameters.
+
+%fdefaultvalue	(fdefaultvalue)	- Set to the default value of a parameter.
+---
+
+There is pretty good descriptions of those given.
+
+
+LESSON 27 - Displaying the Type of %accumulator or %calc
 ========================================================
 
 	You can display the type of %accumulator or %calc, or make other calculations on it's type. In order to do this, first you need to know a new register:
@@ -1498,7 +1852,7 @@ Type: VOID
 ---
 
 
-LESSON 22 - Arguments and Interpreter Name
+LESSON 28 - Arguments and Interpreter Name
 ==========================================
 
 	So, how does your program take arguments? Well, the answer is that there are some registers available for your use that store arguments to the program. Here they are:
@@ -1635,7 +1989,7 @@ Third time:
 ---
 
 
-LESSON 23 - Using the Stack
+LESSON 29 - Using the Stack
 ===========================
 
 	Ready to try this with our stack of data? Well, here goes! Here are the instructions you need to know:
@@ -1651,7 +2005,7 @@ LESSON 23 - Using the Stack
 These instructions work with %accumulator.
 
 
-LESSON 24 - Loading %icount Into %accumulator
+LESSON 30 - Loading %icount Into %accumulator
 =============================================
 
 	I simply want to show you an instruction we haven't covered yet now. It is this one:
@@ -1665,7 +2019,7 @@ LESSON 24 - Loading %icount Into %accumulator
 That is how you load %icount into %accumulator!
 
 
-LESSON 25 - Events in PNF
+LESSON 31 - Events in PNF
 =========================
 
 	More and more, programs are being designed in an event-driven way. If a the 'x' is pushed, close the program. If a button is clicked, calculate your raise. Those are some examples. PNF supports this, in a hardware-type way. Events come to you, you don't have to go to events. Now stop and read the sections on events in "instruction_set.txt". I will not repeat that here.
@@ -1827,7 +2181,7 @@ Hello World!
 All pre-defined events, have a default event handler. The default event handler for exception 0, does nothing. Now you know about events in PNF!
 
 
-LESSON 26 - Addresses
+LESSON 32 - Addresses
 =====================
 
 	Things have addresses, and values. Their addresses, have to do with where they are in memory. Their values, have to do with what they are. Here are some instructions:
@@ -1852,10 +2206,10 @@ LESSON 26 - Addresses
 These instructions allow you to work directly with addresses, instead of with values. This can be useful sometimes.
 
 
-LESSON 27 - ST
+LESSON 33 - ST
 ==============
 
-	Here is the last instruction:
+	Here is the next instruction:
 
 ---
  IST         - Sets %accumulator to 0 if %calc is 0. (Used for loops.)
@@ -1866,7 +2220,7 @@ LESSON 27 - ST
 I have not used this yet, in all this time. But it is there, because PNF was based off of some other languages, and that instruction was taken from there. If you can find an example where you would use it, please contact me. Thanks!
 
 
-LESSON 28 - Ranges
+LESSON 34 - Ranges
 ==================
 
 There are two types of ranges:
@@ -1956,7 +2310,7 @@ More registers:
 You should know about these, but you can't use them directly.
 
 
-LESSON 29 - Enums
+LESSON 35 - Enums
 =================
 
 An enum is a variable that can be set to one of a set of names. You define, and implement an enum. Let's cover the definition first:
@@ -2012,7 +2366,7 @@ You cannot directly use these.
 I hope this will tell you how to use enums.
 
 
-LESSON 30 - Arrays
+LESSON 36 - Arrays
 ==================
 
 An array is a set of variables. You may put enums or ranges as the set of variables if you wish.
@@ -2070,7 +2424,7 @@ You cannot directly use this one.
 I think you see how to use arrays now.
 
 
-LESSON 31 - Duplicating a register
+LESSON 37 - Duplicating a register
 ==================================
 
 You can duplicate %accumulator or %calc to the other one. Here are the instructions for that:
@@ -2086,7 +2440,7 @@ You can duplicate %accumulator or %calc to the other one. Here are the instructi
 These are useful for when you need to copy one to the other and have the other one match.
 
 
-LESSON 32 - %extrai
+LESSON 38 - %extrai
 ===================
 
 There is one more register to go over now. It is %extrai.
@@ -2098,7 +2452,7 @@ There is one more register to go over now. It is %extrai.
 That's that register!
 
 
-LESSON 33 - IFs
+LESSON 39 - IFs
 ===============
 
 You can run code conditionally.
@@ -2135,7 +2489,7 @@ If there is to be an ELSE, then you use IFELSE and ENDIFELSE. You again stick co
 At the end of it all, you stick EIF.
 
 
-LESSON 34 - SWITCH2
+LESSON 40 - SWITCH2
 ===================
 
 You can use a form of "fancy if statement".
@@ -2176,10 +2530,10 @@ You can use an SWDEFAULT for what if nothing matches? Code to execute in that ca
 Anywhere in the code, you can stick an SWBREAK. This will go to the nearest SWEND or reg.ecount.
 
 
-LESSON 35 - Dynamically Patching the VM
+LESSON 41 - Dynamically Patching the VM
 =======================================
 
-There is a PATCH instruction, used for dynamically patching the VM. It is recommended you always patch with TVOID and 0V, if PATCH is supported. The code would look something like this:
+There is a PATCH instruction, used for dynamically patching the VM. It is recommended you always patch with TVOID and 0V, if PATCH is supported. Note, that if you are using version 1, or greater, the patch is autmomatically applied. The code would look something like this:
 
 patch.pasm
 ---
@@ -2218,7 +2572,7 @@ END TVOID 0V
 ---
 
 
-LESSON 36 - Native Subroutines
+LESSON 42 - Native Subroutines
 ==============================
 
 A subroutine can be native. What does it mean to be native? It means, "possibly" implemented in another language. This can be done by creating a program, that "is" the subroutine. Then you run the program, using the NATIVE instruction. This just runs your program, which MUST be in the same directory as the file you are trying to run.
@@ -2288,10 +2642,353 @@ END TVOID 0V
 ---
 
 
-LESSON 37 - Preprocessing
+LESSON 43 - Preprocessing
 =========================
 
-If you require preprocessing, you should use the extension, ".PPPNF", instead of, ".PNF". A tutorial on preprocessing can be found in "PNFPP-tutorial.txt". You should take a look at that next, and skim through it.
+	If you require preprocessing, you should use the extension, ".PPPNF", instead of, ".PNF". A tutorial on preprocessing can be found in "PNFPP-tutorial.txt". You should take a look at that next, and skim through it.
+
+
+LESSON 44 - MODE and EXTMODE
+============================
+
+	You know how today's PCs, have real mode, protected mode, and long mode? They are 16 bit, 32 bit, and 64 bit. Well, PNF has a concept of "modes', which are similar. Each mode has several "extmodes". Right now there is only one mode and only one extmode, so these instructions do nothing. Here are some registers:
+
+---
+%mode		(mode)		- Holds the current mode.
+
+%smode		(smode)		- Holds the supported modes.
+
+%extmode	(extmode)	- Holds the current extmode.
+
+%sextmode	(sextmode)	- Holds the supported extmodes.
+
+---
+
+...And then the coresponding instructions:
+
+---
+ IMODE		 - Like on a ordinary PC hardware, which has multiple modes, this language may have multiple modes, and this instruction is 			   reserved for that use.
+
+		   MODE TVOID 0V
+
+ IEXTMODE	 - There may be "submodes", of the processor. This instruction is reserved for that.
+		   EXTMODE TVOID 0V
+
+ IMCHECK	 - Sets %accumulator to true if we are in the specified mode.
+		   MCHECK [type] [operand]
+
+ IMSUPP		 - Checks to see if a mode is supported.
+		   MSUPP [type] [operand]
+
+ IMEXTCHECK	 - Sets %accumulator to true if we are in the specified extended mode.
+		   MCHECK [type] [operand]
+
+ IMEXTSUPP	 - Checks to see if an extended mode is supported.
+		   MSUPP [type] [operand]
+---
+
+These should be straightforward, so I won't go over these here any more. The hint is they work just like versions.
+
+
+LESSON 45 - Segments
+====================
+
+	Just as today's PCs, have sections, such as .text, and .data, PNF has segments, any number you wish, up to the memory in your computer. Each segment has it's own memory and it's own stack. There is one segment when you start.
+
+Instructions:
+---
+ IADDSEG	 - Adds a segment.
+		   ADDSEG TVOID 0V
+
+ IREMSEG	 - Removes a segment.
+		   REMSEG TVOID 0V
+
+ ICOLLSEG	 - Collapses a segment.
+		   COLLSEG TNUMBER [segment]
+
+ IEXPSEG	 - Expands a segment.
+		   EXPSEG TNUMBER [segment]
+
+ ICPYSEG	 - Copys a segment to another segment. from = %accumulator, to = %calc.
+		   CPYSEG TVOID 0V
+
+ ISEGLOAD	 - Loads a value from a segment to %accumulator.
+		   SEGLOAD TNUMBER [segment]
+
+ ISEGSTORE	 - Stores %accumulator to segment.
+		   SEGSTORE TNUMBER [segment]
+
+ ISEGPUSH	 - Pushes a value onto segment stack. Gets it from %accumulator, segment from %calc.
+		   SEGPUSH TVOID 0V
+
+ ISEGPOP	 - Pops a value from segment stack. Puts it in %accumulator, segment from %calc.
+		   SEGPOP TVOID 0V
+
+ ISEGTOP	 - Tops a value from segment stack. Same as pop, but will not destroy. Puts it in %accumulator, segment from %calc.
+		   SEGTOP TVOID 0V
+
+ ISEGVLOAD	- Gets a variable from variable location %operand, and segment %calc, and stores it in %accumulator.
+		  SEGVLOAD [type] [variable address]
+
+ ISEGVSTORE	- Stores a new variable from %accumulator to the next location, at segment %calc
+             	  SEGVSTORE TVOID 0V
+	      	  SEGVSTORE TNUMBER [Variable Address]
+---
+
+You cannot execute code directly on a segment. You must have code be in the default segment to execute it.
+
+
+LESSON 46 - Structs and Unions
+==============================
+
+	Just as in C, there's a simple object type, called a "struct". This is basically a group of variables, grouped by one master name.
+
+Here are some registers:
+
+---
+%structs	(structs)	- Holds the struct definitions.
+
+%ostructs	(ostructs)	- Holds the struct object definitions.
+
+%struct_type	(struct_type)	- Holds the typename of a structure.
+
+%struct_name	(struct_name)	- Holds the object name of a structure.
+---
+
+Now here are some instructions:
+
+---
+ ISTRUCT	 - Starts a structure definition.
+		   STRUCT TSTRING [typename]
+
+ ISTRUCTVAR	 - Defines a variable within a structure. It is a placeholder for that member.
+		   STRUCTVAR TSTRING [membername]
+
+ IENDSTRUCT	 - Ends a structure definition.
+		   ENDSTRUCT TVOID 0V
+
+ ISTRUCTNAME	- Sets %struct_type to [typename].
+		  STRUCTNAME TSTRING [typename]
+
+ ISTRUCTONAME	- Sets %struct_name to [objectname].
+		  STRUCTONAME TSTRING [objectname]
+
+ ISTRUCTD	- Creates a structure object [objectname].
+		  STRUCTD TSTRING [objectname]
+
+ ISTRUCTUSE     - Sets a member as the active member of a struct.
+		  STRUCTUSE TVOID 0V
+		  STRUCTUSE TNUMBER [membernum]
+		  STRUCTUSE TSTRING [membername]
+
+ ISTRUCTUSING	- Gets the active member number in %accumulator.
+		  STRUCTUSING TVOID 0V
+
+ ISTRUCTUSINGNAME - Gets the name of a member from the active member and puts it in %accumulator.
+		    STRUCTUSINGNAME TVOID 0V
+
+ ISTRUCTGET	  - Gets a member from the structure, and puts it in %accumulator
+		    STRUCTGET TVOID 0V
+
+ ISTRUCTPUT	  - Puts %accumulator in specified member of struct.
+		    STRUCTPUT TVOID 0V
+
+ ISTRUCTTYPE	 - Puts %struct_type in %accumulator
+		   STRUCTTYPE TVOID 0V
+
+ ISTRUCTTYPE2	 - Puts %accumulator in %struct_type
+		   STRUCTTYPE2 TVOID 0V
+
+ ISTRUCTNAME2	 - Puts %struct_name in %accumulator
+		   STRUCTNAME2 TVOID 0V
+
+ ISTRUCTNAME3	 - Puts %accumulator in %struct_name
+		   STRUCTNAME3 TVOID 0V
+---
+
+A Union, is the same as a struct, but one member can be active at a time. Writing to a member will overwrite all other members.
+
+Here are some more registers:
+
+---
+%unions		(unions)	- Holds the union definitions.
+
+%ounions	(ounions)	- Holds the union object definitions.
+
+%union_type	(union_type)	- Holds the typename of a union.
+
+%union_name	(union_name)	- Holds the object name of a union.
+---
+
+...And some instructions:
+
+---
+ IUNION		 - Starts a union definition.
+		   UNION TSTRING [typename]
+
+ IUNIONVAR	 - Defines a variable within a union. It is a placeholder for that member.
+		   UNIONVAR TSTRING [membername]
+
+ IENDUNION	 - Ends a union definition.
+		   ENDUNION TVOID 0V
+
+ IUNIONNAME	- Sets %union_type to [typename].
+		  UNIONNAME TSTRING [typename]
+
+ IUNIONONAME	- Sets %union_name to [objectname].
+		  UNIONONAME TSTRING [objectname]
+
+ IUNIOND	- Creates a union object [objectname].
+		  UNIOND TSTRING [objectname]
+
+ IUNIONUSE     	- Sets a member as the active member of a union.
+		  UNIONUSE TVOID 0V
+		  UNIONUSE TNUMBER [membernum]
+		  UNIONUSE TSTRING [membername]
+
+ IUNIONUSING	- Gets the active member number in %accumulator.
+		  UNIONUSING TVOID 0V
+
+ IUNIONUSINGNAME - Gets the name of a member from the active member and puts it in %accumulator.
+		    UNIONUSINGNAME TVOID 0V
+
+ IUNIONGET	  - Gets a member from the union, and puts it in %accumulator
+		    UNIONGET TVOID 0V
+
+ IUNIONPUT	  - Puts %accumulator in specified member of union.
+		    UNIONPUT TVOID 0V
+
+ IUNIONTYPE	 - Puts %union_type in %accumulator
+		   UNIONTYPE TVOID 0V
+
+ IUNIONTYPE2	 - Puts %accumulator in %union_type
+		   UNIONTYPE2 TVOID 0V
+
+ IUNIONNAME2	 - Puts %union_name in %accumulator
+		   STRUCTNAME2 TVOID 0V
+
+ IUNIONNAME3	 - Puts %accumulator in %union_name
+		   UNIONNAME3 TVOID 0V
+---
+
+Here is a program:
+
+---
+struct.pnf
+---
+VERSION TVOID 1
+
+
+STRUCT TSTRING "a"
+STRUCTVAR TSTRING "a"
+STRUCTVAR TSTRING "b"
+ENDSTRUCT TVOID 0V
+STRUCTNAME TSTRING "a"
+STRUCTD TSTRING "abc"
+STRUCTNAME TSTRING "a"
+STRUCTONAME TSTRING "abc"
+STRUCTUSE TSTRING "a"
+ALOAD TNUMBER 2.000000
+STRUCTPUT TVOID 0V
+STRUCTNAME TSTRING "a"
+STRUCTONAME TSTRING "abc"
+STRUCTUSE TSTRING "b"
+ALOAD TSTRING "Hello World!"
+STRUCTPUT TVOID 0V
+STRUCTUSING TVOID 0V
+PRINTLN TVOID 0V
+STRUCTUSINGNAME TVOID 0V
+PRINTLN TVOID 0V
+STRUCTGET TVOID 0V
+PRINTLN TVOID 0V
+STRUCTTYPE TVOID 0V
+PRINTLN TVOID 0V
+STRUCTNAME2 TVOID 0V
+PRINTLN TVOID 0V
+UNION TSTRING "a"
+UNIONVAR TSTRING "a"
+UNIONVAR TSTRING "b"
+ENDUNION TVOID 0V
+UNIONNAME TSTRING "a"
+UNIOND TSTRING "uniona"
+UNIONNAME TSTRING "a"
+UNIONONAME TSTRING "uniona"
+UNIONUSE TSTRING "a"
+ALOAD TSTRING "Hello World!"
+UNIONPUT TVOID 0V
+UNIONGET TVOID 0V
+PRINTLN TVOID 0V
+UNIONNAME TSTRING "a"
+UNIONONAME TSTRING "uniona"
+UNIONUSE TSTRING "b"
+ALOAD TSTRING "Hello Tree"
+UNIONPUT TVOID 0V
+UNIONGET TVOID 0V
+PRINTLN TVOID 0V
+UNIONUSE TSTRING "a"
+UNIONGET TVOID 0V
+PRINTLN TVOID 0V
+UNIONUSING TVOID 0V
+PRINTLN TVOID 0V
+UNIONUSINGNAME TVOID 0V
+PRINTLN TVOID 0V
+UNIONTYPE TVOID 0V
+PRINTLN TVOID 0V
+UNIONNAME2 TVOID 0V
+PRINTLN TVOID 0V
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+1
+b
+Hello World!
+a
+abc
+Hello World!
+Hello Tree
+0
+0
+a
+a
+uniona
+---
+
+
+LESSON 47 - CPY
+===============
+
+An instruction for you:
+
+---
+ ICPY		 - Copies [%accumulator] in [%calc].
+		   CPY TVOID 0V
+---
+
+This is like the PCs, MOV assembly language instruction.
+
+
+LESSON 48 - Running Other Programs
+==================================
+
+Instructions:
+
+---
+ IRUN		 - Runs a program.
+		   RUN TSTRING [program]
+
+ IJRUN		 - Runs a java program, using the java interpreter, pointed to by the JRUN enviroment variable.
+		   JRUN TSTRING [program]
+
+ IPNFRUN	 - Runs another PNF program.
+		   PNFRUN TSTRING [program]
+---
+
+These are for running other programs. You can run either a native app, a java app (needs JRUN enviroment variable set), or another PNF program.
 
 
 CONCLUSION

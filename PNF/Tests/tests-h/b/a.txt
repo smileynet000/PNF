@@ -1,4 +1,0 @@
-#include <"hello.txt">
-
-
-I am a fish.

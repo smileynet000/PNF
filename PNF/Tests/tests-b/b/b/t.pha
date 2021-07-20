@@ -1,3 +1,0 @@
-var a = 'a';
-println ++a;
-end 0;

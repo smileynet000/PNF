@@ -1,0 +1,24 @@
+#include <desLib/desLib.hpp>
+
+
+int main(int argc, char ** argv)
+{
+ if (argc == 3)
+ {
+  fin.open(argv[1]);
+  fout.open(argv[2]);
+  string line;
+  for (unsigned long i = 1; getline(fin, line); ++i)
+  {
+   fout << i << ": " << line << endl;
+  }
+  fin.close();
+  fout.close();
+ }
+ else
+ {
+  error(ERRORMSG, (char *)"input or output file not specified.");
+  cout << "Usage:\n\n";
+  cout << argv[0] << " <input file> <output file>\n";
+ }
+}

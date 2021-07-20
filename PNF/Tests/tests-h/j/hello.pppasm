@@ -1,9 +1,0 @@
-#include "hello.txt"
-
-
-PRINTLN TSTRING "Hello World!"
-
-QUIT TVOID 0
-
-
-END TVOID 0V

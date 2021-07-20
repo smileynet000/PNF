@@ -1,5 +1,0 @@
-print "Read a boolean: ";
-var a;
-read boolean a;
-println a;
-end 0;
