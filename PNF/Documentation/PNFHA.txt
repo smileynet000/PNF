@@ -10,7 +10,8 @@ Copyright (c)  2019  Dennis Earl Smiley.
 CHANGELOG
 =========
 
-5/3/19 Origional a-a-a The first version.
+5/3/19 Origional a-a-a - 1. The first version.
+			 2. Added syntax
 
 
 Portable Numbers Format High Level Language A (PNFHA)
@@ -19,8 +20,12 @@ Portable Numbers Format High Level Language A (PNFHA)
 SYNTAX
 ======
 
-input:	(newline)
-	| statement (newline)
+input:	// Empty
+	| input line
+
+line:	(newline)
+	| statement
+	| ERROR
 
 statement:	stmt
 		| statement , stmt
@@ -29,11 +34,11 @@ stmt:	control_statement
 	| ;
 	| expression_statement
 	| declaration_statement
-	| command_statement
 	| label_statement
+	| command_statement
 	| statement_block
 	| pp_directive
-	| pp_statement
+	| pp_statement
 
 expression_statement:	expression ;
 
@@ -46,44 +51,105 @@ label_statement:	ID :
 			| event ID :
 
 control_statement:	if_statement
+			| unless_statement
 			| switch_statement
 			| loop_statement
 
-if_statement:		if ( expression ) stmt
-			[else stmt]
+if_statement:		if ( stmt ) 
+			then
+			stmt
+			endif
+			[else 
+			stmt
+			endif]
+			doneif
 
-switch_statement:	switch ( expression ) { case_statements opt_default_statement }
-			| cswitch ( stmt ) { case_statements2 opt_default_statement2 }
+unless_statement:	unless ( stmt )
+			then
+			stmt
+			endif
+			[else 
+			stmt
+			endif]
+			doneif
 
-case_statements:	case_statements
+switch_statement:	switch ( expression ) { 
+			case_statements
+			opt_default_statement
+			}
+			| cswitch ( stmt ) 
+			{
+			case_statements2
+			opt_default_statement2
+			}
+
+case_statements:	case_statement
 			| case_statements case_statement
 
-case_statement:		case expression : stmt
+case_statement:		case expression
+			: stmt
 
-opt_default_statement:	[default : stmt]
+opt_default_statement:	[default : 
+			stmt]
 
-case_statements2:	case_statements2
+case_statements2:	case_statement2
 			| case_statements2 case_statement2
 
-case_statement2:	ccase expression : stmt
+case_statement2:	ccase expression 
+			:
+			stmt
 
-opt_default_statement2:	[cdefault : stmt]
+opt_default_statement2:	[cdefault :
+			stmt]
 
 loop_statement:		while_loop
 			| whileb_loop
+			| until_loop
+			| untilb_loop
 			| for_loop
 			| forb_loop
 			| forever_loop
 
-while_loop:		while ( stmt ) stmt
+while_loop:		while ( 
+			stmt 
+			)
+			stmt
 
-whileb_loop:		dowhile stmt while ( stmt )
+whileb_loop:		dowhile 
+			stmt 
+			while
+			( 
+			stmt
+			)
 
-for_loop:		for ( stmt ; stmt ; stmt ) stmt
+until_loop:		until (
+			stmt
+			)
+			stmt
 
-forb_loop:		dofor stmt for ( stmt ; stmt ; stmt )
+untilb_loop:		dountil
+			stmt
+			until
+			(
+			stmt
+			)
 
-forever_loop:		forever stmt
+for_loop:		for ( 
+			stmt ; 
+			stmt ; 
+			stmt 
+			) stmt
+
+forb_loop:		dofor 
+			stmt 
+			for ( 
+			stmt ; 
+			stmt ; 
+			stmt 
+			)
+
+forever_loop:		forever 
+			stmt
 
 statement_block:	{ statements }
 
@@ -98,6 +164,7 @@ expression:		void_expression
 			| id_expression
 			| relational_expression
 			| mixed_expression
+			| function_expression
 
 void_expression:	0V
 			| ( void_expression )
@@ -173,6 +240,7 @@ relational_expression:	number_expression == number_expression
 			| number_expression < number_expression
 			| number_expression >= number_expression
 			| number_expression <= number_expression
+			| number_expression <=> number_expression
 
 mixed_expression:	( mixed_expression )
 			| ID && boolean_expression
@@ -227,11 +295,46 @@ mixed_expression:	( mixed_expression )
 			| number_expression >> ID
 			| ID << number_expression
 			| ID >> number_expression
+			| number_expression <=> ID
+			| ID <=> number_expression
+
+function_expression:	function_command
+			| ( function_expression )
+
+function_command:	funccall : NUMBERV
+			LEFTP vars3 RIGHTP ID
+			LEFTP
+			actual_function_parameters
+			RIGHTP
+			nothing
+
+actual_function_parameters:	dv
+
+dv:			opt_expressions
+
+opt_expressions:	opt_expression
+			| opt_expressions , opt_expression
+			| defaultv2 : TYPE
+			opt_expressions , defaultv2 : TYPE
+
+actual_function_parameters2:	opt_expression2
+				nothing
+
+opt_expression:			expression
+
+opt_expression2:		expression
+				| opt_expression2 , expression
 
 declaration:	variable_declaration
 		| label_declaration
 		| enum_declaration
 		| range_declaration
+		| struct_declaration
+		| struct_declaration2
+		| struct_var_declaration3
+		| union_declaration
+		| union_declaration2
+		| union_var_declaration3
 
 variable_declaration:	var ID
 			| var ID = expression
@@ -247,16 +350,119 @@ rangev_declaration:	rangev RTYPE2 STRINGV STRINGV = STRINGV
 
 array_declaration:	array STRINGV [ number_expression ]
 
-label_declaration:	sub ID
-			| event ID
-			| label ID
-
-enum_declaration:	enum ID = { enum_strings }
+enum_declaration:	enum ID = {
+			enum_strings
+			}
 
 enum_strings:		STRINGV
 			| enum_strings , STRINGV
 
 range_declaration:	range RTYPE2 STRINGV = STRINGV .. STRINGV
+
+struct_declaration:	struct ID
+			struct_body
+
+struct_body:		{
+			struct_var_declarations
+			}
+
+struct_var_declarations:	struct_var_declarations2
+				| struct_var_declarations struct_var_declarations2
+
+struct_var_declarations2:	structvar ID ;
+
+struct_declaration2:		struct ID ID
+
+struct_var_declarations3:	struct ID ID . ID = expression
+
+union_declaration:	union ID
+			union_body
+
+union_body:		{
+			union_var_declarations
+			}
+
+union_var_declarations:		union_var_declarations2
+				| union_var_declarations union_var_declarations2
+
+union_var_declarations2:	unionvar ID ;
+
+union_declaration2:		union ID ID
+
+union_var_declarations3:	union ID ID . ID = expression
+
+label_declaration:	sub ID
+			| event ID
+			| label ID
+			| function_declaration
+			| function_declaration2
+
+function_declaration:	funcdef ( vars ) ID ( parameter_declaration )
+			nothing
+
+nothing:		// Empty
+
+parameter_declaration:	opt_var
+			| parameter_declaration , var ID : TYPE
+
+parameter_declaration2:	opt_var2
+			| parameter_declaration2 , var ID : TYPE opt_default_value
+
+parameter_declaration5:	opt_var5
+			| parameter_declaration5 , var ID : TYPE
+
+parameter_declaration6: opt_var6
+			| parameter_declaration6 , var ID : TYPE
+
+opt_var:		var ID : TYPE
+			| VOIDV
+
+opt_var2:		var ID : TYPE opt_default_value
+			| VOIDV
+
+opt_default_value:	[dvalue]
+
+dvalue:			= expression : NUMBERV
+
+optdefaultv:		defaultv
+
+opt_var5		var ID : TYPE
+			| VOIDV
+
+opt_var6:		var ID : TYPE
+			| VOIDV
+
+function_declaration2:	function optdefaultv ( vars2 ) ID ( parameter_declaration2 )
+			function_body
+			nothing
+
+function_body:		{
+			statements
+			}
+
+vars:			VOIDV
+			| var : TYPE
+			| vars , var : TYPE
+
+vars2:			VOIDV
+			| var : TYPE
+			| vars2 , var : TYPE
+
+vars3:			VOIDV
+			| var : TYPE
+			| vars3 , var : TYPE
+
+vars4:			VOIDV
+			| var : TYPE
+			| vars4 , var : TYPE
+
+vars5:			VOIDV
+			| var : TYPE
+			| vars5 , var : TYPE
+
+vars6:			VOIDV
+			| var : TYPE
+			| vars6 , var : TYPE
 
 command:	print_command
 		| read_command
@@ -287,6 +493,12 @@ command:	print_command
 		| pnfasm_command
 		| array_length_command
 		| dup_command
+		| fret
+		| parameter_command
+		| struct_command
+		| union_command
+		| copy_command
+		| segment_command
 
 print_command:	print
 		| print expression
@@ -325,6 +537,18 @@ load_command:		load RTYPE LTYPE number_expression
 			| load range RTYPE2 STRINGV [ number_expression ]
 			| load array STRINGV [ number_expression ]
 			| load array STRINGV [ ]
+			| load signature2 LTYPE number_expression : boolean_expression
+			nothing
+			| load signature2 LTYPE number_expression : number_expression
+			nothing
+			| load signature2 LTYPE number_expression : character_expression
+			nothing
+			| load signature2 LTYPE number_expression : string_expression
+			nothing
+			| load struct STRINGV
+			| load union STRINGV
+			| use OTYPE ID
+			| load RTYPE LTYPE TYPE number_expression
 
 goto_command:	goto GTYPE number_expression
 		| goto GTYPE ID
@@ -376,6 +600,15 @@ operator_command:	+
 			| ~
 			| <<
 			| >>
+			| top_command
+			| <=>
+			| x
+			| R RUNOPOP string_expression
+
+top_command:		stmt ?
+			stmt
+			:
+			stmt
 
 st_command:	st
 
@@ -385,11 +618,15 @@ stack_command:	push
 typeof_command:	typeof RTYPE
 
 rm_command:	atoc
+		| atosp
+		| sptoa
 		| switch
 
 crash_command:	crash string_expression
 
-version_command:	version VTYPE
+version_command:	version VTYPE number_expression
+			mode number_expression
+			extmode number_expression
 
 halt_command:	halt
 
@@ -402,8 +639,10 @@ subroutine_command:	return
 register_command:	unregister STYPE
 			| register STYPE ID
 			| reregister STYPE ID ID
+			| register blank STYPE number_expression
 
 store_command:	store RTYPE LTYPE number_expression
+		| store LTYPE
 		| store RTYPE LTYPE
 		| store storea
 		| store venum STRINGV
@@ -440,6 +679,33 @@ pnfasm_command: pnfasm STRINGV STRINGV STRINGV
 array_length_command:	array STRINGV . length
 
 dup_command:		dup RTYPE
+
+fret_command:		fret
+
+psig:			signature ID TYPE
+			nothing
+
+psig2:			signature ID TYPE TYPE
+
+signature:		fparameter ( var5 ) ID ( parameter_declaration5 )
+
+signature2:		function ( var6 ) ID ( parameter_declaration6 )
+
+struct_command:		( struct )
+			| { struct }
+
+union_command:		( union )
+			| { union }
+
+copy_command:		copy
+
+segment_command:	segment +
+			| segment -
+			| segment CETYPE number_expression
+			| segment copy
+			| segment push
+			| segment pop
+			| segment top
 
 pp_directive:	%BIN%
 		| %PBIN%
@@ -503,7 +769,7 @@ TYPE = "void"|"boolean"|"number"|"character"|"string"
 
 RTYPE = "%accumulator"|"%calc"
 
-LTYPE = "memory"|"variable"|"tend"|"type_of"|"iname"|"icount"|"args"|"aload"|"argn"
+LTYPE = "memory"|"variable"|"tend"|"type_of"|"iname"|"icount"|"args"|"aload"|"argn"|"stk"|"rvalue"|"seg1"|"seg2"
 
 STYPE = "sub"|"heve"|"sheve"|"eve"|"exe"|"int"
 
@@ -515,11 +781,13 @@ ATYPE = "avariable"|"alabel"|"aevent"
 
 COMMENT = //{TCHARACTER2}*
 
-CTYPE = "ver"|"current_ver"|"instruction"|"type"
+CTYPE = "ver"|"current_ver"|"vmode"|"current_vmode"|"extvmode"|"current_extvmode"|"instruction"|"type"
 
 CMTYPE = "l1"|"l2"
 
 BFMODEC = "input"|"output"
+
+RUNOPOP = "tstruct"|"tunion"
 
 FMODEC = "in"|"out"|"binary"|"ate"|"app"|"trunc"
 

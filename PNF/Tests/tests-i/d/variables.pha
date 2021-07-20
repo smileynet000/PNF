@@ -1,9 +1,0 @@
-var a = 5;
-
-
-==; ? { print "a = "; println a; } : ;;
-
-println "Done!";
-
-
-end 0;

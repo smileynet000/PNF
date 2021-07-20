@@ -1,8 +1,0 @@
-println 32;
-var a;
-println a;
-var b = 33;
-println b;
-println &a;
-println &b;
-end 0;

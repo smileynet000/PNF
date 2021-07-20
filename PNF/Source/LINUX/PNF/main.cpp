@@ -36,6 +36,7 @@ This program is free software: you can redistribute it and/or modify
 */
 // #Defines go here...
 #define T_Main
+#define OS_LINUX
 
 
 // Includes go here...
@@ -63,7 +64,6 @@ int Main(Array<String> args)
  }
  else if (args.length() >= 2)
  {
-  char * value;
   char * strs;
   PNF program(args);
     
@@ -72,10 +72,9 @@ int Main(Array<String> args)
   program.check();
   String ret = program.execute();
 
-  strcpy(value, ret.getString().c_str());
-  long result = strtol(value, &strs, 10);
+  long result = strtol(ret.getString().c_str(), &strs, 10);
 
 
   return result;
  }
-}
+ }

@@ -23,10 +23,11 @@
 # =========
  
 # 8/10/20 Origional a-a-a - 1. The first version.
+			    2. Made file lowercase.
 
 
 echo Cleaning...
 rm *.exe > /dev/null
 
 echo C++...
-g++ main.cpp -oPNF2CPP -Wno-write-strings -fpermissive --static
+g++ main.cpp -opnf2cpp -Wno-write-strings -fpermissive --static

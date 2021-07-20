@@ -1,6 +1,0 @@
-beginning:
- load typeof;
- println;
-
-
-end 0;

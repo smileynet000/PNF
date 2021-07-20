@@ -63,6 +63,12 @@ This file is part of pnfasm.
 			7. Fixed bugs...
 			8. Took out "extra" instructions.
 			9. Fixed to add instructions again...
+		       10. Added NTIMES instruction.
+		       11. Added CMP instruction.
+		       12. Added RUN, JRUN, & PNFRUN instructions.
+		       13. Added struct definitions.
+		       14. Added more struct instructions.
+   		       15. Implemented segment instructions.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -1246,6 +1252,114 @@ IFNCGDEFAULTV2	"FNCGDEFAULTV2"
 
 IFNCDEFAULTSYNC	"FNCDEFAULTSYNC"
 
+INTIMES		"NTIMES"
+
+ICMP		"CMP"
+
+IRUN		"RUN"
+
+IJRUN		"JRUN"
+
+IPNFRUN	"PNFRUN"
+
+ISTRUCT	"STRUCT"
+
+ISTRUCTVAR	"STRUCTVAR"
+
+IENDSTRUCT	"ENDSTRUCT"
+
+ISTRUCTNAME	"STRUCTNAME"
+
+ISTRUCTONAME	"STRUCTONAME"
+
+ISTRUCTD	"STRUCTD"
+
+ISTRUCTUSE	"STRUCTUSE"
+
+ISTRUCTUSING	"STRUCTUSING"
+
+ISTRUCTUSINGNAME	"STRUCTUSINGNAME"
+
+ISTRUCTGET	"STRUCTGET"
+
+ISTRUCTPUT	"STRUCTPUT"
+
+ISTRUCTTYPE	"STRUCTTYPE"
+
+ISTRUCTTYPE2	"STRUCTTYPE2"
+
+ISTRUCTNAME2	"STRUCTNAME2"
+
+ISTRUCTNAME3	"STRUCTNAME3"
+
+IUNION		"UNION"
+
+IUNIONVAR	"UNIONVAR"
+
+IENDUNION	"ENDUNION"
+
+IUNIONNAME	"UNIONNAME"
+
+IUNIONONAME	"UNIONONAME"
+
+IUNIOND		"UNIOND"
+
+IUNIONUSE	"UNIONUSE"
+
+IUNIONUSING	"UNIONUSING"
+
+IUNIONUSINGNAME	"UNIONUSINGNAME"
+
+IUNIONGET	"UNIONGET"
+
+IUNIONPUT	"UNIONPUT"
+
+IUNIONTYPE	"UNIONTYPE"
+
+IUNIONTYPE2	"UNIONTYPE2"
+
+IUNIONNAME2	"UNIONNAME2"
+
+IUNIONNAME3	"UNIONNAME3"
+
+IMODE		"MODE"
+
+IEXTMODE	"EXTMODE"
+
+IMCHECK		"MCHECK"
+
+IMSUPP		"MSUPP"
+
+IMEXTCHECK	"MEXTCHECK"
+
+IMEXTSUPP	"MEXTSUPP"
+
+ICPY		"CPY"
+
+IADDSEG		"ADDSEG"
+
+IREMSEG		"REMSEG"
+
+ICOLLSEG	"COLLSEG"
+
+IEXPSEG		"EXPSEG"
+
+ICPYSEG		"CPYSEG"
+
+ISEGLOAD	"SEGLOAD"
+
+ISEGSTORE	"SEGSTORE"
+
+ISEGPUSH	"SEGPUSH"
+
+ISEGPOP		"SEGPOP"
+
+ISEGTOP		"SEGTOP"
+
+ISEGVLOAD	"SEGVLOAD"
+
+ISEGVSTORE	"SEGVSTORE"
+
 
 TVOID		"TVOID"
 
@@ -1826,6 +1940,115 @@ IFNCFIND		yylval = "221"; return IFNCFIND;
 {IFNCGDEFAULTV2}	yylval = "230"; return IFNCGDEFAULTV2;
 
 {IFNCDEFAULTSYNC}	yylval = "231"; return IFNCDEFAULTSYNC;
+
+{INTIMES}		yylval = "232"; return INTIMES;
+
+{ICMP}			yylval = "233"; return ICMP;
+
+{IRUN}			yylval = "234"; return IRUN;
+
+{IJRUN}		yylval = "235"; return IJRUN;
+
+{IPNFRUN}		yylval = "236"; return IPNFRUN;
+
+{ISTRUCT}		yylval = "237"; return ISTRUCT;
+
+{ISTRUCTVAR}		yylval = "238"; return ISTRUCTVAR;
+
+{IENDSTRUCT}		yylval = "239"; return IENDSTRUCT;
+
+{ISTRUCTNAME}		yylval = "240"; return ISTRUCTNAME;
+
+{ISTRUCTONAME}		yylval = "241"; return ISTRUCTONAME;
+
+{ISTRUCTD}		yylval = "242"; return ISTRUCTD;
+
+{ISTRUCTUSE}		yylval = "243"; return ISTRUCTUSE;
+
+{ISTRUCTUSING}		yylval = "244"; return ISTRUCTUSING;
+
+{ISTRUCTUSINGNAME}	yylval = "245"; return ISTRUCTUSINGNAME;
+
+{ISTRUCTGET}		yylval = "246"; return ISTRUCTGET;
+
+{ISTRUCTPUT}		yylval = "247"; return ISTRUCTPUT;
+
+{ISTRUCTTYPE}		yylval = "248"; return ISTRUCTTYPE;
+
+{ISTRUCTTYPE2}		yylval = "249"; return ISTRUCTTYPE2;
+
+{ISTRUCTNAME2}		yylval = "250"; return ISTRUCTNAME2;
+
+{ISTRUCTNAME3}		yylval = "251"; return ISTRUCTNAME3;
+
+{IUNION}		yylval = "252"; return IUNION;
+
+{IUNIONVAR}		yylval = "253"; return IUNIONVAR;
+
+{IENDUNION}		yylval = "254"; return IENDUNION;
+
+{IUNIONNAME}		yylval = "255"; return IUNIONNAME;
+
+{IUNIONONAME}		yylval = "256"; return IUNIONONAME;
+
+{IUNIOND}		yylval = "257"; return IUNIOND;
+
+{IUNIONUSE}		yylval = "258"; return IUNIONUSE;
+
+{IUNIONUSING}		yylval = "259"; return IUNIONUSING;
+
+{IUNIONUSINGNAME}	yylval = "260"; return IUNIONUSINGNAME;
+
+{IUNIONGET}		yylval = "261"; return IUNIONGET;
+
+{IUNIONPUT}		yylval = "262"; return IUNIONPUT;
+
+{IUNIONTYPE}		yylval = "263"; return IUNIONTYPE;
+
+{IUNIONTYPE2}		yylval = "264"; return IUNIONTYPE2;
+
+{IUNIONNAME2}		yylval = "265"; return IUNIONNAME2;
+
+{IUNIONNAME3}		yylval = "266"; return IUNIONNAME3;
+
+{IMODE}			yylval = "267"; return IMODE;
+
+{IEXTMODE}		yylval = "268"; return IEXTMODE;
+
+{IMCHECK}		yylval = "269"; return IMCHECK;
+
+{IMSUPP}		yylval = "270"; return IMSUPP;
+
+{IMEXTCHECK}		yylval = "271"; return IMEXTCHECK;
+
+{IMEXTSUPP}		yylval = "272"; return IMEXTSUPP;
+
+
+{ICPY}			yylval = "273"; return ICPY;
+
+{IADDSEG}		yylval = "274"; return IADDSEG;
+
+{IREMSEG}		yylval = "275"; return IREMSEG;
+
+{ICOLLSEG}		yylval = "276"; return ICOLLSEG;
+
+{IEXPSEG}		yylval = "277"; return IEXPSEG;
+
+{ICPYSEG}		yylval = "278"; return ICPYSEG;
+
+{ISEGLOAD}		yylval = "279"; return ISEGLOAD;
+
+{ISEGSTORE}		yylval = "280"; return ISEGSTORE;
+
+{ISEGPUSH}		yylval = "281"; return ISEGPUSH;
+
+{ISEGPOP}		yylval = "282"; return ISEGPOP;
+
+{ISEGTOP}		yylval = "283"; return ISEGTOP;
+
+{ISEGVLOAD}		yylval = "284"; return ISEGVLOAD;
+
+{ISEGVSTORE}		yylval = "285"; return ISEGVSTORE;
 
 
 {TVOID}			yylval = yytext; return TVOID;

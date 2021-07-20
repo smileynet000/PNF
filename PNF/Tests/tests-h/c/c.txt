@@ -1,7 +1,0 @@
-#import <"hello.txt">
-
-
-I am a fish.
-
-
-#import <"hello.txt">

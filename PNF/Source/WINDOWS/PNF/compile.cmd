@@ -1,4 +1,4 @@
-#!/bin/sh
+@ECHO OFF
 
 
 REM Copyright 2020 Dennis Earl Smiley

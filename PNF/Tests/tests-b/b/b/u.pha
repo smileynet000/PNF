@@ -1,5 +1,0 @@
-var a = "Hello";
-var b = " World!";
-var c = a + b;
-println c;
-end 0;

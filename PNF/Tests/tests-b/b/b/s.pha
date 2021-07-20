@@ -1,4 +1,0 @@
-var a = 'a';
-var b = 'b';
-println a + b;
-end 0;

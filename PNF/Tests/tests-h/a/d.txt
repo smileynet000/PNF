@@ -1,5 +1,0 @@
-#include "a.txt"
-
-
-Hello World!
-I am a cat.

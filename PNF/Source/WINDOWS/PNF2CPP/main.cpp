@@ -23,9 +23,13 @@ This program is free software: you can redistribute it and/or modify
  6/26/15 Original a-a - 1. Fixed bugs...
 			2. Fixed bugs...
 			3. Fixed bugs...
+			4. Fixed bugs...
 */
 // Includes go here
 #include <stdlib.h>
+
+#undef OS_WINDOWS
+#define OS_LINUX
 
 #ifdef OS_WINDOWS
  #include <windows.h>
@@ -69,13 +73,10 @@ int main(int argc, char ** argv)
   int cp = 0;
   #ifdef OS_WINDOWS
    cp = CopyFile(PNFHPP, ".\\pnf.hpp", TRUE);
-  #endif
-  #ifdef OS_LINUX
-   cp = system((PNFHPP + " ./pnf.hpp").getString().c_str());
-  #endif
-  
+
   if (cp == 0)
    error(WARNINGMSG, "Cannot copy file. Does the file already exist?");
+  #endif
   
   
   Array<String> args;
@@ -103,7 +104,13 @@ int main(int argc, char ** argv)
    cout << "* ERROR: Cannot open output file.\n";
 
 
-  fout << "#include \"pnf.hpp\"\n\n\n";
+  fout << "#include \"";
+  #ifdef OS_LINUX
+   fout << PNFHPP << "\"\n\n\n";
+  #endif // OS_LINUX
+  #ifdef OS_WINDOWS
+   fout << "pnf.hpp\"\n\n\n";
+  #endif // OS_WINDOWS
 
 
   fout << "int main(int argc, char ** argv)\n";

@@ -1,9 +1,0 @@
-if (load aload false;) then
- println "if...";
-endif
-else
- println "else...";
-endif
-doneif
-
-end 0;

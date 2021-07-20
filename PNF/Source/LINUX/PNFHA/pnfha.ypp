@@ -33,6 +33,7 @@ CHANGELOG
 			 9. Debugged...
 			10. Bug fixes...
 			11. Debugged...
+ 		        12. Implemented through segments...
 */
 #include <desLib/deslib.hpp>
 #include <cmath>
@@ -690,6 +691,10 @@ unsigned long doforcounter = 0;
 
 unsigned long forevercounter = 0;
 
+unsigned long untilcounter = 0;
+
+unsigned long dountilcounter = 0;
+
 
 bool inloop2 = false;
 bool inwhile = false;
@@ -697,6 +702,8 @@ bool indowhile = false;
 bool infor2 = false;
 bool indofor = false;
 bool inforever = false;
+bool inuntil = false;
+bool indountil = false;
 
 
 bool exptruth = false;
@@ -771,7 +778,7 @@ ASTTree tree;
 %debug
 
 
-%expect 20
+%expect 23
 %error-verbose
 
 
@@ -783,7 +790,7 @@ ASTTree tree;
 %left OPTIMES OPDIV OPMODULUS
 %left OPMINUS OPPLUS
 %left OPBTSL OPBTSR
-%left OPLSS OPLEQU OPGTR OPGEQU
+%left OPLSS OPLEQU OPGTR OPGEQU OPCMP
 %left OPEQU OPNEQU
 %left OPBTXOR OPBTOR
 %left OPAND
@@ -833,6 +840,8 @@ ASTTree tree;
 %token OPBTSL
 %token OPBTSR
 %token OPSTR
+%token OPSTRTIMES
+%token OPRUN
 
 %token ID
 
@@ -852,6 +861,7 @@ ASTTree tree;
 %token ST
 %token PUSH
 %token POP
+%token TOP
 %token TYPEOF
 %token RTYPE
 %token ATOC
@@ -930,6 +940,21 @@ ASTTree tree;
 %token FPARAMETER
 %token DEFAULTV
 %token DEFAULTV2
+%token UNTIL
+%token UNLESS
+%token DOUNTIL
+%token RUNOPOP
+%token STRUCT
+%token STRUCTVAR
+%token UNION
+%token UNIONVAR
+%token USE
+%token OTYPE
+%token MODE
+%token EXTMODE
+%token COPY
+%token SEGMENT
+%token CETYPE
 
 
 %token PBIN
@@ -1091,6 +1116,12 @@ control_statement:	if_statement
 			
 			 tree.add_node(control_statement);
 			}
+			| unless_statement
+			{
+			 ASTNode control_statement("control_statement");
+			
+			 tree.add_node(control_statement);
+			}
 			| switch_statement
 			{
 			 ASTNode control_statement("control_statement");
@@ -1116,6 +1147,51 @@ if_statement:		IF LEFTP stmt RIGHTP
 			{			 
 			 ASTNode if_statementp2("if_statementp2");
 			
+			 conprint("IF TVOID 0V\n");
+			 conprint("IFBEGIN TVOID 0V\n");
+
+			 tree.add_node(if_statementp2);
+			}
+			stmt
+			{
+			 ASTNode if_statementp3("if_statementp3");
+			 // Code for if will be inserted here...
+			
+			 tree.add_node(if_statementp3);
+			}
+			ENDIF
+			{
+			 conprint("IFEND TVOID 0V\n");
+			 conprint("ENDIF TVOID 0V\n");
+			}
+			opt_else
+			{
+			 ASTNode if_statementp6("if_statementp6");
+
+			 tree.add_node(if_statementp6);
+			}
+			eif			
+			{
+			 ASTNode if_statementp4("if_statementp4");
+
+			 conprint("EIF TVOID 0V\n");
+
+			 tree.add_node(if_statementp4);
+			}
+			;
+
+unless_statement:	UNLESS LEFTP stmt RIGHTP
+			{
+			 ASTNode if_statementp1("if_statementp1");
+
+			 conprint("NOT TVOID 0V\n");	
+
+			 tree.add_node(if_statementp1);		
+			}
+			THEN			
+			{			 
+			 ASTNode if_statementp2("if_statementp2");
+		
 			 conprint("IF TVOID 0V\n");
 			 conprint("IFBEGIN TVOID 0V\n");
 
@@ -1438,6 +1514,16 @@ loop_statement:		{
 			 ASTNode loop_statement("loop_statement");
 			 tree.add_node(loop_statement);
 			}
+			until_loop
+			{
+			 ASTNode loop_statement("loop_statement");
+			 tree.add_node(loop_statement);
+			}
+			| untilb_loop
+			{
+			 ASTNode loop_statement("loop_statement");
+			 tree.add_node(loop_statement);
+			}
 			| for_loop
 			{
 			 ASTNode loop_statement("loop_statement");
@@ -1551,6 +1637,98 @@ whileb_loop:		{
 			 conprint("LBL TSTRING \"do_while_end_%u\"\n", dowhilecounter);
 
 			 tree.add_node(do_while_loopp6);
+			}
+			;
+
+until_loop:		UNTIL LEFTP
+			{
+			 ASTNode until_loopp1("until_loopp1");
+
+			 inuntil = true;
+			 ++untilcounter;
+			 conprint("LBL TSTRING \"until_test_%u\"\n", untilcounter);
+
+			 tree.add_node(until_loopp1);
+			}
+			stmt
+			{
+			 ASTNode until_loopp2("until_loopp2");
+
+			 tree.add_node(until_loopp2);
+			}
+			RIGHTP
+			{
+			 ASTNode until_loopp3("until_loopp3");
+
+
+			 conprint("NOT TVOID 0V\n");
+
+			 conprint("CGOTOL TSTRING \"until_body_%u\"\n", untilcounter);
+			 conprint("GOTOL TSTRING \"until_end_%u\"\n", untilcounter);
+
+			 conprint("LBL TSTRING \"until_body_%u\"\n", untilcounter);
+
+			 tree.add_node(until_loopp3);
+			}
+			stmt
+			{
+			 ASTNode until_loopp4("until_loopp4");
+
+			 conprint("GOTOL TSTRING \"until_test_%u\"\n", untilcounter);
+			 conprint("LBL TSTRING \"until_end_%u\"\n", untilcounter);
+
+			 tree.add_node(until_loopp4);
+			}
+			;
+
+untilb_loop:		{
+			 ASTNode do_until_loopp1("do_until_loopp1");
+
+			 indountil = true;
+			 ++dountilcounter;
+			 conprint("LBL TSTRING \"do_until_body_%u\"\n", dountilcounter);
+
+			 tree.add_node(do_until_loopp1);
+			}
+			DOUNTIL
+			{
+			 ASTNode do_until_loopp2("do_until_loopp2");
+
+			 tree.add_node(do_until_loopp2);
+			}
+			stmt
+			UNTIL 
+			{
+			 ASTNode do_until_loopp3("do_until_loopp3");
+
+			 conprint("LBL TSTRING \"do_until_test_%u\"\n", dountilcounter);
+
+			 tree.add_node(do_until_loopp3);
+			}
+			LEFTP
+			{
+			 ASTNode do_until_loopp4("do_until_loopp4");
+
+			 tree.add_node(do_until_loopp4);
+			}
+			stmt
+			{
+			 ASTNode do_until_loopp5("do_until_loopp5");
+
+			 conprint("CGOTOL TSTRING \"do_until_body_%u\"\n", dountilcounter);
+			 conprint("GOTOL TSTRING \"do_until_end_%u\"\n", dountilcounter);
+
+			 tree.add_node(do_until_loopp5);
+			}
+			RIGHTP
+			{
+			 ASTNode do_until_loopp6("do_until_loopp6");
+
+			 conprint("NOT TVOID 0V\n");
+
+			 conprint("LBL TSTRING \"do_until_end_%u\"\n", dountilcounter);
+
+			 tree.add_node(do_until_loopp6);
 			}
 			;
 
@@ -2902,6 +3080,29 @@ relational_expression:	number_expression OPEQU number_expression
 			  exptruth = true;
 			 else
 			  exptruth = true;
+			}
+			| number_expression OPCMP number_expression
+			{
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b1 = d1 < d2;
+			 bool b2 = d1 == d2;
+			 bool b3 = d1 > d2;
+			 double answer = 0;
+
+			 if (b1)
+			  answer = -1;
+			 else if (b2)
+			  answer = 0;
+			 else if (b3)
+			  answer = 1;
+			 else
+			 {
+			  yyerror((char *)"Bad CMP.");
+			  exit(-1);
+			 }
+			 PNF_Number n(answer);
+			 $$.put(n);
 			}
 			;
 
@@ -5266,6 +5467,122 @@ mixed_expression:
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
 			}
+			| number_expression OPCMP ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b1 = d1 < d2;
+			 bool b2 = d1 == d2;
+			 bool b3 = d1 > d2;
+			 double answer = 0;
+
+			 if (b1)
+			  answer = -1;
+			 else if (b2)
+			  answer = 0;
+			 else if (b3)
+			  answer = 1;
+			 else
+			 {
+			  yyerror((char *)"Bad CMP.");
+			  exit(-1);
+			 }
+			 PNF_Number n(answer);
+			 $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }			
+			}
+			| ID OPCMP number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b1 = d1 < d2;
+			 bool b2 = d1 == d2;
+			 bool b3 = d1 > d2;
+			 double answer = 0;
+
+			 if (b1)
+			  answer = -1;
+			 else if (b2)
+			  answer = 0;
+			 else if (b3)
+			  answer = 1;
+			 else
+			 {
+			  yyerror((char *)"Bad CMP.");
+			  exit(-1);
+			 }
+			 PNF_Number n(answer);
+			 $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $1.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }			
+			}
 			;
 
 function_expression:	function_command
@@ -5869,6 +6186,36 @@ declaration:		variable_declaration
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
 			}
+			| struct_declaration
+			{
+			 ASTNode declaration("declaration");
+			 tree.add_node(declaration);
+			}
+			| struct_declaration2
+			{
+			 ASTNode declaration("declaration");
+			 tree.add_node(declaration);
+			}
+			| struct_var_declaration3
+			{
+			 ASTNode declaration("declaration");
+			 tree.add_node(declaration);
+			}
+			| union_declaration
+			{
+			 ASTNode declaration("declaration");
+			 tree.add_node(declaration);
+			}
+			| union_declaration2
+			{
+			 ASTNode declaration("declaration");
+			 tree.add_node(declaration);
+			}
+			| union_var_declaration3
+			{
+			 ASTNode declaration("declaration");
+			 tree.add_node(declaration);
+			}
 			;			;
 
 variable_declaration:	VAR ID
@@ -6177,6 +6524,164 @@ range_declaration:	RANGE RTYPE2 STRINGV OPEQUAL STRINGV OPDOT OPDOT STRINGV
 			 tree.add_node(range_declaration);
 			}
 			;
+
+struct_declaration:	STRUCT ID
+			{
+			 conprint("STRUCT TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+			}
+			struct_body
+			;
+
+struct_body:		LEFTB
+			struct_var_declarations
+			RIGHTB
+			{
+			 conprint("ENDSTRUCT TVOID 0V\n");
+			}
+			;
+
+struct_var_declarations:	struct_var_declarations2
+				| struct_var_declarations struct_var_declarations2
+				;
+
+struct_var_declarations2:	STRUCTVAR ID
+				{
+				 conprint("STRUCTVAR TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+				}
+				SEND
+				;
+
+struct_declaration2:		STRUCT ID ID
+				{
+				 conprint("STRUCTNAME TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+				 conprint("STRUCTD TSTRING \"%s\"\n", $3.to_string().get().getString().c_str());
+				}
+				;
+
+struct_var_declaration3:	STRUCT ID ID OPDOT ID OPEQUAL expression
+				{
+				 conprint("STRUCTNAME TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+				 conprint("STRUCTONAME TSTRING \"%s\"\n", $3.to_string().get().getString().c_str());
+				 conprint("STRUCTUSE TSTRING \"%s\"\n", $5.to_string().get().getString().c_str());
+				 
+				 switch ($7.getType())
+				 {
+				  case TVOID:
+				  {
+				   conprint("ALOAD TVOID 0V\n");
+				  }
+				  break;
+
+				  case TBOOLEAN:
+				  {
+				   conprint("ALOAD TBOOLEAN %s\n", $7.to_boolean().get().getString().c_str());
+				  }
+				  break;
+
+				  case TNUMBER:
+				  {
+				   conprint("ALOAD TNUMBER %f\n", $7.to_number().get());
+				  }
+				  break;
+
+				  case TCHARACTER:
+				  {
+				   conprint("ALOAD TCHARACTER '%c'\n", $6.to_character().get());
+				  }
+				  break;
+
+				  case TSTRING:
+				  {
+				   conprint("ALOAD TSTRING %s\n", $7.to_string().get().getString().c_str());
+				  }
+				  break;
+
+				  default:
+				   yyerror((char *)"Invalid type.");
+				 }
+
+				 conprint("STRUCTPUT TVOID 0V\n");
+				}
+				;
+
+union_declaration:	UNION ID
+			{
+			 conprint("UNION TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+			}
+			union_body
+			;
+
+union_body:		LEFTB
+			union_var_declarations
+			RIGHTB
+			{
+			 conprint("ENDUNION TVOID 0V\n");
+			}
+			;
+
+union_var_declarations:		union_var_declarations2
+				| union_var_declarations union_var_declarations2
+				;
+
+union_var_declarations2:	UNIONVAR ID
+				{
+				 conprint("UNIONVAR TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+				}
+				SEND
+				;
+
+union_declaration2:		UNION ID ID
+				{
+				 conprint("UNIONNAME TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+				 conprint("UNIOND TSTRING \"%s\"\n", $3.to_string().get().getString().c_str());
+				}
+				;
+
+union_var_declaration3:		UNION ID ID OPDOT ID OPEQUAL expression
+				{
+				 conprint("UNIONNAME TSTRING \"%s\"\n", $2.to_string().get().getString().c_str());
+				 conprint("UNIONONAME TSTRING \"%s\"\n", $3.to_string().get().getString().c_str());
+				 conprint("UNIONUSE TSTRING \"%s\"\n", $5.to_string().get().getString().c_str());
+				 
+				 switch ($7.getType())
+				 {
+				  case TVOID:
+				  {
+				   conprint("ALOAD TVOID 0V\n");
+				  }
+				  break;
+
+				  case TBOOLEAN:
+				  {
+				   conprint("ALOAD TBOOLEAN %s\n", $7.to_boolean().get().getString().c_str());
+				  }
+				  break;
+
+				  case TNUMBER:
+				  {
+				   conprint("ALOAD TNUMBER %f\n", $7.to_number().get());
+				  }
+				  break;
+
+				  case TCHARACTER:
+				  {
+				   conprint("ALOAD TCHARACTER '%c'\n", $6.to_character().get());
+				  }
+				  break;
+
+				  case TSTRING:
+				  {
+				   conprint("ALOAD TSTRING %s\n", $7.to_string().get().getString().c_str());
+				  }
+				  break;
+
+				  default:
+				   yyerror((char *)"Invalid type.");
+				 }
+
+				 conprint("UNIONPUT TVOID 0V\n");
+				}
+				;
 
 label_declaration:	SUB ID
 			{
@@ -8015,6 +8520,10 @@ command:		print_command
 		         tree.add_node(command);
 			}
 			| parameter_command
+			| struct_command
+			| union_command
+			| copy_command
+			| segment_command
 			;
 
 print_command:		
@@ -8644,6 +9153,13 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			  else
 			   yyerror("Invalid register type.");
 			 }
+			 else if ($3.to_string().get().getString() == "seg1")
+			 {
+			  if ($2.to_string().get().getString() == "%accumulator")
+			   conprint("SEGLOAD TNUMBER %g\n", $4.to_number().get());
+			  else
+			   yyerror((char *)"Invalid register type.");
+			 }
 			 else
 			  yyerror("Invalid load type.");
 
@@ -8804,7 +9320,8 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			 if ($2.to_string().get().getString() == "aload")
 			 {
 			  conprint("ALOAD TCHARACTER %c\n", $3.to_character().get());
-			 }			 else
+			 }			 
+			 else
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
@@ -8815,7 +9332,8 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			 if ($2.to_string().get().getString() == "aload")
 			 {
 			  conprint("ALOAD TSTRING %s\n", $3.to_string().get().getString().c_str());
-			 }			 else
+			 }			 
+			 else
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
@@ -8989,6 +9507,13 @@ load_command:		LOAD RTYPE LTYPE number_expression
 			  }
 			  else
                            yyerror("Invalid register type.");
+			 }
+			 else if ($3.to_string().get().getString() == "seg2")
+			 {
+			  if ($2.to_string().get().getString() == "%accmumulator")
+			  {
+			   conprint("SEGVLOAD TBOOLEAN %s\n", $4.to_boolean().get().getString().c_str());
+			  }
 			 }
 			 else
 			  yyerror("Invalid load type.");
@@ -9206,7 +9731,118 @@ load_command:		LOAD RTYPE LTYPE number_expression
 
 			 for (unsigned long i = fparams6.length() - 1; i > 0; --i)
 			  fparams6.remove();
-			}		
+			}
+			| LOAD STRUCT STRINGV
+			{
+			 if ($3.to_string().get().getString() == "\"get\"")
+			 {
+			  conprint("STRUCTGET TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"type1\"")
+			 {
+			  conprint("STRUCTTYPE TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"type2\"")
+			 {
+			  conprint("STRUCTTYPE2 TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"name1\"")
+			 {
+			  conprint("STRUCTNAME2 TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"name2\"")
+			 {
+			  conprint("STRUCTNAME3 TVOID 0V\n");
+			 }
+			 else
+			  yyerror((char *)"Invalid load type.");
+			}
+			| LOAD UNION STRINGV
+			{
+			 if ($3.to_string().get().getString() == "\"get\"")
+			 {
+			  conprint("UNIONGET TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"type1\"")
+			 {
+			  conprint("UNIONTYPE TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"type2\"")
+			 {
+			  conprint("UNIONTYPE2 TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"name1\"")
+			 {
+			  conprint("UNIONNAME2 TVOID 0V\n");
+			 }
+			 else if ($3.to_string().get().getString() == "\"name2\"")
+			 {
+			  conprint("UNIONNAME3 TVOID 0V\n");
+			 }
+			 else
+			  yyerror((char *)"Invalid load type.");
+			}
+			| USE OTYPE ID
+			{
+			 if ($2.to_string().get().getString() == "tstruct")
+			 {
+			  conprint("STRUCTUSE TSTRING \"%s\"\n", $3.to_string().get().getString().c_str());
+			 }
+			 else if ($2.to_string().get().getString() == "tunion")
+			 {
+			  conprint("UNIONUSE TSTRING \"%s\"\n", $3.to_string().get().getString().c_str());
+			 }
+			 else
+			  yyerror((char *)"Invalid object type.");
+			}
+			| LOAD RTYPE LTYPE TYPE number_expression
+			{
+			 if ($3.to_string().get().getString() == "seg2")
+			 {
+			  if ($2.to_string().get().getString() == "%accumulator")
+			  {
+			   switch ($4.getType())
+			   {
+		 	    case TVOID:
+			    {
+			     conprint("SEGVLOAD TVOID %g\n", $5.to_number().get());
+			    }
+			    break;
+
+			    case TBOOLEAN:
+			    {
+			     conprint("SEGVLOAD TBOOLEAN %g\n", $5.to_number().get());
+			    }
+			    break;
+
+			   case TNUMBER:
+			    {
+			     conprint("SEGVLOAD TNUMBER %g\n", $5.to_number().get());
+			    }
+			    break;
+
+			    case TCHARACTER:
+			    {
+			     conprint("SEGVLOAD TCHARACTER %g\n", $5.to_number().get());
+			    }
+			    break;
+
+			    case TSTRING:
+			    {
+			     conprint("SEGVLOAD TSTRING %g\n", $5.to_number().get());
+			    }
+			    break;
+
+			    default:
+			     yyerror((char *)"Invalid type.");
+			   }
+			  }
+			  else
+			   yyerror((char *)"Invalid register type.");
+			 }
+			 else
+			  yyerror((char *)"Invalid load type.");
+			}
 			;
 
 goto_command:		GOTO GTYPE number_expression
@@ -9625,6 +10261,35 @@ operator_command:	OPPLUS
 			 tree.add_node(operator_command);
 			}
 			| top_command
+			| OPCMP
+			{
+			 conprint("CMP TVOID 0V");
+			}
+			| OPSTRTIMES
+			{
+			 ASTNode operator_command("operator_command");
+			 conprint("NTIMES TVOID 0V\n");
+			 tree.add_node(operator_command);
+			}
+			| OPRUN RUNOPOP string_expression
+			{
+			 ASTNode operator_command("operator_command");
+			 if ($2.to_string().get().getString() == "run")
+			 {
+			  conprint("RUN TSTRING %s", $3.to_string().get().getString().c_str());
+			 }
+			 else if ($2.to_string().get().getString() == "jrun")
+			 {
+			  conprint("JRUN TSTRING %s", $3.to_string().get().getString().c_str());
+			 }
+			 else if ($2.to_string().get().getString() == "pnfrun")
+			 {
+			  conprint("PNFRUN TSTRING %s", $3.to_string().get().getString().c_str());
+			 }
+			 else
+			  yyerror((char *)"Bad run operator.");
+			 tree.add_node(operator_command);
+			}
 			;
 
 
@@ -9740,18 +10405,35 @@ crash_command:		CRASH string_expression
 			}
 			;
 
-version_command:	VERSION VTYPE
+version_command:	VERSION VTYPE number_expression
 			{
 			 ASTNode version_command("version_command");
 
 			 if ($2.to_string().get().getString() == "pnf")
-  			  conprint("VERSION TVOID 0V\n");
+  			  conprint("VERSION TVOID %f\n", $3.to_number().get());
 			 else if ($2.to_string().get() == "pnfasm")
 			  conprint("version TVOID 0V\n");
 			 else if ($2.to_string().get().getString() == "normal")
   			  ; // Not used yet. This is the first version.
                          else
 			  yyerror("Invalid version type.");
+
+			 tree.add_node(version_command);
+			}
+			| MODE number_expression
+			{
+			 ASTNode version_command("version_command");
+
+			 conprint("MODE TVOID %f\n", $2.to_number().get());
+
+
+			 tree.add_node(version_command);
+			}
+			| EXTMODE number_expression
+			{
+			 ASTNode version_command("version_command");
+
+			 conprint("EXTMODE TVOID %f\n", $2.to_number().get());
 
 			 tree.add_node(version_command);
 			}
@@ -10335,6 +11017,10 @@ store_command:		STORE RTYPE LTYPE number_expression
 			  }
 			  else if ($3.to_string().get().getString() == "stk")
 			   conprint("STORESP TNUMBER %g\n", $4.to_number().get());
+			  else if ($3.to_string().get().getString() == "seg1")
+			   conprint("SEGSTORE TNUMBER %g\n", $4.to_number().get());
+			  else if ($3.to_string().get().getString() == "seg2")
+			   conprint("SEGVSTORE TNUMBER %g\n", $4.to_number().get());
 			  else
 			   yyerror("Invalid store type.");
 			 }
@@ -10376,6 +11062,10 @@ store_command:		STORE RTYPE LTYPE number_expression
 			  }
 			  else if ($3.to_string().get().getString() == "tend")
 			   conprint("ESTORE TVOID 0V");
+			 else if ($3.to_string().get().getString() == "seg2")
+			 {
+			  conprint("SEGVSTORE TVOID 0V\n");
+			 }
 			  else
 			   yyerror("Invalid store type.");
 			 }
@@ -10628,6 +11318,42 @@ check_command:		CHECK CTYPE TYPE number_expression
 			  else
 			   yyerror("Invalid type.");
 			 }
+			 else if ($2.to_string().get() == "current_vmode")
+			 {
+			  if ($3.to_string().get() == "void")
+			   conprint("MCHECK TVOID %g\n", $4.to_number().get());
+			  else if ($3.to_string().get() == "number")
+			   conprint("MCHECK TNUMBER %g\n", $4.to_number().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "vmode")
+			 {
+			  if ($3.to_string().get() == "void")
+			   conprint("MSUPP TVOID %g\n", $4.to_number().get());
+			  else if ($3.to_string().get() == "number")
+			   conprint("MSUPP TNUMBER %g\n", $4.to_number().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "current_extvmode")
+			 {
+			  if ($3.to_string().get() == "void")
+			   conprint("MEXTCHECK TVOID %g\n", $4.to_number().get());
+			  else if ($3.to_string().get() == "number")
+			   conprint("MEXTCHECK TNUMBER %g\n", $4.to_number().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "extvmode")
+			 {
+			  if ($3.to_string().get() == "void")
+			   conprint("MEXTSUPP TVOID %g\n", $4.to_number().get());
+			  else if ($3.to_string().get() == "number")
+			   conprint("MEXTSUPP TNUMBER %g\n", $4.to_number().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
 			 else
 			  yyerror("Invalid check type.");
 
@@ -10648,6 +11374,34 @@ check_command:		CHECK CTYPE TYPE number_expression
 			 {
 			  if ($3.to_string().get() == "boolean")
 			   conprint("VSUPP TBOOLEAN %s\n", $4.to_boolean().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "current_vmode")
+			 {
+			  if ($3.to_string().get() == "boolean")
+			   conprint("MCHECK TBOOLEAN %s\n", $4.to_boolean().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 if ($2.to_string().get() == "vmode")
+			 {
+			  if ($3.to_string().get() == "boolean")
+			   conprint("MSUPP TBOOLEAN %s\n", $4.to_boolean().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "current_extvmode")
+			 {
+			  if ($3.to_string().get() == "boolean")
+			   conprint("MEXTCHECK TBOOLEAN %s\n", $4.to_boolean().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 if ($2.to_string().get() == "extvmode")
+			 {
+			  if ($3.to_string().get() == "boolean")
+			   conprint("MEXTSUPP TBOOLEAN %s\n", $4.to_boolean().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
@@ -10674,6 +11428,34 @@ check_command:		CHECK CTYPE TYPE number_expression
 			  else
 			   yyerror("Invalid type.");
 			 }
+			 else if ($2.to_string().get() == "current_vmode")
+			 {
+			  if ($3.to_string().get() == "character")
+			   conprint("MCHECK TCHARACTER %c\n", $4.to_character().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 if ($2.to_string().get() == "vmode")
+			 {
+			  if ($3.to_string().get() == "character")
+			   conprint("MSUPP TCHARACTER %c\n", $4.to_character().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "current_extvmode")
+			 {
+			  if ($3.to_string().get() == "character")
+			   conprint("MEXTCHECK TCHARACTER %c\n", $4.to_character().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 if ($2.to_string().get() == "extvmode")
+			 {
+			  if ($3.to_string().get() == "character")
+			   conprint("MEXTSUPP TCHARACTER %c\n", $4.to_character().get());
+			  else
+			   yyerror("Invalid type.");
+			 }
 			 else
 			  yyerror("Invalid check type.");
 
@@ -10694,6 +11476,34 @@ check_command:		CHECK CTYPE TYPE number_expression
 			 {
 			  if ($3.to_string().get() == "string")
 			   conprint("VSUPP TSTRING %s\n", $4.to_string().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "current_vmode")
+			 {
+			  if ($3.to_string().get() == "string")
+			   conprint("MCHECK TSTRING %s\n", $4.to_string().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 if ($2.to_string().get() == "vmode")
+			 {
+			  if ($3.to_string().get() == "string")
+			   conprint("MSUPP TSTRING %s\n", $4.to_string().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 else if ($2.to_string().get() == "current_extvmode")
+			 {
+			  if ($3.to_string().get() == "string")
+			   conprint("MEXTCHECK TSTRING %s\n", $4.to_string().get().getString().c_str());
+			  else
+			   yyerror("Invalid type.");
+			 }
+			 if ($2.to_string().get() == "extvmode")
+			 {
+			  if ($3.to_string().get() == "string")
+			   conprint("MEXTSUPP TSTRING %s\n", $4.to_string().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
@@ -11000,6 +11810,71 @@ signature:		FPARAMETER LEFTP vars5 RIGHTP ID LEFTP parameter_declaration5 RIGHTP
 signature2:		FUNCTION LEFTP vars6 RIGHTP ID LEFTP parameter_declaration6 RIGHTP
 			{
 			 $$ = $5;
+			}
+			;
+
+struct_command:		LEFTP STRUCT RIGHTP
+			{
+			 conprint("STRUCTUSING TVOID 0V\n");
+			}
+			| LEFTB STRUCT RIGHTB
+			{
+			 conprint("STRUCTUSINGNAME TVOID 0V\n");
+			}
+			;
+
+union_command:		LEFTP UNION RIGHTP
+			{
+			 conprint("UNIONUSING TVOID 0V\n");
+			}
+			| LEFTB UNION RIGHTB
+			{
+			 conprint("UNIONUSINGNAME TVOID 0V\n");
+			}
+			;
+
+copy_command:		COPY
+			{
+			 conprint("CPY TVOID 0V\n");
+			}
+			;
+
+segment_command:	SEGMENT OPPLUS
+			{
+			 conprint("ADDSEG TVOID 0V\n");
+			}
+			| SEGMENT OPMINUS
+			{
+			 conprint("REMSEG TVOID 0V\n");
+			}
+			| SEGMENT CETYPE number_expression
+			{
+			 if ($2.to_string().get().getString() == "collapse")
+			 {
+			  conprint("COLLSEG TNUMBER %g\n", $3.to_number().get());
+			 }
+			 else if ($2.to_string().get().getString() == "expand")
+			 {
+			  conprint("EXPSEG TNUMBER %g\n", $3.to_number().get());
+			 }
+			 else
+			  yyerror((char *)"Invalid CETYPE.");
+			}
+			| SEGMENT COPY
+			{
+			 conprint("CPYSEG TVOID 0V\n");
+			}
+			| SEGMENT PUSH
+			{
+			 conprint("PUSHSEG TVOID 0V\n");
+			}
+			| SEGMENT POP
+			{
+			 conprint("POPSEG TVOID 0V\n");
+			}
+			| SEGMENT TOP
+			{
+			 conprint("TOPSEG TVOID 0V\n");
 			}
 			;
 

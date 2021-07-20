@@ -1,5 +1,0 @@
-%PBIN%
-
-asm "CALLL" "TSTRING" $"hello_world";
-end 0;
-%%import "library.plib"

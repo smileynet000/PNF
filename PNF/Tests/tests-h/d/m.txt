@@ -1,4 +1,0 @@
-#define "stan." #"a" ## "."
-
-
-I have a little tree in my backyard. I named the tree stan.

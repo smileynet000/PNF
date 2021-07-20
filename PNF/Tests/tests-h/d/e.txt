@@ -1,5 +1,0 @@
-#define "tree" "\\512"
-#define "I" "\98"
-
-
-I have a little tree in my backyard. I named the tree stan.

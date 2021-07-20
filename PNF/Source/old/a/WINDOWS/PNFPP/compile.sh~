@@ -1,0 +1,12 @@
+#!/bin/sh
+
+
+# Clean
+rm -r -f *.cpp
+
+# Compile
+bison -t -opnfasm.tab.cpp pnfasm.ypp
+
+flex -opnfasm.cpp pnfasm.lpp
+
+g++ pnfasm.cpp -opnfasm -lfl -Wno-write-strings

@@ -1,9 +1,0 @@
-println "Defining a t1 range...";
-range rtype1 "a" = "5".."10";
-
-println "Implementing a t1 range...";
-rangev rtype1 "a" "a" = "6";
-
-
-println "Quitting...";
-end 0;
