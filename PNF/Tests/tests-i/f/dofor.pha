@@ -1,0 +1,18 @@
+var a;
+print "How many hellos?: ";
+read number a;
+atoc;
+load aload 0;
+
+dofor
+{
+ pop;
+ println "Hello!";
+} for ({ switch; push; }; { switch; push; >; }; { --; switch; })
+
+switch;
+print "Counter is output: ";
+println;
+
+
+end 0;

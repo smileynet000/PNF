@@ -1,0 +1,77 @@
+' This is a comment...
+
+
+#define "Hello" "Block"
+
+#import "b.txt"
+
+
+Hello World!
+
+#macro "World2"()
+Hello World!
+I am a cat.
+#endm
+
+"World2"()
+
+#macro "World3"("a")
+Hello a
+#endm
+
+"World3"("Post")
+
+
+#ifdef "Hello"
+Kitty cat.
+#endif
+
+
+#undef "Hello"
+
+#ifdef "Hello"
+Kitty cat.
+#endif
+
+Hello World!
+
+
+"World3"("Fence")
+
+' #macro "times"()
+' a * b
+' #endm
+
+' #macro "times2"("a", "b")
+' a * b
+' #endm
+
+' "times"()
+
+' "times"("2", "3")
+
+#ifdef "Turkey"
+Hello World!
+#else
+I am a fiddle.
+#endif
+
+#ifndef "Turkey"
+Hello World!
+#endif
+
+#define "Amy" ""
+
+#ifndef "Amy"
+Hello World!
+#else
+Garbage disposal.
+#endif
+
+_DATE()
+_TIME()
+_LINE()
+_FILE()
+**************************
+Compiled date is: _CDATE()
+Compiled time is: _CTIME()

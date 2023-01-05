@@ -1,0 +1,4 @@
+#define "Frog" "Hello"
+
+
+Frog World!

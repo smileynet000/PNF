@@ -68,7 +68,6 @@ This file is part of pnfasm.
 		       12. Added RUN, JRUN, & PNFRUN instructions.
 		       13. Added struct definitions.
 		       14. Added more struct instructions.
-   		       15. Implemented segment instructions.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -1326,40 +1325,6 @@ IMODE		"MODE"
 
 IEXTMODE	"EXTMODE"
 
-IMCHECK		"MCHECK"
-
-IMSUPP		"MSUPP"
-
-IMEXTCHECK	"MEXTCHECK"
-
-IMEXTSUPP	"MEXTSUPP"
-
-ICPY		"CPY"
-
-IADDSEG		"ADDSEG"
-
-IREMSEG		"REMSEG"
-
-ICOLLSEG	"COLLSEG"
-
-IEXPSEG		"EXPSEG"
-
-ICPYSEG		"CPYSEG"
-
-ISEGLOAD	"SEGLOAD"
-
-ISEGSTORE	"SEGSTORE"
-
-ISEGPUSH	"SEGPUSH"
-
-ISEGPOP		"SEGPOP"
-
-ISEGTOP		"SEGTOP"
-
-ISEGVLOAD	"SEGVLOAD"
-
-ISEGVSTORE	"SEGVSTORE"
-
 
 TVOID		"TVOID"
 
@@ -2014,41 +1979,6 @@ IFNCFIND		yylval = "221"; return IFNCFIND;
 {IMODE}			yylval = "267"; return IMODE;
 
 {IEXTMODE}		yylval = "268"; return IEXTMODE;
-
-{IMCHECK}		yylval = "269"; return IMCHECK;
-
-{IMSUPP}		yylval = "270"; return IMSUPP;
-
-{IMEXTCHECK}		yylval = "271"; return IMEXTCHECK;
-
-{IMEXTSUPP}		yylval = "272"; return IMEXTSUPP;
-
-
-{ICPY}			yylval = "273"; return ICPY;
-
-{IADDSEG}		yylval = "274"; return IADDSEG;
-
-{IREMSEG}		yylval = "275"; return IREMSEG;
-
-{ICOLLSEG}		yylval = "276"; return ICOLLSEG;
-
-{IEXPSEG}		yylval = "277"; return IEXPSEG;
-
-{ICPYSEG}		yylval = "278"; return ICPYSEG;
-
-{ISEGLOAD}		yylval = "279"; return ISEGLOAD;
-
-{ISEGSTORE}		yylval = "280"; return ISEGSTORE;
-
-{ISEGPUSH}		yylval = "281"; return ISEGPUSH;
-
-{ISEGPOP}		yylval = "282"; return ISEGPOP;
-
-{ISEGTOP}		yylval = "283"; return ISEGTOP;
-
-{ISEGVLOAD}		yylval = "284"; return ISEGVLOAD;
-
-{ISEGVSTORE}		yylval = "285"; return ISEGVSTORE;
 
 
 {TVOID}			yylval = yytext; return TVOID;

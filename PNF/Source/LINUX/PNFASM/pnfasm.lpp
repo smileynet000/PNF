@@ -69,6 +69,11 @@ This file is part of pnfasm.
 		       13. Added struct definitions.
 		       14. Added more struct instructions.
    		       15. Implemented segment instructions.
+               16. Implemented message instruction.
+               17. Implemented basic class instructions.
+
+
+2/19/22 Origional a-a-e 1. Implemented CLASSMETHOD instruction.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -1360,6 +1365,94 @@ ISEGVLOAD	"SEGVLOAD"
 
 ISEGVSTORE	"SEGVSTORE"
 
+IMSG        "MSG"
+
+IWHILE      "WHILE"
+
+IWHILEB     "WHILEB"
+
+IWHILEE     "WHILEE"
+
+IWHILEBB    "WHILEBB"
+
+IWHILEBBB   "WHILEBBB"
+
+IWHILEBBE   "WHILEBBE"
+
+IUNTIL      "UNTIL"
+
+IUNTILB     "UNTILB"
+
+IUNTILE     "UNTILE"
+
+IUNTILBB    "UNTILBB"
+
+IUNTILBBB   "UNTILBBB"
+
+IUNTILBBE   "UNTILBBE"
+
+IFOR        "FOR"
+
+IFORINIT    "FORINIT"
+
+IFORCOND    "FORCOND"
+
+IFORINC     "FORINC"
+
+IFORB       "FORB"
+
+IFORE       "FORE"
+
+ICLASS	"CLASS"
+
+ICLASSVAR	"CLASSVAR"
+
+IENDCLASS	"ENDCLASS"
+
+ICLASSNAME	"CLASSNAME"
+
+ICLASSONAME	"CLASSONAME"
+
+ICLASSD		"CLASSD"
+
+ICLASSUSE	"CLASSUSE"
+
+ICLASSUSING	"CLASSUSING"
+
+ICLASSUSINGNAME	"CLASSUSINGNAME"
+
+ICLASSGET	"CLASSGET"
+
+ICLASSPUT	"CLASSPUT"
+
+ICLASSTYPE	"CLASSTYPE"
+
+ICLASSTYPE2	"CLASSTYPE2"
+
+ICLASSNAME2	"CLASSNAME2"
+
+ICLASSNAME3	"CLASSNAME3"
+
+ICLASSMETHOD "CLASSMETHOD"
+
+ICLASSMETHOD2 "CLASSMETHOD2"
+
+ICLASSMETHODCALL "CLASSMETHODCALL"
+
+ICLASSMETHODCPARAMS "CLASSMETHODCPARAMS"
+
+ICLASSMETHODECPARAMS "CLASSMETHODECPARAMS"
+
+ICLASSMETHODECALL "CLASSMETHODECALL"
+
+ICLASSEXTENDACCESS "CLASSEXTENDACCESS"
+
+ICLASSEXTEND        "CLASSEXTEND"
+
+ICLASSIMPLEMENTACCESS   "CLASSIMPLEMENTACCESS"
+
+ICLASSIMPLEMENT         "CLASSIMPLEMENT"
+
 
 TVOID		"TVOID"
 
@@ -2049,6 +2142,94 @@ IFNCFIND		yylval = "221"; return IFNCFIND;
 {ISEGVLOAD}		yylval = "284"; return ISEGVLOAD;
 
 {ISEGVSTORE}		yylval = "285"; return ISEGVSTORE;
+
+{IMSG}          yylval = "286"; return IMSG;
+
+{IWHILE}        yylval = "287"; return IWHILE;
+
+{IWHILEB}        yylval = "288"; return IWHILEB;
+
+{IWHILEE}        yylval = "289"; return IWHILEE;
+
+{IWHILEBB}        yylval = "290"; return IWHILEBB;
+
+{IWHILEBBB}        yylval = "291"; return IWHILEBBB;
+
+{IWHILEBBE}        yylval = "292"; return IWHILEBBE;
+
+{IUNTIL}        yylval = "293"; return IUNTIL;
+
+{IUNTILB}        yylval = "294"; return IUNTILB;
+
+{IUNTILE}        yylval = "295"; return IUNTILE;
+
+{IUNTILBB}        yylval = "296"; return IUNTILBB;
+
+{IUNTILBBB}        yylval = "297"; return IUNTILBBB;
+
+{IUNTILBBE}        yylval = "298"; return IUNTILBBE;
+
+{IFOR}        yylval = "299"; return IFOR;
+
+{IFORINIT}        yylval = "300"; return IFORINIT;
+
+{IFORCOND}        yylval = "301"; return IFORCOND;
+
+{IFORINC}        yylval = "302"; return IFORINC;
+
+{IFORB}        yylval = "303"; return IFORB;
+
+{IFORE}        yylval = "304"; return IFORE;
+
+{ICLASS}		yylval = "305"; return ICLASS;
+
+{ICLASSVAR}		yylval = "306"; return ICLASSVAR;
+
+{IENDCLASS}		yylval = "307"; return IENDCLASS;
+
+{ICLASSNAME}		yylval = "308"; return ICLASSNAME;
+
+{ICLASSONAME}		yylval = "309"; return ICLASSONAME;
+
+{ICLASSD}		yylval = "310"; return ICLASSD;
+
+{ICLASSUSE}		yylval = "311"; return ICLASSUSE;
+
+{ICLASSUSING}		yylval = "312"; return ICLASSUSING;
+
+{ICLASSUSINGNAME}	yylval = "313"; return ICLASSUSINGNAME;
+
+{ICLASSGET}		        yylval = "314"; return ICLASSGET;
+
+{ICLASSPUT}		        yylval = "315"; return ICLASSPUT;
+
+{ICLASSTYPE}		    yylval = "316"; return ICLASSTYPE;
+
+{ICLASSTYPE2}		    yylval = "317"; return ICLASSTYPE2;
+
+{ICLASSNAME2}		    yylval = "318"; return ICLASSNAME2;
+
+{ICLASSNAME3}		    yylval = "319"; return ICLASSNAME3;
+
+{ICLASSMETHOD}		    yylval = "320"; return ICLASSMETHOD;
+
+{ICLASSMETHOD2}		    yylval = "321"; return ICLASSMETHOD2;
+
+{ICLASSMETHODCALL}	    yylval = "322"; return ICLASSMETHODCALL;
+
+{ICLASSMETHODCPARAMS}   yylval = "323"; return ICLASSMETHODCPARAMS;
+
+{ICLASSMETHODECPARAMS}  yylval = "324"; return ICLASSMETHODECPARAMS;
+
+{ICLASSMETHODECALL}	    yylval = "325"; return ICLASSMETHODECALL;
+
+{ICLASSEXTENDACCESS}	yylval = "326"; return ICLASSEXTENDACCESS;
+
+{ICLASSEXTEND}      	yylval = "327"; return ICLASSEXTEND;
+
+{ICLASSIMPLEMENTACCESS}	yylval = "328"; return ICLASSIMPLEMENTACCESS;
+
+{ICLASSIMPLEMENT}   	yylval = "329"; return ICLASSIMPLEMENT;
 
 
 {TVOID}			yylval = yytext; return TVOID;

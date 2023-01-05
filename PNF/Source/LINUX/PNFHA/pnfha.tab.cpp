@@ -1,21 +1,19 @@
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
-/* A Bison parser, made by GNU Bison 2.4.1.  */
+/* Bison implementation for Yacc-like parsers in C
 
-/* Skeleton implementation for Bison's Yacc-like parsers in C
-   
-      Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
-   Free Software Foundation, Inc.
-   
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -28,7 +26,7 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-   
+
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
@@ -46,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.4.1"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -60,15 +58,11 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-/* Using locations.  */
-#define YYLSP_NEEDED 0
 
 
 
 /* Copy the first part of user declarations.  */
-
-/* Line 189 of yacc.c  */
-#line 1 "pnfha.ypp"
+#line 1 "pnfha.ypp" /* yacc.c:339  */
 
 /* Prologue */
 /*
@@ -845,14 +839,15 @@ bool fncdefault = false;
 
 ASTTree tree;
 
+#line 843 "pnfha.tab.cpp" /* yacc.c:339  */
 
-/* Line 189 of yacc.c  */
-#line 851 "pnfha.tab.cpp"
-
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 1
-#endif
+# ifndef YY_NULLPTR
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULLPTR nullptr
+#  else
+#   define YY_NULLPTR 0
+#  endif
+# endif
 
 /* Enabling verbose error messages.  */
 #ifdef YYERROR_VERBOSE
@@ -862,226 +857,230 @@ ASTTree tree;
 # define YYERROR_VERBOSE 1
 #endif
 
-/* Enabling the token table.  */
-#ifndef YYTOKEN_TABLE
-# define YYTOKEN_TABLE 0
+
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 1
+#endif
+#if YYDEBUG
+extern int yydebug;
 #endif
 
-
-/* Tokens.  */
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     OPDEC = 258,
-     OPINC = 259,
-     NEG = 260,
-     OPBTNOT = 261,
-     OPNOT = 262,
-     OPAMP = 263,
-     OPROOT = 264,
-     OPPOWER = 265,
-     OPMODULUS = 266,
-     OPDIV = 267,
-     OPTIMES = 268,
-     OPPLUS = 269,
-     OPMINUS = 270,
-     OPBTSR = 271,
-     OPBTSL = 272,
-     OPCMP = 273,
-     OPGEQU = 274,
-     OPGTR = 275,
-     OPLEQU = 276,
-     OPLSS = 277,
-     OPNEQU = 278,
-     OPEQU = 279,
-     OPBTOR = 280,
-     OPBTXOR = 281,
-     OPAND = 282,
-     OPOR = 283,
-     OPEQUAL = 284,
-     LEFTP = 285,
-     RIGHTP = 286,
-     LEFTB = 287,
-     RIGHTB = 288,
-     VOIDV = 289,
-     BOOLEANV = 290,
-     NUMBERV = 291,
-     CHARACTERV = 292,
-     STRINGV = 293,
-     SEND = 294,
-     COMMA = 295,
-     OPQUES = 296,
-     OPCOLON = 297,
-     OPSUB = 298,
-     OPSTR = 299,
-     OPSTRTIMES = 300,
-     OPRUN = 301,
-     ID = 302,
-     VAR = 303,
-     PRINT = 304,
-     PRINTLN = 305,
-     EPRINT = 306,
-     EPRINTLN = 307,
-     END = 308,
-     ASM = 309,
-     TYPE = 310,
-     READ = 311,
-     LOAD = 312,
-     LTYPE = 313,
-     GOTO = 314,
-     GTYPE = 315,
-     ST = 316,
-     PUSH = 317,
-     POP = 318,
-     TOP = 319,
-     TYPEOF = 320,
-     RTYPE = 321,
-     ATOC = 322,
-     SWITCH = 323,
-     CSWITCH = 324,
-     CRASH = 325,
-     VERSION = 326,
-     VTYPE = 327,
-     HALT = 328,
-     MODT = 329,
-     RETURN = 330,
-     GOSUB = 331,
-     SUB = 332,
-     EVENT = 333,
-     STYPE = 334,
-     ATYPE = 335,
-     CTYPE = 336,
-     CMTYPE = 337,
-     BFMODEC = 338,
-     FMODEC = 339,
-     UNREGISTER = 340,
-     REGISTER = 341,
-     REREGISTER = 342,
-     STORE = 343,
-     IF = 344,
-     ELSE = 345,
-     CASE = 346,
-     CCASE = 347,
-     DEFAULT = 348,
-     CDEFAULT = 349,
-     BREAK = 350,
-     LABEL = 351,
-     WHILE = 352,
-     ADDRESSOF = 353,
-     ADD2V = 354,
-     STOREA = 355,
-     DOWHILE = 356,
-     DOFOR = 357,
-     FOR = 358,
-     FVAR = 359,
-     FOREVER = 360,
-     CONTINUE = 361,
-     CHECK = 362,
-     HCMNT = 363,
-     FMODE = 364,
-     FOPEN = 365,
-     FCLOSE = 366,
-     FEOF = 367,
-     FPRINT = 368,
-     FPRINTLN = 369,
-     FREAD = 370,
-     MEML = 371,
-     ENUM = 372,
-     ENUMV = 373,
-     VTYPE2 = 374,
-     RANGE = 375,
-     RTYPE2 = 376,
-     OPDOT = 377,
-     RANGEV = 378,
-     OPLSQ = 379,
-     OPRSQ = 380,
-     ARRAY = 381,
-     BLANK = 382,
-     PNFASM = 383,
-     LENGTH = 384,
-     DUP = 385,
-     THEN = 386,
-     ENDIF = 387,
-     DONEIF = 388,
-     ATOSP = 389,
-     SPTOA = 390,
-     FUNCTION = 391,
-     FUNCDEF = 392,
-     FUNCCALL = 393,
-     FRET = 394,
-     FPARAMETER = 395,
-     DEFAULTV = 396,
-     DEFAULTV2 = 397,
-     UNTIL = 398,
-     UNLESS = 399,
-     DOUNTIL = 400,
-     RUNOPOP = 401,
-     STRUCT = 402,
-     STRUCTVAR = 403,
-     UNION = 404,
-     UNIONVAR = 405,
-     USE = 406,
-     OTYPE = 407,
-     MODE = 408,
-     EXTMODE = 409,
-     COPY = 410,
-     SEGMENT = 411,
-     CETYPE = 412,
-     PBIN = 413,
-     PPBIN = 414,
-     PLIB = 415,
-     PINCLUDE = 416,
-     PIMPORT = 417,
-     PDEFINE = 418,
-     PMACRO = 419,
-     PENDM = 420,
-     PUNDEF = 421,
-     PIFDEF = 422,
-     PIFNDEF = 423,
-     PELSE = 424,
-     PENDIF = 425,
-     PPDATE = 426,
-     PPTIME = 427,
-     PPLINE = 428,
-     PPFILE = 429,
-     PPCDATE = 430,
-     PPCTIME = 431,
-     PPINCLUDE = 432,
-     PPIMPORT = 433,
-     PPDEFINE = 434,
-     PPMACRO = 435,
-     PPENDM = 436,
-     PPUNDEF = 437,
-     PPIFDEF = 438,
-     PPIFNDEF = 439,
-     PPELSE = 440,
-     PPENDIF = 441,
-     PPPDATE = 442,
-     PPPTIME = 443,
-     PPPLINE = 444,
-     PPPFILE = 445,
-     PPPCDATE = 446,
-     PPPCTIME = 447
-   };
+  enum yytokentype
+  {
+    OPINC = 258,
+    OPDEC = 259,
+    NEG = 260,
+    OPNOT = 261,
+    OPBTNOT = 262,
+    OPAMP = 263,
+    OPPOWER = 264,
+    OPROOT = 265,
+    OPTIMES = 266,
+    OPDIV = 267,
+    OPMODULUS = 268,
+    OPMINUS = 269,
+    OPPLUS = 270,
+    OPBTSL = 271,
+    OPBTSR = 272,
+    OPLSS = 273,
+    OPLEQU = 274,
+    OPGTR = 275,
+    OPGEQU = 276,
+    OPCMP = 277,
+    OPEQU = 278,
+    OPNEQU = 279,
+    OPBTXOR = 280,
+    OPBTOR = 281,
+    OPAND = 282,
+    OPOR = 283,
+    OPEQUAL = 284,
+    LEFTP = 285,
+    RIGHTP = 286,
+    LEFTB = 287,
+    RIGHTB = 288,
+    VOIDV = 289,
+    BOOLEANV = 290,
+    NUMBERV = 291,
+    CHARACTERV = 292,
+    STRINGV = 293,
+    SEND = 294,
+    COMMA = 295,
+    OPQUES = 296,
+    OPCOLON = 297,
+    OPSUB = 298,
+    OPSTR = 299,
+    OPSTRTIMES = 300,
+    OPRUN = 301,
+    ID = 302,
+    VAR = 303,
+    PRINT = 304,
+    PRINTLN = 305,
+    EPRINT = 306,
+    EPRINTLN = 307,
+    END = 308,
+    ASM = 309,
+    TYPE = 310,
+    READ = 311,
+    LOAD = 312,
+    LTYPE = 313,
+    GOTO = 314,
+    GTYPE = 315,
+    ST = 316,
+    PUSH = 317,
+    POP = 318,
+    TOP = 319,
+    TYPEOF = 320,
+    RTYPE = 321,
+    ATOC = 322,
+    SWITCH = 323,
+    CSWITCH = 324,
+    CRASH = 325,
+    VERSION = 326,
+    VTYPE = 327,
+    HALT = 328,
+    MODT = 329,
+    RETURN = 330,
+    GOSUB = 331,
+    SUB = 332,
+    EVENT = 333,
+    STYPE = 334,
+    ATYPE = 335,
+    CTYPE = 336,
+    CMTYPE = 337,
+    BFMODEC = 338,
+    FMODEC = 339,
+    UNREGISTER = 340,
+    REGISTER = 341,
+    REREGISTER = 342,
+    STORE = 343,
+    IF = 344,
+    ELSE = 345,
+    CASE = 346,
+    CCASE = 347,
+    DEFAULT = 348,
+    CDEFAULT = 349,
+    BREAK = 350,
+    LABEL = 351,
+    WHILE = 352,
+    ADDRESSOF = 353,
+    ADD2V = 354,
+    STOREA = 355,
+    DOWHILE = 356,
+    DOFOR = 357,
+    FOR = 358,
+    FVAR = 359,
+    FOREVER = 360,
+    CONTINUE = 361,
+    CHECK = 362,
+    HCMNT = 363,
+    FMODE = 364,
+    FOPEN = 365,
+    FCLOSE = 366,
+    FEOF = 367,
+    FPRINT = 368,
+    FPRINTLN = 369,
+    FREAD = 370,
+    MEML = 371,
+    ENUM = 372,
+    ENUMV = 373,
+    VTYPE2 = 374,
+    RANGE = 375,
+    RTYPE2 = 376,
+    OPDOT = 377,
+    RANGEV = 378,
+    OPLSQ = 379,
+    OPRSQ = 380,
+    ARRAY = 381,
+    BLANK = 382,
+    PNFASM = 383,
+    LENGTH = 384,
+    DUP = 385,
+    THEN = 386,
+    ENDIF = 387,
+    DONEIF = 388,
+    ATOSP = 389,
+    SPTOA = 390,
+    FUNCTION = 391,
+    FUNCDEF = 392,
+    FUNCCALL = 393,
+    FRET = 394,
+    FPARAMETER = 395,
+    DEFAULTV = 396,
+    DEFAULTV2 = 397,
+    UNTIL = 398,
+    UNLESS = 399,
+    DOUNTIL = 400,
+    RUNOPOP = 401,
+    STRUCT = 402,
+    STRUCTVAR = 403,
+    UNION = 404,
+    UNIONVAR = 405,
+    USE = 406,
+    OTYPE = 407,
+    MODE = 408,
+    EXTMODE = 409,
+    COPY = 410,
+    SEGMENT = 411,
+    CETYPE = 412,
+    PBIN = 413,
+    PPBIN = 414,
+    PLIB = 415,
+    PINCLUDE = 416,
+    PIMPORT = 417,
+    PDEFINE = 418,
+    PMACRO = 419,
+    PENDM = 420,
+    PUNDEF = 421,
+    PIFDEF = 422,
+    PIFNDEF = 423,
+    PELSE = 424,
+    PENDIF = 425,
+    PPDATE = 426,
+    PPTIME = 427,
+    PPLINE = 428,
+    PPFILE = 429,
+    PPCDATE = 430,
+    PPCTIME = 431,
+    PPINCLUDE = 432,
+    PPIMPORT = 433,
+    PPDEFINE = 434,
+    PPMACRO = 435,
+    PPENDM = 436,
+    PPUNDEF = 437,
+    PPIFDEF = 438,
+    PPIFNDEF = 439,
+    PPELSE = 440,
+    PPENDIF = 441,
+    PPPDATE = 442,
+    PPPTIME = 443,
+    PPPLINE = 444,
+    PPPFILE = 445,
+    PPPCDATE = 446,
+    PPPCTIME = 447
+  };
 #endif
 
-
-
+/* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
 
+extern YYSTYPE yylval;
+
+int yyparse (void);
+
+
+
 /* Copy the second part of user declarations.  */
 
-
-/* Line 264 of yacc.c  */
-#line 1085 "pnfha.tab.cpp"
+#line 1084 "pnfha.tab.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -1095,11 +1094,8 @@ typedef unsigned char yytype_uint8;
 
 #ifdef YYTYPE_INT8
 typedef YYTYPE_INT8 yytype_int8;
-#elif (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-typedef signed char yytype_int8;
 #else
-typedef short int yytype_int8;
+typedef signed char yytype_int8;
 #endif
 
 #ifdef YYTYPE_UINT16
@@ -1119,8 +1115,7 @@ typedef short int yytype_int16;
 #  define YYSIZE_T __SIZE_TYPE__
 # elif defined size_t
 #  define YYSIZE_T size_t
-# elif ! defined YYSIZE_T && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+# elif ! defined YYSIZE_T
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
@@ -1131,41 +1126,70 @@ typedef short int yytype_int16;
 #define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
 #ifndef YY_
-# if YYENABLE_NLS
+# if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
-#   define YY_(msgid) dgettext ("bison-runtime", msgid)
+#   define YY_(Msgid) dgettext ("bison-runtime", Msgid)
 #  endif
 # endif
 # ifndef YY_
-#  define YY_(msgid) msgid
+#  define YY_(Msgid) Msgid
+# endif
+#endif
+
+#ifndef YY_ATTRIBUTE
+# if (defined __GNUC__                                               \
+      && (2 < __GNUC__ || (__GNUC__ == 2 && 96 <= __GNUC_MINOR__)))  \
+     || defined __SUNPRO_C && 0x5110 <= __SUNPRO_C
+#  define YY_ATTRIBUTE(Spec) __attribute__(Spec)
+# else
+#  define YY_ATTRIBUTE(Spec) /* empty */
+# endif
+#endif
+
+#ifndef YY_ATTRIBUTE_PURE
+# define YY_ATTRIBUTE_PURE   YY_ATTRIBUTE ((__pure__))
+#endif
+
+#ifndef YY_ATTRIBUTE_UNUSED
+# define YY_ATTRIBUTE_UNUSED YY_ATTRIBUTE ((__unused__))
+#endif
+
+#if !defined _Noreturn \
+     && (!defined __STDC_VERSION__ || __STDC_VERSION__ < 201112)
+# if defined _MSC_VER && 1200 <= _MSC_VER
+#  define _Noreturn __declspec (noreturn)
+# else
+#  define _Noreturn YY_ATTRIBUTE ((__noreturn__))
 # endif
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
 #if ! defined lint || defined __GNUC__
-# define YYUSE(e) ((void) (e))
+# define YYUSE(E) ((void) (E))
 #else
-# define YYUSE(e) /* empty */
+# define YYUSE(E) /* empty */
 #endif
 
-/* Identity function, used to suppress warnings about constant conditions.  */
-#ifndef lint
-# define YYID(n) (n)
+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+/* Suppress an incorrect diagnostic about yylval being uninitialized.  */
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
+    _Pragma ("GCC diagnostic push") \
+    _Pragma ("GCC diagnostic ignored \"-Wuninitialized\"")\
+    _Pragma ("GCC diagnostic ignored \"-Wmaybe-uninitialized\"")
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END \
+    _Pragma ("GCC diagnostic pop")
 #else
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static int
-YYID (int yyi)
-#else
-static int
-YYID (yyi)
-    int yyi;
+# define YY_INITIAL_VALUE(Value) Value
 #endif
-{
-  return yyi;
-}
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
 #endif
+#ifndef YY_INITIAL_VALUE
+# define YY_INITIAL_VALUE(Value) /* Nothing. */
+#endif
+
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
 
@@ -1184,11 +1208,11 @@ YYID (yyi)
 #    define alloca _alloca
 #   else
 #    define YYSTACK_ALLOC alloca
-#    if ! defined _ALLOCA_H && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#    if ! defined _ALLOCA_H && ! defined EXIT_SUCCESS
 #     include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#     ifndef _STDLIB_H
-#      define _STDLIB_H 1
+      /* Use EXIT_SUCCESS as a witness for stdlib.h.  */
+#     ifndef EXIT_SUCCESS
+#      define EXIT_SUCCESS 0
 #     endif
 #    endif
 #   endif
@@ -1196,8 +1220,8 @@ YYID (yyi)
 # endif
 
 # ifdef YYSTACK_ALLOC
-   /* Pacify GCC's `empty if-body' warning.  */
-#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (YYID (0))
+   /* Pacify GCC's 'empty if-body' warning.  */
+#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (0)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
     /* The OS might guarantee only one guard page at the bottom of the stack,
        and a page size can be as small as 4096 bytes.  So we cannot safely
@@ -1211,25 +1235,23 @@ YYID (yyi)
 #  ifndef YYSTACK_ALLOC_MAXIMUM
 #   define YYSTACK_ALLOC_MAXIMUM YYSIZE_MAXIMUM
 #  endif
-#  if (defined __cplusplus && ! defined _STDLIB_H \
+#  if (defined __cplusplus && ! defined EXIT_SUCCESS \
        && ! ((defined YYMALLOC || defined malloc) \
-	     && (defined YYFREE || defined free)))
+             && (defined YYFREE || defined free)))
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#   ifndef _STDLIB_H
-#    define _STDLIB_H 1
+#   ifndef EXIT_SUCCESS
+#    define EXIT_SUCCESS 0
 #   endif
 #  endif
 #  ifndef YYMALLOC
 #   define YYMALLOC malloc
-#   if ! defined malloc && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined malloc && ! defined EXIT_SUCCESS
 void *malloc (YYSIZE_T); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
 #  ifndef YYFREE
 #   define YYFREE free
-#   if ! defined free && ! defined _STDLIB_H && (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+#   if ! defined free && ! defined EXIT_SUCCESS
 void free (void *); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
@@ -1239,7 +1261,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+         || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -1257,46 +1279,50 @@ union yyalloc
      ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
       + YYSTACK_GAP_MAXIMUM)
 
-/* Copy COUNT objects from FROM to TO.  The source and destination do
-   not overlap.  */
-# ifndef YYCOPY
-#  if defined __GNUC__ && 1 < __GNUC__
-#   define YYCOPY(To, From, Count) \
-      __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
-#  else
-#   define YYCOPY(To, From, Count)		\
-      do					\
-	{					\
-	  YYSIZE_T yyi;				\
-	  for (yyi = 0; yyi < (Count); yyi++)	\
-	    (To)[yyi] = (From)[yyi];		\
-	}					\
-      while (YYID (0))
-#  endif
-# endif
+# define YYCOPY_NEEDED 1
 
 /* Relocate STACK from its old location to the new one.  The
    local variables YYSIZE and YYSTACKSIZE give the old and new number of
    elements in the stack, and YYPTR gives the new location of the
    stack.  Advance YYPTR to a properly aligned location for the next
    stack.  */
-# define YYSTACK_RELOCATE(Stack_alloc, Stack)				\
-    do									\
-      {									\
-	YYSIZE_T yynewbytes;						\
-	YYCOPY (&yyptr->Stack_alloc, Stack, yysize);			\
-	Stack = &yyptr->Stack_alloc;					\
-	yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
-	yyptr += yynewbytes / sizeof (*yyptr);				\
-      }									\
-    while (YYID (0))
+# define YYSTACK_RELOCATE(Stack_alloc, Stack)                           \
+    do                                                                  \
+      {                                                                 \
+        YYSIZE_T yynewbytes;                                            \
+        YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
+        Stack = &yyptr->Stack_alloc;                                    \
+        yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
+        yyptr += yynewbytes / sizeof (*yyptr);                          \
+      }                                                                 \
+    while (0)
 
 #endif
+
+#if defined YYCOPY_NEEDED && YYCOPY_NEEDED
+/* Copy COUNT objects from SRC to DST.  The source and destination do
+   not overlap.  */
+# ifndef YYCOPY
+#  if defined __GNUC__ && 1 < __GNUC__
+#   define YYCOPY(Dst, Src, Count) \
+      __builtin_memcpy (Dst, Src, (Count) * sizeof (*(Src)))
+#  else
+#   define YYCOPY(Dst, Src, Count)              \
+      do                                        \
+        {                                       \
+          YYSIZE_T yyi;                         \
+          for (yyi = 0; yyi < (Count); yyi++)   \
+            (Dst)[yyi] = (Src)[yyi];            \
+        }                                       \
+      while (0)
+#  endif
+# endif
+#endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   1916
+#define YYLAST   1905
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  196
@@ -1304,17 +1330,19 @@ union yyalloc
 #define YYNNTS  214
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  607
-/* YYNRULES -- Number of states.  */
+/* YYNSTATES -- Number of states.  */
 #define YYNSTATES  1096
 
-/* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
+/* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
+   by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   450
 
-#define YYTRANSLATE(YYX)						\
+#define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
-/* YYTRANSLATE[YYLEX] -- Bison symbol number corresponding to YYLEX.  */
+/* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
+   as returned by yylex, without out-of-bounds checking.  */
 static const yytype_uint8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -1366,275 +1394,7 @@ static const yytype_uint8 yytranslate[] =
 };
 
 #if YYDEBUG
-/* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
-   YYRHS.  */
-static const yytype_uint16 yyprhs[] =
-{
-       0,     0,     3,     4,     7,     8,    11,    13,    15,    16,
-      19,    23,    25,    27,    29,    31,    33,    35,    37,    39,
-      41,    44,    47,    50,    53,    57,    61,    63,    65,    67,
-      69,    70,    71,    72,    73,    74,    89,    90,    91,    92,
-      93,    94,   109,   110,   111,   116,   118,   119,   120,   121,
-     122,   135,   136,   137,   138,   150,   151,   154,   157,   158,
-     164,   165,   166,   171,   172,   175,   178,   179,   180,   187,
-     188,   189,   194,   195,   198,   199,   203,   205,   207,   209,
-     210,   213,   214,   215,   216,   225,   226,   227,   228,   229,
-     230,   242,   243,   244,   245,   254,   255,   256,   257,   258,
-     259,   271,   272,   273,   274,   275,   276,   291,   292,   293,
-     294,   295,   296,   297,   314,   315,   319,   323,   325,   328,
-     330,   332,   334,   336,   338,   340,   342,   344,   346,   348,
-     352,   354,   357,   361,   365,   369,   371,   375,   379,   383,
-     387,   391,   394,   398,   402,   405,   408,   411,   414,   418,
-     422,   426,   429,   433,   437,   441,   443,   447,   451,   455,
-     459,   463,   467,   471,   474,   477,   480,   483,   487,   489,
-     493,   496,   500,   502,   505,   508,   512,   516,   520,   524,
-     528,   532,   536,   539,   543,   547,   550,   553,   556,   559,
-     563,   567,   571,   575,   579,   583,   584,   589,   593,   597,
-     601,   605,   609,   613,   617,   621,   625,   629,   633,   637,
-     641,   645,   649,   653,   657,   661,   665,   669,   673,   677,
-     681,   685,   689,   693,   697,   701,   705,   709,   713,   717,
-     721,   725,   729,   733,   737,   741,   745,   749,   753,   757,
-     761,   765,   769,   773,   777,   781,   785,   789,   792,   796,
-     800,   804,   808,   812,   816,   818,   822,   823,   824,   825,
-     826,   827,   828,   846,   848,   850,   852,   856,   860,   866,
-     868,   870,   872,   874,   876,   878,   880,   882,   884,   886,
-     888,   891,   896,   899,   901,   903,   905,   911,   918,   923,
-     929,   930,   931,   940,   942,   946,   955,   956,   961,   965,
-     967,   970,   971,   976,   980,   988,   989,   994,   998,  1000,
-    1003,  1004,  1009,  1013,  1021,  1024,  1027,  1030,  1032,  1034,
-    1035,  1046,  1047,  1049,  1056,  1058,  1066,  1068,  1075,  1077,
-    1084,  1089,  1091,  1097,  1099,  1100,  1102,  1107,  1108,  1110,
-    1115,  1117,  1122,  1124,  1125,  1126,  1140,  1144,  1146,  1150,
-    1156,  1158,  1162,  1168,  1170,  1174,  1180,  1182,  1186,  1192,
-    1194,  1198,  1204,  1206,  1208,  1210,  1212,  1214,  1216,  1218,
-    1220,  1222,  1224,  1226,  1228,  1230,  1232,  1234,  1236,  1238,
-    1240,  1242,  1244,  1246,  1248,  1250,  1252,  1254,  1256,  1258,
-    1260,  1262,  1264,  1266,  1268,  1270,  1272,  1274,  1276,  1279,
-    1282,  1284,  1287,  1290,  1292,  1295,  1297,  1300,  1302,  1305,
-    1307,  1310,  1314,  1318,  1322,  1325,  1330,  1335,  1340,  1343,
-    1347,  1351,  1355,  1359,  1364,  1368,  1372,  1377,  1385,  1392,
-    1398,  1399,  1408,  1409,  1418,  1419,  1428,  1429,  1438,  1442,
-    1446,  1450,  1456,  1460,  1464,  1466,  1469,  1472,  1475,  1477,
-    1480,  1482,  1485,  1487,  1490,  1492,  1495,  1497,  1500,  1502,
-    1505,  1507,  1509,  1511,  1513,  1515,  1517,  1519,  1521,  1523,
-    1525,  1527,  1530,  1533,  1536,  1539,  1542,  1545,  1548,  1551,
-    1554,  1557,  1560,  1563,  1566,  1569,  1571,  1573,  1575,  1577,
-    1579,  1581,  1583,  1585,  1587,  1591,  1592,  1593,  1594,  1595,
-    1605,  1607,  1609,  1611,  1614,  1616,  1618,  1620,  1622,  1625,
-    1629,  1632,  1635,  1637,  1640,  1642,  1645,  1649,  1652,  1656,
-    1661,  1666,  1671,  1674,  1678,  1681,  1685,  1690,  1697,  1703,
-    1705,  1708,  1712,  1714,  1716,  1721,  1726,  1731,  1736,  1740,
-    1744,  1748,  1752,  1755,  1757,  1759,  1764,  1769,  1772,  1774,
-    1776,  1778,  1779,  1785,  1786,  1793,  1802,  1811,  1815,  1819,
-    1823,  1827,  1829,  1832,  1835,  1839,  1842,  1845,  1848,  1851,
-    1853,  1855,  1857,  1860,  1865,  1868,  1873,  1877,  1880,  1882,
-    1885,  1888,  1891,  1893,  1895,  1897,  1899,  1901,  1903,  1905,
-    1907,  1910,  1915,  1918,  1923,  1927,  1930,  1932,  1935,  1938,
-    1941,  1943,  1945,  1947,  1949,  1951,  1953,  1955
-};
-
-/* YYRHS -- A `-1'-separated list of the rules' RHS.  */
-static const yytype_int16 yyrhs[] =
-{
-     197,     0,    -1,    -1,   197,   198,    -1,    -1,   199,   193,
-      -1,   200,    -1,     1,    -1,    -1,   201,   202,    -1,   200,
-      40,   202,    -1,   207,    -1,    39,    -1,   203,    -1,   204,
-      -1,   206,    -1,   205,    -1,   283,    -1,   408,    -1,   409,
-      -1,   285,    39,    -1,   307,    39,    -1,   357,    39,    -1,
-      47,    42,    -1,    77,    47,    42,    -1,    78,    47,    42,
-      -1,   208,    -1,   214,    -1,   223,    -1,   244,    -1,    -1,
-      -1,    -1,    -1,    -1,    89,    30,   202,    31,   209,   131,
-     210,   202,   211,   132,   212,   220,   213,   222,    -1,    -1,
-      -1,    -1,    -1,    -1,   144,    30,   202,    31,   215,   131,
-     216,   202,   217,   132,   218,   220,   219,   222,    -1,    -1,
-      -1,    90,   221,   202,   132,    -1,   133,    -1,    -1,    -1,
-      -1,    -1,    68,    30,   285,    31,    32,   224,   231,   225,
-     235,   226,   227,    33,    -1,    -1,    -1,    -1,    69,    30,
-     202,    31,   228,    32,   237,   229,   242,   230,    33,    -1,
-      -1,   232,   233,    -1,   231,   233,    -1,    -1,    91,   285,
-     234,    42,   202,    -1,    -1,    -1,    93,    42,   236,   202,
-      -1,    -1,   238,   239,    -1,   237,   239,    -1,    -1,    -1,
-      92,   285,   240,    42,   241,   202,    -1,    -1,    -1,    94,
-      42,   243,   202,    -1,    -1,   245,   248,    -1,    -1,   252,
-     246,   258,    -1,   262,    -1,   268,    -1,   274,    -1,    -1,
-     281,   247,    -1,    -1,    -1,    -1,    97,    30,   249,   202,
-     250,    31,   251,   202,    -1,    -1,    -1,    -1,    -1,    -1,
-     253,   101,   254,   202,    97,   255,    30,   256,   202,   257,
-      31,    -1,    -1,    -1,    -1,   143,    30,   259,   202,   260,
-      31,   261,   202,    -1,    -1,    -1,    -1,    -1,    -1,   263,
-     145,   264,   202,   143,   265,    30,   266,   202,   267,    31,
-      -1,    -1,    -1,    -1,    -1,    -1,   269,   103,    30,   270,
-     202,    39,   271,   202,    39,   272,   202,   273,    31,   202,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,   102,   275,   202,
-     276,   103,    30,   277,   202,    39,   278,   202,    39,   279,
-     202,   280,    31,    -1,    -1,   105,   282,   202,    -1,    32,
-     284,    33,    -1,   200,    -1,   200,   284,    -1,   286,    -1,
-     287,    -1,   288,    -1,   289,    -1,   290,    -1,   291,    -1,
-     292,    -1,   294,    -1,   295,    -1,    34,    -1,    30,   286,
-      31,    -1,    35,    -1,     7,   287,    -1,   287,    27,   287,
-      -1,   287,    28,   287,    -1,    30,   287,    31,    -1,    36,
-      -1,   288,    14,   288,    -1,   288,    15,   288,    -1,   288,
-      13,   288,    -1,   288,    12,   288,    -1,   288,    11,   288,
-      -1,    15,   288,    -1,   288,    10,   288,    -1,   288,     9,
-     288,    -1,     4,   288,    -1,   288,     4,    -1,     3,   288,
-      -1,   288,     3,    -1,   288,     8,   288,    -1,   288,    25,
-     288,    -1,   288,    26,   288,    -1,     6,   288,    -1,   288,
-      17,   288,    -1,   288,    16,   288,    -1,    30,   288,    31,
-      -1,    37,    -1,   289,    14,   289,    -1,   289,    15,   289,
-      -1,   289,    13,   289,    -1,   289,    12,   289,    -1,   289,
-      11,   289,    -1,   289,    10,   289,    -1,   289,     9,   289,
-      -1,     4,   289,    -1,   289,     4,    -1,     3,   289,    -1,
-     289,     3,    -1,    30,   289,    31,    -1,    38,    -1,   290,
-      14,   290,    -1,    44,   290,    -1,    30,   290,    31,    -1,
-      47,    -1,     8,   291,    -1,     7,   291,    -1,   291,    27,
-     291,    -1,   291,    28,   291,    -1,   291,    14,   291,    -1,
-     291,    15,   291,    -1,   291,    13,   291,    -1,   291,    12,
-     291,    -1,   291,    11,   291,    -1,    15,   291,    -1,   291,
-      10,   291,    -1,   291,     9,   291,    -1,     4,   291,    -1,
-     291,     4,    -1,     3,   291,    -1,   291,     3,    -1,    30,
-     291,    31,    -1,   288,    24,   288,    -1,   288,    23,   288,
-      -1,   288,    22,   288,    -1,   288,    20,   288,    -1,   288,
-      21,   288,    -1,    -1,   288,    19,   288,   293,    -1,   288,
-      18,   288,    -1,    30,   294,    31,    -1,    47,    27,   287,
-      -1,   287,    27,    47,    -1,    47,    28,   287,    -1,   287,
-      28,    47,    -1,    47,    14,   288,    -1,    47,    15,   288,
-      -1,    47,    13,   288,    -1,    47,    12,   288,    -1,    47,
-      10,   288,    -1,    47,     9,   288,    -1,   288,    14,    47,
-      -1,   288,    15,    47,    -1,   288,    13,    47,    -1,   288,
-      12,    47,    -1,   288,    10,    47,    -1,   288,     9,    47,
-      -1,    47,    14,   289,    -1,    47,    15,   289,    -1,    47,
-      13,   289,    -1,    47,    12,   289,    -1,    47,    10,   289,
-      -1,    47,     9,   289,    -1,   289,    14,    47,    -1,   289,
-      15,    47,    -1,   289,    13,    47,    -1,   289,    12,    47,
-      -1,   289,    10,    47,    -1,   289,     9,    47,    -1,    47,
-      14,   290,    -1,   290,    14,    47,    -1,   288,    24,    47,
-      -1,   288,    23,    47,    -1,   288,    22,    47,    -1,   288,
-      20,    47,    -1,   288,    21,    47,    -1,   288,    19,    47,
-      -1,    47,    24,   288,    -1,    47,    23,   288,    -1,    47,
-      22,   288,    -1,    47,    20,   288,    -1,    47,    21,   288,
-      -1,    47,    19,   288,    -1,    47,     8,   288,    -1,    47,
-      25,   288,    -1,    47,    26,   288,    -1,   288,     8,    47,
-      -1,   288,    25,    47,    -1,   288,    26,    47,    -1,     6,
-      47,    -1,    47,    17,   288,    -1,    47,    16,   288,    -1,
-     288,    17,    47,    -1,   288,    16,    47,    -1,   288,    18,
-      47,    -1,    47,    18,   288,    -1,   296,    -1,    30,   295,
-      31,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   138,    42,
-      36,   297,    30,   354,    31,    47,   298,    30,   299,   303,
-     300,   301,    31,   302,   336,    -1,   304,    -1,   305,    -1,
-     306,    -1,   305,    40,   306,    -1,   142,    42,    55,    -1,
-     305,    40,   142,    42,    55,    -1,   285,    -1,   308,    -1,
-     333,    -1,   312,    -1,   316,    -1,   317,    -1,   323,    -1,
-     324,    -1,   325,    -1,   331,    -1,   332,    -1,    48,    47,
-      -1,    48,    47,    29,   285,    -1,   104,    47,    -1,   309,
-      -1,   310,    -1,   311,    -1,   118,    38,    38,    29,    38,
-      -1,   123,   121,    38,    38,    29,    38,    -1,   123,   121,
-      38,    38,    -1,   126,    38,   124,   288,   125,    -1,    -1,
-      -1,   117,    47,    29,    32,   313,   315,   314,    33,    -1,
-      38,    -1,   315,    40,    38,    -1,   120,   121,    38,    29,
-      38,   122,   122,    38,    -1,    -1,   147,    47,   318,   319,
-      -1,    32,   320,    33,    -1,   321,    -1,   320,   321,    -1,
-      -1,   148,    47,   322,    39,    -1,   147,    47,    47,    -1,
-     147,    47,    47,   122,    47,    29,   285,    -1,    -1,   149,
-      47,   326,   327,    -1,    32,   328,    33,    -1,   329,    -1,
-     328,   329,    -1,    -1,   150,    47,   330,    39,    -1,   149,
-      47,    47,    -1,   149,    47,    47,   122,    47,    29,   285,
-      -1,    77,    47,    -1,    78,    47,    -1,    96,    47,    -1,
-     334,    -1,   348,    -1,    -1,   137,    30,   352,    31,    47,
-      30,   337,    31,   335,   336,    -1,    -1,   341,    -1,   337,
-      40,    48,    47,    42,    55,    -1,   342,    -1,   338,    40,
-      48,    47,    42,    55,   343,    -1,   346,    -1,   339,    40,
-      48,    47,    42,    55,    -1,   347,    -1,   340,    40,    48,
-      47,    42,    55,    -1,    48,    47,    42,    55,    -1,    34,
-      -1,    48,    47,    42,    55,   343,    -1,    34,    -1,    -1,
-     344,    -1,    29,   285,    42,    36,    -1,    -1,   141,    -1,
-      48,    47,    42,    55,    -1,    34,    -1,    48,    47,    42,
-      55,    -1,    34,    -1,    -1,    -1,   136,   345,    30,   353,
-      31,    47,    30,   338,    31,   349,   351,   350,   336,    -1,
-      32,   284,    33,    -1,    34,    -1,    48,    42,    55,    -1,
-     352,    40,    48,    42,    55,    -1,    34,    -1,    48,    42,
-      55,    -1,   353,    40,    48,    42,    55,    -1,    34,    -1,
-      48,    42,    55,    -1,   354,    40,    48,    42,    55,    -1,
-      34,    -1,    48,    42,    55,    -1,   355,    40,    48,    42,
-      55,    -1,    34,    -1,    48,    42,    55,    -1,   356,    40,
-      48,    42,    55,    -1,   358,    -1,   359,    -1,   360,    -1,
-     361,    -1,   362,    -1,   367,    -1,   368,    -1,   374,    -1,
-     375,    -1,   376,    -1,   377,    -1,   378,    -1,   379,    -1,
-     380,    -1,   381,    -1,   382,    -1,   383,    -1,   384,    -1,
-     385,    -1,   386,    -1,   387,    -1,   388,    -1,   389,    -1,
-     390,    -1,   391,    -1,   392,    -1,   393,    -1,   394,    -1,
-     395,    -1,   396,    -1,   397,    -1,   404,    -1,   405,    -1,
-     406,    -1,   407,    -1,    49,    -1,    49,   285,    -1,    49,
-      81,    -1,    50,    -1,    50,   285,    -1,    50,    81,    -1,
-      51,    -1,    51,   285,    -1,    52,    -1,    52,   285,    -1,
-     113,    -1,   113,   285,    -1,   114,    -1,   114,   285,    -1,
-      49,   126,    38,    -1,    56,    55,    47,    -1,   115,    55,
-      47,    -1,    53,   288,    -1,    54,    38,    38,   290,    -1,
-      57,    66,    58,   288,    -1,    57,    66,    58,    55,    -1,
-      57,    58,    -1,    57,    58,   287,    -1,    57,    58,   288,
-      -1,    57,    58,   289,    -1,    57,    58,   290,    -1,    57,
-      66,    58,    47,    -1,    57,    79,   288,    -1,    57,   119,
-      38,    -1,    57,   120,   121,    38,    -1,    57,   120,   121,
-      38,   124,   288,   125,    -1,    57,   126,    38,   124,   288,
-     125,    -1,    57,   126,    38,   124,   125,    -1,    -1,    57,
-     403,    58,   288,    42,   287,   363,   336,    -1,    -1,    57,
-     403,    58,   288,    42,   288,   364,   336,    -1,    -1,    57,
-     403,    58,   288,    42,   289,   365,   336,    -1,    -1,    57,
-     403,    58,   288,    42,   290,   366,   336,    -1,    57,   147,
-      38,    -1,    57,   149,    38,    -1,   151,   152,    47,    -1,
-      57,    66,    58,    55,   288,    -1,    59,    60,   288,    -1,
-      59,    60,    47,    -1,    14,    -1,    14,   288,    -1,    14,
-     289,    -1,    14,   290,    -1,    15,    -1,    43,   288,    -1,
-      13,    -1,    13,   288,    -1,    12,    -1,    12,   288,    -1,
-      11,    -1,    11,   288,    -1,    10,    -1,    10,   288,    -1,
-       9,    -1,     9,   288,    -1,     4,    -1,     3,    -1,    27,
-      -1,    28,    -1,     7,    -1,    24,    -1,    23,    -1,    22,
-      -1,    20,    -1,    21,    -1,    19,    -1,    24,   287,    -1,
-      23,   287,    -1,    24,   288,    -1,    23,   288,    -1,    22,
-     288,    -1,    20,   288,    -1,    21,   288,    -1,    19,   288,
-      -1,    24,   289,    -1,    23,   289,    -1,    22,   289,    -1,
-      20,   289,    -1,    21,   289,    -1,    19,   289,    -1,     8,
-      -1,    25,    -1,    26,    -1,     6,    -1,    17,    -1,    16,
-      -1,   369,    -1,    18,    -1,    45,    -1,    46,   146,   290,
-      -1,    -1,    -1,    -1,    -1,   202,    41,   370,   371,   202,
-     372,    42,   373,   202,    -1,    61,    -1,    62,    -1,    63,
-      -1,    65,    66,    -1,    67,    -1,   134,    -1,   135,    -1,
-      68,    -1,    70,   290,    -1,    71,    72,   288,    -1,   153,
-     288,    -1,   154,   288,    -1,    73,    -1,    74,    66,    -1,
-      75,    -1,    76,   288,    -1,    76,    79,    47,    -1,    85,
-      79,    -1,    86,    79,    47,    -1,    87,    79,    47,    47,
-      -1,    86,   127,    79,   288,    -1,    88,    66,    58,   288,
-      -1,    88,    58,    -1,    88,    66,    58,    -1,    88,   100,
-      -1,    88,   119,    38,    -1,    88,   120,   121,    38,    -1,
-      88,   126,    38,   124,   288,   125,    -1,    88,   126,    38,
-     124,   125,    -1,    95,    -1,    95,    47,    -1,    98,    80,
-      47,    -1,    99,    -1,   106,    -1,   107,    81,    55,   288,
-      -1,   107,    81,    55,   287,    -1,   107,    81,    55,   289,
-      -1,   107,    81,    55,   290,    -1,   107,    81,   288,    -1,
-     108,    82,   290,    -1,   109,    83,    84,    -1,   110,    83,
-     290,    -1,   111,    83,    -1,   112,    -1,   116,    -1,   128,
-      38,    38,    38,    -1,   126,    38,   122,   129,    -1,   130,
-      66,    -1,   139,    -1,   398,    -1,   400,    -1,    -1,   402,
-      47,    55,   399,   336,    -1,    -1,   402,    47,    55,    55,
-     401,   336,    -1,   140,    30,   355,    31,    47,    30,   339,
-      31,    -1,   136,    30,   356,    31,    47,    30,   340,    31,
-      -1,    30,   147,    31,    -1,    32,   147,    33,    -1,    30,
-     149,    31,    -1,    32,   149,    33,    -1,   155,    -1,   156,
-      14,    -1,   156,    15,    -1,   156,   157,   288,    -1,   156,
-     155,    -1,   156,    62,    -1,   156,    63,    -1,   156,    64,
-      -1,   158,    -1,   159,    -1,   160,    -1,   161,    38,    -1,
-     161,   194,    38,   195,    -1,   162,    38,    -1,   162,   194,
-      38,   195,    -1,   163,    38,    38,    -1,   164,    38,    -1,
-     165,    -1,   166,    38,    -1,   167,    38,    -1,   168,    38,
-      -1,   169,    -1,   170,    -1,   171,    -1,   172,    -1,   173,
-      -1,   174,    -1,   175,    -1,   176,    -1,   177,    38,    -1,
-     177,   194,    38,   195,    -1,   178,    38,    -1,   178,   194,
-      38,   195,    -1,   179,    38,    38,    -1,   180,    38,    -1,
-     181,    -1,   182,    38,    -1,   183,    38,    -1,   184,    38,
-      -1,   185,    -1,   186,    -1,   187,    -1,   188,    -1,   189,
-      -1,   190,    -1,   191,    -1,   192,    -1
-};
-
-/* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
+  /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
        0,  1001,  1001,  1002,  1005,  1005,  1010,  1011,  1014,  1014,
@@ -1701,15 +1461,15 @@ static const yytype_uint16 yyrline[] =
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || YYTOKEN_TABLE
+#if YYDEBUG || YYERROR_VERBOSE || 1
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "OPDEC", "OPINC", "NEG", "OPBTNOT",
-  "OPNOT", "OPAMP", "OPROOT", "OPPOWER", "OPMODULUS", "OPDIV", "OPTIMES",
-  "OPPLUS", "OPMINUS", "OPBTSR", "OPBTSL", "OPCMP", "OPGEQU", "OPGTR",
-  "OPLEQU", "OPLSS", "OPNEQU", "OPEQU", "OPBTOR", "OPBTXOR", "OPAND",
+  "$end", "error", "$undefined", "OPINC", "OPDEC", "NEG", "OPNOT",
+  "OPBTNOT", "OPAMP", "OPPOWER", "OPROOT", "OPTIMES", "OPDIV", "OPMODULUS",
+  "OPMINUS", "OPPLUS", "OPBTSL", "OPBTSR", "OPLSS", "OPLEQU", "OPGTR",
+  "OPGEQU", "OPCMP", "OPEQU", "OPNEQU", "OPBTXOR", "OPBTOR", "OPAND",
   "OPOR", "OPEQUAL", "LEFTP", "RIGHTP", "LEFTB", "RIGHTB", "VOIDV",
   "BOOLEANV", "NUMBERV", "CHARACTERV", "STRINGV", "SEND", "COMMA",
   "OPQUES", "OPCOLON", "OPSUB", "OPSTR", "OPSTRTIMES", "OPRUN", "ID",
@@ -1779,13 +1539,13 @@ static const char *const yytname[] =
   "dup_command", "fret_command", "parameter_command", "psig", "$@84",
   "psig2", "$@85", "signature", "signature2", "struct_command",
   "union_command", "copy_command", "segment_command", "pp_directive",
-  "pp_statement", 0
+  "pp_statement", YY_NULLPTR
 };
 #endif
 
 # ifdef YYPRINT
-/* YYTOKNUM[YYLEX-NUM] -- Internal token number corresponding to
-   token YYLEX-NUM.  */
+/* YYTOKNUM[NUM] -- (External) token number corresponding to the
+   (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
@@ -1811,7 +1571,813 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-/* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
+#define YYPACT_NINF -824
+
+#define yypact_value_is_default(Yystate) \
+  (!!((Yystate) == (-824)))
+
+#define YYTABLE_NINF -118
+
+#define yytable_value_is_error(Yytable_value) \
+  0
+
+  /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+     STATE-NUM.  */
+static const yytype_int16 yypact[] =
+{
+    -824,  1075,  -824,  -824,  -824,  -159,    22,  1266,  -824,  1266,
+     395,   395,   225,   534,   488,  1545,  1545,  1545,  1545,  1545,
+     410,  1566,  -824,  -824,   925,   925,   925,   925,  -824,  1658,
+    1658,  -824,  -824,  -824,  -824,    36,   101,  -824,  -824,  -824,
+    -824,  -824,  -824,  1545,   257,  -824,   -81,  1632,    41,   612,
+     154,   726,   726,  1545,    65,    59,   227,    71,  -824,  -824,
+    -824,    68,  -824,   126,   142,   257,   103,  -824,    85,  -824,
+      92,   168,   180,   153,   -19,   159,   179,   219,   222,   250,
+     277,  -824,  -824,   255,  -824,  -824,   298,   286,   292,   307,
+     309,  -824,   726,   726,   342,  -824,   353,   367,   308,   315,
+     399,   405,   364,  -824,  -824,   304,   403,   407,  -824,   417,
+     420,   404,   406,   300,  1545,  1545,  -824,    23,  -824,  -824,
+    -824,   -17,   -12,   418,   446,  -824,   447,   448,   449,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,    -8,    -7,   452,
+     457,  -824,   459,   461,   462,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,   473,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,   419,  -824,   388,  -824,   370,  -824,   414,
+    -824,  -824,  -824,   480,  -824,   261,  1809,  1621,   505,  1788,
+    -824,  -824,  -824,  -824,   482,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+     495,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,   489,  -824,  -824,  -824,  -824,
+    -824,  -824,   473,   395,   395,   488,  1545,   488,   410,   395,
+    -824,  1744,   674,  1872,  1744,   674,  1872,   488,   488,   225,
+     488,   225,   392,  1872,  1545,  1545,  1545,  1545,  -824,  1744,
+     488,  1872,  1833,  1833,  1833,  1833,  1833,   410,   410,   410,
+    1744,  1872,   925,   925,  1566,  1833,  1666,   527,   925,  1833,
+    1666,  1833,  1666,  1833,  1666,  1833,  1666,   115,  1658,   392,
+    1833,  1666,   392,  1833,  1666,   534,   726,  1852,   509,   512,
+     513,   285,  1688,  1762,    46,  1736,   514,   518,   517,   519,
+      14,   521,  1833,   257,   527,   257,  1545,   925,   925,   925,
+     925,   925,  1566,  1545,  1545,  1545,  1545,  1545,  1545,  1545,
+    1545,  1545,  1545,  1545,   115,   115,  -824,   522,  -824,   520,
+    -824,  -824,  -824,  -824,  -824,  1833,   535,   510,  1554,   498,
+    1545,   536,   454,   540,   550,   544,   545,   530,   594,  -824,
+     726,  1266,   527,  1545,  -824,   543,  1833,   549,   552,  -824,
+     546,   524,   553,  -824,   538,  -824,   561,   484,   568,  1266,
+    -824,  -824,   560,  1266,  -824,  1266,   254,   257,   537,   257,
+    -824,  -824,  -824,   564,   593,   587,   589,   595,   132,   596,
+    -824,  -824,   601,    19,   599,    96,  1266,   590,   591,   598,
+    1833,  1833,  -824,  -824,  -824,  -824,  -824,  -824,  1545,  -824,
+     602,  -824,   613,   614,  -824,  -824,  -824,  -824,  -824,   615,
+    -824,   616,   619,  -824,  -824,  -824,  -824,  -824,   606,  -824,
+     515,  -824,  -824,   630,  -824,  -824,    63,    94,  -824,  -824,
+     625,   688,   739,   744,   778,  1545,   837,   858,   897,   971,
+     985,   990,  1456,  1458,  1470,  1494,  1506,  1508,  1536,  -824,
+    -824,    60,   206,   270,   318,   112,   374,   451,    79,  -824,
+    -824,   488,   488,   488,   488,   488,   488,   488,   488,   488,
+    -824,  -824,   610,  1712,  1775,  1545,  1545,  1545,  1545,  1545,
+    1545,  1545,  1545,  1545,  1545,  1545,   112,   112,   112,   112,
+     112,   112,   287,   115,   115,    61,   257,   115,  -824,  -824,
+    -824,  -824,   621,   622,   623,   626,   627,   628,   643,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,   527,
+    1833,  1833,  1666,  1833,  1666,  1833,  1666,  1833,  1666,  1833,
+    1666,  1833,  1666,   527,  1833,  1833,  1833,  1833,  1833,  1833,
+    1833,  1833,  1833,  1833,  1833,   392,   392,   726,  -824,   257,
+    -824,  1554,   392,  1833,  1666,   527,   204,  1833,  -824,   656,
+     542,   121,  -824,  -824,  1545,  -824,  1833,   665,    53,  1833,
+    -824,  -824,  -824,  -824,  1545,   651,  1545,  -824,   661,   576,
+     163,  -824,   473,   473,  1554,  1833,   527,  -824,   527,  -824,
+     669,   676,   677,   670,   574,  1545,   671,   145,  -824,   668,
+     183,  -824,  -824,   675,   312,   171,   597,   689,   600,   691,
+    -824,  1833,   531,   532,  -824,   541,   554,  -824,  -824,  -824,
+     690,  -824,  1266,  1266,  -824,  -824,   703,  -824,  -824,  -824,
+    1879,  -824,  1879,  -824,  1879,  -824,   551,  -824,   551,   551,
+    -824,   294,  -824,   294,  -824,   397,  -824,   397,  -824,  1833,
+    -824,  1833,  -824,  1833,  -824,  1833,  -824,  1833,  -824,  1833,
+    -824,  1833,  -824,  -824,  -824,  -824,   112,   112,   112,  -824,
+     674,  -824,   674,  -824,   182,  -824,   182,   182,  -824,  -824,
+    -824,  -824,  -824,  -824,  1872,  1872,   125,   125,   125,   400,
+     400,   709,  -824,   686,  -824,   527,  -824,  1545,  1833,   620,
+      45,  -824,   710,   314,  1603,   713,  -824,  1833,  -824,  1833,
+    -824,    75,  -824,   652,   392,  1833,  1666,   527,  -824,   716,
+     719,   730,  -824,   785,  -824,  -824,   723,   319,   711,   724,
+     729,   748,   728,   732,   755,  -824,   740,   657,  -824,   757,
+     662,  -824,  -824,  -824,  -824,  -824,  1266,  1266,  -824,    -6,
+      -5,  1266,  -824,  -824,  -824,  1833,  1545,  -824,   905,   751,
+     760,   767,  1554,  -824,   789,  -824,   955,   695,   797,   790,
+    -824,   707,   792,  -824,   776,   791,   794,  -824,   807,   801,
+     147,  -824,   809,   804,   717,   818,   802,    -1,  -824,   821,
+     808,    -4,  -824,   473,   473,  1266,  -824,  -824,   303,  -824,
+    -824,  1032,  -824,  -824,   826,   815,   392,  1833,  1666,   527,
+    -824,  -824,  -824,  -824,  -824,  -824,   819,   736,  -824,  -824,
+     830,   824,   165,   813,  -824,   827,   329,   169,   816,  -824,
+     726,  -824,  -824,  -824,   726,  -824,  -824,  -824,   828,   832,
+     473,   844,   846,  -824,  -824,  -824,   218,   825,  -824,  -824,
+    -824,  -824,   795,   795,   793,   793,  1266,  1266,   849,   856,
+     852,   260,   840,  -824,   851,   330,  -824,  -824,   841,   855,
+     864,  -824,   859,   333,  -824,  -824,  1266,  -824,   860,  -824,
+     884,  -824,  -824,   872,  -824,  -824,  1266,  -824,   877,   341,
+    -824,  -824,  -824,  -824,  -824,  -824,   726,   833,  -824,  -824,
+     726,   831,  -824,  -824,   473,   344,  -824,  -824,  -824,  -824,
+     887,   351,  -824,  -824,   893,  -824,   888,  -824,  -824,   895,
+     896,  -824,   892,   473,  -824,  -824,  1266,  1266,  -824,  1266,
+    1266,   354,   899,  -824,   894,  -824,   901,  -824,  -824,   903,
+    -824,   814,  -824,   907,  -824,   904,   898,  -824,   909,   924,
+     902,   918,   913,   847,   473,   473,  1266,   473,   473,  -824,
+     921,   935,   942,  -824,  -824,   944,  -824,   958,  -824,  1266,
+     940,   964,   953,  -824,  -824,   960,  -824,  -824,  -824,   961,
+    -824,   473,   975,   979,  1266,  -824,   969,  1266,  1266,   980,
+    -824,  1266,  -824,   926,   371,   988,  -824,  -824,   972,   967,
+     129,   968,   926,  -824,  -824,   473,   973,   473,   473,  -824,
+    1266,   473,  -824,  -824,  -824,   726,  -824,  -824,   986,  -824,
+     974,  -824,   982,  -824,  -824,  -824,   987,  -824,  -824,  -824,
+    1002,  -824,   473,  1266,   906,  1266,   992,  -824,  -824,   988,
+     983,  -824,   525,   906,  1266,   -31,  -824,  -824,   473,  1014,
+    -824,  -824,  1020,  1010,  -824,  -824,   473,  -824,  1022,  -824,
+    -824,  1000,  -824,  -824,  -824,  -824
+};
+
+  /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+     Performed when YYTABLE does not specify something else to do.  Zero
+     means the default is an error.  */
+static const yytype_uint16 yydefact[] =
+{
+       2,     0,     1,     7,     3,     0,     6,    72,     5,    72,
+     460,   461,   464,   488,   485,   456,   458,   450,   452,   454,
+     448,   444,   489,   490,   467,   469,   468,   470,   492,   465,
+     466,   487,   486,   462,   463,     0,     8,   128,   130,   135,
+     155,   168,    12,     0,     0,   493,     0,   172,     0,   397,
+     400,   403,   405,     0,     0,     0,     0,     0,   500,   501,
+     502,     0,   504,   507,     0,     0,     0,   512,     0,   514,
+       0,     0,     0,     0,     0,     0,     0,     0,   529,     0,
+       0,   532,   107,     0,   114,   533,     0,     0,     0,     0,
+       0,   543,   407,   409,     0,   544,     0,     0,     0,     0,
+       0,     0,     0,   505,   506,   337,     0,     0,   548,     0,
+       0,     0,     0,     0,     0,     0,   561,     0,   569,   570,
+     571,     0,     0,     0,     0,   578,     0,     0,     0,   582,
+     583,   584,   585,   586,   587,   588,   589,     0,     0,     0,
+       0,   596,     0,     0,     0,   600,   601,   602,   603,   604,
+     605,   606,   607,     9,    13,    14,    16,    15,    11,    26,
+      27,    28,    29,     0,    74,     0,    76,     0,    77,     0,
+      78,    79,    17,     0,   119,   120,   121,   122,   123,   124,
+     125,   126,   127,   254,     0,   270,   283,   284,   285,   272,
+     273,   274,   275,   276,   277,   278,   279,   271,   317,   318,
+       0,   362,   363,   364,   365,   366,   367,   368,   491,   369,
+     370,   371,   372,   373,   374,   375,   376,   377,   378,   379,
+     380,   381,   382,   383,   384,   385,   386,   387,   388,   389,
+     390,   391,   392,   549,   550,     0,   393,   394,   395,   396,
+      18,    19,    10,     0,     0,     0,     0,     0,     0,     0,
+     172,   144,   163,   185,   146,   165,   187,     0,     0,     0,
+       0,     0,   131,   174,     0,     0,     0,     0,   247,   151,
+       0,   173,   457,   459,   451,   453,   455,     0,     0,     0,
+     141,   182,     0,     0,     0,   445,   446,   447,     0,   475,
+     481,   477,   483,   476,   482,   478,   484,     0,     0,   471,
+     473,   479,   472,   474,   480,     0,     0,   172,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       8,     0,   449,     0,   170,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    23,   280,   399,     0,
+     398,   402,   401,   404,   406,   414,     0,     0,   418,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,   503,
+       0,    72,   508,     0,   513,     0,   515,   314,   315,   517,
+       0,     0,     0,   522,     0,   524,     0,     0,     0,    72,
+     530,   316,     0,    72,   282,    72,     0,     0,     0,     0,
+     542,   408,   410,     0,     0,     0,     0,     0,     0,     0,
+     547,   338,     0,     0,     0,     0,    72,   296,   305,     0,
+     510,   511,   563,   562,   566,   567,   568,   565,     0,   572,
+       0,   574,     0,     0,   577,   579,   580,   581,   590,     0,
+     592,     0,     0,   595,   597,   598,   599,   495,     0,    73,
+       0,    86,    96,     0,    80,    20,     0,     0,   145,   147,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,   164,
+     166,     0,     0,     0,     0,     0,     0,     0,     0,   186,
+     188,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      21,    22,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,   557,   559,
+     129,   134,     0,     0,     0,     0,     0,     0,     0,   154,
+     167,   171,   189,   198,   255,   558,   560,   118,   116,   494,
+     241,   207,   219,   208,   220,   205,   217,   206,   218,   204,
+     216,   203,   215,   227,   248,   249,   237,   239,   238,   240,
+     253,   235,   236,   243,   242,   199,   201,     0,   411,     0,
+     412,     0,   419,   420,   421,   422,     0,   424,   425,     0,
+       0,     0,   438,   439,     0,   443,   442,     0,     0,   509,
+     516,    24,    25,   518,     0,     0,   523,   525,     0,     0,
+       0,   531,   108,   115,     0,   538,   539,   540,   541,   413,
+       0,     0,     0,     0,     0,     0,     0,     0,   347,     0,
+       0,   256,   356,     0,     0,     0,   303,     0,   312,     0,
+     440,   564,     0,     0,   576,     0,     0,   594,   496,    81,
+       0,    75,    72,    72,   102,   200,   132,   202,   133,   244,
+     148,   213,   142,   214,   143,   211,   138,   212,   139,   140,
+     210,   137,   209,   136,   250,   152,   251,   153,   231,   192,
+     233,   194,   232,   193,   234,   195,   252,   197,   229,   190,
+     230,   191,   246,   150,   245,   149,     0,     0,     0,   225,
+     161,   226,   162,   223,   158,   224,   159,   160,   222,   157,
+     221,   156,   228,   169,   183,   184,   179,   180,   181,   178,
+     177,   175,   176,   551,   281,   415,   423,   417,   416,   426,
+       0,   359,     0,     0,     0,     0,    51,   520,   519,   521,
+     526,     0,    30,     0,   535,   534,   536,   537,   290,     0,
+       0,   288,   546,     0,   545,   350,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    36,     0,     0,   297,     0,
+       0,   306,   573,   575,   591,   593,    72,    72,    91,     0,
+       0,    72,   196,   553,   321,   441,     0,   429,     0,     0,
+       0,     0,     0,    46,     0,   528,     0,     0,     0,     0,
+     286,     0,     0,   289,     0,     0,     0,   348,     0,     0,
+       0,   357,     0,     0,     0,     0,     0,     0,   299,     0,
+       0,     0,   308,   497,    82,    72,    87,    97,     0,   321,
+     552,     0,   428,   360,     0,     0,   430,   432,   434,   436,
+      55,    63,   527,    31,   109,   293,   291,     0,   287,   351,
+       0,     0,     0,     0,   353,     0,     0,     0,     0,    37,
+       0,   301,   298,   300,     0,   310,   307,   309,     0,     0,
+      92,     0,     0,   103,   554,   427,     0,     0,   321,   321,
+     321,   321,    47,     0,    52,     0,    72,    72,     0,     0,
+       0,     0,     0,   331,     0,     0,   322,   349,     0,     0,
+       0,   340,     0,     0,   326,   358,    72,   304,     0,   313,
+       0,   498,    83,     0,    88,    98,    72,   342,     0,     0,
+     328,   361,   431,   433,   435,   437,     0,    60,    57,    56,
+       0,    69,    65,    64,    32,     0,   294,   292,   295,   333,
+       0,     0,   324,   352,     0,   319,     0,   354,   257,     0,
+       0,   555,     0,    38,   302,   311,    72,    72,    93,    72,
+      72,     0,     0,   556,     0,    58,     0,    48,    66,     0,
+      53,     0,   110,     0,   343,     0,     0,   321,     0,     0,
+       0,     0,     0,     0,   499,    84,    72,    89,    99,   104,
+       0,     0,     0,    61,    49,     0,    70,     0,    33,    72,
+       0,     0,     0,   330,   320,     0,   258,   355,   339,     0,
+      39,    94,     0,     0,    72,   341,     0,    72,    72,     0,
+      67,    72,    54,    42,     0,   334,     8,   344,     0,     0,
+       0,     0,    42,    90,   100,   105,     0,    59,    62,    50,
+      72,    71,    43,    34,   111,     0,   332,   335,     0,   321,
+       0,   323,     0,   269,   259,   263,   264,   265,   327,    40,
+       0,   329,    68,    72,     0,    72,     0,   346,   345,   334,
+       0,   260,     0,     0,    72,     0,    45,    35,   112,     0,
+     325,   267,     0,     0,   266,    41,   106,    44,     0,   336,
+     261,     0,   113,   321,   268,   262
+};
+
+  /* YYPGOTO[NTERM-NUM].  */
+static const yytype_int16 yypgoto[] =
+{
+    -824,  -824,  -824,  -824,  1058,  -824,    -9,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,    28,  -824,   -11,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,   178,  -824,  -824,
+    -824,  -824,  -824,   192,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -319,   -47,
+     -28,    90,    -2,   195,    83,   575,  -824,  -824,   -23,   -15,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+      32,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,   246,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,   243,  -824,  -824,  -824,  -824,  -824,  -824,
+    -823,  -824,  -824,  -824,  -824,  -824,  -824,    37,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,  -824,
+    -824,  -824,  -824,  -824
+};
+
+  /* YYDEFGOTO[NTERM-NUM].  */
+static const yytype_int16 yydefgoto[] =
+{
+      -1,     1,     4,     5,   320,     7,   153,   154,   155,   156,
+     157,   158,   159,   797,   886,   971,  1023,  1064,   160,   814,
+     906,   983,  1032,  1073,  1043,  1063,  1077,   161,   840,   927,
+     994,  1019,   794,   931,   997,   882,   883,   928,   992,   967,
+    1018,   884,   885,   932,   995,  1040,   970,  1021,   162,   163,
+     450,   454,   449,   777,   869,   957,   164,   165,   652,   871,
+     959,  1012,   651,   825,   913,   986,   166,   167,   653,   872,
+     960,  1013,   168,   169,   781,   916,  1014,  1060,   170,   393,
+     743,   887,   999,  1065,  1088,   171,   395,   172,   321,   173,
+     174,   175,   176,   177,   178,   179,   180,   782,   181,   182,
+     183,   761,   979,  1030,  1071,  1082,  1093,  1054,  1055,  1056,
+    1057,   184,   185,   186,   187,   188,   189,   799,   889,   846,
+     190,   191,   637,   768,   817,   818,   908,   192,   193,   194,
+     639,   771,   821,   822,   910,   195,   196,   197,   198,   977,
+     830,   895,   941,   903,   919,   896,   942,  1046,  1047,   412,
+     904,   920,   199,  1001,  1049,  1027,   630,   757,   856,   634,
+     733,   200,   201,   202,   203,   204,   205,   878,   879,   880,
+     881,   206,   207,   208,   648,   776,   868,   956,   209,   210,
+     211,   212,   213,   214,   215,   216,   217,   218,   219,   220,
+     221,   222,   223,   224,   225,   226,   227,   228,   229,   230,
+     231,   232,   233,   784,   234,   829,   235,   367,   236,   237,
+     238,   239,   240,   241
+};
+
+  /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+     positive, shift that token.  If negative, reduce the rule whose
+     number is the opposite.  If YYTABLE_NINF, syntax error.  */
+static const yytype_int16 yytable[] =
+{
+     242,   547,   350,   352,   353,   354,   874,   310,   251,   254,
+     447,   269,   316,   272,   273,   274,   275,   276,   280,   285,
+     317,   429,   289,   291,   293,   295,   431,   300,   303,   866,
+     438,   440,   862,   312,     8,   447,   447,   422,   423,   243,
+     244,   322,   259,   305,   247,   401,   402,  -117,   264,   265,
+     248,   355,   246,   628,     9,   922,   923,   924,   925,   266,
+     380,   488,     9,   696,   697,   325,   306,   629,   376,   297,
+      37,    38,    39,    40,    41,   267,   526,   541,   264,   265,
+      44,    39,   246,   307,   736,   424,   425,   426,   347,   266,
+     698,   826,   541,   527,   447,   264,   265,    40,    38,   246,
+     297,  1087,   262,   356,   287,   267,   266,   699,   381,   323,
+     655,    39,   420,   421,   357,   696,   697,    41,   314,   299,
+     302,   297,   267,    44,   527,   311,   712,   324,    39,    38,
+     632,   368,   243,   244,   369,   259,   305,   247,   827,   496,
+     497,   657,   698,   248,   633,   527,   820,   816,   372,    40,
+      38,   374,   498,   499,  1004,   731,   370,   243,   244,   306,
+     259,   305,   247,    37,    38,    39,    40,    41,   248,   732,
+     787,   375,   371,    44,   107,   373,   307,   430,   427,   755,
+     428,   854,   432,   308,   306,   309,   439,   441,    37,    38,
+      39,    40,    41,   756,   742,   855,   520,   521,    44,   893,
+     795,   307,   765,   901,   447,   252,   255,   264,   265,   696,
+     697,   246,   447,   894,   759,   377,   286,   902,   266,   290,
+     292,   294,   296,   760,   301,   304,  1068,   378,   257,   258,
+     313,   259,   379,   247,   267,   351,   698,   383,   382,   260,
+      39,   251,   254,    40,   269,   384,   280,   503,   318,   389,
+     319,   726,   917,   701,   624,   261,   625,   264,   265,   727,
+      38,   246,   251,   254,   280,   503,   918,   107,   266,   390,
+    1095,  1052,   250,   696,   697,   251,   254,   503,   310,   385,
+     251,   254,   503,   316,   267,   358,   503,   323,   456,   457,
+      39,   317,   107,   359,   939,    41,   503,   391,   386,   387,
+     698,    44,   394,   269,   312,   388,   360,    40,   940,   614,
+     512,   513,   456,   457,   523,   524,   531,   703,   531,   514,
+     515,   696,   697,   597,   550,   551,   553,   555,   557,   559,
+     561,   564,   565,   566,   567,   568,   569,   570,   571,   572,
+     573,   574,   873,   763,   447,   790,   361,   362,   698,   262,
+     805,   522,   764,   363,   791,    40,   583,   392,   587,   806,
+     899,   945,   598,   364,   951,   705,   596,   525,   397,   900,
+     946,   599,   963,   952,   365,   398,   366,   696,   697,   396,
+     610,   964,   974,   972,   612,   447,   613,   262,   522,   314,
+     399,   975,   400,   989,   615,   447,   311,   403,   243,   244,
+     404,   245,   246,   247,   698,   405,   525,   635,   549,   248,
+    1044,    40,   447,   277,   278,   563,   245,   246,   247,   523,
+     524,   708,   514,   515,   248,   249,   641,   498,   499,   406,
+     410,    39,    40,   413,   575,   576,   407,   408,   252,   255,
+     279,   585,   250,   409,   504,   411,    39,   415,   582,   414,
+     416,   417,   419,   418,   696,   697,   433,   250,   660,   662,
+     664,   666,   668,   669,   671,   673,   675,   677,   679,   681,
+     683,   685,   687,   689,   691,   693,   695,   252,   255,   504,
+     616,   698,   618,   504,   434,   435,   436,   437,    40,   451,
+     442,   257,   258,   504,   245,   443,   247,   444,   710,   445,
+     446,   313,   260,   660,   662,   664,   666,   668,   671,   673,
+     675,   677,   693,   695,   447,   452,   448,   453,   270,   455,
+     488,   500,   552,   554,   556,   558,   560,   562,   243,   244,
+     724,   259,   305,   247,   501,   250,   502,   264,   265,   248,
+     528,   246,   526,   529,   530,   543,   656,   658,   266,   544,
+     545,   577,   546,   584,   548,   306,   586,   580,   578,    37,
+      38,    39,    40,    41,   267,   510,   511,   512,   513,    44,
+      39,   713,   307,   579,   588,   589,   514,   515,   590,   503,
+     591,   268,   592,   593,   728,   253,   256,   263,   594,   271,
+     600,   601,   734,   603,   602,   281,   606,   264,   265,   607,
+     605,   246,   737,   604,   739,   608,   609,   611,   266,   713,
+     315,   619,   745,   656,   658,   243,   244,   522,   259,   305,
+     247,   617,   620,   753,   267,   621,   248,   622,   264,   265,
+      39,   627,   246,   623,   626,   631,   649,   636,   638,   266,
+     642,   595,   306,   779,   780,   640,    37,    38,    39,    40,
+      41,   643,   644,   645,   646,   267,    44,   647,   650,   307,
+     654,    39,   725,   107,   525,   723,   730,  1083,   678,   680,
+     682,   522,   659,   684,   686,   688,   700,   702,   704,   706,
+     707,   709,   711,   516,   517,   518,   519,   485,   520,   521,
+     690,   264,   265,   348,   729,   246,   735,   747,   738,   740,
+     741,   748,   266,   752,   744,   749,   750,  1048,   751,   754,
+     758,   700,   702,   704,   706,   709,   711,   762,   267,   766,
+     778,   767,   769,   770,    39,   785,   772,   773,   788,   243,
+     244,   524,   259,   305,   247,   661,   774,   499,   349,   796,
+     248,   783,   264,   265,   786,   793,   246,   264,   265,   775,
+     107,   246,   789,   266,   800,   798,   306,   801,   266,   802,
+      37,    38,    39,    40,    41,   804,   807,   823,   824,   267,
+      44,   808,   828,   307,   267,    39,   504,   809,   810,   812,
+      39,   264,   265,   811,   831,   246,   663,   815,   458,   459,
+     837,   665,   266,   505,   506,   507,   508,   509,   465,   510,
+     511,   512,   513,   813,   819,   816,   833,   834,   267,   746,
+     514,   515,   820,   907,    39,   835,   870,   909,   253,   256,
+     263,   841,   271,   281,   315,   667,   843,   844,   845,   847,
+     848,   849,   253,   256,   263,   281,   315,   852,   850,   857,
+     264,   265,   851,   853,   246,   315,   858,   860,   859,   861,
+     864,   266,   253,   256,   315,   865,   876,   877,   890,   888,
+     891,   264,   265,   912,   107,   246,   892,   267,   897,   898,
+     911,   905,   266,    39,   914,   839,   915,   934,   935,   965,
+     921,   315,   836,   968,   670,   930,   926,   936,   267,   937,
+     938,   252,   255,   504,    39,   943,   947,   953,   944,   954,
+     264,   265,   948,   958,   246,   672,   950,   961,   458,   459,
+     803,   266,   949,   505,   506,   507,   508,   509,   465,   510,
+     511,   512,   513,   955,   962,   969,   966,   267,   282,   283,
+     514,   515,   246,    39,   973,   976,   978,   980,   981,   266,
+     982,   990,   991,   993,   674,   996,   998,   984,   985,  1000,
+     987,   988,  1002,  1003,  1006,   288,  1005,  1007,   458,   459,
+    1009,    39,    40,   505,   506,   507,   508,   509,   465,   510,
+     511,   512,   513,  1008,   264,   265,  1015,  1011,   246,  1010,
+     514,   515,  1016,  1053,  1017,   266,  1020,   838,   264,   265,
+    1024,  1022,   246,   264,   265,  1025,  1026,   246,  1066,   266,
+    1028,   267,  1029,  1031,   266,  1035,  1033,    39,  1037,  1038,
+    1034,  1036,  1041,  1039,  1050,   267,  1042,  1045,   676,  1067,
+     267,    39,  1051,  1058,  1070,  1053,    39,  1072,  1061,  1069,
+     832,  1062,   678,  1074,  1079,   458,   459,   680,  1081,  1076,
+     505,   506,   507,   508,   509,   465,   510,   511,   512,   513,
+    1089,  1090,  1091,  1092,  1075,  1094,  1078,   514,   515,     6,
+    1059,   929,  1085,   863,   867,  1086,   714,   715,   716,   717,
+     718,   719,   720,   721,   722,     2,     3,   933,    -8,    -8,
+     842,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
+      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
+      -8,    -8,    -8,    -8,  1084,    -8,  1080,    -8,     0,    -8,
+      -8,    -8,    -8,    -8,    -8,     0,     0,     0,    -8,    -8,
+      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
+       0,    -8,    -8,     0,    -8,     0,    -8,    -8,    -8,     0,
+      -8,     0,    -8,    -8,    -8,    -8,    -8,     0,    -8,    -8,
+      -8,    -8,    -8,    -8,     0,     0,     0,   875,     0,     0,
+      -8,    -8,    -8,    -8,    -8,     0,     0,     0,     0,     0,
+      -8,    -8,    -8,    -8,    -8,     0,    -8,    -8,    -8,    -8,
+      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
+      -8,    -8,    -8,    -8,     0,    -8,     0,     0,    -8,     0,
+       0,    -8,     0,    -8,     0,    -8,     0,     0,     0,    -8,
+      -8,    -8,    -8,    -8,    -8,    -8,     0,     0,     0,    -8,
+      -8,     0,    -8,     0,    -8,     0,    -8,     0,    -8,    -8,
+      -8,    -8,     0,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
+      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
+      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
+      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -4,    10,
+      11,     0,    12,    13,    14,    15,    16,    17,    18,    19,
+      20,    21,    22,    23,    24,    25,    26,    27,    28,    29,
+      30,    31,    32,    33,    34,     0,    35,     0,    36,     0,
+      37,    38,    39,    40,    41,    42,     0,     0,     0,    43,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,     0,    55,    56,     0,    57,     0,    58,    59,    60,
+       0,    61,     0,    62,    63,    64,    65,    66,     0,    67,
+      68,    69,    70,    71,    72,     0,     0,     0,     0,     0,
+       0,    73,    74,    75,    76,    77,     0,     0,     0,     0,
+       0,    78,    79,     0,    80,    81,     0,   -85,    82,  -101,
+      83,    84,    85,    86,    87,    88,    89,    90,    91,    92,
+      93,    94,    95,    96,    97,     0,    98,     0,     0,    99,
+       0,     0,   100,     0,   101,     0,   102,     0,     0,     0,
+     103,   104,   105,   106,   107,   108,   109,     0,     0,     0,
+     110,   -95,     0,   111,     0,   112,     0,   113,     0,   114,
+     115,   116,   117,     0,   118,   119,   120,   121,   122,   123,
+     124,   125,   126,   127,   128,   129,   130,   131,   132,   133,
+     134,   135,   136,   137,   138,   139,   140,   141,   142,   143,
+     144,   145,   146,   147,   148,   149,   150,   151,   152,   264,
+     265,   264,   265,   246,     0,   246,     0,     0,     0,     0,
+     266,     0,   266,   264,   265,     0,     0,   246,     0,     0,
+       0,     0,     0,     0,   266,     0,   267,     0,   267,     0,
+       0,     0,    39,     0,    39,     0,     0,   264,   265,     0,
+     267,   246,     0,   682,     0,   684,    39,     0,   266,   264,
+     265,   264,   265,   246,     0,   246,     0,   686,     0,     0,
+     266,     0,   266,     0,   267,     0,     0,     0,     0,     0,
+      39,     0,     0,     0,     0,     0,   267,     0,   267,   264,
+     265,   688,    39,   246,    39,     0,     0,     0,   264,   265,
+     266,     0,   246,   690,     0,   692,     0,   282,   283,   266,
+     297,   246,     0,     0,     0,     0,   267,     0,   266,   282,
+     283,     0,    39,   246,     0,   267,     0,     0,     0,     0,
+     266,    39,     0,   694,   581,     0,     0,     0,     0,    38,
+      39,    40,    41,     0,     0,     0,   284,     0,    44,     0,
+       0,     0,    39,    40,    41,     0,   458,   459,     0,     0,
+      44,   505,   506,   507,   508,   509,   465,   510,   511,   512,
+     513,     0,     0,     0,   479,   480,     0,     0,   514,   515,
+     481,   482,   483,   484,   485,   486,   487,     0,     0,     0,
+     326,   327,   328,   329,   330,   792,   331,   332,   333,   334,
+     335,   336,   337,   338,   339,   340,   341,   342,   343,   344,
+     345,   282,   283,     0,   297,   246,     0,     0,     0,   479,
+     480,     0,   266,     0,   346,   516,   517,   518,   519,   485,
+     520,   521,     0,     0,     0,     0,     0,     0,   298,     0,
+       0,   458,   459,    38,    39,    40,   460,   461,   462,   463,
+     464,   465,   466,   467,   468,   469,   532,   533,   534,   535,
+     536,   537,   538,   477,   478,   458,   459,     0,     0,   539,
+     505,   506,   507,   508,   509,   465,   510,   511,   512,   513,
+       0,     0,     0,     0,     0,     0,     0,   514,   515,   489,
+     490,     0,     0,   539,     0,   491,   492,   493,   494,   495,
+     496,   497,   505,   506,   507,   508,   509,   465,   510,   511,
+     512,   513,     0,   498,   499,   479,   480,   542,     0,   514,
+     515,   481,   482,   483,   484,   485,   486,   487,   479,   480,
+       0,     0,     0,     0,   516,   517,   518,   519,   485,   520,
+     521,   489,   490,   540,     0,     0,     0,   491,   492,   493,
+     494,   495,   496,   497,     0,     0,   540,     0,     0,     0,
+       0,     0,   458,   459,     0,   498,   499,   460,   461,   462,
+     463,   464,   465,   466,   467,   468,   469,   470,   471,   472,
+     473,   474,   475,   476,   477,   478,   458,   459,     0,     0,
+       0,   505,   506,   507,   508,   509,   465,   510,   511,   512,
+     513,     0,     0,     0,     0,     0,     0,     0,   514,   515,
+     326,   327,   328,   329,   330,     0,   331,   332,   333,   334,
+     335,   336,   337,   338,   339,   340,   341,   342,   343,   344,
+     345,   491,   492,   493,   494,   495,   496,   497,   506,   507,
+     508,   509,   465,   510,   511,   512,   513,     0,     0,   498,
+     499,     0,     0,     0,   514,   515
+};
+
+static const yytype_int16 yycheck[] =
+{
+       9,   320,    49,    50,    51,    52,   829,    35,    10,    11,
+      41,    13,    35,    15,    16,    17,    18,    19,    20,    21,
+      35,    38,    24,    25,    26,    27,    38,    29,    30,    33,
+      38,    38,    33,    35,   193,    41,    41,    14,    15,     3,
+       4,    43,     6,     7,     8,    92,    93,    33,     3,     4,
+      14,    53,     7,    34,    40,   878,   879,   880,   881,    14,
+      79,    15,    40,     3,     4,   146,    30,    48,    70,     6,
+      34,    35,    36,    37,    38,    30,    15,    31,     3,     4,
+      44,    36,     7,    47,    31,    62,    63,    64,    47,    14,
+      30,    97,    31,    30,    41,     3,     4,    37,    35,     7,
+       6,   132,    12,    38,    21,    30,    14,    47,   127,    30,
+      47,    36,   114,   115,    55,     3,     4,    38,    35,    29,
+      30,     6,    30,    44,    30,    35,    47,    44,    36,    35,
+      34,    60,     3,     4,    66,     6,     7,     8,   143,    14,
+      15,    47,    30,    14,    48,    30,   150,   148,    65,    37,
+      35,    66,    27,    28,   977,    34,    30,     3,     4,    30,
+       6,     7,     8,    34,    35,    36,    37,    38,    14,    48,
+     125,    79,    30,    44,   138,    72,    47,   194,   155,    34,
+     157,    34,   194,   147,    30,   149,   194,   194,    34,    35,
+      36,    37,    38,    48,    31,    48,    14,    15,    44,    34,
+     125,    47,    31,    34,    41,    10,    11,     3,     4,     3,
+       4,     7,    41,    48,    31,    47,    21,    48,    14,    24,
+      25,    26,    27,    40,    29,    30,  1049,    47,     3,     4,
+      35,     6,    79,     8,    30,    81,    30,    58,    79,    14,
+      36,   243,   244,    37,   246,    66,   248,   249,   147,    30,
+     149,    47,    34,    47,   122,    30,   124,     3,     4,    55,
+      35,     7,   264,   265,   266,   267,    48,   138,    14,    47,
+    1093,   142,    47,     3,     4,   277,   278,   279,   306,   100,
+     282,   283,   284,   306,    30,    58,   288,    30,    27,    28,
+      36,   306,   138,    66,    34,    38,   298,    47,   119,   120,
+      30,    44,    47,   305,   306,   126,    79,    37,    48,    55,
+      16,    17,    27,    28,    27,    28,    31,    47,    31,    25,
+      26,     3,     4,   370,   326,   327,   328,   329,   330,   331,
+     332,   333,   334,   335,   336,   337,   338,   339,   340,   341,
+     342,   343,    39,    31,    41,    31,   119,   120,    30,   259,
+      31,   261,    40,   126,    40,    37,   358,    80,   360,    40,
+      31,    31,   371,   136,    31,    47,   368,   284,    82,    40,
+      40,   373,    31,    40,   147,    83,   149,     3,     4,    81,
+     389,    40,    31,    39,   393,    41,   395,   297,   298,   306,
+      83,    40,    83,    39,   396,    41,   306,    55,     3,     4,
+      47,     6,     7,     8,    30,    38,   323,   416,   325,    14,
+      39,    37,    41,     3,     4,   332,     6,     7,     8,    27,
+      28,    47,    25,    26,    14,    30,   428,    27,    28,   121,
+      66,    36,    37,    30,   344,   345,   121,    38,   243,   244,
+      30,   358,    47,    38,   249,   141,    36,    30,   358,    42,
+      30,    47,   152,    47,     3,     4,    38,    47,   460,   461,
+     462,   463,   464,   465,   466,   467,   468,   469,   470,   471,
+     472,   473,   474,   475,   476,   477,   478,   282,   283,   284,
+     397,    30,   399,   288,    38,    38,    38,    38,    37,   101,
+      38,     3,     4,   298,     6,    38,     8,    38,    47,    38,
+      38,   306,    14,   505,   506,   507,   508,   509,   510,   511,
+     512,   513,   514,   515,    41,   145,    97,   103,    30,    39,
+      15,    39,   327,   328,   329,   330,   331,   332,     3,     4,
+     577,     6,     7,     8,    39,    47,    47,     3,     4,    14,
+      31,     7,    15,    31,    31,    31,   456,   457,    14,    31,
+      33,    29,    33,   358,    33,    30,    58,    47,    38,    34,
+      35,    36,    37,    38,    30,    14,    15,    16,    17,    44,
+      36,   488,    47,    38,    38,   121,    25,    26,    38,   581,
+      30,    47,    38,    38,   586,    10,    11,    12,    58,    14,
+      47,    42,   594,    47,    42,    20,    58,     3,     4,    38,
+      47,     7,   604,    79,   606,   121,    38,    47,    14,   526,
+      35,    47,   614,   523,   524,     3,     4,   527,     6,     7,
+       8,    84,    29,   625,    30,    38,    14,    38,     3,     4,
+      36,    30,     7,    38,    38,    36,    30,    47,    47,    14,
+      38,    47,    30,   652,   653,    47,    34,    35,    36,    37,
+      38,    38,    38,    38,    38,    30,    44,    38,   143,    47,
+      30,    36,   579,   138,   581,    55,   124,   142,    47,    47,
+      47,   581,    47,    47,    47,    47,   481,   482,   483,   484,
+     485,   486,   487,     9,    10,    11,    12,    13,    14,    15,
+      47,     3,     4,    81,    38,     7,    31,   614,    47,    38,
+     124,    32,    14,   129,   614,    29,    29,  1026,    38,    38,
+      42,   516,   517,   518,   519,   520,   521,    42,    30,   122,
+      30,    32,   122,    32,    36,   727,   195,   195,   730,     3,
+       4,    28,     6,     7,     8,    47,   195,    28,   126,   741,
+      14,    55,     3,     4,   124,    32,     7,     3,     4,   195,
+     138,     7,    42,    14,    38,   103,    30,    38,    14,    29,
+      34,    35,    36,    37,    38,    42,    55,   776,   777,    30,
+      44,    47,   781,    47,    30,    36,   581,    48,    30,    47,
+      36,     3,     4,    55,   786,     7,    47,    47,     3,     4,
+     792,    47,    14,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    48,    47,   148,    55,    47,    30,   614,
+      25,    26,   150,   860,    36,    48,   825,   864,   243,   244,
+     245,    32,   247,   248,   249,    47,   131,    30,    38,   122,
+      38,    55,   257,   258,   259,   260,   261,    30,    47,    30,
+       3,     4,    48,    42,     7,   270,    42,    29,   131,    47,
+      29,    14,   277,   278,   279,    47,    30,    42,   122,    40,
+      30,     3,     4,    31,   138,     7,    42,    30,    55,    42,
+      42,    55,    14,    36,    30,   792,    30,   886,   887,   926,
+      55,   306,   792,   930,    47,    92,    91,    38,    30,    33,
+      38,   696,   697,   698,    36,    55,    55,   906,    47,    39,
+       3,     4,    47,    31,     7,    47,    47,   916,     3,     4,
+     125,    14,    48,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    39,    47,    94,    93,    30,     3,     4,
+      25,    26,     7,    36,    47,    42,    48,    42,    42,    14,
+      48,    42,    48,    42,    47,    42,   132,   956,   957,    42,
+     959,   960,    48,    55,    30,    30,    47,    55,     3,     4,
+      47,    36,    37,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    55,     3,     4,    55,   986,     7,   132,
+      25,    26,    47,  1030,    42,    14,    42,   792,     3,     4,
+     999,    33,     7,     3,     4,    55,    32,     7,  1045,    14,
+      47,    30,    42,    42,    14,  1014,    31,    36,  1017,  1018,
+      31,    42,  1021,    33,    42,    30,    90,    29,    47,    33,
+      30,    36,    55,    55,    42,  1072,    36,    40,    55,    55,
+     125,  1040,    47,    31,    42,     3,     4,    47,    55,   133,
+       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
+      36,    31,    42,    31,  1063,    55,  1065,    25,    26,     1,
+    1032,   883,  1073,   817,   821,  1074,   491,   492,   493,   494,
+     495,   496,   497,   498,   499,     0,     1,   885,     3,     4,
+     125,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,  1072,    30,  1069,    32,    -1,    34,
+      35,    36,    37,    38,    39,    -1,    -1,    -1,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
+      -1,    56,    57,    -1,    59,    -1,    61,    62,    63,    -1,
+      65,    -1,    67,    68,    69,    70,    71,    -1,    73,    74,
+      75,    76,    77,    78,    -1,    -1,    -1,   125,    -1,    -1,
+      85,    86,    87,    88,    89,    -1,    -1,    -1,    -1,    -1,
+      95,    96,    97,    98,    99,    -1,   101,   102,   103,   104,
+     105,   106,   107,   108,   109,   110,   111,   112,   113,   114,
+     115,   116,   117,   118,    -1,   120,    -1,    -1,   123,    -1,
+      -1,   126,    -1,   128,    -1,   130,    -1,    -1,    -1,   134,
+     135,   136,   137,   138,   139,   140,    -1,    -1,    -1,   144,
+     145,    -1,   147,    -1,   149,    -1,   151,    -1,   153,   154,
+     155,   156,    -1,   158,   159,   160,   161,   162,   163,   164,
+     165,   166,   167,   168,   169,   170,   171,   172,   173,   174,
+     175,   176,   177,   178,   179,   180,   181,   182,   183,   184,
+     185,   186,   187,   188,   189,   190,   191,   192,   193,     3,
+       4,    -1,     6,     7,     8,     9,    10,    11,    12,    13,
+      14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    -1,    30,    -1,    32,    -1,
+      34,    35,    36,    37,    38,    39,    -1,    -1,    -1,    43,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,    -1,    56,    57,    -1,    59,    -1,    61,    62,    63,
+      -1,    65,    -1,    67,    68,    69,    70,    71,    -1,    73,
+      74,    75,    76,    77,    78,    -1,    -1,    -1,    -1,    -1,
+      -1,    85,    86,    87,    88,    89,    -1,    -1,    -1,    -1,
+      -1,    95,    96,    -1,    98,    99,    -1,   101,   102,   103,
+     104,   105,   106,   107,   108,   109,   110,   111,   112,   113,
+     114,   115,   116,   117,   118,    -1,   120,    -1,    -1,   123,
+      -1,    -1,   126,    -1,   128,    -1,   130,    -1,    -1,    -1,
+     134,   135,   136,   137,   138,   139,   140,    -1,    -1,    -1,
+     144,   145,    -1,   147,    -1,   149,    -1,   151,    -1,   153,
+     154,   155,   156,    -1,   158,   159,   160,   161,   162,   163,
+     164,   165,   166,   167,   168,   169,   170,   171,   172,   173,
+     174,   175,   176,   177,   178,   179,   180,   181,   182,   183,
+     184,   185,   186,   187,   188,   189,   190,   191,   192,     3,
+       4,     3,     4,     7,    -1,     7,    -1,    -1,    -1,    -1,
+      14,    -1,    14,     3,     4,    -1,    -1,     7,    -1,    -1,
+      -1,    -1,    -1,    -1,    14,    -1,    30,    -1,    30,    -1,
+      -1,    -1,    36,    -1,    36,    -1,    -1,     3,     4,    -1,
+      30,     7,    -1,    47,    -1,    47,    36,    -1,    14,     3,
+       4,     3,     4,     7,    -1,     7,    -1,    47,    -1,    -1,
+      14,    -1,    14,    -1,    30,    -1,    -1,    -1,    -1,    -1,
+      36,    -1,    -1,    -1,    -1,    -1,    30,    -1,    30,     3,
+       4,    47,    36,     7,    36,    -1,    -1,    -1,     3,     4,
+      14,    -1,     7,    47,    -1,    47,    -1,     3,     4,    14,
+       6,     7,    -1,    -1,    -1,    -1,    30,    -1,    14,     3,
+       4,    -1,    36,     7,    -1,    30,    -1,    -1,    -1,    -1,
+      14,    36,    -1,    47,    30,    -1,    -1,    -1,    -1,    35,
+      36,    37,    38,    -1,    -1,    -1,    30,    -1,    44,    -1,
+      -1,    -1,    36,    37,    38,    -1,     3,     4,    -1,    -1,
+      44,     8,     9,    10,    11,    12,    13,    14,    15,    16,
+      17,    -1,    -1,    -1,     3,     4,    -1,    -1,    25,    26,
+       9,    10,    11,    12,    13,    14,    15,    -1,    -1,    -1,
+       8,     9,    10,    11,    12,    42,    14,    15,    16,    17,
+      18,    19,    20,    21,    22,    23,    24,    25,    26,    27,
+      28,     3,     4,    -1,     6,     7,    -1,    -1,    -1,     3,
+       4,    -1,    14,    -1,    42,     9,    10,    11,    12,    13,
+      14,    15,    -1,    -1,    -1,    -1,    -1,    -1,    30,    -1,
+      -1,     3,     4,    35,    36,    37,     8,     9,    10,    11,
+      12,    13,    14,    15,    16,    17,    18,    19,    20,    21,
+      22,    23,    24,    25,    26,     3,     4,    -1,    -1,    31,
+       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    25,    26,     3,
+       4,    -1,    -1,    31,    -1,     9,    10,    11,    12,    13,
+      14,    15,     8,     9,    10,    11,    12,    13,    14,    15,
+      16,    17,    -1,    27,    28,     3,     4,    31,    -1,    25,
+      26,     9,    10,    11,    12,    13,    14,    15,     3,     4,
+      -1,    -1,    -1,    -1,     9,    10,    11,    12,    13,    14,
+      15,     3,     4,    31,    -1,    -1,    -1,     9,    10,    11,
+      12,    13,    14,    15,    -1,    -1,    31,    -1,    -1,    -1,
+      -1,    -1,     3,     4,    -1,    27,    28,     8,     9,    10,
+      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,     3,     4,    -1,    -1,
+      -1,     8,     9,    10,    11,    12,    13,    14,    15,    16,
+      17,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    25,    26,
+       8,     9,    10,    11,    12,    -1,    14,    15,    16,    17,
+      18,    19,    20,    21,    22,    23,    24,    25,    26,    27,
+      28,     9,    10,    11,    12,    13,    14,    15,     9,    10,
+      11,    12,    13,    14,    15,    16,    17,    -1,    -1,    27,
+      28,    -1,    -1,    -1,    25,    26
+};
+
+  /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
+     symbol of state STATE-NUM.  */
+static const yytype_uint16 yystos[] =
+{
+       0,   197,     0,     1,   198,   199,   200,   201,   193,    40,
+       3,     4,     6,     7,     8,     9,    10,    11,    12,    13,
+      14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    30,    32,    34,    35,    36,
+      37,    38,    39,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,    54,    56,    57,    59,    61,    62,
+      63,    65,    67,    68,    69,    70,    71,    73,    74,    75,
+      76,    77,    78,    85,    86,    87,    88,    89,    95,    96,
+      98,    99,   102,   104,   105,   106,   107,   108,   109,   110,
+     111,   112,   113,   114,   115,   116,   117,   118,   120,   123,
+     126,   128,   130,   134,   135,   136,   137,   138,   139,   140,
+     144,   147,   149,   151,   153,   154,   155,   156,   158,   159,
+     160,   161,   162,   163,   164,   165,   166,   167,   168,   169,
+     170,   171,   172,   173,   174,   175,   176,   177,   178,   179,
+     180,   181,   182,   183,   184,   185,   186,   187,   188,   189,
+     190,   191,   192,   202,   203,   204,   205,   206,   207,   208,
+     214,   223,   244,   245,   252,   253,   262,   263,   268,   269,
+     274,   281,   283,   285,   286,   287,   288,   289,   290,   291,
+     292,   294,   295,   296,   307,   308,   309,   310,   311,   312,
+     316,   317,   323,   324,   325,   331,   332,   333,   334,   348,
+     357,   358,   359,   360,   361,   362,   367,   368,   369,   374,
+     375,   376,   377,   378,   379,   380,   381,   382,   383,   384,
+     385,   386,   387,   388,   389,   390,   391,   392,   393,   394,
+     395,   396,   397,   398,   400,   402,   404,   405,   406,   407,
+     408,   409,   202,     3,     4,     6,     7,     8,    14,    30,
+      47,   288,   289,   291,   288,   289,   291,     3,     4,     6,
+      14,    30,   287,   291,     3,     4,    14,    30,    47,   288,
+      30,   291,   288,   288,   288,   288,   288,     3,     4,    30,
+     288,   291,     3,     4,    30,   288,   289,   290,    30,   288,
+     289,   288,   289,   288,   289,   288,   289,     6,    30,   287,
+     288,   289,   287,   288,   289,     7,    30,    47,   147,   149,
+     286,   287,   288,   289,   290,   291,   294,   295,   147,   149,
+     200,   284,   288,    30,   290,   146,     8,     9,    10,    11,
+      12,    14,    15,    16,    17,    18,    19,    20,    21,    22,
+      23,    24,    25,    26,    27,    28,    42,    47,    81,   126,
+     285,    81,   285,   285,   285,   288,    38,    55,    58,    66,
+      79,   119,   120,   126,   136,   147,   149,   403,    60,    66,
+      30,    30,   290,    72,    66,    79,   288,    47,    47,    79,
+      79,   127,    79,    58,    66,   100,   119,   120,   126,    30,
+      47,    47,    80,   275,    47,   282,    81,    82,    83,    83,
+      83,   285,   285,    55,    47,    38,   121,   121,    38,    38,
+      66,   141,   345,    30,    42,    30,    30,    47,    47,   152,
+     288,   288,    14,    15,    62,    63,    64,   155,   157,    38,
+     194,    38,   194,    38,    38,    38,    38,    38,    38,   194,
+      38,   194,    38,    38,    38,    38,    38,    41,    97,   248,
+     246,   101,   145,   103,   247,    39,    27,    28,     3,     4,
+       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
+      18,    19,    20,    21,    22,    23,    24,    25,    26,     3,
+       4,     9,    10,    11,    12,    13,    14,    15,    15,     3,
+       4,     9,    10,    11,    12,    13,    14,    15,    27,    28,
+      39,    39,    47,   288,   289,     8,     9,    10,    11,    12,
+      14,    15,    16,    17,    25,    26,     9,    10,    11,    12,
+      14,    15,   287,    27,    28,   290,    15,    30,    31,    31,
+      31,    31,    18,    19,    20,    21,    22,    23,    24,    31,
+      31,    31,    31,    31,    31,    33,    33,   284,    33,   290,
+     288,   288,   289,   288,   289,   288,   289,   288,   289,   288,
+     289,   288,   289,   290,   288,   288,   288,   288,   288,   288,
+     288,   288,   288,   288,   288,   287,   287,    29,    38,    38,
+      47,    30,   287,   288,   289,   290,    58,   288,    38,   121,
+      38,    30,    38,    38,    58,    47,   288,   285,   202,   288,
+      47,    42,    42,    47,    79,    47,    58,    38,   121,    38,
+     202,    47,   202,   202,    55,   288,   290,    84,   290,    47,
+      29,    38,    38,    38,   122,   124,    38,    30,    34,    48,
+     352,    36,    34,    48,   355,   202,    47,   318,    47,   326,
+      47,   288,    38,    38,    38,    38,    38,    38,   370,    30,
+     143,   258,   254,   264,    30,    47,   287,    47,   287,    47,
+     288,    47,   288,    47,   288,    47,   288,    47,   288,   288,
+      47,   288,    47,   288,    47,   288,    47,   288,    47,   288,
+      47,   288,    47,   288,    47,   288,    47,   288,    47,   288,
+      47,   288,    47,   288,    47,   288,     3,     4,    30,    47,
+     289,    47,   289,    47,   289,    47,   289,   289,    47,   289,
+      47,   289,    47,   290,   291,   291,   291,   291,   291,   291,
+     291,   291,   291,    55,   285,   290,    47,    55,   288,    38,
+     124,    34,    48,   356,   288,    31,    31,   288,    47,   288,
+      38,   124,    31,   276,   287,   288,   289,   290,    32,    29,
+      29,    38,   129,   288,    38,    34,    48,   353,    42,    31,
+      40,   297,    42,    31,    40,    31,   122,    32,   319,   122,
+      32,   327,   195,   195,   195,   195,   371,   249,    30,   202,
+     202,   270,   293,    55,   399,   288,   124,   125,   288,    42,
+      31,    40,    42,    32,   228,   125,   288,   209,   103,   313,
+      38,    38,    29,   125,    42,    31,    40,    55,    47,    48,
+      30,    55,    47,    48,   215,    47,   148,   320,   321,    47,
+     150,   328,   329,   202,   202,   259,    97,   143,   202,   401,
+     336,   288,   125,    55,    47,    48,   287,   288,   289,   290,
+     224,    32,   125,   131,    30,    38,   315,   122,    38,    55,
+      47,    48,    30,    42,    34,    48,   354,    30,    42,   131,
+      29,    47,    33,   321,    29,    47,    33,   329,   372,   250,
+     202,   255,   265,    39,   336,   125,    30,    42,   363,   364,
+     365,   366,   231,   232,   237,   238,   210,   277,    40,   314,
+     122,    30,    42,    34,    48,   337,   341,    55,    42,    31,
+      40,    34,    48,   339,   346,    55,   216,   285,   322,   285,
+     330,    42,    31,   260,    30,    30,   271,    34,    48,   340,
+     347,    55,   336,   336,   336,   336,    91,   225,   233,   233,
+      92,   229,   239,   239,   202,   202,    38,    33,    38,    34,
+      48,   338,   342,    55,    47,    31,    40,    55,    47,    48,
+      47,    31,    40,   202,    39,    39,   373,   251,    31,   256,
+     266,   202,    47,    31,    40,   285,    93,   235,   285,    94,
+     242,   211,    39,    47,    31,    40,    42,   335,    48,   298,
+      42,    42,    48,   217,   202,   202,   261,   202,   202,    39,
+      42,    48,   234,    42,   226,   240,    42,   230,   132,   278,
+      42,   349,    48,    55,   336,    47,    30,    55,    55,    47,
+     132,   202,   257,   267,   272,    55,    47,    42,   236,   227,
+      42,   243,    33,   212,   202,    55,    32,   351,    47,    42,
+     299,    42,   218,    31,    31,   202,    42,   202,   202,    33,
+     241,   202,    90,   220,    39,    29,   343,   344,   284,   350,
+      42,    55,   142,   285,   303,   304,   305,   306,    55,   220,
+     273,    55,   202,   221,   213,   279,   285,    33,   336,    55,
+      42,   300,    40,   219,    31,   202,   133,   222,   202,    42,
+     343,    55,   301,   142,   306,   222,   202,   132,   280,    36,
+      31,    42,    31,   302,    55,   336
+};
+
+  /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint16 yyr1[] =
 {
        0,   196,   197,   197,   199,   198,   198,   198,   201,   200,
@@ -1877,7 +2443,7 @@ static const yytype_uint16 yyr1[] =
      409,   409,   409,   409,   409,   409,   409,   409
 };
 
-/* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
+  /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     0,     2,     0,     2,     1,     1,     0,     2,
@@ -1943,896 +2509,41 @@ static const yytype_uint8 yyr2[] =
        1,     1,     1,     1,     1,     1,     1,     1
 };
 
-/* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
-   STATE-NUM when YYTABLE doesn't specify something else to do.  Zero
-   means the default is an error.  */
-static const yytype_uint16 yydefact[] =
-{
-       2,     0,     1,     7,     3,     0,     6,    72,     5,    72,
-     461,   460,   488,   464,   485,   458,   456,   454,   452,   450,
-     444,   448,   490,   489,   492,   470,   468,   469,   467,   466,
-     465,   486,   487,   462,   463,     0,     8,   128,   130,   135,
-     155,   168,    12,     0,     0,   493,     0,   172,     0,   397,
-     400,   403,   405,     0,     0,     0,     0,     0,   500,   501,
-     502,     0,   504,   507,     0,     0,     0,   512,     0,   514,
-       0,     0,     0,     0,     0,     0,     0,     0,   529,     0,
-       0,   532,   107,     0,   114,   533,     0,     0,     0,     0,
-       0,   543,   407,   409,     0,   544,     0,     0,     0,     0,
-       0,     0,     0,   505,   506,   337,     0,     0,   548,     0,
-       0,     0,     0,     0,     0,     0,   561,     0,   569,   570,
-     571,     0,     0,     0,     0,   578,     0,     0,     0,   582,
-     583,   584,   585,   586,   587,   588,   589,     0,     0,     0,
-       0,   596,     0,     0,     0,   600,   601,   602,   603,   604,
-     605,   606,   607,     9,    13,    14,    16,    15,    11,    26,
-      27,    28,    29,     0,    74,     0,    76,     0,    77,     0,
-      78,    79,    17,     0,   119,   120,   121,   122,   123,   124,
-     125,   126,   127,   254,     0,   270,   283,   284,   285,   272,
-     273,   274,   275,   276,   277,   278,   279,   271,   317,   318,
-       0,   362,   363,   364,   365,   366,   367,   368,   491,   369,
-     370,   371,   372,   373,   374,   375,   376,   377,   378,   379,
-     380,   381,   382,   383,   384,   385,   386,   387,   388,   389,
-     390,   391,   392,   549,   550,     0,   393,   394,   395,   396,
-      18,    19,    10,     0,     0,     0,     0,     0,     0,     0,
-     172,   146,   165,   187,   144,   163,   185,     0,     0,     0,
-       0,   247,   151,     0,     0,     0,     0,     0,   131,   174,
-       0,   173,   459,   457,   455,   453,   451,     0,     0,     0,
-     445,   446,   447,     0,     0,     0,   141,   182,     0,   478,
-     484,   476,   482,   477,   483,   475,   481,     0,     0,   472,
-     474,   480,   471,   473,   479,     0,     0,   172,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       8,     0,   449,     0,   170,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    23,   280,   399,     0,
-     398,   402,   401,   404,   406,   414,     0,     0,   418,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,   503,
-       0,    72,   508,     0,   513,     0,   515,   314,   315,   517,
-       0,     0,     0,   522,     0,   524,     0,     0,     0,    72,
-     530,   316,     0,    72,   282,    72,     0,     0,     0,     0,
-     542,   408,   410,     0,     0,     0,     0,     0,     0,     0,
-     547,   338,     0,     0,     0,     0,    72,   296,   305,     0,
-     510,   511,   562,   563,   566,   567,   568,   565,     0,   572,
-       0,   574,     0,     0,   577,   579,   580,   581,   590,     0,
-     592,     0,     0,   595,   597,   598,   599,   495,     0,    73,
-       0,    86,    96,     0,    80,    20,     0,     0,   147,   145,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,   166,
-     164,     0,     0,     0,     0,     0,     0,     0,     0,   188,
-     186,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      21,    22,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,   557,   559,
-     129,   134,     0,     0,     0,     0,     0,     0,     0,   154,
-     167,   171,   189,   198,   255,   558,   560,   118,   116,   494,
-     241,   208,   220,   207,   219,   206,   218,   205,   217,   203,
-     215,   227,   204,   216,   249,   248,   253,   240,   238,   239,
-     237,   236,   235,   242,   243,   199,   201,     0,   411,     0,
-     412,     0,   419,   420,   421,   422,     0,   424,   425,     0,
-       0,     0,   438,   439,     0,   443,   442,     0,     0,   509,
-     516,    24,    25,   518,     0,     0,   523,   525,     0,     0,
-       0,   531,   108,   115,     0,   538,   539,   540,   541,   413,
-       0,     0,     0,     0,     0,     0,     0,     0,   347,     0,
-       0,   256,   356,     0,     0,     0,   303,     0,   312,     0,
-     440,   564,     0,     0,   576,     0,     0,   594,   496,    81,
-       0,    75,    72,    72,   102,   200,   132,   202,   133,   244,
-     148,   214,   143,   213,   142,   140,   212,   139,   211,   138,
-     209,   136,   210,   137,   251,   153,   250,   152,   252,   197,
-     234,   195,   232,   193,   233,   194,   231,   192,   230,   191,
-     229,   190,   245,   149,   246,   150,     0,     0,     0,   226,
-     162,   225,   161,   160,   224,   159,   223,   158,   221,   156,
-     222,   157,   228,   169,   184,   183,   181,   180,   179,   177,
-     178,   175,   176,   551,   281,   415,   423,   417,   416,   426,
-       0,   359,     0,     0,     0,     0,    51,   520,   519,   521,
-     526,     0,    30,     0,   535,   534,   536,   537,   290,     0,
-       0,   288,   546,     0,   545,   350,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    36,     0,     0,   297,     0,
-       0,   306,   573,   575,   591,   593,    72,    72,    91,     0,
-       0,    72,   196,   553,   321,   441,     0,   429,     0,     0,
-       0,     0,     0,    46,     0,   528,     0,     0,     0,     0,
-     286,     0,     0,   289,     0,     0,     0,   348,     0,     0,
-       0,   357,     0,     0,     0,     0,     0,     0,   299,     0,
-       0,     0,   308,   497,    82,    72,    87,    97,     0,   321,
-     552,     0,   428,   360,     0,     0,   430,   432,   434,   436,
-      55,    63,   527,    31,   109,   293,   291,     0,   287,   351,
-       0,     0,     0,     0,   353,     0,     0,     0,     0,    37,
-       0,   301,   298,   300,     0,   310,   307,   309,     0,     0,
-      92,     0,     0,   103,   554,   427,     0,     0,   321,   321,
-     321,   321,    47,     0,    52,     0,    72,    72,     0,     0,
-       0,     0,     0,   331,     0,     0,   322,   349,     0,     0,
-       0,   340,     0,     0,   326,   358,    72,   304,     0,   313,
-       0,   498,    83,     0,    88,    98,    72,   342,     0,     0,
-     328,   361,   431,   433,   435,   437,     0,    60,    57,    56,
-       0,    69,    65,    64,    32,     0,   294,   292,   295,   333,
-       0,     0,   324,   352,     0,   319,     0,   354,   257,     0,
-       0,   555,     0,    38,   302,   311,    72,    72,    93,    72,
-      72,     0,     0,   556,     0,    58,     0,    48,    66,     0,
-      53,     0,   110,     0,   343,     0,     0,   321,     0,     0,
-       0,     0,     0,     0,   499,    84,    72,    89,    99,   104,
-       0,     0,     0,    61,    49,     0,    70,     0,    33,    72,
-       0,     0,     0,   330,   320,     0,   258,   355,   339,     0,
-      39,    94,     0,     0,    72,   341,     0,    72,    72,     0,
-      67,    72,    54,    42,     0,   334,     8,   344,     0,     0,
-       0,     0,    42,    90,   100,   105,     0,    59,    62,    50,
-      72,    71,    43,    34,   111,     0,   332,   335,     0,   321,
-       0,   323,     0,   269,   259,   263,   264,   265,   327,    40,
-       0,   329,    68,    72,     0,    72,     0,   346,   345,   334,
-       0,   260,     0,     0,    72,     0,    45,    35,   112,     0,
-     325,   267,     0,     0,   266,    41,   106,    44,     0,   336,
-     261,     0,   113,   321,   268,   262
-};
 
-/* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int16 yydefgoto[] =
-{
-      -1,     1,     4,     5,   320,     7,   153,   154,   155,   156,
-     157,   158,   159,   797,   886,   971,  1023,  1064,   160,   814,
-     906,   983,  1032,  1073,  1043,  1063,  1077,   161,   840,   927,
-     994,  1019,   794,   931,   997,   882,   883,   928,   992,   967,
-    1018,   884,   885,   932,   995,  1040,   970,  1021,   162,   163,
-     450,   454,   449,   777,   869,   957,   164,   165,   652,   871,
-     959,  1012,   651,   825,   913,   986,   166,   167,   653,   872,
-     960,  1013,   168,   169,   781,   916,  1014,  1060,   170,   393,
-     743,   887,   999,  1065,  1088,   171,   395,   172,   321,   173,
-     174,   175,   176,   177,   178,   179,   180,   782,   181,   182,
-     183,   761,   979,  1030,  1071,  1082,  1093,  1054,  1055,  1056,
-    1057,   184,   185,   186,   187,   188,   189,   799,   889,   846,
-     190,   191,   637,   768,   817,   818,   908,   192,   193,   194,
-     639,   771,   821,   822,   910,   195,   196,   197,   198,   977,
-     830,   895,   941,   903,   919,   896,   942,  1046,  1047,   412,
-     904,   920,   199,  1001,  1049,  1027,   630,   757,   856,   634,
-     733,   200,   201,   202,   203,   204,   205,   878,   879,   880,
-     881,   206,   207,   208,   648,   776,   868,   956,   209,   210,
-     211,   212,   213,   214,   215,   216,   217,   218,   219,   220,
-     221,   222,   223,   224,   225,   226,   227,   228,   229,   230,
-     231,   232,   233,   784,   234,   829,   235,   367,   236,   237,
-     238,   239,   240,   241
-};
+#define yyerrok         (yyerrstatus = 0)
+#define yyclearin       (yychar = YYEMPTY)
+#define YYEMPTY         (-2)
+#define YYEOF           0
 
-/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
-   STATE-NUM.  */
-#define YYPACT_NINF -801
-static const yytype_int16 yypact[] =
-{
-    -801,  1070,  -801,  -801,  -801,  -120,    55,  1261,  -801,  1261,
-     486,   486,   264,   702,   345,   567,   567,   567,   567,   567,
-    1599,   531,  -801,  -801,  -801,  1627,  1627,  1627,  1627,  1693,
-    1693,  -801,  -801,  -801,  -801,    52,     5,  -801,  -801,  -801,
-    -801,  -801,  -801,   567,   164,  -801,   -30,  1667,    75,   410,
-     592,   176,   176,   567,   110,    98,   169,   116,  -801,  -801,
-    -801,   115,  -801,   162,   166,   164,   131,  -801,   155,  -801,
-     201,   178,   227,   172,   -35,   208,    25,   267,   255,   260,
-     265,  -801,  -801,   310,  -801,  -801,   291,   297,   300,   302,
-     307,  -801,   176,   176,   338,  -801,   356,   367,   287,   290,
-     386,   395,   373,  -801,  -801,   308,   411,   413,  -801,   422,
-     426,   430,   431,   327,   567,   567,  -801,    38,  -801,  -801,
-    -801,   -26,   -16,   442,   445,  -801,   446,   447,   448,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,    -8,    -7,   458,
-     459,  -801,   461,   462,   464,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,   474,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,   420,  -801,   419,  -801,   379,  -801,   424,
-    -801,  -801,  -801,   487,  -801,    15,  1808,  1609,   514,   643,
-    -801,  -801,  -801,  -801,   490,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-     493,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,   494,  -801,  -801,  -801,  -801,
-    -801,  -801,   474,   486,   486,   567,   345,   345,   531,   486,
-    -801,  1872,   576,  1036,  1872,   576,  1036,   567,   567,   567,
-     567,  -801,  1872,   345,   345,   702,   345,   702,   346,  1036,
-     345,  1036,  1832,  1832,  1832,  1832,  1832,  1627,  1627,  1599,
-    1832,  1656,   526,   531,   531,   531,  1872,  1036,  1627,  1832,
-    1656,  1832,  1656,  1832,  1656,  1832,  1656,    42,  1693,   346,
-    1832,  1656,   346,  1832,  1656,   264,   176,  1851,   512,   516,
-     518,   392,  1723,  1771,    62,   832,   520,   522,   521,   524,
-      87,   527,  1832,   164,   526,   164,   567,  1627,  1627,  1627,
-    1627,  1599,  1627,   567,   567,   567,   567,   567,   567,   567,
-     567,   567,   567,   567,    42,    42,  -801,   534,  -801,   530,
-    -801,  -801,  -801,  -801,  -801,  1832,   536,   517,  1571,   507,
-     567,   537,   451,   538,   539,   543,   563,   525,   406,  -801,
-     176,  1261,   526,   567,  -801,   558,  1832,   564,   566,  -801,
-     562,   532,   570,  -801,   552,  -801,   575,   498,   583,  1261,
-    -801,  -801,   577,  1261,  -801,  1261,   230,   164,   541,   164,
-    -801,  -801,  -801,   584,   603,   595,   596,   597,   149,   599,
-    -801,  -801,   608,     6,   604,    13,  1261,   594,   598,   615,
-    1832,  1832,  -801,  -801,  -801,  -801,  -801,  -801,   567,  -801,
-     613,  -801,   625,   627,  -801,  -801,  -801,  -801,  -801,   628,
-    -801,   629,   630,  -801,  -801,  -801,  -801,  -801,   612,  -801,
-     529,  -801,  -801,   646,  -801,  -801,    27,    68,  -801,  -801,
-     771,   834,   919,   567,   956,   966,   985,  1451,  1455,  1459,
-    1469,  1473,  1504,  1508,  1518,  1522,  1526,  1557,  1564,  -801,
-    -801,    67,   185,    81,   317,   385,   484,   515,   268,  -801,
-    -801,   345,   345,   345,   345,   345,   345,   345,   345,   345,
-    -801,  -801,   623,  1747,  1784,   567,   567,   567,   567,   567,
-     567,   567,   567,   567,   567,   567,    81,    81,    81,    81,
-      81,    81,   400,    42,    42,    93,   164,    42,  -801,  -801,
-    -801,  -801,   642,   644,   645,   647,   648,   657,   661,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,   526,
-    1832,  1832,  1656,  1832,  1656,  1832,  1656,  1832,  1656,  1832,
-    1656,   526,  1832,  1656,  1832,  1832,  1832,  1832,  1832,  1832,
-    1832,  1832,  1832,  1832,  1832,   346,   346,   176,  -801,   164,
-    -801,  1571,   346,  1832,  1656,   526,   340,  1832,  -801,   652,
-     569,    16,  -801,  -801,   567,  -801,  1832,   680,   144,  1832,
-    -801,  -801,  -801,  -801,   567,   666,   567,  -801,   676,   591,
-     187,  -801,   474,   474,  1571,  1832,   526,  -801,   526,  -801,
-     684,   690,   691,   683,   593,   567,   685,    95,  -801,   682,
-     129,  -801,  -801,   689,   186,   188,   605,   694,   611,   703,
-    -801,  1832,   546,   547,  -801,   548,   549,  -801,  -801,  -801,
-     704,  -801,  1261,  1261,  -801,  -801,   708,  -801,  -801,  -801,
-    1890,  -801,  1890,  -801,  1890,   806,  -801,   806,  -801,   806,
-    -801,   352,  -801,   352,  -801,    40,  -801,    40,  -801,  1832,
-    -801,  1832,  -801,  1832,  -801,  1832,  -801,  1832,  -801,  1832,
-    -801,  1832,  -801,  -801,  -801,  -801,    81,    81,    81,  -801,
-     576,  -801,   576,   295,  -801,   295,  -801,   295,  -801,  -801,
-    -801,  -801,  -801,  -801,  1036,  1036,   423,   423,   423,   402,
-     402,   710,  -801,   695,  -801,   526,  -801,   567,  1832,   616,
-      33,  -801,   720,   222,  1636,   714,  -801,  1832,  -801,  1832,
-    -801,   194,  -801,   660,   346,  1832,  1656,   526,  -801,   726,
-     727,   737,  -801,   671,  -801,  -801,   729,   259,   718,   731,
-     728,   749,   725,   734,   735,  -801,   738,   634,  -801,   740,
-     649,  -801,  -801,  -801,  -801,  -801,  1261,  1261,  -801,    -3,
-     -20,  1261,  -801,  -801,  -801,  1832,   567,  -801,   744,   742,
-     748,   754,  1571,  -801,   772,  -801,   901,   672,   775,   768,
-    -801,   692,   781,  -801,   769,   778,   779,  -801,   796,   792,
-     107,  -801,   809,   808,   717,   833,   814,    -1,  -801,   836,
-     819,   -22,  -801,   474,   474,  1261,  -801,  -801,    80,  -801,
-    -801,   928,  -801,  -801,   837,   826,   346,  1832,  1656,   526,
-    -801,  -801,  -801,  -801,  -801,  -801,   831,   750,  -801,  -801,
-     843,   838,   122,   820,  -801,   840,   261,   125,   821,  -801,
-     176,  -801,  -801,  -801,   176,  -801,  -801,  -801,   842,   854,
-     474,   844,   856,  -801,  -801,  -801,   204,   839,  -801,  -801,
-    -801,  -801,   802,   802,   803,   803,  1261,  1261,   858,   865,
-     861,   216,   845,  -801,   855,   277,  -801,  -801,   846,   859,
-     860,  -801,   872,   282,  -801,  -801,  1261,  -801,   864,  -801,
-     881,  -801,  -801,   890,  -801,  -801,  1261,  -801,   877,   311,
-    -801,  -801,  -801,  -801,  -801,  -801,   176,   835,  -801,  -801,
-     176,   841,  -801,  -801,   474,   220,  -801,  -801,  -801,  -801,
-     883,   319,  -801,  -801,   891,  -801,   898,  -801,  -801,   914,
-     915,  -801,   910,   474,  -801,  -801,  1261,  1261,  -801,  1261,
-    1261,   322,   921,  -801,   913,  -801,   922,  -801,  -801,   923,
-    -801,   847,  -801,   925,  -801,   920,   918,  -801,   927,   945,
-     929,   932,   931,   848,   474,   474,  1261,   474,   474,  -801,
-     938,   935,   934,  -801,  -801,   952,  -801,   962,  -801,  1261,
-     942,   967,   954,  -801,  -801,   964,  -801,  -801,  -801,   965,
-    -801,   474,   973,   979,  1261,  -801,   972,  1261,  1261,   983,
-    -801,  1261,  -801,   930,   326,   988,  -801,  -801,   976,   968,
-     102,   969,   930,  -801,  -801,   474,   974,   474,   474,  -801,
-    1261,   474,  -801,  -801,  -801,   176,  -801,  -801,   986,  -801,
-     975,  -801,   980,  -801,  -801,  -801,   987,  -801,  -801,  -801,
-     997,  -801,   474,  1261,   900,  1261,   992,  -801,  -801,   988,
-    1000,  -801,   127,   900,  1261,    -6,  -801,  -801,   474,   999,
-    -801,  -801,  1021,  1015,  -801,  -801,   474,  -801,  1027,  -801,
-    -801,  1004,  -801,  -801,  -801,  -801
-};
+#define YYACCEPT        goto yyacceptlab
+#define YYABORT         goto yyabortlab
+#define YYERROR         goto yyerrorlab
 
-/* YYPGOTO[NTERM-NUM].  */
-static const yytype_int16 yypgoto[] =
-{
-    -801,  -801,  -801,  -801,  1059,  -801,    -9,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,    29,  -801,   -11,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,   183,  -801,  -801,
-    -801,  -801,  -801,   190,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -314,   -47,
-     -34,   137,    -2,   371,   219,   545,  -801,  -801,   -28,   -15,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-       0,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,   284,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,   278,  -801,  -801,  -801,  -801,  -801,  -801,
-    -800,  -801,  -801,  -801,  -801,  -801,  -801,    34,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,  -801,
-    -801,  -801,  -801,  -801
-};
-
-/* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
-   positive, shift that token.  If negative, reduce the rule which
-   number is the opposite.  If zero, do what YYDEFACT says.
-   If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -118
-static const yytype_int16 yytable[] =
-{
-     242,   310,   350,   352,   353,   354,   547,   316,   251,   254,
-     262,   866,   429,   272,   273,   274,   275,   276,   280,   286,
-     317,   447,   431,   289,   291,   293,   295,   300,   303,   874,
-     438,   440,   862,   312,   297,   447,   257,   258,   447,   245,
-     628,   322,   456,   457,   380,   401,   402,   632,   259,   297,
-     731,   355,   422,   423,   629,   243,   244,   527,   305,   265,
-     247,   633,    38,   260,   732,   514,   515,   248,   376,    39,
-     696,   697,   527,     8,   655,   297,   488,    38,   922,   923,
-     924,   925,   306,   383,   696,   697,    37,    38,    39,    40,
-      41,   384,   381,   541,   826,     9,    44,   698,   527,   307,
-     424,   425,   426,    38,    40,   243,   244,   526,   305,   265,
-     247,   698,   420,   421,   699,   657,   325,   248,    40,   873,
-    -117,   447,   347,   827,   541,   385,  1087,     9,   820,   755,
-     243,   244,   306,   305,   265,   247,    37,    38,    39,    40,
-      41,   854,   248,   756,   386,   387,    44,   816,   356,   307,
-     268,   388,   318,   357,   319,   855,   893,   306,   787,   901,
-     759,    37,    38,    39,    40,    41,   299,   302,   430,   760,
-     894,    44,   311,   902,   307,   736,   368,  1004,   432,   243,
-     244,   369,   305,   265,   247,   447,   439,   441,   696,   697,
-     107,   248,   370,   427,   323,   428,   371,   257,   258,   308,
-     245,   309,    41,   373,   257,   258,   306,   245,    44,   259,
-      37,    38,    39,    40,    41,   698,   259,   763,   742,   765,
-      44,   374,    40,   307,   260,   377,   764,   358,   447,   447,
-      39,   260,   701,   257,   258,   359,   245,    39,   917,   282,
-     107,   251,   254,   262,  1052,   259,   286,   503,   360,  1068,
-     939,   379,   918,   790,   314,   251,   254,   286,   503,   972,
-     260,   447,   791,   324,   940,   107,    39,   257,   258,  1083,
-     245,   624,   310,   625,   378,   251,   254,   503,   316,   259,
-     375,   251,   254,   503,   372,   614,   503,   382,   361,   362,
-     805,   317,   899,  1095,   260,   363,   503,   389,   323,   806,
-      39,   900,   390,   262,   312,   364,    41,   391,   945,   520,
-     521,   261,    44,   951,   107,   712,   365,   946,   366,   795,
-     696,   697,   952,   597,   550,   551,   553,   555,   557,   559,
-     562,   564,   565,   566,   567,   568,   569,   570,   571,   572,
-     573,   574,   963,   257,   258,   392,   245,   698,   263,   264,
-     974,   964,   246,   247,    40,   259,   583,   394,   587,   975,
-     266,   989,   598,   447,   704,  1044,   596,   447,   512,   513,
-     260,   599,   396,   523,   524,   270,    39,   514,   515,   397,
-     610,   252,   255,   398,   612,   399,   613,   726,   696,   697,
-     400,   281,   250,   403,   615,   727,   290,   292,   294,   296,
-     301,   304,   268,   404,   522,   405,   313,   635,   406,   257,
-     258,   407,   245,   243,   244,   698,   305,   265,   247,   456,
-     457,   259,    40,   531,   408,   248,   641,   523,   524,   498,
-     499,   531,   706,   409,   268,   522,   260,   496,   497,   410,
-     306,   413,    39,   311,    37,    38,    39,    40,    41,   411,
-     498,   499,   415,   595,    44,   414,   416,   307,   660,   662,
-     664,   665,   667,   669,   671,   673,   675,   677,   679,   681,
-     683,   685,   687,   689,   691,   693,   695,   417,   418,   419,
-     433,   575,   576,   434,   435,   436,   437,   696,   697,   243,
-     244,   348,   245,   246,   247,   582,   442,   443,   525,   444,
-     445,   248,   446,   660,   662,   664,   667,   669,   671,   673,
-     675,   677,   693,   695,   698,   447,   249,   448,   696,   697,
-     451,    40,    39,    40,   452,   314,   455,   453,   488,   500,
-     724,   708,   501,   250,   283,   284,   349,   245,   246,   247,
-     526,   502,   525,   528,   549,   698,   248,   529,   107,   530,
-     561,   543,    40,   544,   545,   253,   256,   546,   269,   271,
-     548,   285,   710,   577,   580,   586,   287,    39,   578,   591,
-     257,   258,   589,   245,   579,   588,   590,   585,   250,   503,
-     315,   592,   259,   594,   728,   516,   517,   483,   518,   519,
-     520,   521,   734,   656,   658,   243,   244,   260,   305,   265,
-     247,   593,   737,    39,   739,   600,   601,   248,   602,   603,
-     606,   604,   745,   607,   252,   255,   616,   605,   618,   608,
-     504,   609,   306,   753,   611,   617,    37,    38,    39,    40,
-      41,   619,   620,   621,   622,   623,    44,   626,   627,   307,
-     631,   636,   649,   779,   780,   638,   489,   490,   252,   255,
-     504,   642,   491,   492,   493,   494,   495,   496,   497,   504,
-     656,   658,   640,   643,   522,   644,   645,   646,   647,   504,
-     498,   499,   650,   351,   458,   459,   654,   313,   723,   505,
-     506,   507,   463,   508,   509,   510,   511,   512,   513,   678,
-     729,   680,   682,   730,   684,   686,   514,   515,   552,   554,
-     556,   558,   560,   563,   688,   263,   264,   713,   690,   265,
-     247,   735,  1048,   738,   740,   741,   748,   266,   522,   749,
-     750,   751,   752,   754,   758,   785,   767,   766,   788,   584,
-     107,   762,   267,   769,   778,   770,   524,    38,   499,   796,
-     786,   772,   773,   774,   775,   713,   793,   458,   459,   250,
-     783,   744,   505,   506,   507,   463,   508,   509,   510,   511,
-     512,   513,   789,   798,   800,   801,   802,   823,   824,   514,
-     515,   804,   828,   807,   257,   258,   809,   245,   808,   810,
-     811,   812,   816,   813,   831,   815,   259,   819,   253,   256,
-     837,   269,   271,   287,   315,   834,   803,   833,   725,   820,
-     525,   260,   835,   843,   841,   844,   845,    39,   253,   256,
-     269,   287,   315,   907,   847,   315,   870,   909,   659,   848,
-     510,   511,   512,   513,   849,   850,   852,   851,   253,   256,
-     315,   514,   515,   747,   853,   489,   490,   257,   258,   857,
-     245,   491,   492,   493,   494,   495,   496,   497,   859,   259,
-     858,   315,   700,   702,   703,   705,   707,   709,   711,   498,
-     499,   861,   860,   542,   260,   864,   865,   876,   877,   832,
-      39,   888,   890,   891,   914,   897,   905,   934,   935,   965,
-     892,   661,   898,   968,   911,   912,   915,   700,   702,   705,
-     707,   709,   711,   926,   921,   930,   936,   953,   937,   938,
-     943,   947,   944,   954,   458,   459,   948,   961,   949,   505,
-     506,   507,   463,   508,   509,   510,   511,   512,   513,   950,
-     955,   958,   257,   258,   962,   245,   514,   515,   966,   836,
-     973,   458,   459,   976,   259,   969,   505,   506,   507,   463,
-     508,   509,   510,   511,   512,   513,   978,   984,   985,   260,
-     987,   988,   504,   514,   515,    39,   980,   981,   982,   257,
-     258,   991,   245,   990,   993,   996,   663,  1000,  1002,   257,
-     258,   259,   245,  1003,  1005,  1006,  1017,  1011,  1009,   998,
-    1010,   259,  1016,  1053,  1007,   746,   260,  1008,   257,   258,
-    1024,   245,    39,  1015,  1020,  1022,   260,  1025,  1066,  1026,
-     259,  1028,    39,   666,  1033,  1035,  1029,  1031,  1037,  1038,
-    1034,   839,  1041,   668,  1036,   260,  1039,  1045,  1050,  1067,
-    1042,    39,  1070,  1051,  1058,  1053,   842,  1072,  1074,  1061,
-    1069,  1062,   670,  1076,  1079,  1089,   714,   715,   716,   717,
-     718,   719,   720,   721,   722,   491,   492,   493,   494,   495,
-     496,   497,  1090,   875,  1075,  1081,  1078,  1091,  1092,  1094,
-       6,  1059,  1085,   498,   499,  1086,   929,   252,   255,   504,
-       2,     3,  1084,    -8,    -8,   933,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,   867,
-      -8,   863,    -8,  1080,    -8,    -8,    -8,    -8,    -8,    -8,
-       0,     0,     0,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,     0,    -8,    -8,     0,    -8,
-       0,    -8,    -8,    -8,     0,    -8,     0,    -8,    -8,    -8,
-      -8,    -8,     0,    -8,    -8,    -8,    -8,    -8,    -8,     0,
-       0,     0,     0,     0,     0,    -8,    -8,    -8,    -8,    -8,
-       0,     0,     0,   838,     0,    -8,    -8,    -8,    -8,    -8,
-       0,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,     0,
-      -8,     0,     0,    -8,     0,     0,    -8,     0,    -8,     0,
-      -8,     0,     0,     0,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,     0,     0,     0,    -8,    -8,     0,    -8,     0,    -8,
-       0,    -8,     0,    -8,    -8,    -8,    -8,     0,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -4,    10,    11,     0,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-       0,    35,     0,    36,     0,    37,    38,    39,    40,    41,
-      42,     0,     0,     0,    43,    44,    45,    46,    47,    48,
-      49,    50,    51,    52,    53,    54,     0,    55,    56,     0,
-      57,     0,    58,    59,    60,     0,    61,     0,    62,    63,
-      64,    65,    66,     0,    67,    68,    69,    70,    71,    72,
-       0,     0,     0,     0,     0,     0,    73,    74,    75,    76,
-      77,     0,     0,     0,     0,     0,    78,    79,     0,    80,
-      81,     0,   -85,    82,  -101,    83,    84,    85,    86,    87,
-      88,    89,    90,    91,    92,    93,    94,    95,    96,    97,
-       0,    98,     0,     0,    99,     0,     0,   100,     0,   101,
-       0,   102,     0,     0,     0,   103,   104,   105,   106,   107,
-     108,   109,     0,     0,     0,   110,   -95,     0,   111,     0,
-     112,     0,   113,     0,   114,   115,   116,   117,     0,   118,
-     119,   120,   121,   122,   123,   124,   125,   126,   127,   128,
-     129,   130,   131,   132,   133,   134,   135,   136,   137,   138,
-     139,   140,   141,   142,   143,   144,   145,   146,   147,   148,
-     149,   150,   151,   152,   257,   258,     0,   245,   257,   258,
-       0,   245,   257,   258,     0,   245,   259,     0,     0,     0,
-     259,     0,   257,   258,   259,   245,   257,   258,     0,   245,
-       0,   260,     0,     0,   259,   260,     0,    39,   259,   260,
-       0,    39,     0,     0,     0,    39,     0,     0,   672,   260,
-       0,     0,   674,   260,     0,    39,   676,   257,   258,    39,
-     245,   257,   258,     0,   245,     0,   678,     0,     0,   259,
-     680,   257,   258,   259,   245,   257,   258,     0,   245,   257,
-     258,     0,   245,   259,   260,     0,     0,   259,   260,     0,
-      39,   259,     0,     0,    39,     0,     0,     0,   260,     0,
-       0,   682,   260,     0,    39,   684,   260,     0,    39,     0,
-     257,   258,    39,   245,     0,   686,     0,   257,   258,   688,
-     245,     0,   259,   690,   277,   278,     0,   245,   297,   259,
-       0,     0,     0,     0,     0,     0,   259,   260,     0,     0,
-       0,     0,     0,    39,   260,     0,     0,     0,     0,     0,
-      39,   581,   277,   278,   692,   245,    38,    39,    40,    41,
-       0,   694,   479,   480,   259,    44,     0,     0,   481,   482,
-     483,   484,   485,   486,   487,     0,     0,     0,     0,   279,
-     277,   278,     0,   245,     0,    39,    40,    41,     0,   458,
-     459,     0,   259,    44,   505,   506,   507,   463,   508,   509,
-     510,   511,   512,   513,     0,     0,     0,   288,     0,   479,
-     480,   514,   515,    39,    40,   516,   517,   483,   518,   519,
-     520,   521,     0,     0,     0,   326,   327,   328,   792,   329,
-     330,   331,   332,   333,   334,   335,   336,   337,   338,   339,
-     340,   341,   342,   343,   344,   345,   277,   278,     0,   245,
-     297,     0,     0,     0,     0,     0,     0,     0,   259,   346,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,   298,     0,     0,   458,   459,    38,    39,
-      40,   460,   461,   462,   463,   464,   465,   466,   467,   468,
-     469,   532,   533,   534,   535,   536,   537,   538,   477,   478,
-     458,   459,     0,     0,   539,   505,   506,   507,   463,   508,
-     509,   510,   511,   512,   513,     0,     0,     0,     0,     0,
-       0,     0,   514,   515,   479,   480,     0,     0,   539,     0,
-     481,   482,   483,   484,   485,   486,   487,   479,   480,     0,
-       0,     0,     0,   516,   517,   483,   518,   519,   520,   521,
-       0,     0,   540,     0,     0,     0,     0,     0,     0,     0,
-       0,   458,   459,     0,     0,   540,   460,   461,   462,   463,
-     464,   465,   466,   467,   468,   469,   470,   471,   472,   473,
-     474,   475,   476,   477,   478,   458,   459,     0,     0,     0,
-     505,   506,   507,   463,   508,   509,   510,   511,   512,   513,
-       0,     0,     0,     0,     0,     0,     0,   514,   515,   326,
-     327,   328,     0,   329,   330,   331,   332,   333,   334,   335,
-     336,   337,   338,   339,   340,   341,   342,   343,   344,   345,
-     505,   506,   507,   463,   508,   509,   510,   511,   512,   513,
-       0,     0,     0,     0,     0,     0,     0,   514,   515,   506,
-     507,   463,   508,   509,   510,   511,   512,   513,     0,     0,
-       0,     0,     0,     0,     0,   514,   515
-};
-
-static const yytype_int16 yycheck[] =
-{
-       9,    35,    49,    50,    51,    52,   320,    35,    10,    11,
-      12,    33,    38,    15,    16,    17,    18,    19,    20,    21,
-      35,    41,    38,    25,    26,    27,    28,    29,    30,   829,
-      38,    38,    33,    35,     7,    41,     3,     4,    41,     6,
-      34,    43,    27,    28,    79,    92,    93,    34,    15,     7,
-      34,    53,    14,    15,    48,     3,     4,    30,     6,     7,
-       8,    48,    35,    30,    48,    25,    26,    15,    70,    36,
-       3,     4,    30,   193,    47,     7,    14,    35,   878,   879,
-     880,   881,    30,    58,     3,     4,    34,    35,    36,    37,
-      38,    66,   127,    31,    97,    40,    44,    30,    30,    47,
-      62,    63,    64,    35,    37,     3,     4,    14,     6,     7,
-       8,    30,   114,   115,    47,    47,   146,    15,    37,    39,
-      33,    41,    47,   143,    31,   100,   132,    40,   150,    34,
-       3,     4,    30,     6,     7,     8,    34,    35,    36,    37,
-      38,    34,    15,    48,   119,   120,    44,   148,    38,    47,
-      13,   126,   147,    55,   149,    48,    34,    30,   125,    34,
-      31,    34,    35,    36,    37,    38,    29,    30,   194,    40,
-      48,    44,    35,    48,    47,    31,    60,   977,   194,     3,
-       4,    66,     6,     7,     8,    41,   194,   194,     3,     4,
-     138,    15,    30,   155,    30,   157,    30,     3,     4,   147,
-       6,   149,    38,    72,     3,     4,    30,     6,    44,    15,
-      34,    35,    36,    37,    38,    30,    15,    31,    31,    31,
-      44,    66,    37,    47,    30,    47,    40,    58,    41,    41,
-      36,    30,    47,     3,     4,    66,     6,    36,    34,    20,
-     138,   243,   244,   245,   142,    15,   248,   249,    79,  1049,
-      34,    79,    48,    31,    35,   257,   258,   259,   260,    39,
-      30,    41,    40,    44,    48,   138,    36,     3,     4,   142,
-       6,   122,   306,   124,    47,   277,   278,   279,   306,    15,
-      79,   283,   284,   285,    65,    55,   288,    79,   119,   120,
-      31,   306,    31,  1093,    30,   126,   298,    30,    30,    40,
-      36,    40,    47,   305,   306,   136,    38,    47,    31,    14,
-      15,    47,    44,    31,   138,    47,   147,    40,   149,   125,
-       3,     4,    40,   370,   326,   327,   328,   329,   330,   331,
-     332,   333,   334,   335,   336,   337,   338,   339,   340,   341,
-     342,   343,    31,     3,     4,    80,     6,    30,     3,     4,
-      31,    40,     7,     8,    37,    15,   358,    47,   360,    40,
-      15,    39,   371,    41,    47,    39,   368,    41,    16,    17,
-      30,   373,    81,    27,    28,    30,    36,    25,    26,    82,
-     389,    10,    11,    83,   393,    83,   395,    47,     3,     4,
-      83,    20,    47,    55,   396,    55,    25,    26,    27,    28,
-      29,    30,   265,    47,   267,    38,    35,   416,   121,     3,
-       4,   121,     6,     3,     4,    30,     6,     7,     8,    27,
-      28,    15,    37,    31,    38,    15,   428,    27,    28,    27,
-      28,    31,    47,    38,   297,   298,    30,    14,    15,    66,
-      30,    30,    36,   306,    34,    35,    36,    37,    38,   141,
-      27,    28,    30,    47,    44,    42,    30,    47,   460,   461,
-     462,   463,   464,   465,   466,   467,   468,   469,   470,   471,
-     472,   473,   474,   475,   476,   477,   478,    47,    47,   152,
-      38,   344,   345,    38,    38,    38,    38,     3,     4,     3,
-       4,    81,     6,     7,     8,   358,    38,    38,   279,    38,
-      38,    15,    38,   505,   506,   507,   508,   509,   510,   511,
-     512,   513,   514,   515,    30,    41,    30,    97,     3,     4,
-     101,    37,    36,    37,   145,   306,    39,   103,    14,    39,
-     577,    47,    39,    47,     3,     4,   126,     6,     7,     8,
-      14,    47,   323,    31,   325,    30,    15,    31,   138,    31,
-     331,    31,    37,    31,    33,    10,    11,    33,    13,    14,
-      33,    30,    47,    29,    47,    58,    21,    36,    38,    30,
-       3,     4,   121,     6,    38,    38,    38,   358,    47,   581,
-      35,    38,    15,    58,   586,     9,    10,    11,    12,    13,
-      14,    15,   594,   456,   457,     3,     4,    30,     6,     7,
-       8,    38,   604,    36,   606,    47,    42,    15,    42,    47,
-      58,    79,   614,    38,   243,   244,   397,    47,   399,   121,
-     249,    38,    30,   625,    47,    84,    34,    35,    36,    37,
-      38,    47,    29,    38,    38,    38,    44,    38,    30,    47,
-      36,    47,    30,   652,   653,    47,     3,     4,   277,   278,
-     279,    38,     9,    10,    11,    12,    13,    14,    15,   288,
-     523,   524,    47,    38,   527,    38,    38,    38,    38,   298,
-      27,    28,   143,    81,     3,     4,    30,   306,    55,     8,
-       9,    10,    11,    12,    13,    14,    15,    16,    17,    47,
-      38,    47,    47,   124,    47,    47,    25,    26,   327,   328,
-     329,   330,   331,   332,    47,     3,     4,   488,    47,     7,
-       8,    31,  1026,    47,    38,   124,    32,    15,   581,    29,
-      29,    38,   129,    38,    42,   727,    32,   122,   730,   358,
-     138,    42,    30,   122,    30,    32,    28,    35,    28,   741,
-     124,   195,   195,   195,   195,   526,    32,     3,     4,    47,
-      55,   614,     8,     9,    10,    11,    12,    13,    14,    15,
-      16,    17,    42,   103,    38,    38,    29,   776,   777,    25,
-      26,    42,   781,    55,     3,     4,    48,     6,    47,    30,
-      55,    47,   148,    48,   786,    47,    15,    47,   243,   244,
-     792,   246,   247,   248,   249,    47,   125,    55,   579,   150,
-     581,    30,    48,   131,    32,    30,    38,    36,   263,   264,
-     265,   266,   267,   860,   122,   270,   825,   864,    47,    38,
-      14,    15,    16,    17,    55,    47,    30,    48,   283,   284,
-     285,    25,    26,   614,    42,     3,     4,     3,     4,    30,
-       6,     9,    10,    11,    12,    13,    14,    15,   131,    15,
-      42,   306,   481,   482,   483,   484,   485,   486,   487,    27,
-      28,    47,    29,    31,    30,    29,    47,    30,    42,   125,
-      36,    40,   122,    30,    30,    55,    55,   886,   887,   926,
-      42,    47,    42,   930,    42,    31,    30,   516,   517,   518,
-     519,   520,   521,    91,    55,    92,    38,   906,    33,    38,
-      55,    55,    47,    39,     3,     4,    47,   916,    48,     8,
-       9,    10,    11,    12,    13,    14,    15,    16,    17,    47,
-      39,    31,     3,     4,    47,     6,    25,    26,    93,   792,
-      47,     3,     4,    42,    15,    94,     8,     9,    10,    11,
-      12,    13,    14,    15,    16,    17,    48,   956,   957,    30,
-     959,   960,   581,    25,    26,    36,    42,    42,    48,     3,
-       4,    48,     6,    42,    42,    42,    47,    42,    48,     3,
-       4,    15,     6,    55,    47,    30,    42,   986,    47,   132,
-     132,    15,    47,  1030,    55,   614,    30,    55,     3,     4,
-     999,     6,    36,    55,    42,    33,    30,    55,  1045,    32,
-      15,    47,    36,    47,    31,  1014,    42,    42,  1017,  1018,
-      31,   792,  1021,    47,    42,    30,    33,    29,    42,    33,
-      90,    36,    42,    55,    55,  1072,   125,    40,    31,    55,
-      55,  1040,    47,   133,    42,    36,   491,   492,   493,   494,
-     495,   496,   497,   498,   499,     9,    10,    11,    12,    13,
-      14,    15,    31,   125,  1063,    55,  1065,    42,    31,    55,
-       1,  1032,  1073,    27,    28,  1074,   883,   696,   697,   698,
-       0,     1,  1072,     3,     4,   885,     6,     7,     8,     9,
-      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    27,    28,   821,
-      30,   817,    32,  1069,    34,    35,    36,    37,    38,    39,
-      -1,    -1,    -1,    43,    44,    45,    46,    47,    48,    49,
-      50,    51,    52,    53,    54,    -1,    56,    57,    -1,    59,
-      -1,    61,    62,    63,    -1,    65,    -1,    67,    68,    69,
-      70,    71,    -1,    73,    74,    75,    76,    77,    78,    -1,
-      -1,    -1,    -1,    -1,    -1,    85,    86,    87,    88,    89,
-      -1,    -1,    -1,   792,    -1,    95,    96,    97,    98,    99,
-      -1,   101,   102,   103,   104,   105,   106,   107,   108,   109,
-     110,   111,   112,   113,   114,   115,   116,   117,   118,    -1,
-     120,    -1,    -1,   123,    -1,    -1,   126,    -1,   128,    -1,
-     130,    -1,    -1,    -1,   134,   135,   136,   137,   138,   139,
-     140,    -1,    -1,    -1,   144,   145,    -1,   147,    -1,   149,
-      -1,   151,    -1,   153,   154,   155,   156,    -1,   158,   159,
-     160,   161,   162,   163,   164,   165,   166,   167,   168,   169,
-     170,   171,   172,   173,   174,   175,   176,   177,   178,   179,
-     180,   181,   182,   183,   184,   185,   186,   187,   188,   189,
-     190,   191,   192,   193,     3,     4,    -1,     6,     7,     8,
-       9,    10,    11,    12,    13,    14,    15,    16,    17,    18,
-      19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
-      -1,    30,    -1,    32,    -1,    34,    35,    36,    37,    38,
-      39,    -1,    -1,    -1,    43,    44,    45,    46,    47,    48,
-      49,    50,    51,    52,    53,    54,    -1,    56,    57,    -1,
-      59,    -1,    61,    62,    63,    -1,    65,    -1,    67,    68,
-      69,    70,    71,    -1,    73,    74,    75,    76,    77,    78,
-      -1,    -1,    -1,    -1,    -1,    -1,    85,    86,    87,    88,
-      89,    -1,    -1,    -1,    -1,    -1,    95,    96,    -1,    98,
-      99,    -1,   101,   102,   103,   104,   105,   106,   107,   108,
-     109,   110,   111,   112,   113,   114,   115,   116,   117,   118,
-      -1,   120,    -1,    -1,   123,    -1,    -1,   126,    -1,   128,
-      -1,   130,    -1,    -1,    -1,   134,   135,   136,   137,   138,
-     139,   140,    -1,    -1,    -1,   144,   145,    -1,   147,    -1,
-     149,    -1,   151,    -1,   153,   154,   155,   156,    -1,   158,
-     159,   160,   161,   162,   163,   164,   165,   166,   167,   168,
-     169,   170,   171,   172,   173,   174,   175,   176,   177,   178,
-     179,   180,   181,   182,   183,   184,   185,   186,   187,   188,
-     189,   190,   191,   192,     3,     4,    -1,     6,     3,     4,
-      -1,     6,     3,     4,    -1,     6,    15,    -1,    -1,    -1,
-      15,    -1,     3,     4,    15,     6,     3,     4,    -1,     6,
-      -1,    30,    -1,    -1,    15,    30,    -1,    36,    15,    30,
-      -1,    36,    -1,    -1,    -1,    36,    -1,    -1,    47,    30,
-      -1,    -1,    47,    30,    -1,    36,    47,     3,     4,    36,
-       6,     3,     4,    -1,     6,    -1,    47,    -1,    -1,    15,
-      47,     3,     4,    15,     6,     3,     4,    -1,     6,     3,
-       4,    -1,     6,    15,    30,    -1,    -1,    15,    30,    -1,
-      36,    15,    -1,    -1,    36,    -1,    -1,    -1,    30,    -1,
-      -1,    47,    30,    -1,    36,    47,    30,    -1,    36,    -1,
-       3,     4,    36,     6,    -1,    47,    -1,     3,     4,    47,
-       6,    -1,    15,    47,     3,     4,    -1,     6,     7,    15,
-      -1,    -1,    -1,    -1,    -1,    -1,    15,    30,    -1,    -1,
-      -1,    -1,    -1,    36,    30,    -1,    -1,    -1,    -1,    -1,
-      36,    30,     3,     4,    47,     6,    35,    36,    37,    38,
-      -1,    47,     3,     4,    15,    44,    -1,    -1,     9,    10,
-      11,    12,    13,    14,    15,    -1,    -1,    -1,    -1,    30,
-       3,     4,    -1,     6,    -1,    36,    37,    38,    -1,     3,
-       4,    -1,    15,    44,     8,     9,    10,    11,    12,    13,
-      14,    15,    16,    17,    -1,    -1,    -1,    30,    -1,     3,
-       4,    25,    26,    36,    37,     9,    10,    11,    12,    13,
-      14,    15,    -1,    -1,    -1,     8,     9,    10,    42,    12,
-      13,    14,    15,    16,    17,    18,    19,    20,    21,    22,
-      23,    24,    25,    26,    27,    28,     3,     4,    -1,     6,
-       7,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    15,    42,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    30,    -1,    -1,     3,     4,    35,    36,
-      37,     8,     9,    10,    11,    12,    13,    14,    15,    16,
-      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
-       3,     4,    -1,    -1,    31,     8,     9,    10,    11,    12,
-      13,    14,    15,    16,    17,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    25,    26,     3,     4,    -1,    -1,    31,    -1,
-       9,    10,    11,    12,    13,    14,    15,     3,     4,    -1,
-      -1,    -1,    -1,     9,    10,    11,    12,    13,    14,    15,
-      -1,    -1,    31,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,     3,     4,    -1,    -1,    31,     8,     9,    10,    11,
-      12,    13,    14,    15,    16,    17,    18,    19,    20,    21,
-      22,    23,    24,    25,    26,     3,     4,    -1,    -1,    -1,
-       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    25,    26,     8,
-       9,    10,    -1,    12,    13,    14,    15,    16,    17,    18,
-      19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
-       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    25,    26,     9,
-      10,    11,    12,    13,    14,    15,    16,    17,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    25,    26
-};
-
-/* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
-   symbol of state STATE-NUM.  */
-static const yytype_uint16 yystos[] =
-{
-       0,   197,     0,     1,   198,   199,   200,   201,   193,    40,
-       3,     4,     6,     7,     8,     9,    10,    11,    12,    13,
-      14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    30,    32,    34,    35,    36,
-      37,    38,    39,    43,    44,    45,    46,    47,    48,    49,
-      50,    51,    52,    53,    54,    56,    57,    59,    61,    62,
-      63,    65,    67,    68,    69,    70,    71,    73,    74,    75,
-      76,    77,    78,    85,    86,    87,    88,    89,    95,    96,
-      98,    99,   102,   104,   105,   106,   107,   108,   109,   110,
-     111,   112,   113,   114,   115,   116,   117,   118,   120,   123,
-     126,   128,   130,   134,   135,   136,   137,   138,   139,   140,
-     144,   147,   149,   151,   153,   154,   155,   156,   158,   159,
-     160,   161,   162,   163,   164,   165,   166,   167,   168,   169,
-     170,   171,   172,   173,   174,   175,   176,   177,   178,   179,
-     180,   181,   182,   183,   184,   185,   186,   187,   188,   189,
-     190,   191,   192,   202,   203,   204,   205,   206,   207,   208,
-     214,   223,   244,   245,   252,   253,   262,   263,   268,   269,
-     274,   281,   283,   285,   286,   287,   288,   289,   290,   291,
-     292,   294,   295,   296,   307,   308,   309,   310,   311,   312,
-     316,   317,   323,   324,   325,   331,   332,   333,   334,   348,
-     357,   358,   359,   360,   361,   362,   367,   368,   369,   374,
-     375,   376,   377,   378,   379,   380,   381,   382,   383,   384,
-     385,   386,   387,   388,   389,   390,   391,   392,   393,   394,
-     395,   396,   397,   398,   400,   402,   404,   405,   406,   407,
-     408,   409,   202,     3,     4,     6,     7,     8,    15,    30,
-      47,   288,   289,   291,   288,   289,   291,     3,     4,    15,
-      30,    47,   288,     3,     4,     7,    15,    30,   287,   291,
-      30,   291,   288,   288,   288,   288,   288,     3,     4,    30,
-     288,   289,   290,     3,     4,    30,   288,   291,    30,   288,
-     289,   288,   289,   288,   289,   288,   289,     7,    30,   287,
-     288,   289,   287,   288,   289,     6,    30,    47,   147,   149,
-     286,   287,   288,   289,   290,   291,   294,   295,   147,   149,
-     200,   284,   288,    30,   290,   146,     8,     9,    10,    12,
-      13,    14,    15,    16,    17,    18,    19,    20,    21,    22,
-      23,    24,    25,    26,    27,    28,    42,    47,    81,   126,
-     285,    81,   285,   285,   285,   288,    38,    55,    58,    66,
-      79,   119,   120,   126,   136,   147,   149,   403,    60,    66,
-      30,    30,   290,    72,    66,    79,   288,    47,    47,    79,
-      79,   127,    79,    58,    66,   100,   119,   120,   126,    30,
-      47,    47,    80,   275,    47,   282,    81,    82,    83,    83,
-      83,   285,   285,    55,    47,    38,   121,   121,    38,    38,
-      66,   141,   345,    30,    42,    30,    30,    47,    47,   152,
-     288,   288,    14,    15,    62,    63,    64,   155,   157,    38,
-     194,    38,   194,    38,    38,    38,    38,    38,    38,   194,
-      38,   194,    38,    38,    38,    38,    38,    41,    97,   248,
-     246,   101,   145,   103,   247,    39,    27,    28,     3,     4,
-       8,     9,    10,    11,    12,    13,    14,    15,    16,    17,
-      18,    19,    20,    21,    22,    23,    24,    25,    26,     3,
-       4,     9,    10,    11,    12,    13,    14,    15,    14,     3,
-       4,     9,    10,    11,    12,    13,    14,    15,    27,    28,
-      39,    39,    47,   288,   289,     8,     9,    10,    12,    13,
-      14,    15,    16,    17,    25,    26,     9,    10,    12,    13,
-      14,    15,   287,    27,    28,   290,    14,    30,    31,    31,
-      31,    31,    18,    19,    20,    21,    22,    23,    24,    31,
-      31,    31,    31,    31,    31,    33,    33,   284,    33,   290,
-     288,   288,   289,   288,   289,   288,   289,   288,   289,   288,
-     289,   290,   288,   289,   288,   288,   288,   288,   288,   288,
-     288,   288,   288,   288,   288,   287,   287,    29,    38,    38,
-      47,    30,   287,   288,   289,   290,    58,   288,    38,   121,
-      38,    30,    38,    38,    58,    47,   288,   285,   202,   288,
-      47,    42,    42,    47,    79,    47,    58,    38,   121,    38,
-     202,    47,   202,   202,    55,   288,   290,    84,   290,    47,
-      29,    38,    38,    38,   122,   124,    38,    30,    34,    48,
-     352,    36,    34,    48,   355,   202,    47,   318,    47,   326,
-      47,   288,    38,    38,    38,    38,    38,    38,   370,    30,
-     143,   258,   254,   264,    30,    47,   287,    47,   287,    47,
-     288,    47,   288,    47,   288,   288,    47,   288,    47,   288,
-      47,   288,    47,   288,    47,   288,    47,   288,    47,   288,
-      47,   288,    47,   288,    47,   288,    47,   288,    47,   288,
-      47,   288,    47,   288,    47,   288,     3,     4,    30,    47,
-     289,    47,   289,   289,    47,   289,    47,   289,    47,   289,
-      47,   289,    47,   290,   291,   291,   291,   291,   291,   291,
-     291,   291,   291,    55,   285,   290,    47,    55,   288,    38,
-     124,    34,    48,   356,   288,    31,    31,   288,    47,   288,
-      38,   124,    31,   276,   287,   288,   289,   290,    32,    29,
-      29,    38,   129,   288,    38,    34,    48,   353,    42,    31,
-      40,   297,    42,    31,    40,    31,   122,    32,   319,   122,
-      32,   327,   195,   195,   195,   195,   371,   249,    30,   202,
-     202,   270,   293,    55,   399,   288,   124,   125,   288,    42,
-      31,    40,    42,    32,   228,   125,   288,   209,   103,   313,
-      38,    38,    29,   125,    42,    31,    40,    55,    47,    48,
-      30,    55,    47,    48,   215,    47,   148,   320,   321,    47,
-     150,   328,   329,   202,   202,   259,    97,   143,   202,   401,
-     336,   288,   125,    55,    47,    48,   287,   288,   289,   290,
-     224,    32,   125,   131,    30,    38,   315,   122,    38,    55,
-      47,    48,    30,    42,    34,    48,   354,    30,    42,   131,
-      29,    47,    33,   321,    29,    47,    33,   329,   372,   250,
-     202,   255,   265,    39,   336,   125,    30,    42,   363,   364,
-     365,   366,   231,   232,   237,   238,   210,   277,    40,   314,
-     122,    30,    42,    34,    48,   337,   341,    55,    42,    31,
-      40,    34,    48,   339,   346,    55,   216,   285,   322,   285,
-     330,    42,    31,   260,    30,    30,   271,    34,    48,   340,
-     347,    55,   336,   336,   336,   336,    91,   225,   233,   233,
-      92,   229,   239,   239,   202,   202,    38,    33,    38,    34,
-      48,   338,   342,    55,    47,    31,    40,    55,    47,    48,
-      47,    31,    40,   202,    39,    39,   373,   251,    31,   256,
-     266,   202,    47,    31,    40,   285,    93,   235,   285,    94,
-     242,   211,    39,    47,    31,    40,    42,   335,    48,   298,
-      42,    42,    48,   217,   202,   202,   261,   202,   202,    39,
-      42,    48,   234,    42,   226,   240,    42,   230,   132,   278,
-      42,   349,    48,    55,   336,    47,    30,    55,    55,    47,
-     132,   202,   257,   267,   272,    55,    47,    42,   236,   227,
-      42,   243,    33,   212,   202,    55,    32,   351,    47,    42,
-     299,    42,   218,    31,    31,   202,    42,   202,   202,    33,
-     241,   202,    90,   220,    39,    29,   343,   344,   284,   350,
-      42,    55,   142,   285,   303,   304,   305,   306,    55,   220,
-     273,    55,   202,   221,   213,   279,   285,    33,   336,    55,
-      42,   300,    40,   219,    31,   202,   133,   222,   202,    42,
-     343,    55,   301,   142,   306,   222,   202,   132,   280,    36,
-      31,    42,    31,   302,    55,   336
-};
-
-#define yyerrok		(yyerrstatus = 0)
-#define yyclearin	(yychar = YYEMPTY)
-#define YYEMPTY		(-2)
-#define YYEOF		0
-
-#define YYACCEPT	goto yyacceptlab
-#define YYABORT		goto yyabortlab
-#define YYERROR		goto yyerrorlab
-
-
-/* Like YYERROR except do call yyerror.  This remains here temporarily
-   to ease the transition to the new meaning of YYERROR, for GCC.
-   Once GCC version 2 has supplanted version 1, this can go.  */
-
-#define YYFAIL		goto yyerrlab
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)					\
-do								\
-  if (yychar == YYEMPTY && yylen == 1)				\
-    {								\
-      yychar = (Token);						\
-      yylval = (Value);						\
-      yytoken = YYTRANSLATE (yychar);				\
-      YYPOPSTACK (1);						\
-      goto yybackup;						\
-    }								\
-  else								\
-    {								\
+#define YYBACKUP(Token, Value)                                  \
+do                                                              \
+  if (yychar == YYEMPTY)                                        \
+    {                                                           \
+      yychar = (Token);                                         \
+      yylval = (Value);                                         \
+      YYPOPSTACK (yylen);                                       \
+      yystate = *yyssp;                                         \
+      goto yybackup;                                            \
+    }                                                           \
+  else                                                          \
+    {                                                           \
       yyerror (YY_("syntax error: cannot back up")); \
-      YYERROR;							\
-    }								\
-while (YYID (0))
+      YYERROR;                                                  \
+    }                                                           \
+while (0)
+
+/* Error token number */
+#define YYTERROR        1
+#define YYERRCODE       256
 
 
-#define YYTERROR	1
-#define YYERRCODE	256
-
-
-/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
-   If N is 0, then set CURRENT to the empty location which ends
-   the previous symbol: RHS[0] (always defined).  */
-
-#define YYRHSLOC(Rhs, K) ((Rhs)[K])
-#ifndef YYLLOC_DEFAULT
-# define YYLLOC_DEFAULT(Current, Rhs, N)				\
-    do									\
-      if (YYID (N))                                                    \
-	{								\
-	  (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;	\
-	  (Current).first_column = YYRHSLOC (Rhs, 1).first_column;	\
-	  (Current).last_line    = YYRHSLOC (Rhs, N).last_line;		\
-	  (Current).last_column  = YYRHSLOC (Rhs, N).last_column;	\
-	}								\
-      else								\
-	{								\
-	  (Current).first_line   = (Current).last_line   =		\
-	    YYRHSLOC (Rhs, 0).last_line;				\
-	  (Current).first_column = (Current).last_column =		\
-	    YYRHSLOC (Rhs, 0).last_column;				\
-	}								\
-    while (YYID (0))
-#endif
-
-
-/* YY_LOCATION_PRINT -- Print the location on the stream.
-   This macro was not mandated originally: define only if we know
-   we won't break user code: when these are the locations we know.  */
-
-#ifndef YY_LOCATION_PRINT
-# if YYLTYPE_IS_TRIVIAL
-#  define YY_LOCATION_PRINT(File, Loc)			\
-     fprintf (File, "%d.%d-%d.%d",			\
-	      (Loc).first_line, (Loc).first_column,	\
-	      (Loc).last_line,  (Loc).last_column)
-# else
-#  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
-# endif
-#endif
-
-
-/* YYLEX -- calling `yylex' with the right arguments.  */
-
-#ifdef YYLEX_PARAM
-# define YYLEX yylex (YYLEX_PARAM)
-#else
-# define YYLEX yylex ()
-#endif
 
 /* Enable debugging if requested.  */
 #if YYDEBUG
@@ -2842,54 +2553,46 @@ while (YYID (0))
 #  define YYFPRINTF fprintf
 # endif
 
-# define YYDPRINTF(Args)			\
-do {						\
-  if (yydebug)					\
-    YYFPRINTF Args;				\
-} while (YYID (0))
+# define YYDPRINTF(Args)                        \
+do {                                            \
+  if (yydebug)                                  \
+    YYFPRINTF Args;                             \
+} while (0)
 
-# define YY_SYMBOL_PRINT(Title, Type, Value, Location)			  \
-do {									  \
-  if (yydebug)								  \
-    {									  \
-      YYFPRINTF (stderr, "%s ", Title);					  \
-      yy_symbol_print (stderr,						  \
-		  Type, Value); \
-      YYFPRINTF (stderr, "\n");						  \
-    }									  \
-} while (YYID (0))
+/* This macro is provided for backward compatibility. */
+#ifndef YY_LOCATION_PRINT
+# define YY_LOCATION_PRINT(File, Loc) ((void) 0)
+#endif
 
 
-/*--------------------------------.
-| Print this symbol on YYOUTPUT.  |
-`--------------------------------*/
+# define YY_SYMBOL_PRINT(Title, Type, Value, Location)                    \
+do {                                                                      \
+  if (yydebug)                                                            \
+    {                                                                     \
+      YYFPRINTF (stderr, "%s ", Title);                                   \
+      yy_symbol_print (stderr,                                            \
+                  Type, Value); \
+      YYFPRINTF (stderr, "\n");                                           \
+    }                                                                     \
+} while (0)
 
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
+
+/*----------------------------------------.
+| Print this symbol's value on YYOUTPUT.  |
+`----------------------------------------*/
+
 static void
 yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
-#else
-static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
-#endif
 {
+  FILE *yyo = yyoutput;
+  YYUSE (yyo);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
     YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
-# else
-  YYUSE (yyoutput);
 # endif
-  switch (yytype)
-    {
-      default:
-	break;
-    }
+  YYUSE (yytype);
 }
 
 
@@ -2897,22 +2600,11 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep)
 | Print this symbol on YYOUTPUT.  |
 `--------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
-#else
-static void
-yy_symbol_print (yyoutput, yytype, yyvaluep)
-    FILE *yyoutput;
-    int yytype;
-    YYSTYPE const * const yyvaluep;
-#endif
 {
-  if (yytype < YYNTOKENS)
-    YYFPRINTF (yyoutput, "token %s (", yytname[yytype]);
-  else
-    YYFPRINTF (yyoutput, "nterm %s (", yytname[yytype]);
+  YYFPRINTF (yyoutput, "%s %s (",
+             yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
   yy_symbol_value_print (yyoutput, yytype, yyvaluep);
   YYFPRINTF (yyoutput, ")");
@@ -2923,16 +2615,8 @@ yy_symbol_print (yyoutput, yytype, yyvaluep)
 | TOP (included).                                                   |
 `------------------------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yy_stack_print (yytype_int16 *yybottom, yytype_int16 *yytop)
-#else
-static void
-yy_stack_print (yybottom, yytop)
-    yytype_int16 *yybottom;
-    yytype_int16 *yytop;
-#endif
 {
   YYFPRINTF (stderr, "Stack now");
   for (; yybottom <= yytop; yybottom++)
@@ -2943,49 +2627,42 @@ yy_stack_print (yybottom, yytop)
   YYFPRINTF (stderr, "\n");
 }
 
-# define YY_STACK_PRINT(Bottom, Top)				\
-do {								\
-  if (yydebug)							\
-    yy_stack_print ((Bottom), (Top));				\
-} while (YYID (0))
+# define YY_STACK_PRINT(Bottom, Top)                            \
+do {                                                            \
+  if (yydebug)                                                  \
+    yy_stack_print ((Bottom), (Top));                           \
+} while (0)
 
 
 /*------------------------------------------------.
 | Report that the YYRULE is going to be reduced.  |
 `------------------------------------------------*/
 
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule)
-#else
-static void
-yy_reduce_print (yyvsp, yyrule)
-    YYSTYPE *yyvsp;
-    int yyrule;
-#endif
+yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
 {
+  unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
-  unsigned long int yylno = yyrline[yyrule];
   YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
-	     yyrule - 1, yylno);
+             yyrule - 1, yylno);
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
-      yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
-		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       		       );
+      yy_symbol_print (stderr,
+                       yystos[yyssp[yyi + 1 - yynrhs]],
+                       &(yyvsp[(yyi + 1) - (yynrhs)])
+                                              );
       YYFPRINTF (stderr, "\n");
     }
 }
 
-# define YY_REDUCE_PRINT(Rule)		\
-do {					\
-  if (yydebug)				\
-    yy_reduce_print (yyvsp, Rule); \
-} while (YYID (0))
+# define YY_REDUCE_PRINT(Rule)          \
+do {                                    \
+  if (yydebug)                          \
+    yy_reduce_print (yyssp, yyvsp, Rule); \
+} while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
@@ -2999,7 +2676,7 @@ int yydebug;
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
-#ifndef	YYINITDEPTH
+#ifndef YYINITDEPTH
 # define YYINITDEPTH 200
 #endif
 
@@ -3014,7 +2691,6 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
 
 #if YYERROR_VERBOSE
 
@@ -3023,15 +2699,8 @@ int yydebug;
 #   define yystrlen strlen
 #  else
 /* Return the length of YYSTR.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static YYSIZE_T
 yystrlen (const char *yystr)
-#else
-static YYSIZE_T
-yystrlen (yystr)
-    const char *yystr;
-#endif
 {
   YYSIZE_T yylen;
   for (yylen = 0; yystr[yylen]; yylen++)
@@ -3047,16 +2716,8 @@ yystrlen (yystr)
 #  else
 /* Copy YYSRC to YYDEST, returning the address of the terminating '\0' in
    YYDEST.  */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static char *
 yystpcpy (char *yydest, const char *yysrc)
-#else
-static char *
-yystpcpy (yydest, yysrc)
-    char *yydest;
-    const char *yysrc;
-#endif
 {
   char *yyd = yydest;
   const char *yys = yysrc;
@@ -3086,27 +2747,27 @@ yytnamerr (char *yyres, const char *yystr)
       char const *yyp = yystr;
 
       for (;;)
-	switch (*++yyp)
-	  {
-	  case '\'':
-	  case ',':
-	    goto do_not_strip_quotes;
+        switch (*++yyp)
+          {
+          case '\'':
+          case ',':
+            goto do_not_strip_quotes;
 
-	  case '\\':
-	    if (*++yyp != '\\')
-	      goto do_not_strip_quotes;
-	    /* Fall through.  */
-	  default:
-	    if (yyres)
-	      yyres[yyn] = *yyp;
-	    yyn++;
-	    break;
+          case '\\':
+            if (*++yyp != '\\')
+              goto do_not_strip_quotes;
+            /* Fall through.  */
+          default:
+            if (yyres)
+              yyres[yyn] = *yyp;
+            yyn++;
+            break;
 
-	  case '"':
-	    if (yyres)
-	      yyres[yyn] = '\0';
-	    return yyn;
-	  }
+          case '"':
+            if (yyres)
+              yyres[yyn] = '\0';
+            return yyn;
+          }
     do_not_strip_quotes: ;
     }
 
@@ -3117,161 +2778,160 @@ yytnamerr (char *yyres, const char *yystr)
 }
 # endif
 
-/* Copy into YYRESULT an error message about the unexpected token
-   YYCHAR while in state YYSTATE.  Return the number of bytes copied,
-   including the terminating null byte.  If YYRESULT is null, do not
-   copy anything; just return the number of bytes that would be
-   copied.  As a special case, return 0 if an ordinary "syntax error"
-   message will do.  Return YYSIZE_MAXIMUM if overflow occurs during
-   size calculation.  */
-static YYSIZE_T
-yysyntax_error (char *yyresult, int yystate, int yychar)
+/* Copy into *YYMSG, which is of size *YYMSG_ALLOC, an error message
+   about the unexpected token YYTOKEN for the state stack whose top is
+   YYSSP.
+
+   Return 0 if *YYMSG was successfully written.  Return 1 if *YYMSG is
+   not large enough to hold the message.  In that case, also set
+   *YYMSG_ALLOC to the required number of bytes.  Return 2 if the
+   required number of bytes is too large to store.  */
+static int
+yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
+                yytype_int16 *yyssp, int yytoken)
 {
-  int yyn = yypact[yystate];
+  YYSIZE_T yysize0 = yytnamerr (YY_NULLPTR, yytname[yytoken]);
+  YYSIZE_T yysize = yysize0;
+  enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
+  /* Internationalized format string. */
+  const char *yyformat = YY_NULLPTR;
+  /* Arguments of yyformat. */
+  char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
+  /* Number of reported tokens (one for the "unexpected", one per
+     "expected"). */
+  int yycount = 0;
 
-  if (! (YYPACT_NINF < yyn && yyn <= YYLAST))
-    return 0;
-  else
+  /* There are many possibilities here to consider:
+     - If this state is a consistent state with a default action, then
+       the only way this function was invoked is if the default action
+       is an error action.  In that case, don't check for expected
+       tokens because there are none.
+     - The only way there can be no lookahead present (in yychar) is if
+       this state is a consistent state with a default action.  Thus,
+       detecting the absence of a lookahead is sufficient to determine
+       that there is no unexpected or expected token to report.  In that
+       case, just report a simple "syntax error".
+     - Don't assume there isn't a lookahead just because this state is a
+       consistent state with a default action.  There might have been a
+       previous inconsistent state, consistent state with a non-default
+       action, or user semantic action that manipulated yychar.
+     - Of course, the expected token list depends on states to have
+       correct lookahead information, and it depends on the parser not
+       to perform extra reductions after fetching a lookahead from the
+       scanner and before detecting a syntax error.  Thus, state merging
+       (from LALR or IELR) and default reductions corrupt the expected
+       token list.  However, the list is correct for canonical LR with
+       one exception: it will still contain any token that will not be
+       accepted due to an error action in a later state.
+  */
+  if (yytoken != YYEMPTY)
     {
-      int yytype = YYTRANSLATE (yychar);
-      YYSIZE_T yysize0 = yytnamerr (0, yytname[yytype]);
-      YYSIZE_T yysize = yysize0;
-      YYSIZE_T yysize1;
-      int yysize_overflow = 0;
-      enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
-      char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
-      int yyx;
+      int yyn = yypact[*yyssp];
+      yyarg[yycount++] = yytname[yytoken];
+      if (!yypact_value_is_default (yyn))
+        {
+          /* Start YYX at -YYN if negative to avoid negative indexes in
+             YYCHECK.  In other words, skip the first -YYN actions for
+             this state because they are default actions.  */
+          int yyxbegin = yyn < 0 ? -yyn : 0;
+          /* Stay within bounds of both yycheck and yytname.  */
+          int yychecklim = YYLAST - yyn + 1;
+          int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+          int yyx;
 
-# if 0
-      /* This is so xgettext sees the translatable formats that are
-	 constructed on the fly.  */
-      YY_("syntax error, unexpected %s");
-      YY_("syntax error, unexpected %s, expecting %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s");
-# endif
-      char *yyfmt;
-      char const *yyf;
-      static char const yyunexpected[] = "syntax error, unexpected %s";
-      static char const yyexpecting[] = ", expecting %s";
-      static char const yyor[] = " or %s";
-      char yyformat[sizeof yyunexpected
-		    + sizeof yyexpecting - 1
-		    + ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
-		       * (sizeof yyor - 1))];
-      char const *yyprefix = yyexpecting;
-
-      /* Start YYX at -YYN if negative to avoid negative indexes in
-	 YYCHECK.  */
-      int yyxbegin = yyn < 0 ? -yyn : 0;
-
-      /* Stay within bounds of both yycheck and yytname.  */
-      int yychecklim = YYLAST - yyn + 1;
-      int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
-      int yycount = 1;
-
-      yyarg[0] = yytname[yytype];
-      yyfmt = yystpcpy (yyformat, yyunexpected);
-
-      for (yyx = yyxbegin; yyx < yyxend; ++yyx)
-	if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-	  {
-	    if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
-	      {
-		yycount = 1;
-		yysize = yysize0;
-		yyformat[sizeof yyunexpected - 1] = '\0';
-		break;
-	      }
-	    yyarg[yycount++] = yytname[yyx];
-	    yysize1 = yysize + yytnamerr (0, yytname[yyx]);
-	    yysize_overflow |= (yysize1 < yysize);
-	    yysize = yysize1;
-	    yyfmt = yystpcpy (yyfmt, yyprefix);
-	    yyprefix = yyor;
-	  }
-
-      yyf = YY_(yyformat);
-      yysize1 = yysize + yystrlen (yyf);
-      yysize_overflow |= (yysize1 < yysize);
-      yysize = yysize1;
-
-      if (yysize_overflow)
-	return YYSIZE_MAXIMUM;
-
-      if (yyresult)
-	{
-	  /* Avoid sprintf, as that infringes on the user's name space.
-	     Don't have undefined behavior even if the translation
-	     produced a string with the wrong number of "%s"s.  */
-	  char *yyp = yyresult;
-	  int yyi = 0;
-	  while ((*yyp = *yyf) != '\0')
-	    {
-	      if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
-		{
-		  yyp += yytnamerr (yyp, yyarg[yyi++]);
-		  yyf += 2;
-		}
-	      else
-		{
-		  yyp++;
-		  yyf++;
-		}
-	    }
-	}
-      return yysize;
+          for (yyx = yyxbegin; yyx < yyxend; ++yyx)
+            if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR
+                && !yytable_value_is_error (yytable[yyx + yyn]))
+              {
+                if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
+                  {
+                    yycount = 1;
+                    yysize = yysize0;
+                    break;
+                  }
+                yyarg[yycount++] = yytname[yyx];
+                {
+                  YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
+                  if (! (yysize <= yysize1
+                         && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
+                    return 2;
+                  yysize = yysize1;
+                }
+              }
+        }
     }
+
+  switch (yycount)
+    {
+# define YYCASE_(N, S)                      \
+      case N:                               \
+        yyformat = S;                       \
+      break
+      YYCASE_(0, YY_("syntax error"));
+      YYCASE_(1, YY_("syntax error, unexpected %s"));
+      YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
+      YYCASE_(3, YY_("syntax error, unexpected %s, expecting %s or %s"));
+      YYCASE_(4, YY_("syntax error, unexpected %s, expecting %s or %s or %s"));
+      YYCASE_(5, YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s"));
+# undef YYCASE_
+    }
+
+  {
+    YYSIZE_T yysize1 = yysize + yystrlen (yyformat);
+    if (! (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
+      return 2;
+    yysize = yysize1;
+  }
+
+  if (*yymsg_alloc < yysize)
+    {
+      *yymsg_alloc = 2 * yysize;
+      if (! (yysize <= *yymsg_alloc
+             && *yymsg_alloc <= YYSTACK_ALLOC_MAXIMUM))
+        *yymsg_alloc = YYSTACK_ALLOC_MAXIMUM;
+      return 1;
+    }
+
+  /* Avoid sprintf, as that infringes on the user's name space.
+     Don't have undefined behavior even if the translation
+     produced a string with the wrong number of "%s"s.  */
+  {
+    char *yyp = *yymsg;
+    int yyi = 0;
+    while ((*yyp = *yyformat) != '\0')
+      if (*yyp == '%' && yyformat[1] == 's' && yyi < yycount)
+        {
+          yyp += yytnamerr (yyp, yyarg[yyi++]);
+          yyformat += 2;
+        }
+      else
+        {
+          yyp++;
+          yyformat++;
+        }
+  }
+  return 0;
 }
 #endif /* YYERROR_VERBOSE */
-
 
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |
 `-----------------------------------------------*/
 
-/*ARGSUSED*/
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 static void
 yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep)
-#else
-static void
-yydestruct (yymsg, yytype, yyvaluep)
-    const char *yymsg;
-    int yytype;
-    YYSTYPE *yyvaluep;
-#endif
 {
   YYUSE (yyvaluep);
-
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yytype, yyvaluep, yylocationp);
 
-  switch (yytype)
-    {
-
-      default:
-	break;
-    }
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+  YYUSE (yytype);
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
 
-/* Prevent warnings from -Wmissing-prototypes.  */
-#ifdef YYPARSE_PARAM
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void *YYPARSE_PARAM);
-#else
-int yyparse ();
-#endif
-#else /* ! YYPARSE_PARAM */
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void);
-#else
-int yyparse ();
-#endif
-#endif /* ! YYPARSE_PARAM */
+
 
 
 /* The lookahead symbol.  */
@@ -3279,49 +2939,26 @@ int yychar;
 
 /* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval;
-
 /* Number of syntax errors so far.  */
 int yynerrs;
 
 
+/*----------.
+| yyparse.  |
+`----------*/
 
-/*-------------------------.
-| yyparse or yypush_parse.  |
-`-------------------------*/
-
-#ifdef YYPARSE_PARAM
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-int
-yyparse (void *YYPARSE_PARAM)
-#else
-int
-yyparse (YYPARSE_PARAM)
-    void *YYPARSE_PARAM;
-#endif
-#else /* ! YYPARSE_PARAM */
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
 int
 yyparse (void)
-#else
-int
-yyparse ()
-
-#endif
-#endif
 {
-
-
     int yystate;
     /* Number of tokens to shift before error messages enabled.  */
     int yyerrstatus;
 
     /* The stacks and their tools:
-       `yyss': related to states.
-       `yyvs': related to semantic values.
+       'yyss': related to states.
+       'yyvs': related to semantic values.
 
-       Refer to the stacks thru separate pointers, to allow yyoverflow
+       Refer to the stacks through separate pointers, to allow yyoverflow
        to reallocate them elsewhere.  */
 
     /* The state stack.  */
@@ -3339,7 +2976,7 @@ yyparse ()
   int yyn;
   int yyresult;
   /* Lookahead token as an internal (translated) token number.  */
-  int yytoken;
+  int yytoken = 0;
   /* The variables used to return semantic value and location from the
      action routines.  */
   YYSTYPE yyval;
@@ -3357,9 +2994,8 @@ yyparse ()
      Keep to zero when no symbol should be popped.  */
   int yylen = 0;
 
-  yytoken = 0;
-  yyss = yyssa;
-  yyvs = yyvsa;
+  yyssp = yyss = yyssa;
+  yyvsp = yyvs = yyvsa;
   yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
@@ -3368,14 +3004,6 @@ yyparse ()
   yyerrstatus = 0;
   yynerrs = 0;
   yychar = YYEMPTY; /* Cause a token to be read.  */
-
-  /* Initialize stack pointers.
-     Waste one element of value and location stack
-     so that they stay on the same level as the state stack.
-     The wasted elements are never initialized.  */
-  yyssp = yyss;
-  yyvsp = yyvs;
-
   goto yysetstate;
 
 /*------------------------------------------------------------.
@@ -3396,23 +3024,23 @@ yyparse ()
 
 #ifdef yyoverflow
       {
-	/* Give user a chance to reallocate the stack.  Use copies of
-	   these so that the &'s don't force the real ones into
-	   memory.  */
-	YYSTYPE *yyvs1 = yyvs;
-	yytype_int16 *yyss1 = yyss;
+        /* Give user a chance to reallocate the stack.  Use copies of
+           these so that the &'s don't force the real ones into
+           memory.  */
+        YYSTYPE *yyvs1 = yyvs;
+        yytype_int16 *yyss1 = yyss;
 
-	/* Each stack pointer address is followed by the size of the
-	   data in use in that stack, in bytes.  This used to be a
-	   conditional around just the two extra args, but that might
-	   be undefined if yyoverflow is a macro.  */
-	yyoverflow (YY_("memory exhausted"),
-		    &yyss1, yysize * sizeof (*yyssp),
-		    &yyvs1, yysize * sizeof (*yyvsp),
-		    &yystacksize);
+        /* Each stack pointer address is followed by the size of the
+           data in use in that stack, in bytes.  This used to be a
+           conditional around just the two extra args, but that might
+           be undefined if yyoverflow is a macro.  */
+        yyoverflow (YY_("memory exhausted"),
+                    &yyss1, yysize * sizeof (*yyssp),
+                    &yyvs1, yysize * sizeof (*yyvsp),
+                    &yystacksize);
 
-	yyss = yyss1;
-	yyvs = yyvs1;
+        yyss = yyss1;
+        yyvs = yyvs1;
       }
 #else /* no yyoverflow */
 # ifndef YYSTACK_RELOCATE
@@ -3420,22 +3048,22 @@ yyparse ()
 # else
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
-	goto yyexhaustedlab;
+        goto yyexhaustedlab;
       yystacksize *= 2;
       if (YYMAXDEPTH < yystacksize)
-	yystacksize = YYMAXDEPTH;
+        yystacksize = YYMAXDEPTH;
 
       {
-	yytype_int16 *yyss1 = yyss;
-	union yyalloc *yyptr =
-	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
-	if (! yyptr)
-	  goto yyexhaustedlab;
-	YYSTACK_RELOCATE (yyss_alloc, yyss);
-	YYSTACK_RELOCATE (yyvs_alloc, yyvs);
+        yytype_int16 *yyss1 = yyss;
+        union yyalloc *yyptr =
+          (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
+        if (! yyptr)
+          goto yyexhaustedlab;
+        YYSTACK_RELOCATE (yyss_alloc, yyss);
+        YYSTACK_RELOCATE (yyvs_alloc, yyvs);
 #  undef YYSTACK_RELOCATE
-	if (yyss1 != yyssa)
-	  YYSTACK_FREE (yyss1);
+        if (yyss1 != yyssa)
+          YYSTACK_FREE (yyss1);
       }
 # endif
 #endif /* no yyoverflow */
@@ -3444,10 +3072,10 @@ yyparse ()
       yyvsp = yyvs + yysize - 1;
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-		  (unsigned long int) yystacksize));
+                  (unsigned long int) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
-	YYABORT;
+        YYABORT;
     }
 
   YYDPRINTF ((stderr, "Entering state %d\n", yystate));
@@ -3467,7 +3095,7 @@ yybackup:
 
   /* First try to decide what to do without reference to lookahead token.  */
   yyn = yypact[yystate];
-  if (yyn == YYPACT_NINF)
+  if (yypact_value_is_default (yyn))
     goto yydefault;
 
   /* Not known => get a lookahead token if don't already have one.  */
@@ -3476,7 +3104,7 @@ yybackup:
   if (yychar == YYEMPTY)
     {
       YYDPRINTF ((stderr, "Reading a token: "));
-      yychar = YYLEX;
+      yychar = yylex ();
     }
 
   if (yychar <= YYEOF)
@@ -3498,8 +3126,8 @@ yybackup:
   yyn = yytable[yyn];
   if (yyn <= 0)
     {
-      if (yyn == 0 || yyn == YYTABLE_NINF)
-	goto yyerrlab;
+      if (yytable_value_is_error (yyn))
+        goto yyerrlab;
       yyn = -yyn;
       goto yyreduce;
     }
@@ -3516,7 +3144,9 @@ yybackup:
   yychar = YYEMPTY;
 
   yystate = yyn;
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
   goto yynewstate;
 
@@ -3539,7 +3169,7 @@ yyreduce:
   yylen = yyr2[yyn];
 
   /* If YYLEN is nonzero, implement the default value of the action:
-     `$$ = $1'.
+     '$$ = $1'.
 
      Otherwise, the following line sets YYVAL to garbage.
      This behavior is undocumented and Bison
@@ -3553,130 +3183,114 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-
-/* Line 1455 of yacc.c  */
-#line 1002 "pnfha.ypp"
-    { ASTNode start("START"); tree.add_node(start); ;}
+#line 1002 "pnfha.ypp" /* yacc.c:1646  */
+    { ASTNode start("START"); tree.add_node(start); }
+#line 3189 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
-
-/* Line 1455 of yacc.c  */
-#line 1005 "pnfha.ypp"
+#line 1005 "pnfha.ypp" /* yacc.c:1646  */
     {
 	 ASTNode line("line");
          tree.add_node(line);
-	;}
+	}
+#line 3198 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
-
-/* Line 1455 of yacc.c  */
-#line 1011 "pnfha.ypp"
-    { yyerrok; ;}
+#line 1011 "pnfha.ypp" /* yacc.c:1646  */
+    { yyerrok; }
+#line 3204 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
-
-/* Line 1455 of yacc.c  */
-#line 1014 "pnfha.ypp"
+#line 1014 "pnfha.ypp" /* yacc.c:1646  */
     {
 		 ASTNode statement("statement");
   		 tree.add_node(statement);
-		;}
+		}
+#line 3213 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
-
-/* Line 1455 of yacc.c  */
-#line 1022 "pnfha.ypp"
+#line 1022 "pnfha.ypp" /* yacc.c:1646  */
     { statementoutcount.insert(); statementoutcount[statementoutcount.length() - 1] = outcount - 1; 
-		    	                    statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; ;}
+		    	                    statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; }
+#line 3220 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
-
-/* Line 1455 of yacc.c  */
-#line 1024 "pnfha.ypp"
+#line 1024 "pnfha.ypp" /* yacc.c:1646  */
     { conprint("VOID TVOID 0V\n"); statementoutcount.insert(); 
-                         statementoutcount[statementoutcount.length() - 1] = outcount - 1; statementlineno.insert(); statementlineno[statementlineno.length() - 1]                          = yylineno; ;}
+                         statementoutcount[statementoutcount.length() - 1] = outcount - 1; statementlineno.insert(); statementlineno[statementlineno.length() - 1]                          = yylineno; }
+#line 3227 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
-
-/* Line 1455 of yacc.c  */
-#line 1026 "pnfha.ypp"
+#line 1026 "pnfha.ypp" /* yacc.c:1646  */
     { statementoutcount.insert(); statementoutcount[statementoutcount.length() - 1] = outcount - 1;
-					  statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; ;}
+					  statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; }
+#line 3234 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
-
-/* Line 1455 of yacc.c  */
-#line 1028 "pnfha.ypp"
+#line 1028 "pnfha.ypp" /* yacc.c:1646  */
     { statementoutcount.insert(); statementoutcount[statementoutcount.length() - 1] = outcount - 1;
-					   statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; ;}
+					   statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; }
+#line 3241 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-
-/* Line 1455 of yacc.c  */
-#line 1030 "pnfha.ypp"
+#line 1030 "pnfha.ypp" /* yacc.c:1646  */
     { statementoutcount.insert(); statementoutcount[statementoutcount.length() - 1] = outcount - 1;
-				     statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; ;}
+				     statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; }
+#line 3248 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-
-/* Line 1455 of yacc.c  */
-#line 1032 "pnfha.ypp"
+#line 1032 "pnfha.ypp" /* yacc.c:1646  */
     { statementoutcount.insert(); statementoutcount[statementoutcount.length() - 1] = outcount - 1;
-				       statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; ;}
+				       statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; }
+#line 3255 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-
-/* Line 1455 of yacc.c  */
-#line 1034 "pnfha.ypp"
+#line 1034 "pnfha.ypp" /* yacc.c:1646  */
     { statementoutcount.insert(); statementoutcount[statementoutcount.length() - 1] = outcount - 1;
 				     statementlineno.insert(); statementlineno[statementlineno.length() - 1] = yylineno; inblock = true;
-				   ;}
+				   }
+#line 3263 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-
-/* Line 1455 of yacc.c  */
-#line 1042 "pnfha.ypp"
+#line 1042 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode expression_statement("expression_statement");
 			 tree.add_node(expression_statement);
-			;}
+			}
+#line 3272 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-
-/* Line 1455 of yacc.c  */
-#line 1049 "pnfha.ypp"
+#line 1049 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration_statement("declaration_statement");
 			 tree.add_node(declaration_statement);
-			;}
+			}
+#line 3281 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-
-/* Line 1455 of yacc.c  */
-#line 1056 "pnfha.ypp"
+#line 1056 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command_statement("command_statement");
 			 tree.add_node(command_statement);
-			;}
+			}
+#line 3290 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-
-/* Line 1455 of yacc.c  */
-#line 1063 "pnfha.ypp"
+#line 1063 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode label_statement("label_statement");
 
@@ -3685,7 +3299,7 @@ yyreduce:
 			 for (unsigned long i = 0; i < labelTable.length(); ++i)
 			 {
 			  str = labelTable[i].name();
-			  if ((yyvsp[(1) - (2)]).to_string().get().getString() == labelTable[i].name().getString())
+			  if ((yyvsp[-1]).to_string().get().getString() == labelTable[i].name().getString())
 			  {
 			   declared = true;
 			   if (labelTable[i].declared() == true)
@@ -3708,95 +3322,87 @@ yyreduce:
 			 }
 
 			 tree.add_node(label_statement);
-			;}
+			}
+#line 3327 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-
-/* Line 1455 of yacc.c  */
-#line 1096 "pnfha.ypp"
+#line 1096 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode label_statement("label_statement");
 
 			 conprint("LBL TVOID 0V\n");
 
 			 tree.add_node(label_statement);
-			;}
+			}
+#line 3339 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-
-/* Line 1455 of yacc.c  */
-#line 1104 "pnfha.ypp"
+#line 1104 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode label_statement("label_statement");
 
 			 conprint("ELBL TVOID 0V\n");
 
 			 tree.add_node(label_statement);
-			;}
+			}
+#line 3351 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
-
-/* Line 1455 of yacc.c  */
-#line 1114 "pnfha.ypp"
+#line 1114 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode control_statement("control_statement");
 			
 			 tree.add_node(control_statement);
-			;}
+			}
+#line 3361 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-
-/* Line 1455 of yacc.c  */
-#line 1120 "pnfha.ypp"
+#line 1120 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode control_statement("control_statement");
 			
 			 tree.add_node(control_statement);
-			;}
+			}
+#line 3371 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-
-/* Line 1455 of yacc.c  */
-#line 1126 "pnfha.ypp"
+#line 1126 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode control_statement("control_statement");
 			 tree.add_node(control_statement);
-			;}
+			}
+#line 3380 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 29:
-
-/* Line 1455 of yacc.c  */
-#line 1131 "pnfha.ypp"
+#line 1131 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode control_statement("control_statement");
 
 			 breakinforever = false;
 
 			 tree.add_node(control_statement);
-			;}
+			}
+#line 3392 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 30:
-
-/* Line 1455 of yacc.c  */
-#line 1141 "pnfha.ypp"
+#line 1141 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp1("if_statementp1");
 
 			 tree.add_node(if_statementp1);		
-			;}
+			}
+#line 3402 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 31:
-
-/* Line 1455 of yacc.c  */
-#line 1147 "pnfha.ypp"
+#line 1147 "pnfha.ypp" /* yacc.c:1646  */
     {			 
 			 ASTNode if_statementp2("if_statementp2");
 			
@@ -3804,72 +3410,66 @@ yyreduce:
 			 conprint("IFBEGIN TVOID 0V\n");
 
 			 tree.add_node(if_statementp2);
-			;}
+			}
+#line 3415 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 32:
-
-/* Line 1455 of yacc.c  */
-#line 1156 "pnfha.ypp"
+#line 1156 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp3("if_statementp3");
 			 // Code for if will be inserted here...
 			
 			 tree.add_node(if_statementp3);
-			;}
+			}
+#line 3426 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 33:
-
-/* Line 1455 of yacc.c  */
-#line 1163 "pnfha.ypp"
+#line 1163 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("IFEND TVOID 0V\n");
 			 conprint("ENDIF TVOID 0V\n");
-			;}
+			}
+#line 3435 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 34:
-
-/* Line 1455 of yacc.c  */
-#line 1168 "pnfha.ypp"
+#line 1168 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp6("if_statementp6");
 
 			 tree.add_node(if_statementp6);
-			;}
+			}
+#line 3445 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 35:
-
-/* Line 1455 of yacc.c  */
-#line 1174 "pnfha.ypp"
+#line 1174 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp4("if_statementp4");
 
 			 conprint("EIF TVOID 0V\n");
 
 			 tree.add_node(if_statementp4);
-			;}
+			}
+#line 3457 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 36:
-
-/* Line 1455 of yacc.c  */
-#line 1184 "pnfha.ypp"
+#line 1184 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp1("if_statementp1");
 
 			 conprint("NOT TVOID 0V\n");	
 
 			 tree.add_node(if_statementp1);		
-			;}
+			}
+#line 3469 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 37:
-
-/* Line 1455 of yacc.c  */
-#line 1192 "pnfha.ypp"
+#line 1192 "pnfha.ypp" /* yacc.c:1646  */
     {			 
 			 ASTNode if_statementp2("if_statementp2");
 		
@@ -3877,59 +3477,54 @@ yyreduce:
 			 conprint("IFBEGIN TVOID 0V\n");
 
 			 tree.add_node(if_statementp2);
-			;}
+			}
+#line 3482 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
-
-/* Line 1455 of yacc.c  */
-#line 1201 "pnfha.ypp"
+#line 1201 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp3("if_statementp3");
 			 // Code for if will be inserted here...
 			
 			 tree.add_node(if_statementp3);
-			;}
+			}
+#line 3493 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 39:
-
-/* Line 1455 of yacc.c  */
-#line 1208 "pnfha.ypp"
+#line 1208 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("IFEND TVOID 0V\n");
 			 conprint("ENDIF TVOID 0V\n");
-			;}
+			}
+#line 3502 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
-
-/* Line 1455 of yacc.c  */
-#line 1213 "pnfha.ypp"
+#line 1213 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp6("if_statementp6");
 
 			 tree.add_node(if_statementp6);
-			;}
+			}
+#line 3512 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 41:
-
-/* Line 1455 of yacc.c  */
-#line 1219 "pnfha.ypp"
+#line 1219 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp4("if_statementp4");
 
 			 conprint("EIF TVOID 0V\n");
 
 			 tree.add_node(if_statementp4);
-			;}
+			}
+#line 3524 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 43:
-
-/* Line 1455 of yacc.c  */
-#line 1229 "pnfha.ypp"
+#line 1229 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp5("if_statementp5");
 
@@ -3938,13 +3533,12 @@ yyreduce:
 
 			 // Code for else will be inserted here if exists...
 			 tree.add_node(if_statementp5);
-			;}
+			}
+#line 3538 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 44:
-
-/* Line 1455 of yacc.c  */
-#line 1240 "pnfha.ypp"
+#line 1240 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode if_statementp7("if_statementp7");
 
@@ -3952,13 +3546,12 @@ yyreduce:
 			 conprint("ENDIFELSE TVOID 0V\n");
 
 			 tree.add_node(if_statementp7);
-			;}
+			}
+#line 3551 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 46:
-
-/* Line 1455 of yacc.c  */
-#line 1254 "pnfha.ypp"
+#line 1254 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp1("switch_statementp1");
 
@@ -3970,22 +3563,22 @@ yyreduce:
 			 switch (exptype)
 			 {
 			  case TBOOLEAN:
-			   conprint("ALOAD TBOOLEAN %s\n", (yyvsp[(3) - (5)]).to_string().get().getString().c_str());
+			   conprint("ALOAD TBOOLEAN %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			   switchexptype = TBOOLEAN;
      			   break;
 
 			  case TNUMBER:
-			   conprint("ALOAD TNUMBER %s\n", (yyvsp[(3) - (5)]).to_string().get().getString().c_str());
+			   conprint("ALOAD TNUMBER %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			   switchexptype = TNUMBER;
 			   break;
 
 			  case TCHARACTER:
-			   conprint("ALOAD TCHARACTER %s\n", (yyvsp[(3) - (5)]).to_string().get().getString().c_str());
+			   conprint("ALOAD TCHARACTER %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			   switchexptype = TCHARACTER;
 			   break;
 
 			  case TSTRING:
-			   conprint("ALOAD TSTRING %s\n", (yyvsp[(3) - (5)]).to_string().get().getString().c_str());
+			   conprint("ALOAD TSTRING %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			   switchexptype = TSTRING;
 			   break;
 
@@ -3996,13 +3589,12 @@ yyreduce:
                          conprint("SWBEGIN TVOID 0V\n");
 
 			 tree.add_node(switch_statementp1);
-			;}
+			}
+#line 3594 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 47:
-
-/* Line 1455 of yacc.c  */
-#line 1293 "pnfha.ypp"
+#line 1293 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp2("switch_statementp2");
 
@@ -4030,46 +3622,42 @@ yyreduce:
 			 };
 
 			 tree.add_node(switch_statementp2);
-			;}
+			}
+#line 3627 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
-
-/* Line 1455 of yacc.c  */
-#line 1322 "pnfha.ypp"
+#line 1322 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp3("switch_statementp3");
 
 			 tree.add_node(switch_statementp3);
-			;}
+			}
+#line 3637 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 49:
-
-/* Line 1455 of yacc.c  */
-#line 1327 "pnfha.ypp"
+#line 1327 "pnfha.ypp" /* yacc.c:1646  */
     {
 
-			;}
+			}
+#line 3645 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 50:
-
-/* Line 1455 of yacc.c  */
-#line 1331 "pnfha.ypp"
+#line 1331 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp4("switch_statementp4");
 
 			 conprint("SWEND TVOID 0V\n");
 
 			 tree.add_node(switch_statementp4);
-			;}
+			}
+#line 3657 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 51:
-
-/* Line 1455 of yacc.c  */
-#line 1339 "pnfha.ypp"
+#line 1339 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp1("switch_statementp1");
 
@@ -4082,57 +3670,52 @@ yyreduce:
 			 conprint("SWBEGIN TVOID 0V\n");
 
 			 tree.add_node(switch_statementp1);
-			;}
+			}
+#line 3675 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 52:
-
-/* Line 1455 of yacc.c  */
-#line 1354 "pnfha.ypp"
+#line 1354 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp2("switch_statementp2");
 			 
 			 tree.add_node(switch_statementp2);
-			;}
+			}
+#line 3685 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 53:
-
-/* Line 1455 of yacc.c  */
-#line 1360 "pnfha.ypp"
+#line 1360 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp3("switch_statementp3");
 			 tree.add_node(switch_statementp3);
-			;}
+			}
+#line 3694 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 54:
-
-/* Line 1455 of yacc.c  */
-#line 1365 "pnfha.ypp"
+#line 1365 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode switch_statementp4("switch_statementp4");
 
 			 conprint("SWEND TVOID 0V\n");
 
 			 tree.add_node(switch_statementp4);
-			;}
+			}
+#line 3706 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 55:
-
-/* Line 1455 of yacc.c  */
-#line 1374 "pnfha.ypp"
+#line 1374 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode case_statements("case_statements");
 			 tree.add_node(case_statements);
-			;}
+			}
+#line 3715 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 58:
-
-/* Line 1455 of yacc.c  */
-#line 1383 "pnfha.ypp"
+#line 1383 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode case_statement("case_statement");
 
@@ -4145,22 +3728,22 @@ yyreduce:
  			 switch (exptype)
 			 {
 			  case TBOOLEAN:
-			   conprint("SWCASE TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_boolean().get().getString().c_str());
+			   conprint("SWCASE TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			   conprint ("SWCBEGIN TVOID 0V\n");
 			   break;
 
 			  case TNUMBER:
-			   conprint("SWCASE TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("SWCASE TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   conprint ("SWCBEGIN TVOID 0V\n");
 			   break;
 
 			  case TCHARACTER:
-			   conprint("SWCASE TCHARCTER %c\n", (yyvsp[(2) - (2)]).to_character().get());
+			   conprint("SWCASE TCHARCTER %c\n", (yyvsp[0]).to_character().get());
 			   conprint ("SWCBEGIN TVOID 0V\n");
 			   break;
 
 		 	  case TSTRING:
-			   conprint("SWCASE TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("SWCASE TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   conprint ("SWCBEGIN TVOID 0V\n");
 			   break;
 
@@ -4169,51 +3752,46 @@ yyreduce:
 			};
 
 			 tree.add_node(case_statement);
-			;}
+			}
+#line 3757 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 59:
-
-/* Line 1455 of yacc.c  */
-#line 1421 "pnfha.ypp"
+#line 1421 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("SWCEND TVOID 0V\n");
-			;}
+			}
+#line 3765 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
-
-/* Line 1455 of yacc.c  */
-#line 1427 "pnfha.ypp"
+#line 1427 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("SWDEFAULT TVOID 0V\n");
 			 conprint("SWCBEGIN TVOID 0V\n");
-			;}
+			}
+#line 3774 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 62:
-
-/* Line 1455 of yacc.c  */
-#line 1432 "pnfha.ypp"
+#line 1432 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("SWCEND TVOID 0V\n");
-			;}
+			}
+#line 3782 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
-
-/* Line 1455 of yacc.c  */
-#line 1437 "pnfha.ypp"
+#line 1437 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode case_statements("case_statements");
 			 tree.add_node(case_statements);
-			;}
+			}
+#line 3791 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 66:
-
-/* Line 1455 of yacc.c  */
-#line 1446 "pnfha.ypp"
+#line 1446 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode case_statementp1("case_statement");
 
@@ -4222,19 +3800,19 @@ yyreduce:
 			 switch (exptype)
 			 {
 			  case TBOOLEAN:
-			   conprint("SWCASE TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_boolean().get().getString().c_str());
+			   conprint("SWCASE TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			   break;
 
 			  case TNUMBER:
-			   conprint("SWCASE TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("SWCASE TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   break;
 
 			  case TCHARACTER:
-			   conprint("SWCASE TCHARACTER %c\n", (yyvsp[(2) - (2)]).to_character().get());
+			   conprint("SWCASE TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			   break;
 
 			  case TSTRING:
-			   conprint("SWCASE TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("SWCASE TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  default:
@@ -4243,126 +3821,114 @@ yyreduce:
 			 conprint("SWCBEGIN TVOID 0V\n");
 			
 			 tree.add_node(case_statementp1);
-			;}
+			}
+#line 3826 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 67:
-
-/* Line 1455 of yacc.c  */
-#line 1477 "pnfha.ypp"
+#line 1477 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode case_statementp2("case_statementp2");
 
 			 tree.add_node(case_statementp2);
-			;}
+			}
+#line 3836 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 68:
-
-/* Line 1455 of yacc.c  */
-#line 1483 "pnfha.ypp"
+#line 1483 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode case_statementp3("case_statementp3");
 
 			 conprint("SWCEND TVOID 0V\n");
 
 			 tree.add_node(case_statementp3);
-			;}
+			}
+#line 3848 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 70:
-
-/* Line 1455 of yacc.c  */
-#line 1493 "pnfha.ypp"
+#line 1493 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("SWDEFAULT TVOID 0V\n");
 			 conprint("SWCBEGIN TVOID 0V\n");
-			;}
+			}
+#line 3857 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 71:
-
-/* Line 1455 of yacc.c  */
-#line 1498 "pnfha.ypp"
+#line 1498 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("SWCEND TVOID 0V\n");
-			;}
+			}
+#line 3865 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 72:
-
-/* Line 1455 of yacc.c  */
-#line 1503 "pnfha.ypp"
+#line 1503 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 loopexpr = true;
 			 inloop2 = true;
-			;}
+			}
+#line 3874 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 73:
-
-/* Line 1455 of yacc.c  */
-#line 1508 "pnfha.ypp"
+#line 1508 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode loop_statement("loop_statement");
 			 tree.add_node(loop_statement);
-			;}
+			}
+#line 3883 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 74:
-
-/* Line 1455 of yacc.c  */
-#line 1513 "pnfha.ypp"
+#line 1513 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode loop_statement("loop_statement");
 			 tree.add_node(loop_statement);
-			;}
+			}
+#line 3892 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 75:
-
-/* Line 1455 of yacc.c  */
-#line 1518 "pnfha.ypp"
+#line 1518 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode loop_statement("loop_statement");
 			 tree.add_node(loop_statement);
-			;}
+			}
+#line 3901 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 76:
-
-/* Line 1455 of yacc.c  */
-#line 1523 "pnfha.ypp"
+#line 1523 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode loop_statement("loop_statement");
 			 tree.add_node(loop_statement);
-			;}
+			}
+#line 3910 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 77:
-
-/* Line 1455 of yacc.c  */
-#line 1528 "pnfha.ypp"
+#line 1528 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode loop_statement("loop_statement");
 			 tree.add_node(loop_statement);
-			;}
+			}
+#line 3919 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 78:
-
-/* Line 1455 of yacc.c  */
-#line 1533 "pnfha.ypp"
+#line 1533 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode loop_statement("loop_statement");
 			 tree.add_node(loop_statement);
-			;}
+			}
+#line 3928 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 79:
-
-/* Line 1455 of yacc.c  */
-#line 1538 "pnfha.ypp"
+#line 1538 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode loop_statement("loop_statement");
 			 
@@ -4370,13 +3936,12 @@ yyreduce:
 			 inloop = true;		 
 
 			 tree.add_node(loop_statement);
-			;}
+			}
+#line 3941 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 80:
-
-/* Line 1455 of yacc.c  */
-#line 1546 "pnfha.ypp"
+#line 1546 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 inloop2 = false;
 			 inwhile = false;
@@ -4384,13 +3949,12 @@ yyreduce:
 			 infor2 = false;
 			 indofor = false;
 			 inforever = false;
-			;}
+			}
+#line 3954 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 81:
-
-/* Line 1455 of yacc.c  */
-#line 1557 "pnfha.ypp"
+#line 1557 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode while_loopp1("while_loopp1");
 
@@ -4399,24 +3963,22 @@ yyreduce:
 			 conprint("LBL TSTRING \"while_test_%u\"\n", whilecounter);
 
 			 tree.add_node(while_loopp1);
-			;}
+			}
+#line 3968 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 82:
-
-/* Line 1455 of yacc.c  */
-#line 1567 "pnfha.ypp"
+#line 1567 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode while_loopp2("while_loopp2");
 
 			 tree.add_node(while_loopp2);
-			;}
+			}
+#line 3978 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 83:
-
-/* Line 1455 of yacc.c  */
-#line 1573 "pnfha.ypp"
+#line 1573 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode while_loopp3("while_loopp3");
 
@@ -4426,13 +3988,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"while_body_%u\"\n", whilecounter);
 
 			 tree.add_node(while_loopp3);
-			;}
+			}
+#line 3993 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 84:
-
-/* Line 1455 of yacc.c  */
-#line 1584 "pnfha.ypp"
+#line 1584 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode while_loopp4("while_loopp4");
 
@@ -4440,13 +4001,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"while_end_%u\"\n", whilecounter);
 
 			 tree.add_node(while_loopp4);
-			;}
+			}
+#line 4006 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 85:
-
-/* Line 1455 of yacc.c  */
-#line 1594 "pnfha.ypp"
+#line 1594 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_while_loopp1("do_while_loopp1");
 
@@ -4455,48 +4015,44 @@ yyreduce:
 			 conprint("LBL TSTRING \"do_while_body_%u\"\n", dowhilecounter);
 
 			 tree.add_node(do_while_loopp1);
-			;}
+			}
+#line 4020 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 86:
-
-/* Line 1455 of yacc.c  */
-#line 1604 "pnfha.ypp"
+#line 1604 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_while_loopp2("do_while_loopp2");
 
 			 tree.add_node(do_while_loopp2);
-			;}
+			}
+#line 4030 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
-
-/* Line 1455 of yacc.c  */
-#line 1611 "pnfha.ypp"
+#line 1611 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_while_loopp3("do_while_loopp3");
 
 			 conprint("LBL TSTRING \"do_while_test_%u\"\n", dowhilecounter);
 
 			 tree.add_node(do_while_loopp3);
-			;}
+			}
+#line 4042 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
-
-/* Line 1455 of yacc.c  */
-#line 1619 "pnfha.ypp"
+#line 1619 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_while_loopp4("do_while_loopp4");
 
 			 tree.add_node(do_while_loopp4);
-			;}
+			}
+#line 4052 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
-
-/* Line 1455 of yacc.c  */
-#line 1625 "pnfha.ypp"
+#line 1625 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_while_loopp5("do_while_loopp5");
 
@@ -4504,26 +4060,24 @@ yyreduce:
 			 conprint("GOTOL TSTRING \"do_while_end_%u\"\n", dowhilecounter);
 
 			 tree.add_node(do_while_loopp5);
-			;}
+			}
+#line 4065 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
-
-/* Line 1455 of yacc.c  */
-#line 1634 "pnfha.ypp"
+#line 1634 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_while_loopp6("do_while_loopp6");
 
 			 conprint("LBL TSTRING \"do_while_end_%u\"\n", dowhilecounter);
 
 			 tree.add_node(do_while_loopp6);
-			;}
+			}
+#line 4077 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
-
-/* Line 1455 of yacc.c  */
-#line 1644 "pnfha.ypp"
+#line 1644 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode until_loopp1("until_loopp1");
 
@@ -4532,24 +4086,22 @@ yyreduce:
 			 conprint("LBL TSTRING \"until_test_%u\"\n", untilcounter);
 
 			 tree.add_node(until_loopp1);
-			;}
+			}
+#line 4091 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
-
-/* Line 1455 of yacc.c  */
-#line 1654 "pnfha.ypp"
+#line 1654 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode until_loopp2("until_loopp2");
 
 			 tree.add_node(until_loopp2);
-			;}
+			}
+#line 4101 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
-
-/* Line 1455 of yacc.c  */
-#line 1660 "pnfha.ypp"
+#line 1660 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode until_loopp3("until_loopp3");
 
@@ -4562,13 +4114,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"until_body_%u\"\n", untilcounter);
 
 			 tree.add_node(until_loopp3);
-			;}
+			}
+#line 4119 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
-
-/* Line 1455 of yacc.c  */
-#line 1674 "pnfha.ypp"
+#line 1674 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode until_loopp4("until_loopp4");
 
@@ -4576,13 +4127,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"until_end_%u\"\n", untilcounter);
 
 			 tree.add_node(until_loopp4);
-			;}
+			}
+#line 4132 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
-
-/* Line 1455 of yacc.c  */
-#line 1684 "pnfha.ypp"
+#line 1684 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_until_loopp1("do_until_loopp1");
 
@@ -4591,48 +4141,44 @@ yyreduce:
 			 conprint("LBL TSTRING \"do_until_body_%u\"\n", dountilcounter);
 
 			 tree.add_node(do_until_loopp1);
-			;}
+			}
+#line 4146 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
-
-/* Line 1455 of yacc.c  */
-#line 1694 "pnfha.ypp"
+#line 1694 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_until_loopp2("do_until_loopp2");
 
 			 tree.add_node(do_until_loopp2);
-			;}
+			}
+#line 4156 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
-
-/* Line 1455 of yacc.c  */
-#line 1701 "pnfha.ypp"
+#line 1701 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_until_loopp3("do_until_loopp3");
 
 			 conprint("LBL TSTRING \"do_until_test_%u\"\n", dountilcounter);
 
 			 tree.add_node(do_until_loopp3);
-			;}
+			}
+#line 4168 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 98:
-
-/* Line 1455 of yacc.c  */
-#line 1709 "pnfha.ypp"
+#line 1709 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_until_loopp4("do_until_loopp4");
 
 			 tree.add_node(do_until_loopp4);
-			;}
+			}
+#line 4178 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 99:
-
-/* Line 1455 of yacc.c  */
-#line 1715 "pnfha.ypp"
+#line 1715 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_until_loopp5("do_until_loopp5");
 
@@ -4640,13 +4186,12 @@ yyreduce:
 			 conprint("GOTOL TSTRING \"do_until_end_%u\"\n", dountilcounter);
 
 			 tree.add_node(do_until_loopp5);
-			;}
+			}
+#line 4191 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 100:
-
-/* Line 1455 of yacc.c  */
-#line 1724 "pnfha.ypp"
+#line 1724 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode do_until_loopp6("do_until_loopp6");
 
@@ -4655,22 +4200,20 @@ yyreduce:
 			 conprint("LBL TSTRING \"do_until_end_%u\"\n", dountilcounter);
 
 			 tree.add_node(do_until_loopp6);
-			;}
+			}
+#line 4205 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 101:
-
-/* Line 1455 of yacc.c  */
-#line 1735 "pnfha.ypp"
+#line 1735 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 infor = true;
-			;}
+			}
+#line 4213 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 102:
-
-/* Line 1455 of yacc.c  */
-#line 1739 "pnfha.ypp"
+#line 1739 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode for_loopp1("for_loopp1");
 
@@ -4679,26 +4222,24 @@ yyreduce:
 			 conprint("LBL TSTRING \"for_initialization_%u\"\n", forcounter);
 
 			 tree.add_node(for_loopp1);
-			;}
+			}
+#line 4227 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 103:
-
-/* Line 1455 of yacc.c  */
-#line 1749 "pnfha.ypp"
+#line 1749 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode for_loopp2("for_loopp2");
 
 			 conprint("LBL TSTRING \"for_condition_%u\"\n", forcounter);
 
 			 tree.add_node(for_loopp2);
-			;}
+			}
+#line 4239 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 104:
-
-/* Line 1455 of yacc.c  */
-#line 1757 "pnfha.ypp"
+#line 1757 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode for_loopp3("for_loopp3");
 
@@ -4707,13 +4248,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"for_increment_statement_%u\"\n", forcounter);
 
 			 tree.add_node(for_loopp3);
-			;}
+			}
+#line 4253 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 105:
-
-/* Line 1455 of yacc.c  */
-#line 1767 "pnfha.ypp"
+#line 1767 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode for_loopp4("for_loopp4");
 
@@ -4721,13 +4261,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"for_body_%u\"\n", forcounter);
 
 			 tree.add_node(for_loopp4);
-			;}
+			}
+#line 4266 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 106:
-
-/* Line 1455 of yacc.c  */
-#line 1776 "pnfha.ypp"
+#line 1776 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode for_loopp5("for_loopp5");
 
@@ -4735,13 +4274,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"for_end_%u\"\n", forcounter);
 
 			 tree.add_node(for_loopp5);
-			;}
+			}
+#line 4279 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 107:
-
-/* Line 1455 of yacc.c  */
-#line 1787 "pnfha.ypp"
+#line 1787 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forb_loopp1("forb_loopp1");
 
@@ -4753,13 +4291,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"dofor_body_%u\"\n", doforcounter);
 
 			 tree.add_node(forb_loopp1);
-			;}
+			}
+#line 4296 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 108:
-
-/* Line 1455 of yacc.c  */
-#line 1800 "pnfha.ypp"
+#line 1800 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forb_loopp2("forb_loopp2");
 
@@ -4767,24 +4304,22 @@ yyreduce:
 			 conprint("LBL TSTRING \"dofor_initialization_%u\"\n", doforcounter);
 
 			 tree.add_node(forb_loopp2);
-			;}
+			}
+#line 4309 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 109:
-
-/* Line 1455 of yacc.c  */
-#line 1809 "pnfha.ypp"
+#line 1809 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forb_loopp3("forb_loopp3");
 
 			 tree.add_node(forb_loopp3);
-			;}
+			}
+#line 4319 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 110:
-
-/* Line 1455 of yacc.c  */
-#line 1815 "pnfha.ypp"
+#line 1815 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forb_loopp4("forb_loopp4");
 
@@ -4792,13 +4327,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"dofor_condition_%u\"\n", doforcounter);
 
 			 tree.add_node(forb_loopp4);
-			;}
+			}
+#line 4332 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 111:
-
-/* Line 1455 of yacc.c  */
-#line 1824 "pnfha.ypp"
+#line 1824 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forb_loopp5("forb_loopp5");
 
@@ -4807,23 +4341,21 @@ yyreduce:
 			 conprint("LBL TSTRING \"dofor_increment_statement_%u\"\n", doforcounter);
 
 			 tree.add_node(forb_loopp5);
-			;}
+			}
+#line 4346 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 112:
-
-/* Line 1455 of yacc.c  */
-#line 1834 "pnfha.ypp"
+#line 1834 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forb_loopp6("forb_loopp6");
 			 tree.add_node(forb_loopp6);
-			;}
+			}
+#line 4355 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 113:
-
-/* Line 1455 of yacc.c  */
-#line 1839 "pnfha.ypp"
+#line 1839 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forb_loopp7("forb_loopp7");
 
@@ -4831,13 +4363,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"dofor_end_%u\"\n", doforcounter);
 
 			 tree.add_node(forb_loopp7);
-			;}
+			}
+#line 4368 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 114:
-
-/* Line 1455 of yacc.c  */
-#line 1850 "pnfha.ypp"
+#line 1850 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forever_loopp1("forever_loopp1");
 
@@ -4846,13 +4377,12 @@ yyreduce:
 			 conprint("LBL TSTRING \"forever_%u\"\n", forevercounter);
 
 			 tree.add_node(forever_loopp1);			
-			;}
+			}
+#line 4382 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 115:
-
-/* Line 1455 of yacc.c  */
-#line 1860 "pnfha.ypp"
+#line 1860 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode forever_loopp2("forever_loopp2");
 
@@ -4860,117 +4390,104 @@ yyreduce:
 			 conprint("LBL TSTRING \"forever_end_%u\"\n", forevercounter);
 
 			 tree.add_node(forever_loopp2);			
-			;}
+			}
+#line 4395 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 116:
-
-/* Line 1455 of yacc.c  */
-#line 1869 "pnfha.ypp"
-    { PNF_String str((yyvsp[(2) - (3)]).to_string().get()); (yyval).put(str); ASTNode statement_block("statement_block"); 
-                                                  tree.add_node(statement_block); ;}
+#line 1869 "pnfha.ypp" /* yacc.c:1646  */
+    { PNF_String str((yyvsp[-1]).to_string().get()); (yyval).put(str); ASTNode statement_block("statement_block"); 
+                                                  tree.add_node(statement_block); }
+#line 4402 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 117:
-
-/* Line 1455 of yacc.c  */
-#line 1874 "pnfha.ypp"
+#line 1874 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode statements("statements");
 			 tree.add_node(statements);
-			;}
+			}
+#line 4411 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 118:
-
-/* Line 1455 of yacc.c  */
-#line 1879 "pnfha.ypp"
+#line 1879 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode statements("statements");
 			 tree.add_node(statements);
-			;}
+			}
+#line 4420 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 119:
-
-/* Line 1455 of yacc.c  */
-#line 1885 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); exptype = TVOID; ASTNode expression("expression"); tree.add_node(expression); ;}
+#line 1885 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); exptype = TVOID; ASTNode expression("expression"); tree.add_node(expression); }
+#line 4426 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 120:
-
-/* Line 1455 of yacc.c  */
-#line 1887 "pnfha.ypp"
+#line 1887 "pnfha.ypp" /* yacc.c:1646  */
     {
-		 (yyval) = (yyvsp[(1) - (1)]);
+		 (yyval) = (yyvsp[0]);
 		 savenumber = (yyval);
 		 exptype = TBOOLEAN;
 		 ASTNode expression("expression");
 		 tree.add_node(expression);
-		;}
+		}
+#line 4438 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 121:
-
-/* Line 1455 of yacc.c  */
-#line 1894 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); savenumber = (yyval); exptype = TNUMBER; ASTNode expression("expression");
-                                      tree.add_node(expression); ;}
+#line 1894 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); savenumber = (yyval); exptype = TNUMBER; ASTNode expression("expression");
+                                      tree.add_node(expression); }
+#line 4445 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 122:
-
-/* Line 1455 of yacc.c  */
-#line 1896 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); savenumber = (yyval); exptype = TCHARACTER; ASTNode expression("expression"); 
-                                         tree.add_node(expression); ;}
+#line 1896 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); savenumber = (yyval); exptype = TCHARACTER; ASTNode expression("expression"); 
+                                         tree.add_node(expression); }
+#line 4452 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 123:
-
-/* Line 1455 of yacc.c  */
-#line 1898 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); savenumber = (PNF_String)strip_quotes((yyval).to_string().get()); exptype = TSTRING; ASTNode expression("expression"); 
-                                      tree.add_node(expression); ;}
+#line 1898 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); savenumber = (PNF_String)strip_quotes((yyval).to_string().get()); exptype = TSTRING; ASTNode expression("expression"); 
+                                      tree.add_node(expression); }
+#line 4459 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 124:
-
-/* Line 1455 of yacc.c  */
-#line 1900 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); exptype = (PNF_Type_Enum)(yyval).getType(); ASTNode expression("expression"); 
-                                  tree.add_node(expression); ;}
+#line 1900 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); exptype = (PNF_Type_Enum)(yyval).getType(); ASTNode expression("expression"); 
+                                  tree.add_node(expression); }
+#line 4466 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 125:
-
-/* Line 1455 of yacc.c  */
-#line 1902 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); exptype = TBOOLEAN; ASTNode expression("expression"); 
-					  tree.add_node(expression); ;}
+#line 1902 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); exptype = TBOOLEAN; ASTNode expression("expression"); 
+					  tree.add_node(expression); }
+#line 4473 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 126:
-
-/* Line 1455 of yacc.c  */
-#line 1904 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); exptype = (PNF_Type_Enum)(yyval).getType(); ASTNode expression("expression"); 
-				     tree.add_node(expression); ;}
+#line 1904 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); exptype = (PNF_Type_Enum)(yyval).getType(); ASTNode expression("expression"); 
+				     tree.add_node(expression); }
+#line 4480 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 127:
-
-/* Line 1455 of yacc.c  */
-#line 1906 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (1)]); exptype = (PNF_Type_Enum)(yyval).getType(); ASTNode expression("expression"); tree.add_node(expression); 		
-		;}
+#line 1906 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); exptype = (PNF_Type_Enum)(yyval).getType(); ASTNode expression("expression"); tree.add_node(expression); 		
+		}
+#line 4487 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 128:
-
-/* Line 1455 of yacc.c  */
-#line 1912 "pnfha.ypp"
+#line 1912 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 PNF_String s("0V");
 			 (yyval).put(s);
@@ -4979,22 +4496,20 @@ yyreduce:
 
 			 ASTNode void_expression("void_expression");
 			 tree.add_node(void_expression);
-			;}
+			}
+#line 4501 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 129:
-
-/* Line 1455 of yacc.c  */
-#line 1921 "pnfha.ypp"
-    { (yyval) = (yyvsp[(2) - (3)]); ;}
+#line 1921 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]); }
+#line 4507 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 130:
-
-/* Line 1455 of yacc.c  */
-#line 1925 "pnfha.ypp"
+#line 1925 "pnfha.ypp" /* yacc.c:1646  */
     { 
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 String str = (yyval).to_boolean().get();
 			 if (str == "true")
@@ -5007,16 +4522,15 @@ yyreduce:
 			
 			 ASTNode boolean_expression("boolean_expression"); 
 			 tree.add_node(boolean_expression);
-			;}
+			}
+#line 4527 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 131:
-
-/* Line 1455 of yacc.c  */
-#line 1941 "pnfha.ypp"
+#line 1941 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool b;
-			 String str = (yyvsp[(2) - (2)]).to_boolean().get();
+			 String str = (yyvsp[0]).to_boolean().get();
 
 			 if (str.getString() == "true")
 			  b = true;
@@ -5026,15 +4540,14 @@ yyreduce:
 			 PNF_Boolean b2(b);
 			 b2.opnot();
 			 (yyval).put(b2);
-			;}
+			}
+#line 4545 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 132:
-
-/* Line 1455 of yacc.c  */
-#line 1955 "pnfha.ypp"
+#line 1955 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String bl = (yyvsp[(3) - (3)]).to_boolean().get();
+			 String bl = (yyvsp[0]).to_boolean().get();
 			 bool b;
 			
 			 if (bl.getString() == "true")
@@ -5044,18 +4557,17 @@ yyreduce:
 			 else
 			  b = false;
 
-			 PNF_Boolean b2((yyvsp[(1) - (3)]).to_boolean());
+			 PNF_Boolean b2((yyvsp[-2]).to_boolean());
 			 b2.opand(b);
 			 (yyval).put(b2);
-			;}
+			}
+#line 4565 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 133:
-
-/* Line 1455 of yacc.c  */
-#line 1971 "pnfha.ypp"
+#line 1971 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String bl = (yyvsp[(3) - (3)]).to_boolean().get();
+			 String bl = (yyvsp[0]).to_boolean().get();
 			 bool b;
 			
 			 if (bl.getString() == "true")
@@ -5065,25 +4577,23 @@ yyreduce:
 			 else
 			  b = false;
 
-			 PNF_Boolean b2((yyvsp[(1) - (3)]).to_boolean());
+			 PNF_Boolean b2((yyvsp[-2]).to_boolean());
 			 b2.opor(b);
 			 (yyval).put(b2);
-			;}
+			}
+#line 4585 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 134:
-
-/* Line 1455 of yacc.c  */
-#line 1986 "pnfha.ypp"
-    { (yyval) = (yyvsp[(2) - (3)]); ;}
+#line 1986 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]); }
+#line 4591 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 135:
-
-/* Line 1455 of yacc.c  */
-#line 1990 "pnfha.ypp"
+#line 1990 "pnfha.ypp" /* yacc.c:1646  */
     { 
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 double d = (yyval).to_number().get();
 
@@ -5094,235 +4604,215 @@ yyreduce:
 
 			 ASTNode number_expression("number_expression");
                          tree.add_node(number_expression);
-			;}
+			}
+#line 4609 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 136:
-
-/* Line 1455 of yacc.c  */
-#line 2004 "pnfha.ypp"
+#line 2004 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d = (yyvsp[(2) - (3)]).to_number().get();
-			 (yyvsp[(1) - (3)]).to_number().add(d);
-			 (yyval) = (yyvsp[(1) - (3)]);
-			;}
+			 double d = (yyvsp[-1]).to_number().get();
+			 (yyvsp[-2]).to_number().add(d);
+			 (yyval) = (yyvsp[-2]);
+			}
+#line 4619 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 137:
-
-/* Line 1455 of yacc.c  */
-#line 2010 "pnfha.ypp"
+#line 2010 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d = (yyvsp[(2) - (3)]).to_number().get();
-			 (yyvsp[(1) - (3)]).to_number().sub(d);
-			 (yyval) = (yyvsp[(1) - (3)]);
-			;}
+			 double d = (yyvsp[-1]).to_number().get();
+			 (yyvsp[-2]).to_number().sub(d);
+			 (yyval) = (yyvsp[-2]);
+			}
+#line 4629 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 138:
-
-/* Line 1455 of yacc.c  */
-#line 2016 "pnfha.ypp"
+#line 2016 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d = (yyvsp[(2) - (3)]).to_number().get();
-			 (yyvsp[(1) - (3)]).to_number().mul(d);
-			 (yyval) = (yyvsp[(1) - (3)]);
-			;}
+			 double d = (yyvsp[-1]).to_number().get();
+			 (yyvsp[-2]).to_number().mul(d);
+			 (yyval) = (yyvsp[-2]);
+			}
+#line 4639 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 139:
-
-/* Line 1455 of yacc.c  */
-#line 2022 "pnfha.ypp"
+#line 2022 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d = (yyvsp[(2) - (3)]).to_number().get();
-			 (yyvsp[(1) - (3)]).to_number().div(d);
-			 (yyval) = (yyvsp[(1) - (3)]);
-			;}
+			 double d = (yyvsp[-1]).to_number().get();
+			 (yyvsp[-2]).to_number().div(d);
+			 (yyval) = (yyvsp[-2]);
+			}
+#line 4649 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 140:
-
-/* Line 1455 of yacc.c  */
-#line 2028 "pnfha.ypp"
+#line 2028 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d = (yyvsp[(2) - (3)]).to_number().get();
-			 (yyvsp[(1) - (3)]).to_number().mod(d);
-			 (yyval) = (yyvsp[(1) - (3)]);
-			;}
+			 double d = (yyvsp[-1]).to_number().get();
+			 (yyvsp[-2]).to_number().mod(d);
+			 (yyval) = (yyvsp[-2]);
+			}
+#line 4659 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 141:
-
-/* Line 1455 of yacc.c  */
-#line 2034 "pnfha.ypp"
+#line 2034 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 char * str = "-";
-			 strcat(str, (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			 strcat(str, (yyvsp[0]).to_string().get().getString().c_str());
 			 PNF_String s(str);
 			 PNF_Variable v(s);
 			 (yyval) = v;
-			;}
+			}
+#line 4671 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 142:
-
-/* Line 1455 of yacc.c  */
-#line 2042 "pnfha.ypp"
+#line 2042 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d = (yyvsp[(3) - (3)]).to_number().get();
-			 PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			 double d = (yyvsp[0]).to_number().get();
+			 PNF_Number n((yyvsp[-2]).to_number());
 			 n.pow(d);
 			 (yyval).put(n);
-			;}
+			}
+#line 4682 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 143:
-
-/* Line 1455 of yacc.c  */
-#line 2049 "pnfha.ypp"
+#line 2049 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d = (yyvsp[(1) - (3)]).to_number().get();
-			 PNF_Number n((yyvsp[(3) - (3)]).to_number());
+			 double d = (yyvsp[-2]).to_number().get();
+			 PNF_Number n((yyvsp[0]).to_number());
 			 n.root(d);			 
 			 (yyval).put(n);
-			;}
+			}
+#line 4693 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 144:
-
-/* Line 1455 of yacc.c  */
-#line 2056 "pnfha.ypp"
+#line 2056 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Number n((yyvsp[(2) - (2)]).to_number().get());
+			 PNF_Number n((yyvsp[0]).to_number().get());
 			 n.inc(1);
 			 (yyval).put(n);
-			;}
+			}
+#line 4703 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 145:
-
-/* Line 1455 of yacc.c  */
-#line 2062 "pnfha.ypp"
+#line 2062 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Number n((yyvsp[(1) - (2)]).to_number().get());
+			 PNF_Number n((yyvsp[-1]).to_number().get());
 			 (yyval).put(n);
 			 n.inc(1);
-			;}
+			}
+#line 4713 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 146:
-
-/* Line 1455 of yacc.c  */
-#line 2068 "pnfha.ypp"
+#line 2068 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Number n((yyvsp[(2) - (2)]).to_number().get());
+			 PNF_Number n((yyvsp[0]).to_number().get());
 			 n.dec(1);
 			 (yyval).put(n);
-			;}
+			}
+#line 4723 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 147:
-
-/* Line 1455 of yacc.c  */
-#line 2074 "pnfha.ypp"
+#line 2074 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Number n((yyvsp[(1) - (2)]).to_number().get());
+			 PNF_Number n((yyvsp[-1]).to_number().get());
 			 (yyval).put(n);
 			 n.dec(1);
-			;}
+			}
+#line 4733 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 148:
-
-/* Line 1455 of yacc.c  */
-#line 2080 "pnfha.ypp"
+#line 2080 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
-			 int d2 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			 int d1 = (int)(yyvsp[-2]).to_number().get();
+			 int d2 = (int)(yyvsp[0]).to_number().get();
 			 int d3 = d1 & d2;
 			 PNF_Number n(d3);
 			 (yyval).put(n);
-			;}
+			}
+#line 4745 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 149:
-
-/* Line 1455 of yacc.c  */
-#line 2088 "pnfha.ypp"
+#line 2088 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
-			 int d2 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			 int d1 = (int)(yyvsp[-2]).to_number().get();
+			 int d2 = (int)(yyvsp[0]).to_number().get();
 			 int d3 = d1 | d2;
 			 PNF_Number n(d3);
 			 (yyval).put(n);
-			;}
+			}
+#line 4757 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 150:
-
-/* Line 1455 of yacc.c  */
-#line 2097 "pnfha.ypp"
+#line 2097 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
-			 int d2 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			 int d1 = (int)(yyvsp[-2]).to_number().get();
+			 int d2 = (int)(yyvsp[0]).to_number().get();
 			 int d3 = d1 ^ d2;
 			 PNF_Number n(d3);
 			 (yyval).put(n);
-			;}
+			}
+#line 4769 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 151:
-
-/* Line 1455 of yacc.c  */
-#line 2105 "pnfha.ypp"
+#line 2105 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 int d = (int)(yyvsp[(2) - (2)]).to_number().get();
+			 int d = (int)(yyvsp[0]).to_number().get();
 			 d = ~d;
 			 PNF_Number n(d);
 			 (yyval).put(n);
-			;}
+			}
+#line 4780 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 152:
-
-/* Line 1455 of yacc.c  */
-#line 2112 "pnfha.ypp"
+#line 2112 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
-			 int d2 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			 int d1 = (int)(yyvsp[-2]).to_number().get();
+			 int d2 = (int)(yyvsp[0]).to_number().get();
 			 int d3 = d1 << d2;
 			 PNF_Number n(d3);
 			 (yyval).put(n);
-			;}
+			}
+#line 4792 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 153:
-
-/* Line 1455 of yacc.c  */
-#line 2120 "pnfha.ypp"
+#line 2120 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
-			 int d2 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			 int d1 = (int)(yyvsp[-2]).to_number().get();
+			 int d2 = (int)(yyvsp[0]).to_number().get();
 			 int d3 = d1 >> d2;
 			 PNF_Number n(d3);
 			 (yyval).put(n);
-			;}
+			}
+#line 4804 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 154:
-
-/* Line 1455 of yacc.c  */
-#line 2127 "pnfha.ypp"
-    { (yyval) = (yyvsp[(2) - (3)]); ;}
+#line 2127 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]); }
+#line 4810 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 155:
-
-/* Line 1455 of yacc.c  */
-#line 2132 "pnfha.ypp"
+#line 2132 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 			 char ch = (yyval).to_character().get();
 
 			 if (ch == '\0')
@@ -5332,149 +4822,136 @@ yyreduce:
 
 			 ASTNode character_expression("character_expression"); 
 			 tree.add_node(character_expression);
-			;}
+			}
+#line 4827 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 156:
-
-/* Line 1455 of yacc.c  */
-#line 2145 "pnfha.ypp"
+#line 2145 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 char d = (yyvsp[(1) - (3)]).to_character().get();
+			 char d = (yyvsp[-2]).to_character().get();
 			 PNF_Character c(d);
-			 c.add((yyvsp[(3) - (3)]).to_character().get());
+			 c.add((yyvsp[0]).to_character().get());
 			 (yyval).put(c);
-			;}
+			}
+#line 4838 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 157:
-
-/* Line 1455 of yacc.c  */
-#line 2152 "pnfha.ypp"
+#line 2152 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 char d = (yyvsp[(1) - (3)]).to_character().get();
+			 char d = (yyvsp[-2]).to_character().get();
 			 PNF_Character c(d);
-			 c.sub((yyvsp[(3) - (3)]).to_character().get());
+			 c.sub((yyvsp[0]).to_character().get());
 			 (yyval).put(c);
-			;}
+			}
+#line 4849 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 158:
-
-/* Line 1455 of yacc.c  */
-#line 2159 "pnfha.ypp"
+#line 2159 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 char d = (yyvsp[(1) - (3)]).to_character().get();
+			 char d = (yyvsp[-2]).to_character().get();
 			 PNF_Character c(d);
-			 c.mul((yyvsp[(3) - (3)]).to_character().get());
+			 c.mul((yyvsp[0]).to_character().get());
 			 (yyval).put(c);
-			;}
+			}
+#line 4860 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 159:
-
-/* Line 1455 of yacc.c  */
-#line 2166 "pnfha.ypp"
+#line 2166 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 char d = (yyvsp[(1) - (3)]).to_character().get();
+			 char d = (yyvsp[-2]).to_character().get();
 			 PNF_Character c(d);
-			 c.div((yyvsp[(3) - (3)]).to_character().get());
-			 (yyval).put(c);			;}
+			 c.div((yyvsp[0]).to_character().get());
+			 (yyval).put(c);			}
+#line 4870 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 160:
-
-/* Line 1455 of yacc.c  */
-#line 2172 "pnfha.ypp"
+#line 2172 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 char d = (yyvsp[(1) - (3)]).to_character().get();
+			 char d = (yyvsp[-2]).to_character().get();
 			 PNF_Character c(d);
-			 c.mod((yyvsp[(3) - (3)]).to_character().get());
+			 c.mod((yyvsp[0]).to_character().get());
 			 (yyval).put(c);
-			;}
+			}
+#line 4881 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 161:
-
-/* Line 1455 of yacc.c  */
-#line 2179 "pnfha.ypp"
+#line 2179 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 char d = (yyvsp[(3) - (3)]).to_character().get();
-			 PNF_Character c((yyvsp[(1) - (3)]).to_character());
+			 char d = (yyvsp[0]).to_character().get();
+			 PNF_Character c((yyvsp[-2]).to_character());
 			 c.pow(d);
 			 (yyval).put(c);
-			;}
+			}
+#line 4892 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 162:
-
-/* Line 1455 of yacc.c  */
-#line 2186 "pnfha.ypp"
+#line 2186 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 char d = (yyvsp[(1) - (3)]).to_character().get();
-			 PNF_Character c((yyvsp[(3) - (3)]).to_character());
+			 char d = (yyvsp[-2]).to_character().get();
+			 PNF_Character c((yyvsp[0]).to_character());
 			 c.root(d);
 			 (yyval).put(c);
-			;}
+			}
+#line 4903 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 163:
-
-/* Line 1455 of yacc.c  */
-#line 2193 "pnfha.ypp"
+#line 2193 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Character n((yyvsp[(2) - (2)]).to_character().get());
+			 PNF_Character n((yyvsp[0]).to_character().get());
 			 n.inc(1);
 			 (yyval).put(n);
-			;}
+			}
+#line 4913 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 164:
-
-/* Line 1455 of yacc.c  */
-#line 2199 "pnfha.ypp"
+#line 2199 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Character n((yyvsp[(1) - (2)]).to_character().get());
+			 PNF_Character n((yyvsp[-1]).to_character().get());
 			 (yyval).put(n);
 			 n.inc(1);
-			;}
+			}
+#line 4923 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 165:
-
-/* Line 1455 of yacc.c  */
-#line 2205 "pnfha.ypp"
+#line 2205 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Character n((yyvsp[(2) - (2)]).to_character().get());
+			 PNF_Character n((yyvsp[0]).to_character().get());
 			 n.dec(1);
 			 (yyval).put(n);
-			;}
+			}
+#line 4933 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 166:
-
-/* Line 1455 of yacc.c  */
-#line 2211 "pnfha.ypp"
+#line 2211 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 PNF_Character n((yyvsp[(1) - (2)]).to_character().get());
+			 PNF_Character n((yyvsp[-1]).to_character().get());
 			 (yyval).put(n);
 			 n.dec(1);
-			;}
+			}
+#line 4943 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 167:
-
-/* Line 1455 of yacc.c  */
-#line 2216 "pnfha.ypp"
-    { (yyval) = (yyvsp[(2) - (3)]); ;}
+#line 2216 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]); }
+#line 4949 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 168:
-
-/* Line 1455 of yacc.c  */
-#line 2221 "pnfha.ypp"
+#line 2221 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 		
 			 String str = (yyval).to_string().get();
 			 if (str == "")
@@ -5484,17 +4961,16 @@ yyreduce:
 
 			 ASTNode string_expression("string_expression"); 
 			 tree.add_node(string_expression);
-			;}
+			}
+#line 4966 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 169:
-
-/* Line 1455 of yacc.c  */
-#line 2234 "pnfha.ypp"
+#line 2234 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String d = (yyvsp[(1) - (3)]).to_string().get();
+			 String d = (yyvsp[-2]).to_string().get();
 			 PNF_String s(d);
-			 s.add((yyvsp[(3) - (3)]).to_string().get());
+			 s.add((yyvsp[0]).to_string().get());
 
 			 String str = s.get();
 			 String str2 = "";
@@ -5514,37 +4990,34 @@ yyreduce:
 			 str3 += '\"';
 			 s.put(str3);
 			 (yyval).put(s);
-			;}
+			}
+#line 4995 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 170:
-
-/* Line 1455 of yacc.c  */
-#line 2259 "pnfha.ypp"
+#line 2259 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String str = (yyvsp[(2) - (2)]).to_string().get();
+			 String str = (yyvsp[0]).to_string().get();
 			 String str2 = "\"" + str + "\"";
 			 PNF_String s(str2);
 			 (yyval).put(s);
-			;}
+			}
+#line 5006 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 171:
-
-/* Line 1455 of yacc.c  */
-#line 2265 "pnfha.ypp"
-    { (yyval) = (yyvsp[(2) - (3)]); ;}
+#line 2265 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]); }
+#line 5012 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 172:
-
-/* Line 1455 of yacc.c  */
-#line 2270 "pnfha.ypp"
+#line 2270 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (1)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   (yyval) = varTable[scope][i].value();
@@ -5602,25 +5075,24 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(1) - (1)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 
 			 ASTNode id_expression("id_expression");
 			 tree.add_node(id_expression);
-			;}
+			}
+#line 5087 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 173:
-
-/* Line 1455 of yacc.c  */
-#line 2341 "pnfha.ypp"
+#line 2341 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(2) - (2)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Number n(varTable[scope][i].address());
@@ -5632,7 +5104,7 @@ yyreduce:
 			 {
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if (strcmp(labelTable[i].name().getString().c_str(), (yyvsp[(2) - (2)]).to_string().get().getString().c_str()) == 0)
+			   if (strcmp(labelTable[i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			   {
 			    declared = true;
 			    PNF_Number n(labelTable[i].address());
@@ -5645,7 +5117,7 @@ yyreduce:
 			  {
 			   for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			   {
-			    if (strcmp(eventLabelTable[i].name().getString().c_str(), (yyvsp[(2) - (2)]).to_string().get().getString().c_str()) == 0)
+			    if (strcmp(eventLabelTable[i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			    {
 			     declared = true;
 			     PNF_Number n(eventLabelTable[i].address());
@@ -5654,18 +5126,17 @@ yyreduce:
   			   }
 			  }
 			 }
-			;}
+			}
+#line 5131 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 174:
-
-/* Line 1455 of yacc.c  */
-#line 2381 "pnfha.ypp"
+#line 2381 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(2) - (2)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Boolean b;
@@ -5692,24 +5163,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(2) - (2)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
-			;}
+			}
+#line 5172 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 175:
-
-/* Line 1455 of yacc.c  */
-#line 2418 "pnfha.ypp"
+#line 2418 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared1 = false;
 			 bool declared2 = false;
   		   	 PNF_Boolean b1;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared1 = true;
 			   if (varTable[scope][i].value().getType() != TBOOLEAN)
@@ -5732,7 +5202,7 @@ yyreduce:
 
 			 if (!declared1)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
@@ -5740,7 +5210,7 @@ yyreduce:
 			 PNF_Boolean b3;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared2 = true;
 			   if (varTable[scope][i].value().getType() != TBOOLEAN)
@@ -5762,7 +5232,7 @@ yyreduce:
 
 			 if (!declared2)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
@@ -5778,20 +5248,19 @@ yyreduce:
 
 			 b1.opand(b5);
 			 (yyval).put(b1);
-			;}
+			}
+#line 5253 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 176:
-
-/* Line 1455 of yacc.c  */
-#line 2495 "pnfha.ypp"
+#line 2495 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared1 = false;
 			 bool declared2 = false;
 			 PNF_Boolean b1;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared1 = true;
 			   if (varTable[scope][i].value().getType() != TBOOLEAN)
@@ -5814,7 +5283,7 @@ yyreduce:
 
 			 if (!declared1)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
@@ -5823,7 +5292,7 @@ yyreduce:
    		         PNF_Boolean b3;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared2 = true;
 			   if (varTable[scope][i].value().getType() != TBOOLEAN)
@@ -5846,7 +5315,7 @@ yyreduce:
 
 			 if (!declared2)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
@@ -5862,25 +5331,24 @@ yyreduce:
 
 			 b1.opor(b5);
 			 (yyval).put(b1);
-			;}
+			}
+#line 5336 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 177:
-
-/* Line 1455 of yacc.c  */
-#line 2574 "pnfha.ypp"
+#line 2574 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(1) - (3)]).getType())
+			 switch ((yyvsp[-2]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			   if ((yyvsp[0]).getType() != TNUMBER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   double d = (yyvsp[(3) - (3)]).to_number().get();
-			   PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			   double d = (yyvsp[0]).to_number().get();
+			   PNF_Number n((yyvsp[-2]).to_number());
 			   n.add(d);
 			   (yyval).put(n);
 			  }
@@ -5888,13 +5356,13 @@ yyreduce:
 
 		          case TCHARACTER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			   if ((yyvsp[0]).getType() != TCHARACTER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   char d = (yyvsp[(3) - (3)]).to_character().get();
-			   PNF_Character n((yyvsp[(1) - (3)]).to_character());
+			   char d = (yyvsp[0]).to_character().get();
+			   PNF_Character n((yyvsp[-2]).to_character());
 			   n.add(d);
 			   (yyval).put(n);
 			  }
@@ -5902,13 +5370,13 @@ yyreduce:
 
 			  case TSTRING:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TSTRING)
+			   if ((yyvsp[0]).getType() != TSTRING)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
 
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   String str2 = "";
 			   for (unsigned long i = 0; i < str.length(); ++i)
  			   {
@@ -5917,7 +5385,7 @@ yyreduce:
 			    str2 += str[i];
 			   }
 
-			   str = (yyvsp[(1) - (3)]).to_string().get();
+			   str = (yyvsp[-2]).to_string().get();
 			   String str3 = "";
 			   for (unsigned long i = 0; i < str.length(); ++i)
  			   {
@@ -5947,25 +5415,24 @@ yyreduce:
 			   (yyval).put(n);
 			   break;
 			 }
-			;}
+			}
+#line 5420 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 178:
-
-/* Line 1455 of yacc.c  */
-#line 2654 "pnfha.ypp"
+#line 2654 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(1) - (3)]).getType())
+			 switch ((yyvsp[-2]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			   if ((yyvsp[0]).getType() != TNUMBER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   double d = (yyvsp[(3) - (3)]).to_number().get();
-			   PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			   double d = (yyvsp[0]).to_number().get();
+			   PNF_Number n((yyvsp[-2]).to_number());
 			   n.sub(d);
 			   (yyval).put(n);
 			  }
@@ -5973,13 +5440,13 @@ yyreduce:
 
 		          case TCHARACTER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			   if ((yyvsp[0]).getType() != TCHARACTER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   char d = (yyvsp[(3) - (3)]).to_character().get();
-			   PNF_Character n((yyvsp[(1) - (3)]).to_character());
+			   char d = (yyvsp[0]).to_character().get();
+			   PNF_Character n((yyvsp[-2]).to_character());
 			   n.sub(d);
 			   (yyval).put(n);
 			  }
@@ -5990,25 +5457,24 @@ yyreduce:
 			   (yyval).put(n);
 			   break;
 			 }
-			;}
+			}
+#line 5462 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 179:
-
-/* Line 1455 of yacc.c  */
-#line 2692 "pnfha.ypp"
+#line 2692 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(1) - (3)]).getType())
+			 switch ((yyvsp[-2]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			   if ((yyvsp[0]).getType() != TNUMBER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   double d = (yyvsp[(3) - (3)]).to_number().get();
-			   PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			   double d = (yyvsp[0]).to_number().get();
+			   PNF_Number n((yyvsp[-2]).to_number());
 			   n.mul(d);
 			   (yyval).put(n);
 			  }
@@ -6016,13 +5482,13 @@ yyreduce:
 
 		          case TCHARACTER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			   if ((yyvsp[0]).getType() != TCHARACTER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   char d = (yyvsp[(3) - (3)]).to_character().get();
-			   PNF_Character n((yyvsp[(1) - (3)]).to_character());
+			   char d = (yyvsp[0]).to_character().get();
+			   PNF_Character n((yyvsp[-2]).to_character());
 			   n.mul(d);
 			   (yyval).put(n);
 			  }
@@ -6033,25 +5499,24 @@ yyreduce:
 			   (yyval).put(n);
 			   break;
 			 }
-			;}
+			}
+#line 5504 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 180:
-
-/* Line 1455 of yacc.c  */
-#line 2730 "pnfha.ypp"
+#line 2730 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(1) - (3)]).getType())
+			 switch ((yyvsp[-2]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			   if ((yyvsp[0]).getType() != TNUMBER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   double d = (yyvsp[(3) - (3)]).to_number().get();
-			   PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			   double d = (yyvsp[0]).to_number().get();
+			   PNF_Number n((yyvsp[-2]).to_number());
 			   n.div(d);
 			   (yyval).put(n);
 			  }
@@ -6059,13 +5524,13 @@ yyreduce:
 
 		          case TCHARACTER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			   if ((yyvsp[0]).getType() != TCHARACTER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   char d = (yyvsp[(3) - (3)]).to_character().get();
-			   PNF_Character n((yyvsp[(1) - (3)]).to_character());
+			   char d = (yyvsp[0]).to_character().get();
+			   PNF_Character n((yyvsp[-2]).to_character());
 			   n.div(d);
 			   (yyval).put(n);
 			  }
@@ -6076,25 +5541,24 @@ yyreduce:
 			   (yyval).put(n);
 			   break;
 			 }
-			;}
+			}
+#line 5546 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 181:
-
-/* Line 1455 of yacc.c  */
-#line 2768 "pnfha.ypp"
+#line 2768 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(1) - (3)]).getType())
+			 switch ((yyvsp[-2]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			   if ((yyvsp[0]).getType() != TNUMBER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   double d = (yyvsp[(3) - (3)]).to_number().get();
-			   PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			   double d = (yyvsp[0]).to_number().get();
+			   PNF_Number n((yyvsp[-2]).to_number());
 			   n.mod(d);
 			   (yyval).put(n);
 			  }
@@ -6102,13 +5566,13 @@ yyreduce:
 
 		          case TCHARACTER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			   if ((yyvsp[0]).getType() != TCHARACTER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   char d = (yyvsp[(3) - (3)]).to_character().get();
-			   PNF_Character n((yyvsp[(1) - (3)]).to_character());
+			   char d = (yyvsp[0]).to_character().get();
+			   PNF_Character n((yyvsp[-2]).to_character());
 			   n.mod(d);
 			   (yyval).put(n);
 			  }
@@ -6119,43 +5583,41 @@ yyreduce:
 			   (yyval).put(n);
 			   break;
 			 }
-			;}
+			}
+#line 5588 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 182:
-
-/* Line 1455 of yacc.c  */
-#line 2806 "pnfha.ypp"
+#line 2806 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 if ((yyvsp[(2) - (2)]).getType() != TNUMBER)
+			 if ((yyvsp[0]).getType() != TNUMBER)
 			 {
 			  PNF_Number n(0);
                           (yyval).put(n);
 			 }
-			 double d = (yyvsp[(2) - (2)]).to_number().get();
+			 double d = (yyvsp[0]).to_number().get();
 			 d = -d;
 			 PNF_Number n(d);
 			 PNF_Variable v(n);
 			 (yyval) = v;
-			;}
+			}
+#line 5605 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 183:
-
-/* Line 1455 of yacc.c  */
-#line 2819 "pnfha.ypp"
+#line 2819 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(1) - (3)]).getType())
+			 switch ((yyvsp[-2]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			   if ((yyvsp[0]).getType() != TNUMBER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   double d = (yyvsp[(3) - (3)]).to_number().get();
-			   PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			   double d = (yyvsp[0]).to_number().get();
+			   PNF_Number n((yyvsp[-2]).to_number());
 			   n.pow(d);
 			   (yyval).put(n);
 			  }
@@ -6163,13 +5625,13 @@ yyreduce:
 
 		          case TCHARACTER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			   if ((yyvsp[0]).getType() != TCHARACTER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   char d = (yyvsp[(3) - (3)]).to_character().get();
-			   PNF_Character n((yyvsp[(1) - (3)]).to_character());
+			   char d = (yyvsp[0]).to_character().get();
+			   PNF_Character n((yyvsp[-2]).to_character());
 			   n.pow(d);
 			   (yyval).put(n);
 			  }
@@ -6180,25 +5642,24 @@ yyreduce:
 			   (yyval).put(n);
 			   break;
 			 }
-			;}
+			}
+#line 5647 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 184:
-
-/* Line 1455 of yacc.c  */
-#line 2857 "pnfha.ypp"
+#line 2857 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(1) - (3)]).getType())
+			 switch ((yyvsp[-2]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			   if ((yyvsp[0]).getType() != TNUMBER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   double d = (yyvsp[(1) - (3)]).to_number().get();
-			   PNF_Number n((yyvsp[(3) - (3)]).to_number());
+			   double d = (yyvsp[-2]).to_number().get();
+			   PNF_Number n((yyvsp[0]).to_number());
 			   n.root(d);
 			   (yyval).put(n);
 			  }
@@ -6206,13 +5667,13 @@ yyreduce:
 
 		          case TCHARACTER:
 			  {
-			   if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			   if ((yyvsp[0]).getType() != TCHARACTER)
 			   {
 			    PNF_Number n(0);
 			    (yyval).put(n);
 			   }
-			   char d = (yyvsp[(1) - (3)]).to_character().get();
-			   PNF_Character n((yyvsp[(3) - (3)]).to_character());
+			   char d = (yyvsp[-2]).to_character().get();
+			   PNF_Character n((yyvsp[0]).to_character());
 			   n.root(d);
 			   (yyval).put(n);
 			  }
@@ -6223,19 +5684,18 @@ yyreduce:
 			   (yyval).put(n);
 			   break;
 			 }
-			;}
+			}
+#line 5689 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 185:
-
-/* Line 1455 of yacc.c  */
-#line 2895 "pnfha.ypp"
+#line 2895 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(2) - (2)]).getType())
+			 switch ((yyvsp[0]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   PNF_Number n((yyvsp[(2) - (2)]).to_number().get());
+			   PNF_Number n((yyvsp[0]).to_number().get());
 			   n.inc(1);
 			   (yyval).put(n);
 			  }
@@ -6243,7 +5703,7 @@ yyreduce:
 
 			  case TCHARACTER:
 			  {
-			   PNF_Character c((yyvsp[(2) - (2)]).to_character().get());
+			   PNF_Character c((yyvsp[0]).to_character().get());
 			   c.inc(1);
 			   (yyval).put(c);
 			  }
@@ -6256,19 +5716,18 @@ yyreduce:
 			  }
 			  break;
 			 }
-			;}
+			}
+#line 5721 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 186:
-
-/* Line 1455 of yacc.c  */
-#line 2923 "pnfha.ypp"
+#line 2923 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(2) - (2)]).getType())
+			 switch ((yyvsp[0]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   PNF_Number n((yyvsp[(2) - (2)]).to_number().get());
+			   PNF_Number n((yyvsp[0]).to_number().get());
 			   (yyval).put(n);
 			   n.inc(1);
 			  }
@@ -6276,7 +5735,7 @@ yyreduce:
 
 			  case TCHARACTER:
 			  {
-			   PNF_Character c((yyvsp[(2) - (2)]).to_character().get());
+			   PNF_Character c((yyvsp[0]).to_character().get());
 			   (yyval).put(c);
 			   c.inc(1);
 			  }
@@ -6289,19 +5748,18 @@ yyreduce:
 			  }
 			  break;
 			 }
-			;}
+			}
+#line 5753 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 187:
-
-/* Line 1455 of yacc.c  */
-#line 2951 "pnfha.ypp"
+#line 2951 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(2) - (2)]).getType())
+			 switch ((yyvsp[0]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   PNF_Number n((yyvsp[(2) - (2)]).to_number().get());
+			   PNF_Number n((yyvsp[0]).to_number().get());
 			   n.dec(1);
 			   (yyval).put(n);
 			  }
@@ -6309,7 +5767,7 @@ yyreduce:
 
 			  case TCHARACTER:
 			  {
-			   PNF_Character c((yyvsp[(2) - (2)]).to_character().get());
+			   PNF_Character c((yyvsp[0]).to_character().get());
 			   c.dec(1);
 			   (yyval).put(c);
 			  }
@@ -6322,19 +5780,18 @@ yyreduce:
 			  }
 			  break;
 			 }
-			;}
+			}
+#line 5785 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 188:
-
-/* Line 1455 of yacc.c  */
-#line 2979 "pnfha.ypp"
+#line 2979 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 switch ((yyvsp[(2) - (2)]).getType())
+			 switch ((yyvsp[0]).getType())
 			 {
 			  case TNUMBER:
 			  {
-			   PNF_Number n((yyvsp[(2) - (2)]).to_number().get());
+			   PNF_Number n((yyvsp[0]).to_number().get());
 			   (yyval).put(n);
 			   n.dec(1);
 			  }
@@ -6342,7 +5799,7 @@ yyreduce:
 
 			  case TCHARACTER:
 			  {
-			   PNF_Character c((yyvsp[(2) - (2)]).to_character().get());
+			   PNF_Character c((yyvsp[0]).to_character().get());
 			   (yyval).put(c);
 			   c.dec(1);
 			  }
@@ -6355,116 +5812,108 @@ yyreduce:
 			  }
 			  break;
 			 }
-			;}
+			}
+#line 5817 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 189:
-
-/* Line 1455 of yacc.c  */
-#line 3006 "pnfha.ypp"
-    { (yyval) = (yyvsp[(1) - (3)]); ;}
+#line 3006 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-2]); }
+#line 5823 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 190:
-
-/* Line 1455 of yacc.c  */
-#line 3010 "pnfha.ypp"
+#line 3010 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b = d1 == d2;
 			 PNF_Boolean b2(b);
 			 (yyval).put(b2);
 
 			 ASTNode relational_expression("relational_expression");
 			 tree.add_node(relational_expression);
-			;}
+			}
+#line 5838 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 191:
-
-/* Line 1455 of yacc.c  */
-#line 3021 "pnfha.ypp"
+#line 3021 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b = d1 != d2;
 			 PNF_Boolean b2(b);
 			 (yyval).put(b2);
 
 			 ASTNode relational_expression("relational_expression");
 			 tree.add_node(relational_expression);
-			;}
+			}
+#line 5853 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 192:
-
-/* Line 1455 of yacc.c  */
-#line 3032 "pnfha.ypp"
+#line 3032 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b = d1 < d2;
 			 PNF_Boolean b2(b);
 			 (yyval).put(b2);
 
 			 ASTNode relational_expression("relational_expression");
 			 tree.add_node(relational_expression);
-			;}
+			}
+#line 5868 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 193:
-
-/* Line 1455 of yacc.c  */
-#line 3043 "pnfha.ypp"
+#line 3043 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b = d1 > d2;
 			 PNF_Boolean b2(b);
 			 (yyval).put(b2);
 
 			 ASTNode relational_expression("relational_expression");
 			 tree.add_node(relational_expression);
-			;}
+			}
+#line 5883 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 194:
-
-/* Line 1455 of yacc.c  */
-#line 3054 "pnfha.ypp"
+#line 3054 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b = d1 <= d2;
 			 PNF_Boolean b2(b);
 			 (yyval).put(b2);
 
 			 ASTNode relational_expression("relational_expression");
 			 tree.add_node(relational_expression);
-			;}
+			}
+#line 5898 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 195:
-
-/* Line 1455 of yacc.c  */
-#line 3065 "pnfha.ypp"
+#line 3065 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b = d1 >= d2;
 			 PNF_Boolean b2(b);
 			 (yyval).put(b2);
 
 			 ASTNode relational_expression("relational_expression");
 			 tree.add_node(relational_expression);
-			;}
+			}
+#line 5913 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 196:
-
-/* Line 1455 of yacc.c  */
-#line 3075 "pnfha.ypp"
+#line 3075 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 String str = (yyval).to_boolean().get();
 			 if (str == "false")
@@ -6473,16 +5922,15 @@ yyreduce:
 			  exptruth = true;
 			 else
 			  exptruth = true;
-			;}
+			}
+#line 5927 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 197:
-
-/* Line 1455 of yacc.c  */
-#line 3085 "pnfha.ypp"
+#line 3085 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b1 = d1 < d2;
 			 bool b2 = d1 == d2;
 			 bool b3 = d1 > d2;
@@ -6501,25 +5949,23 @@ yyreduce:
 			 }
 			 PNF_Number n(answer);
 			 (yyval).put(n);
-			;}
+			}
+#line 5954 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 198:
-
-/* Line 1455 of yacc.c  */
-#line 3110 "pnfha.ypp"
-    { (yyval) = (yyvsp[(2) - (3)]); ;}
+#line 3110 "pnfha.ypp" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[-1]); }
+#line 5960 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 199:
-
-/* Line 1455 of yacc.c  */
-#line 3112 "pnfha.ypp"
+#line 3112 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Boolean b1;
@@ -6540,7 +5986,7 @@ yyreduce:
 			   }
 
 			   bool b2;
-			   String str = (yyvsp[(3) - (3)]).to_boolean().get();
+			   String str = (yyvsp[0]).to_boolean().get();
 			   if (str.getString() == "true")
 			    b2 = true;
 			   else if (str.getString() == "false")
@@ -6556,24 +6002,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6013 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 200:
-
-/* Line 1455 of yacc.c  */
-#line 3161 "pnfha.ypp"
+#line 3161 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Boolean b1;
@@ -6594,7 +6039,7 @@ yyreduce:
 			   }
 
 			   bool b2;
-			   String str = (yyvsp[(1) - (3)]).to_boolean().get();
+			   String str = (yyvsp[-2]).to_boolean().get();
 			   if (str.getString() == "true")
 			    b2 = true;
 			   else if (str.getString() == "false")
@@ -6610,24 +6055,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6066 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 201:
-
-/* Line 1455 of yacc.c  */
-#line 3210 "pnfha.ypp"
+#line 3210 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Boolean b1;
@@ -6648,7 +6092,7 @@ yyreduce:
 			   }
 
 			   bool b2;
-			   String str = (yyvsp[(3) - (3)]).to_boolean().get();
+			   String str = (yyvsp[0]).to_boolean().get();
 			   if (str.getString() == "true")
 			    b2 = true;
 			   else if (str.getString() == "false")
@@ -6664,24 +6108,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6119 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 202:
-
-/* Line 1455 of yacc.c  */
-#line 3259 "pnfha.ypp"
+#line 3259 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Boolean b1;
@@ -6702,7 +6145,7 @@ yyreduce:
 			   }
 
 			   bool b2;
-			   String str = (yyvsp[(1) - (3)]).to_boolean().get();
+			   String str = (yyvsp[-2]).to_boolean().get();
 			   if (str.getString() == "true")
 			    b2 = true;
 			   else if (str.getString() == "false")
@@ -6718,24 +6161,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6172 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 203:
-
-/* Line 1455 of yacc.c  */
-#line 3308 "pnfha.ypp"
+#line 3308 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -6743,12 +6185,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(3) - (3)]).to_number().get();
+			     double d = (yyvsp[0]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.add(d);
 			     (yyval).put(n);
@@ -6765,24 +6207,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6218 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 204:
-
-/* Line 1455 of yacc.c  */
-#line 3350 "pnfha.ypp"
+#line 3350 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -6790,12 +6231,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(3) - (3)]).to_number().get();
+			     double d = (yyvsp[0]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.sub(d);
 			     (yyval).put(n);
@@ -6812,24 +6253,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6264 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 205:
-
-/* Line 1455 of yacc.c  */
-#line 3392 "pnfha.ypp"
+#line 3392 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -6837,12 +6277,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(3) - (3)]).to_number().get();
+			     double d = (yyvsp[0]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.mul(d);
 			     (yyval).put(n);
@@ -6859,24 +6299,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6310 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 206:
-
-/* Line 1455 of yacc.c  */
-#line 3434 "pnfha.ypp"
+#line 3434 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -6884,12 +6323,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(3) - (3)]).to_number().get();
+			     double d = (yyvsp[0]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.div(d);
 			     (yyval).put(n);
@@ -6906,24 +6345,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6356 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 207:
-
-/* Line 1455 of yacc.c  */
-#line 3476 "pnfha.ypp"
+#line 3476 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -6931,12 +6369,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(3) - (3)]).to_number().get();
+			     double d = (yyvsp[0]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.pow(d);
 			     (yyval).put(n);
@@ -6953,24 +6391,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6402 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 208:
-
-/* Line 1455 of yacc.c  */
-#line 3518 "pnfha.ypp"
+#line 3518 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -6978,13 +6415,13 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 			     double d = varTable[scope][i].value().to_number().get();
-			     PNF_Number n((yyvsp[(3) - (3)]).to_number());
+			     PNF_Number n((yyvsp[0]).to_number());
 			     n.root(d);
 			     (yyval).put(n);
 			    }
@@ -7000,24 +6437,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6448 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 209:
-
-/* Line 1455 of yacc.c  */
-#line 3560 "pnfha.ypp"
+#line 3560 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7025,12 +6461,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(1) - (3)]).to_number().get();
+			     double d = (yyvsp[-2]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.add(d);
 			     (yyval).put(n);
@@ -7047,24 +6483,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6494 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 210:
-
-/* Line 1455 of yacc.c  */
-#line 3602 "pnfha.ypp"
+#line 3602 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7072,12 +6507,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(1) - (3)]).to_number().get();
+			     double d = (yyvsp[-2]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.sub(d);
 			     (yyval).put(n);
@@ -7094,24 +6529,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6540 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 211:
-
-/* Line 1455 of yacc.c  */
-#line 3644 "pnfha.ypp"
+#line 3644 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7119,12 +6553,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(1) - (3)]).to_number().get();
+			     double d = (yyvsp[-2]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.mul(d);
 			     (yyval).put(n);
@@ -7141,24 +6575,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6586 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 212:
-
-/* Line 1455 of yacc.c  */
-#line 3686 "pnfha.ypp"
+#line 3686 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7166,12 +6599,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(1) - (3)]).to_number().get();
+			     double d = (yyvsp[-2]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.div(d);
 			     (yyval).put(n);
@@ -7188,24 +6621,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6632 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 213:
-
-/* Line 1455 of yacc.c  */
-#line 3728 "pnfha.ypp"
+#line 3728 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7213,12 +6645,12 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     double d = (yyvsp[(1) - (3)]).to_number().get();
+			     double d = (yyvsp[-2]).to_number().get();
 			     PNF_Number n(varTable[scope][i].value().to_number());
 			     n.pow(d);
 			     (yyval).put(n);
@@ -7235,24 +6667,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6678 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 214:
-
-/* Line 1455 of yacc.c  */
-#line 3770 "pnfha.ypp"
+#line 3770 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7260,13 +6691,13 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 			     double d = varTable[scope][i].value().to_number().get();
-			     PNF_Number n((yyvsp[(1) - (3)]).to_number());
+			     PNF_Number n((yyvsp[-2]).to_number());
 			     n.root(d);
 			     (yyval).put(n);
 			    }
@@ -7282,24 +6713,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6724 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 215:
-
-/* Line 1455 of yacc.c  */
-#line 3812 "pnfha.ypp"
+#line 3812 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7307,12 +6737,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[0]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(3) - (3)]).to_character().get();
+			     char d = (yyvsp[0]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.add(d);
 			     (yyval).put(n);
@@ -7329,24 +6759,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6770 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 216:
-
-/* Line 1455 of yacc.c  */
-#line 3854 "pnfha.ypp"
+#line 3854 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7354,12 +6783,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[0]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(3) - (3)]).to_character().get();
+			     char d = (yyvsp[0]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.sub(d);
 			     (yyval).put(n);
@@ -7376,24 +6805,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6816 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 217:
-
-/* Line 1455 of yacc.c  */
-#line 3896 "pnfha.ypp"
+#line 3896 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7401,12 +6829,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[0]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(3) - (3)]).to_character().get();
+			     char d = (yyvsp[0]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.mul(d);
 			     (yyval).put(n);
@@ -7423,24 +6851,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6862 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 218:
-
-/* Line 1455 of yacc.c  */
-#line 3938 "pnfha.ypp"
+#line 3938 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7448,12 +6875,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[0]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(3) - (3)]).to_character().get();
+			     char d = (yyvsp[0]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.div(d);
 			     (yyval).put(n);
@@ -7470,24 +6897,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6908 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 219:
-
-/* Line 1455 of yacc.c  */
-#line 3980 "pnfha.ypp"
+#line 3980 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7495,12 +6921,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[0]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(3) - (3)]).to_character().get();
+			     char d = (yyvsp[0]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.pow(d);
 			     (yyval).put(n);
@@ -7517,24 +6943,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 6954 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 220:
-
-/* Line 1455 of yacc.c  */
-#line 4022 "pnfha.ypp"
+#line 4022 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7542,13 +6967,13 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[0]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 			     char d = varTable[scope][i].value().to_character().get();
-			     PNF_Character n((yyvsp[(3) - (3)]).to_character());
+			     PNF_Character n((yyvsp[0]).to_character());
 			     n.root(d);
 			     (yyval).put(n);
 			    }
@@ -7564,24 +6989,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7000 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 221:
-
-/* Line 1455 of yacc.c  */
-#line 4064 "pnfha.ypp"
+#line 4064 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7589,12 +7013,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[-2]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(1) - (3)]).to_character().get();
+			     char d = (yyvsp[-2]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.add(d);
 			     (yyval).put(n);
@@ -7611,24 +7035,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7046 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 222:
-
-/* Line 1455 of yacc.c  */
-#line 4106 "pnfha.ypp"
+#line 4106 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7636,12 +7059,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[-2]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(1) - (3)]).to_character().get();
+			     char d = (yyvsp[-2]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.sub(d);
 			     (yyval).put(n);
@@ -7658,24 +7081,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7092 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 223:
-
-/* Line 1455 of yacc.c  */
-#line 4148 "pnfha.ypp"
+#line 4148 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7683,12 +7105,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[-2]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(1) - (3)]).to_character().get();
+			     char d = (yyvsp[-2]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.mul(d);
 			     (yyval).put(n);
@@ -7705,24 +7127,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7138 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 224:
-
-/* Line 1455 of yacc.c  */
-#line 4190 "pnfha.ypp"
+#line 4190 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7730,12 +7151,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[-2]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(1) - (3)]).to_character().get();
+			     char d = (yyvsp[-2]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.div(d);
 			     (yyval).put(n);
@@ -7752,24 +7173,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7184 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 225:
-
-/* Line 1455 of yacc.c  */
-#line 4232 "pnfha.ypp"
+#line 4232 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7777,12 +7197,12 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[-2]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
-			     char d = (yyvsp[(1) - (3)]).to_character().get();
+			     char d = (yyvsp[-2]).to_character().get();
 			     PNF_Character n(varTable[scope][i].value().to_character());
 			     n.pow(d);
 			     (yyval).put(n);
@@ -7799,24 +7219,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7230 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 226:
-
-/* Line 1455 of yacc.c  */
-#line 4274 "pnfha.ypp"
+#line 4274 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7824,13 +7243,13 @@ yyreduce:
 			   {
   			    case TCHARACTER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TCHARACTER)
+			     if ((yyvsp[-2]).getType() != TCHARACTER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 			     char d = varTable[scope][i].value().to_character().get();
-			     PNF_Character n((yyvsp[(1) - (3)]).to_character());
+			     PNF_Character n((yyvsp[-2]).to_character());
 			     n.root(d);
 			     (yyval).put(n);
 			    }
@@ -7846,24 +7265,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7276 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 227:
-
-/* Line 1455 of yacc.c  */
-#line 4316 "pnfha.ypp"
+#line 4316 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7871,14 +7289,14 @@ yyreduce:
 			   {
   			    case TSTRING:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TSTRING)
+			     if ((yyvsp[0]).getType() != TSTRING)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     String d = (yyvsp[(3) - (3)]).to_string().get();
+			     String d = (yyvsp[0]).to_string().get();
 			     String str = "";
 			     for (unsigned is = 0; is < d.length(); ++is)
 			     {
@@ -7915,24 +7333,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7344 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 228:
-
-/* Line 1455 of yacc.c  */
-#line 4380 "pnfha.ypp"
+#line 4380 "pnfha.ypp" /* yacc.c:1646  */
     {
                          bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -7940,14 +7357,14 @@ yyreduce:
 			   {
   			    case TSTRING:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TSTRING)
+			     if ((yyvsp[-2]).getType() != TSTRING)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     String d = (yyvsp[(1) - (3)]).to_string().get();
+			     String d = (yyvsp[-2]).to_string().get();
 			     String str = "";
 			     for (unsigned is = 0; is < d.length(); ++is)
 			     {
@@ -7984,24 +7401,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7412 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 229:
-
-/* Line 1455 of yacc.c  */
-#line 4444 "pnfha.ypp"
+#line 4444 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8009,14 +7425,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(1) - (3)]).to_number().get();
+			     double d1 = (yyvsp[-2]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 == d2;
 			     PNF_Boolean b2(b);
@@ -8034,24 +7450,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7461 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 230:
-
-/* Line 1455 of yacc.c  */
-#line 4489 "pnfha.ypp"
+#line 4489 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8059,14 +7474,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(1) - (3)]).to_number().get();
+			     double d1 = (yyvsp[-2]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 != d2;
 			     PNF_Boolean b2(b);
@@ -8084,24 +7499,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7510 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 231:
-
-/* Line 1455 of yacc.c  */
-#line 4534 "pnfha.ypp"
+#line 4534 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8109,14 +7523,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(1) - (3)]).to_number().get();
+			     double d1 = (yyvsp[-2]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 < d2;
 			     PNF_Boolean b2(b);
@@ -8134,24 +7548,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7559 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 232:
-
-/* Line 1455 of yacc.c  */
-#line 4579 "pnfha.ypp"
+#line 4579 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8159,14 +7572,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(1) - (3)]).to_number().get();
+			     double d1 = (yyvsp[-2]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 > d2;
 			     PNF_Boolean b2(b);
@@ -8184,24 +7597,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7608 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 233:
-
-/* Line 1455 of yacc.c  */
-#line 4624 "pnfha.ypp"
+#line 4624 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8209,14 +7621,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(1) - (3)]).to_number().get();
+			     double d1 = (yyvsp[-2]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 <= d2;
 			     PNF_Boolean b2(b);
@@ -8234,24 +7646,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7657 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 234:
-
-/* Line 1455 of yacc.c  */
-#line 4669 "pnfha.ypp"
+#line 4669 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8259,14 +7670,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(1) - (3)]).to_number().get();
+			     double d1 = (yyvsp[-2]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 >= d2;
 			     PNF_Boolean b2(b);
@@ -8284,24 +7695,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7706 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 235:
-
-/* Line 1455 of yacc.c  */
-#line 4714 "pnfha.ypp"
+#line 4714 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8309,14 +7719,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(3) - (3)]).to_number().get();
+			     double d1 = (yyvsp[0]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 == d2;
 			     PNF_Boolean b2(b);
@@ -8334,24 +7744,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7755 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 236:
-
-/* Line 1455 of yacc.c  */
-#line 4759 "pnfha.ypp"
+#line 4759 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8359,14 +7768,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(3) - (3)]).to_number().get();
+			     double d1 = (yyvsp[0]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 != d2;
 			     PNF_Boolean b2(b);
@@ -8384,24 +7793,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7804 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 237:
-
-/* Line 1455 of yacc.c  */
-#line 4804 "pnfha.ypp"
+#line 4804 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8409,14 +7817,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(3) - (3)]).to_number().get();
+			     double d1 = (yyvsp[0]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 < d2;
 			     PNF_Boolean b2(b);
@@ -8434,24 +7842,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7853 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 238:
-
-/* Line 1455 of yacc.c  */
-#line 4849 "pnfha.ypp"
+#line 4849 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8459,14 +7866,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(3) - (3)]).to_number().get();
+			     double d1 = (yyvsp[0]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 > d2;
 			     PNF_Boolean b2(b);
@@ -8484,24 +7891,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7902 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 239:
-
-/* Line 1455 of yacc.c  */
-#line 4894 "pnfha.ypp"
+#line 4894 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8509,14 +7915,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(3) - (3)]).to_number().get();
+			     double d1 = (yyvsp[0]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 <= d2;
 			     PNF_Boolean b2(b);
@@ -8534,24 +7940,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 7951 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 240:
-
-/* Line 1455 of yacc.c  */
-#line 4939 "pnfha.ypp"
+#line 4939 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8559,14 +7964,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     double d1 = (yyvsp[(3) - (3)]).to_number().get();
+			     double d1 = (yyvsp[0]).to_number().get();
 			     double d2 = varTable[scope][i].value().to_number().get();
 			     bool b = d1 >= d2;
 			     PNF_Boolean b2(b);
@@ -8584,24 +7989,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8000 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 241:
-
-/* Line 1455 of yacc.c  */
-#line 4984 "pnfha.ypp"
+#line 4984 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8609,14 +8013,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[0]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 & d2;
 			     PNF_Number n(d3);
@@ -8634,24 +8038,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8049 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 242:
-
-/* Line 1455 of yacc.c  */
-#line 5029 "pnfha.ypp"
+#line 5029 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8659,14 +8062,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[0]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 | d2;
 			     PNF_Number n(d3);
@@ -8684,24 +8087,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8098 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 243:
-
-/* Line 1455 of yacc.c  */
-#line 5074 "pnfha.ypp"
+#line 5074 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8709,14 +8111,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[0]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 ^ d2;
 			     PNF_Number n(d3);
@@ -8734,24 +8136,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8147 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 244:
-
-/* Line 1455 of yacc.c  */
-#line 5119 "pnfha.ypp"
+#line 5119 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8759,14 +8160,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[-2]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 & d2;
 			     PNF_Number n(d3);
@@ -8784,24 +8185,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8196 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 245:
-
-/* Line 1455 of yacc.c  */
-#line 5164 "pnfha.ypp"
+#line 5164 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8809,14 +8209,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[-2]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 | d2;
 			     PNF_Number n(d3);
@@ -8834,24 +8234,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8245 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 246:
-
-/* Line 1455 of yacc.c  */
-#line 5209 "pnfha.ypp"
+#line 5209 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8859,14 +8258,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[-2]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 ^ d2;
 			     PNF_Number n(d3);
@@ -8884,24 +8283,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8294 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 247:
-
-/* Line 1455 of yacc.c  */
-#line 5254 "pnfha.ypp"
+#line 5254 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(2) - (2)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8926,24 +8324,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(2) - (2)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8335 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 248:
-
-/* Line 1455 of yacc.c  */
-#line 5291 "pnfha.ypp"
+#line 5291 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -8951,14 +8348,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[0]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 << d2;
 			     PNF_Number n(d3);
@@ -8976,24 +8373,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8384 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 249:
-
-/* Line 1455 of yacc.c  */
-#line 5336 "pnfha.ypp"
+#line 5336 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -9001,14 +8397,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(3) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[0]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(3) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[0]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 >> d2;
 			     PNF_Number n(d3);
@@ -9026,24 +8422,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8433 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 250:
-
-/* Line 1455 of yacc.c  */
-#line 5381 "pnfha.ypp"
+#line 5381 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -9051,14 +8446,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[-2]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 << d2;
 			     PNF_Number n(d3);
@@ -9076,24 +8471,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8482 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 251:
-
-/* Line 1455 of yacc.c  */
-#line 5426 "pnfha.ypp"
+#line 5426 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -9101,14 +8495,14 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			     int d1 = (int)(yyvsp[(1) - (3)]).to_number().get();
+			     int d1 = (int)(yyvsp[-2]).to_number().get();
 			     int d2 = (int)varTable[scope][i].value().to_number().get();
 			     int d3 = d1 >> d2;
 			     PNF_Number n(d3);
@@ -9126,24 +8520,23 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 	 		 ASTNode mixed_expression("mixed_expression"); 
 		         tree.add_node(mixed_expression);
-			;}
+			}
+#line 8531 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 252:
-
-/* Line 1455 of yacc.c  */
-#line 5471 "pnfha.ypp"
+#line 5471 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -9151,15 +8544,15 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b1 = d1 < d2;
 			 bool b2 = d1 == d2;
 			 bool b3 = d1 > d2;
@@ -9191,22 +8584,21 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }			
-			;}
+			}
+#line 8593 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 253:
-
-/* Line 1455 of yacc.c  */
-#line 5529 "pnfha.ypp"
+#line 5529 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			 {
-  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(1) - (3)]).to_string().get().getString().c_str()) == 0)
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   	
@@ -9214,15 +8606,15 @@ yyreduce:
 			   {
   			    case TNUMBER:
 			    {
-			     if ((yyvsp[(1) - (3)]).getType() != TNUMBER)
+			     if ((yyvsp[-2]).getType() != TNUMBER)
 			     {
 			      PNF_Number n(0);
 			      (yyval).put(n);
 			     }
 
 
-			 double d1 = (yyvsp[(1) - (3)]).to_number().get();
-			 double d2 = (yyvsp[(3) - (3)]).to_number().get();
+			 double d1 = (yyvsp[-2]).to_number().get();
+			 double d2 = (yyvsp[0]).to_number().get();
 			 bool b1 = d1 < d2;
 			 bool b2 = d1 == d2;
 			 bool b3 = d1 > d2;
@@ -9254,66 +8646,60 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(1) - (3)]).to_string().get();
+			  String str = (yyvsp[-2]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }			
-			;}
+			}
+#line 8655 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 254:
-
-/* Line 1455 of yacc.c  */
-#line 5589 "pnfha.ypp"
+#line 5589 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
-			;}
+			 (yyval) = (yyvsp[0]);
+			}
+#line 8663 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 255:
-
-/* Line 1455 of yacc.c  */
-#line 5593 "pnfha.ypp"
+#line 5593 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(2) - (3)]);
-			;}
+			 (yyval) = (yyvsp[-1]);
+			}
+#line 8671 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 256:
-
-/* Line 1455 of yacc.c  */
-#line 5599 "pnfha.ypp"
+#line 5599 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 funcnum = (unsigned long)(yyvsp[(3) - (3)]).to_number().get();
-			;}
+			 funcnum = (unsigned long)(yyvsp[0]).to_number().get();
+			}
+#line 8679 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 257:
-
-/* Line 1455 of yacc.c  */
-#line 5603 "pnfha.ypp"
+#line 5603 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 fsaveid2 = (yyvsp[(8) - (8)]);
+			 fsaveid2 = (yyvsp[0]);
 
-			 conprint("FCALL TSTRING \"%s\"\n", (yyvsp[(8) - (8)]).to_string().get().getString().c_str());
+			 conprint("FCALL TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 conprint("FCPARAMS TVOID 0V\n");
-			;}
+			}
+#line 8690 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 258:
-
-/* Line 1455 of yacc.c  */
-#line 5610 "pnfha.ypp"
+#line 5610 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 pnum3 = 0;
 			 pnum4 = 0;
-			;}
+			}
+#line 8699 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 259:
-
-/* Line 1455 of yacc.c  */
-#line 5615 "pnfha.ypp"
+#line 5615 "pnfha.ypp" /* yacc.c:1646  */
     {		 
 			 unsigned long index = funcstk.find(fsaveid2.to_string().get(), frets3, fparams3);
 			 if (index == -1)
@@ -9332,13 +8718,12 @@ yyreduce:
 			  }
 			 }
 			 fsaveindex = index;
-			;}
+			}
+#line 8723 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 260:
-
-/* Line 1455 of yacc.c  */
-#line 5634 "pnfha.ypp"
+#line 5634 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 if(fncdefault)
 			 {
@@ -9347,22 +8732,20 @@ yyreduce:
 			 }
 
 			 conprint("FECPARAMS TVOID 0V\n");
-			;}
+			}
+#line 8737 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 261:
-
-/* Line 1455 of yacc.c  */
-#line 5644 "pnfha.ypp"
+#line 5644 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("FECALL TVOID 0V\n");
-			;}
+			}
+#line 8745 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 262:
-
-/* Line 1455 of yacc.c  */
-#line 5648 "pnfha.ypp"
+#line 5648 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets3.length() - 1; i > 0; --i)
 			  frets3.remove();
@@ -9371,36 +8754,33 @@ yyreduce:
 			 for (unsigned long i = fparams3.length() - 1; i > 0; --i)
 			  fparams3.remove();
 			 fparams3[0] = "";
-			;}
+			}
+#line 8759 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 263:
-
-/* Line 1455 of yacc.c  */
-#line 5660 "pnfha.ypp"
+#line 5660 "pnfha.ypp" /* yacc.c:1646  */
     {
 
-				;}
+				}
+#line 8767 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 264:
-
-/* Line 1455 of yacc.c  */
-#line 5667 "pnfha.ypp"
+#line 5667 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 (yyval) = (yyvsp[(1) - (1)]);				 
+				 (yyval) = (yyvsp[0]);				 
 
 				 for (unsigned long i = 0; i < funcps[funcps.length() - 1].length(); ++i)
 			 	 {
-			 	  funcps[funcps.length() - 1][i].value((yyvsp[(1) - (1)]));
+			 	  funcps[funcps.length() - 1][i].value((yyvsp[0]));
 			 	 }
-				;}
+				}
+#line 8780 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 265:
-
-/* Line 1455 of yacc.c  */
-#line 5678 "pnfha.ypp"
+#line 5678 "pnfha.ypp" /* yacc.c:1646  */
     {
  				 switch (exptype)
 				 {
@@ -9442,13 +8822,12 @@ yyreduce:
 				 }
 
 				 ++pnum4;
-				;}
+				}
+#line 8827 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 266:
-
-/* Line 1455 of yacc.c  */
-#line 5721 "pnfha.ypp"
+#line 5721 "pnfha.ypp" /* yacc.c:1646  */
     {
  				 switch (exptype)
 				 {
@@ -9490,24 +8869,23 @@ yyreduce:
 				 }
 
 				 ++pnum4;
-				;}
+				}
+#line 8874 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 267:
-
-/* Line 1455 of yacc.c  */
-#line 5764 "pnfha.ypp"
+#line 5764 "pnfha.ypp" /* yacc.c:1646  */
     {
 				 PNF_Type_Enum t;
-			  	 if ((yyvsp[(3) - (3)]).to_string().get() == "void")
+			  	 if ((yyvsp[0]).to_string().get() == "void")
 				  t = TVOID;
-				 else if ((yyvsp[(3) - (3)]).to_string().get() == "boolean")
+				 else if ((yyvsp[0]).to_string().get() == "boolean")
 				  t = TBOOLEAN;
-				 else if ((yyvsp[(3) - (3)]).to_string().get() == "number")
+				 else if ((yyvsp[0]).to_string().get() == "number")
 				  t = TNUMBER;
-				 else if ((yyvsp[(3) - (3)]).to_string().get() == "character")
+				 else if ((yyvsp[0]).to_string().get() == "character")
 				  t = TCHARACTER;
-				 else if ((yyvsp[(3) - (3)]).to_string().get() == "string")
+				 else if ((yyvsp[0]).to_string().get() == "string")
 				  t = TSTRING;
 				 else
 				 {
@@ -9621,24 +8999,23 @@ yyreduce:
 
 				 ++pnum3;
 				 ++pnum4;
-				;}
+				}
+#line 9004 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 268:
-
-/* Line 1455 of yacc.c  */
-#line 5890 "pnfha.ypp"
+#line 5890 "pnfha.ypp" /* yacc.c:1646  */
     {
 				 PNF_Type_Enum t;
-			  	 if ((yyvsp[(5) - (5)]).to_string().get() == "void")
+			  	 if ((yyvsp[0]).to_string().get() == "void")
 				  t = TVOID;
-				 else if ((yyvsp[(5) - (5)]).to_string().get() == "boolean")
+				 else if ((yyvsp[0]).to_string().get() == "boolean")
 				  t = TBOOLEAN;
-				 else if ((yyvsp[(5) - (5)]).to_string().get() == "number")
+				 else if ((yyvsp[0]).to_string().get() == "number")
 				  t = TNUMBER;
-				 else if ((yyvsp[(5) - (5)]).to_string().get() == "character")
+				 else if ((yyvsp[0]).to_string().get() == "character")
 				  t = TCHARACTER;
-				 else if ((yyvsp[(5) - (5)]).to_string().get() == "string")
+				 else if ((yyvsp[0]).to_string().get() == "string")
 				  t = TSTRING;
 				 else
 				 {
@@ -9752,15 +9129,14 @@ yyreduce:
 
 				 ++pnum3;
 				 ++pnum4;
-				;}
+				}
+#line 9134 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 269:
-
-/* Line 1455 of yacc.c  */
-#line 6035 "pnfha.ypp"
+#line 6035 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 (yyval) = (yyvsp[(1) - (1)]);
+				 (yyval) = (yyvsp[0]);
 				 saveexp = savenumber;
 
 
@@ -9799,120 +9175,109 @@ yyreduce:
 	
 				 conprint("FNCSTORE TNUMBER %d\n", funcnum);
 				 actual_parameters(saveexp);
-				;}
+				}
+#line 9180 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 270:
-
-/* Line 1455 of yacc.c  */
-#line 6170 "pnfha.ypp"
+#line 6170 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration"); 
 		         tree.add_node(declaration);
-			;}
+			}
+#line 9189 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 271:
-
-/* Line 1455 of yacc.c  */
-#line 6175 "pnfha.ypp"
+#line 6175 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration"); 
 		         tree.add_node(declaration);
-			;}
+			}
+#line 9198 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 272:
-
-/* Line 1455 of yacc.c  */
-#line 6180 "pnfha.ypp"
+#line 6180 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9207 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 273:
-
-/* Line 1455 of yacc.c  */
-#line 6185 "pnfha.ypp"
+#line 6185 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9216 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 274:
-
-/* Line 1455 of yacc.c  */
-#line 6190 "pnfha.ypp"
+#line 6190 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9225 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 275:
-
-/* Line 1455 of yacc.c  */
-#line 6195 "pnfha.ypp"
+#line 6195 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9234 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 276:
-
-/* Line 1455 of yacc.c  */
-#line 6200 "pnfha.ypp"
+#line 6200 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9243 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 277:
-
-/* Line 1455 of yacc.c  */
-#line 6205 "pnfha.ypp"
+#line 6205 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9252 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 278:
-
-/* Line 1455 of yacc.c  */
-#line 6210 "pnfha.ypp"
+#line 6210 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9261 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 279:
-
-/* Line 1455 of yacc.c  */
-#line 6215 "pnfha.ypp"
+#line 6215 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode declaration("declaration");
 			 tree.add_node(declaration);
-			;}
+			}
+#line 9270 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 280:
-
-/* Line 1455 of yacc.c  */
-#line 6222 "pnfha.ypp"
+#line 6222 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode variable_declaration("variable_declaration"); 
 
 			 bool declared = false;
 	     		 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 		  	 {
-	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(2) - (2)]).to_string().get().getString().c_str()) == 0)
+	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Number n(0);
@@ -9925,7 +9290,7 @@ yyreduce:
 			 if (!declared)
 			 {
 			  varTable[scope].insert();
-			  varTable[scope][varTable[scope].length() - 1].name((yyvsp[(2) - (2)]).to_string().get());
+			  varTable[scope][varTable[scope].length() - 1].name((yyvsp[0]).to_string().get());
 			  PNF_Number n(0);
 			  PNF_Variable p(n);
 			  varTable[scope][varTable[scope].length() - 1].value(p);
@@ -9962,25 +9327,24 @@ yyreduce:
 			   varTable[scope][varTable[scope].length() - 1].address(scope + (varTable[scope][varTable[scope].length() - 2].address() + 1));
 			 }
 		         tree.add_node(variable_declaration);
-			;}
+			}
+#line 9332 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 281:
-
-/* Line 1455 of yacc.c  */
-#line 6280 "pnfha.ypp"
+#line 6280 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode variable_declaration("variable_declaration"); 
 
 			 bool declared = false;
 	     		 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 		  	 {
-	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(2) - (4)]).to_string().get().getString().c_str()) == 0)
+	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[-2]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
-			   varTable[scope][i].value((yyvsp[(4) - (4)]));
+			   varTable[scope][i].value((yyvsp[0]));
 			
-			   switch ((yyvsp[(4) - (4)]).getType())
+			   switch ((yyvsp[0]).getType())
 			   {
 			    case TVOID:
 			     (yyval).put("0V");
@@ -10009,10 +9373,10 @@ yyreduce:
 			 {
 			  varTable[scope].insert();
 
-			  varTable[scope][varTable[scope].length() - 1].name((yyvsp[(2) - (4)]).to_string().get());
-			  varTable[scope][varTable[scope].length() - 1].value((yyvsp[(4) - (4)]));
+			  varTable[scope][varTable[scope].length() - 1].name((yyvsp[-2]).to_string().get());
+			  varTable[scope][varTable[scope].length() - 1].value((yyvsp[0]));
 
-			  (yyval) = (yyvsp[(4) - (4)]);
+			  (yyval) = (yyvsp[0]);
 
 			  switch ((yyval).getType())
 		    	  {
@@ -10048,20 +9412,19 @@ yyreduce:
 			  varTable[scope][varTable[scope].length() - 1].address(paddress);
 			 }
 		         tree.add_node(variable_declaration);
-			;}
+			}
+#line 9417 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 282:
-
-/* Line 1455 of yacc.c  */
-#line 6361 "pnfha.ypp"
+#line 6361 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode variable_declaration("variable_declaration"); 
 
 			 bool declared = false;
 	     		 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 		  	 {
-	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(2) - (2)]).to_string().get().getString().c_str()) == 0)
+	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   PNF_Number n(0);
@@ -10074,7 +9437,7 @@ yyreduce:
 			 if (!declared)
 			 {
 			  varTable[scope].insert();
-			  varTable[scope][varTable[scope].length() - 1].name((yyvsp[(2) - (2)]).to_string().get());
+			  varTable[scope][varTable[scope].length() - 1].name((yyvsp[0]).to_string().get());
 			  PNF_Number n(0);
 			  PNF_Variable p(n);
 			  varTable[scope][varTable[scope].length() - 1].value(p);
@@ -10088,240 +9451,222 @@ yyreduce:
 			   varTable[scope][varTable[scope].length() - 1].address(scope + (varTable[scope][varTable[scope].length() - 2].address() + 1));
 			 }
 		         tree.add_node(variable_declaration);
-			;}
+			}
+#line 9456 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 283:
-
-/* Line 1455 of yacc.c  */
-#line 6396 "pnfha.ypp"
+#line 6396 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode variable_declaration("variable_declaration");
 			 tree.add_node(variable_declaration);
-			;}
+			}
+#line 9465 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 284:
-
-/* Line 1455 of yacc.c  */
-#line 6401 "pnfha.ypp"
+#line 6401 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode variable_declaration("variable_declaration");
 			 tree.add_node(variable_declaration);
-			;}
+			}
+#line 9474 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 285:
-
-/* Line 1455 of yacc.c  */
-#line 6406 "pnfha.ypp"
+#line 6406 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode variable_declaration("variable_declaration");
 			 tree.add_node(variable_declaration);
-			;}
+			}
+#line 9483 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 286:
-
-/* Line 1455 of yacc.c  */
-#line 6413 "pnfha.ypp"
+#line 6413 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode enumv_declaration("enumv_declaration");
 
-			 conprint("ENUMS TSTRING %s\n", (yyvsp[(2) - (5)]).to_string().get().getString().c_str());
-			 conprint("ENUM TSTRING %s\n", (yyvsp[(5) - (5)]).to_string().get().getString().c_str());
-			 conprint("SENUM TSTRING %s\n", (yyvsp[(3) - (5)]).to_string().get().getString().c_str());
+			 conprint("ENUMS TSTRING %s\n", (yyvsp[-3]).to_string().get().getString().c_str());
+			 conprint("ENUM TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
+			 conprint("SENUM TSTRING %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 
 			 tree.add_node(enumv_declaration);
-			;}
+			}
+#line 9497 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 287:
-
-/* Line 1455 of yacc.c  */
-#line 6425 "pnfha.ypp"
+#line 6425 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode rangev_declaration("rangev_declaration");
 
-			 if ((yyvsp[(2) - (6)]).to_string().get() == "rtype1")
+			 if ((yyvsp[-4]).to_string().get() == "rtype1")
 			 {
-			  conprint("RSTART1 TSTRING %s\n", (yyvsp[(3) - (6)]).to_string().get().getString().c_str());
-			  conprint("RANGE1 TNUMBER %s\n", strip_quotes((yyvsp[(6) - (6)]).to_string().get()).getString().c_str());
-			  conprint("REND1 TSTRING %s\n", (yyvsp[(4) - (6)]).to_string().get().getString().c_str());
+			  conprint("RSTART1 TSTRING %s\n", (yyvsp[-3]).to_string().get().getString().c_str());
+			  conprint("RANGE1 TNUMBER %s\n", strip_quotes((yyvsp[0]).to_string().get()).getString().c_str());
+			  conprint("REND1 TSTRING %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			 }
 			 else
 			  yyerror("Invalid Range Type.");
 
 			 tree.add_node(rangev_declaration);
-			;}
+			}
+#line 9516 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 288:
-
-/* Line 1455 of yacc.c  */
-#line 6440 "pnfha.ypp"
+#line 6440 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode rangev_declaration("rangev_declaration");
 
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "rtype2")
+			 if ((yyvsp[-2]).to_string().get() == "rtype2")
 			 {
-			  conprint("RSTART2 TSTRING %s\n", (yyvsp[(3) - (4)]).to_string().get().getString().c_str());
-			  conprint("RANGE2 TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  conprint("RSTART2 TSTRING %s\n", (yyvsp[-1]).to_string().get().getString().c_str());
+			  conprint("RANGE2 TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
 			 else
 			  yyerror("Invalid Range Type.");
 
 			 tree.add_node(rangev_declaration);
-			;}
+			}
+#line 9534 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 289:
-
-/* Line 1455 of yacc.c  */
-#line 6456 "pnfha.ypp"
+#line 6456 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode array_declaration("array_declaration");
 
-			 conprint("ASTART TSTRING %s\n", (yyvsp[(2) - (5)]).to_string().get().getString().c_str());
-			 conprint("AEND TNUMBER %g\n", (yyvsp[(4) - (5)]).to_number().get());
+			 conprint("ASTART TSTRING %s\n", (yyvsp[-3]).to_string().get().getString().c_str());
+			 conprint("AEND TNUMBER %g\n", (yyvsp[-1]).to_number().get());
 
 			 tree.add_node(array_declaration);
-			;}
+			}
+#line 9547 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 290:
-
-/* Line 1455 of yacc.c  */
-#line 6467 "pnfha.ypp"
+#line 6467 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode enum_declarationp1("enum_declarationp1");
 
-			 conprint("ESTART TSTRING \"%s\"\n", (yyvsp[(2) - (4)]).to_string().get().getString().c_str());
+			 conprint("ESTART TSTRING \"%s\"\n", (yyvsp[-2]).to_string().get().getString().c_str());
 
 			 tree.add_node(enum_declarationp1);
-			;}
+			}
+#line 9559 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 291:
-
-/* Line 1455 of yacc.c  */
-#line 6475 "pnfha.ypp"
+#line 6475 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode enum_declarationp2("enum_declarationp2");
 			 tree.add_node(enum_declarationp2);
-			;}
+			}
+#line 9568 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 292:
-
-/* Line 1455 of yacc.c  */
-#line 6480 "pnfha.ypp"
+#line 6480 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode enum_declarationp3("enum_declarationp3");
 
 			 conprint("EEND TVOID 0V\n");
 
 			 tree.add_node(enum_declarationp3);
-			;}
+			}
+#line 9580 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 293:
-
-/* Line 1455 of yacc.c  */
-#line 6490 "pnfha.ypp"
+#line 6490 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode enum_strings("enum_strings");
 
-			 conprint("ENAME TSTRING %s\n", (yyvsp[(1) - (1)]).to_string().get().getString().c_str());
+			 conprint("ENAME TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 
 			 tree.add_node(enum_strings);
-			;}
+			}
+#line 9592 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 294:
-
-/* Line 1455 of yacc.c  */
-#line 6498 "pnfha.ypp"
+#line 6498 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 conprint("ENAME TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
-			;}
+			 conprint("ENAME TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
+			}
+#line 9600 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 295:
-
-/* Line 1455 of yacc.c  */
-#line 6504 "pnfha.ypp"
+#line 6504 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode range_declaration("range_declaration");
 
-			 if ((yyvsp[(2) - (8)]).to_string().get() == "rtype1")
+			 if ((yyvsp[-6]).to_string().get() == "rtype1")
 			 {
-			  conprint("RDSTART1 TSTRING %s\n", (yyvsp[(3) - (8)]).to_string().get().getString().c_str());
-			  conprint("RFROM1 TNUMBER %s\n", strip_quotes((yyvsp[(5) - (8)]).to_string().get()).getString().c_str());
-			  conprint("RTO1 TNUMBER %s\n", strip_quotes((yyvsp[(8) - (8)]).to_string().get()).getString().c_str());
+			  conprint("RDSTART1 TSTRING %s\n", (yyvsp[-5]).to_string().get().getString().c_str());
+			  conprint("RFROM1 TNUMBER %s\n", strip_quotes((yyvsp[-3]).to_string().get()).getString().c_str());
+			  conprint("RTO1 TNUMBER %s\n", strip_quotes((yyvsp[0]).to_string().get()).getString().c_str());
 			  conprint("RDEND1 TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (8)]).to_string().get() == "rtype2")
+			 else if ((yyvsp[-6]).to_string().get() == "rtype2")
 			 {
-			  conprint("RDSTART2 TSTRING %s\n", (yyvsp[(3) - (8)]).to_string().get().getString().c_str());
-			  conprint("RFROM2 TNUMBER %s\n", strip_quotes((yyvsp[(5) - (8)]).to_string().get()).getString().c_str());
-			  conprint("RTO2 TNUMBER %s\n", strip_quotes((yyvsp[(8) - (8)]).to_string().get()).getString().c_str());
+			  conprint("RDSTART2 TSTRING %s\n", (yyvsp[-5]).to_string().get().getString().c_str());
+			  conprint("RFROM2 TNUMBER %s\n", strip_quotes((yyvsp[-3]).to_string().get()).getString().c_str());
+			  conprint("RTO2 TNUMBER %s\n", strip_quotes((yyvsp[0]).to_string().get()).getString().c_str());
 			  conprint("RDEND2 TVOID 0V\n");
 			 }
 			 else
 			  yyerror("Invalid Range Type.");
 
 			 tree.add_node(range_declaration);
-			;}
+			}
+#line 9627 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 296:
-
-/* Line 1455 of yacc.c  */
-#line 6529 "pnfha.ypp"
+#line 6529 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 conprint("STRUCT TSTRING \"%s\"\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
-			;}
+			 conprint("STRUCT TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
+			}
+#line 9635 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 298:
-
-/* Line 1455 of yacc.c  */
-#line 6538 "pnfha.ypp"
+#line 6538 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("ENDSTRUCT TVOID 0V\n");
-			;}
+			}
+#line 9643 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 301:
-
-/* Line 1455 of yacc.c  */
-#line 6548 "pnfha.ypp"
+#line 6548 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 conprint("STRUCTVAR TSTRING \"%s\"\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
-				;}
+				 conprint("STRUCTVAR TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
+				}
+#line 9651 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 303:
-
-/* Line 1455 of yacc.c  */
-#line 6555 "pnfha.ypp"
+#line 6555 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 conprint("STRUCTNAME TSTRING \"%s\"\n", (yyvsp[(2) - (3)]).to_string().get().getString().c_str());
-				 conprint("STRUCTD TSTRING \"%s\"\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
-				;}
+				 conprint("STRUCTNAME TSTRING \"%s\"\n", (yyvsp[-1]).to_string().get().getString().c_str());
+				 conprint("STRUCTD TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
+				}
+#line 9660 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 304:
-
-/* Line 1455 of yacc.c  */
-#line 6562 "pnfha.ypp"
+#line 6562 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 conprint("STRUCTNAME TSTRING \"%s\"\n", (yyvsp[(2) - (7)]).to_string().get().getString().c_str());
-				 conprint("STRUCTONAME TSTRING \"%s\"\n", (yyvsp[(3) - (7)]).to_string().get().getString().c_str());
-				 conprint("STRUCTUSE TSTRING \"%s\"\n", (yyvsp[(5) - (7)]).to_string().get().getString().c_str());
+				 conprint("STRUCTNAME TSTRING \"%s\"\n", (yyvsp[-5]).to_string().get().getString().c_str());
+				 conprint("STRUCTONAME TSTRING \"%s\"\n", (yyvsp[-4]).to_string().get().getString().c_str());
+				 conprint("STRUCTUSE TSTRING \"%s\"\n", (yyvsp[-2]).to_string().get().getString().c_str());
 				 
-				 switch ((yyvsp[(7) - (7)]).getType())
+				 switch ((yyvsp[0]).getType())
 				 {
 				  case TVOID:
 				  {
@@ -10331,25 +9676,25 @@ yyreduce:
 
 				  case TBOOLEAN:
 				  {
-				   conprint("ALOAD TBOOLEAN %s\n", (yyvsp[(7) - (7)]).to_boolean().get().getString().c_str());
+				   conprint("ALOAD TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get());
 				  }
 				  break;
 
 				  case TNUMBER:
 				  {
-				   conprint("ALOAD TNUMBER %f\n", (yyvsp[(7) - (7)]).to_number().get());
+				   conprint("ALOAD TNUMBER %f\n", (yyvsp[0]).to_number().get());
 				  }
 				  break;
 
 				  case TCHARACTER:
 				  {
-				   conprint("ALOAD TCHARACTER '%c'\n", (yyvsp[(6) - (7)]).to_character().get());
+				   conprint("ALOAD TCHARACTER '%c'\n", (yyvsp[-1]).to_character().get());
 				  }
 				  break;
 
 				  case TSTRING:
 				  {
-				   conprint("ALOAD TSTRING %s\n", (yyvsp[(7) - (7)]).to_string().get().getString().c_str());
+				   conprint("ALOAD TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 				  }
 				  break;
 
@@ -10358,56 +9703,51 @@ yyreduce:
 				 }
 
 				 conprint("STRUCTPUT TVOID 0V\n");
-				;}
+				}
+#line 9708 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 305:
-
-/* Line 1455 of yacc.c  */
-#line 6608 "pnfha.ypp"
+#line 6608 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 conprint("UNION TSTRING \"%s\"\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
-			;}
+			 conprint("UNION TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
+			}
+#line 9716 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 307:
-
-/* Line 1455 of yacc.c  */
-#line 6617 "pnfha.ypp"
+#line 6617 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("ENDUNION TVOID 0V\n");
-			;}
+			}
+#line 9724 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 310:
-
-/* Line 1455 of yacc.c  */
-#line 6627 "pnfha.ypp"
+#line 6627 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 conprint("UNIONVAR TSTRING \"%s\"\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
-				;}
+				 conprint("UNIONVAR TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
+				}
+#line 9732 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 312:
-
-/* Line 1455 of yacc.c  */
-#line 6634 "pnfha.ypp"
+#line 6634 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 conprint("UNIONNAME TSTRING \"%s\"\n", (yyvsp[(2) - (3)]).to_string().get().getString().c_str());
-				 conprint("UNIOND TSTRING \"%s\"\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
-				;}
+				 conprint("UNIONNAME TSTRING \"%s\"\n", (yyvsp[-1]).to_string().get().getString().c_str());
+				 conprint("UNIOND TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
+				}
+#line 9741 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 313:
-
-/* Line 1455 of yacc.c  */
-#line 6641 "pnfha.ypp"
+#line 6641 "pnfha.ypp" /* yacc.c:1646  */
     {
-				 conprint("UNIONNAME TSTRING \"%s\"\n", (yyvsp[(2) - (7)]).to_string().get().getString().c_str());
-				 conprint("UNIONONAME TSTRING \"%s\"\n", (yyvsp[(3) - (7)]).to_string().get().getString().c_str());
-				 conprint("UNIONUSE TSTRING \"%s\"\n", (yyvsp[(5) - (7)]).to_string().get().getString().c_str());
+				 conprint("UNIONNAME TSTRING \"%s\"\n", (yyvsp[-5]).to_string().get().getString().c_str());
+				 conprint("UNIONONAME TSTRING \"%s\"\n", (yyvsp[-4]).to_string().get().getString().c_str());
+				 conprint("UNIONUSE TSTRING \"%s\"\n", (yyvsp[-2]).to_string().get().getString().c_str());
 				 
-				 switch ((yyvsp[(7) - (7)]).getType())
+				 switch ((yyvsp[0]).getType())
 				 {
 				  case TVOID:
 				  {
@@ -10417,25 +9757,25 @@ yyreduce:
 
 				  case TBOOLEAN:
 				  {
-				   conprint("ALOAD TBOOLEAN %s\n", (yyvsp[(7) - (7)]).to_boolean().get().getString().c_str());
+				   conprint("ALOAD TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get());
 				  }
 				  break;
 
 				  case TNUMBER:
 				  {
-				   conprint("ALOAD TNUMBER %f\n", (yyvsp[(7) - (7)]).to_number().get());
+				   conprint("ALOAD TNUMBER %f\n", (yyvsp[0]).to_number().get());
 				  }
 				  break;
 
 				  case TCHARACTER:
 				  {
-				   conprint("ALOAD TCHARACTER '%c'\n", (yyvsp[(6) - (7)]).to_character().get());
+				   conprint("ALOAD TCHARACTER '%c'\n", (yyvsp[-1]).to_character().get());
 				  }
 				  break;
 
 				  case TSTRING:
 				  {
-				   conprint("ALOAD TSTRING %s\n", (yyvsp[(7) - (7)]).to_string().get().getString().c_str());
+				   conprint("ALOAD TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 				  }
 				  break;
 
@@ -10444,18 +9784,17 @@ yyreduce:
 				 }
 
 				 conprint("UNIONPUT TVOID 0V\n");
-				;}
+				}
+#line 9789 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 314:
-
-/* Line 1455 of yacc.c  */
-#line 6687 "pnfha.ypp"
+#line 6687 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < labelTable.length(); ++i)
 			 {
-			  if ((yyvsp[(2) - (2)]).to_string().get().getString() == labelTable[i].name().getString())
+			  if ((yyvsp[0]).to_string().get().getString() == labelTable[i].name().getString())
 			  {
 			   declared = true;
 			   String str = labelTable[i].name();
@@ -10467,24 +9806,23 @@ yyreduce:
 			 if (!declared)
 			 {
 			  labelTable.insert();
-			  labelTable[labelTable.length() - 1].name((yyvsp[(2) - (2)]).to_string().get());
+			  labelTable[labelTable.length() - 1].name((yyvsp[0]).to_string().get());
 			  labelTable[labelTable.length() - 1].address(labelTable.length() - 2);
 			 }
 
 			 ASTNode label_declaration("label_declaration");
 		         tree.add_node(label_declaration);
-			;}
+			}
+#line 9817 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 315:
-
-/* Line 1455 of yacc.c  */
-#line 6711 "pnfha.ypp"
+#line 6711 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < labelTable.length(); ++i)
 			 {
-			  if ((yyvsp[(2) - (2)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			  if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			  {
 			   declared = true;
 			   String str = eventLabelTable[i].name();
@@ -10496,23 +9834,22 @@ yyreduce:
 			 if (!declared)
 			 {
 			  eventLabelTable.insert();
-			  eventLabelTable[eventLabelTable.length() - 1].name((yyvsp[(2) - (2)]).to_string().get());
+			  eventLabelTable[eventLabelTable.length() - 1].name((yyvsp[0]).to_string().get());
 			  eventLabelTable[eventLabelTable.length() - 1].address(eventLabelTable.length() - 2);
 			 }
 			 ASTNode label_declaration("label_declaration");
 		         tree.add_node(label_declaration);
-			;}
+			}
+#line 9844 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 316:
-
-/* Line 1455 of yacc.c  */
-#line 6734 "pnfha.ypp"
+#line 6734 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 bool declared = false;
 			 for (unsigned long i = 0; i < labelTable.length(); ++i)
 			 {
-			  if ((yyvsp[(2) - (2)]).to_string().get().getString() == labelTable[i].name().getString())
+			  if ((yyvsp[0]).to_string().get().getString() == labelTable[i].name().getString())
 			  {
 			   declared = true;
 			   String str = labelTable[i].name();
@@ -10524,29 +9861,28 @@ yyreduce:
 			 if (!declared)
 			 {
 			  labelTable.insert();
-			  labelTable[labelTable.length() - 1].name((yyvsp[(2) - (2)]).to_string().get());
+			  labelTable[labelTable.length() - 1].name((yyvsp[0]).to_string().get());
 			  labelTable[labelTable.length() - 1].address(labelTable.length() - 2);
 			 }
 
 			 ASTNode label_declaration("label_declaration");
 		         tree.add_node(label_declaration);
-			;}
+			}
+#line 9872 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 319:
-
-/* Line 1455 of yacc.c  */
-#line 6762 "pnfha.ypp"
+#line 6762 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 funcps.insert();
 
-			 funcptr->name((yyvsp[(5) - (8)]).to_string().get());			 
+			 funcptr->name((yyvsp[-3]).to_string().get());			 
 			 funcstk.add_function(*funcptr);
 			 delete funcptr;
 			 funcptr = NULL;			 
 	
-			 saveid3 = (yyvsp[(5) - (8)]);
-			 unsigned long index = funcstk.find((yyvsp[(5) - (8)]).to_string().get(), frets, fparams);
+			 saveid3 = (yyvsp[-3]);
+			 unsigned long index = funcstk.find((yyvsp[-3]).to_string().get(), frets, fparams);
 			 if (index == -1)
 			 {
 			  yyerror("Function not found.");
@@ -10566,33 +9902,31 @@ yyreduce:
 			 }
 			 
 			 
-			 conprint("ALOAD TSTRING \"%s\"\n", (yyvsp[(5) - (8)]).to_string().get().getString().c_str());
+			 conprint("ALOAD TSTRING \"%s\"\n", (yyvsp[-3]).to_string().get().getString().c_str());
 			 conprint("FNCSNAME TVOID 0V\n");
 			 conprint("FNCSDEF TSTRING \"%s\"\n", funcstk.get_function(index).rname().getString().c_str());
 			 conprint("FNCSTORE TVOID 0V\n");
 			 conprint("FNCDELETE TVOID 0V\n");
-			;}
+			}
+#line 9912 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 320:
-
-/* Line 1455 of yacc.c  */
-#line 6798 "pnfha.ypp"
+#line 6798 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets.length() - 1; i > 0; --i)
 			  frets.remove();
 
 			 for (unsigned long i = fparams.length() - 1; i > 0; --i)
 			  fparams.remove();
-			;}
+			}
+#line 9924 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 322:
-
-/* Line 1455 of yacc.c  */
-#line 6810 "pnfha.ypp"
+#line 6810 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 pnum = 0;
 			 switch (exptype)
@@ -10682,18 +10016,17 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10021 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 323:
-
-/* Line 1455 of yacc.c  */
-#line 6903 "pnfha.ypp"
+#line 6903 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(4) - (6)]);
+			 (yyval) = (yyvsp[-2]);
 
 
-			 String type = (yyvsp[(6) - (6)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -10797,15 +10130,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10135 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 324:
-
-/* Line 1455 of yacc.c  */
-#line 7015 "pnfha.ypp"
+#line 7015 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 switch (exptype)
 			 {
@@ -10904,15 +10236,14 @@ yyreduce:
 
 			  conprint("FNCSTORE TNUMBER %d\n", fsaveindex + 1);
 			 }
-			;}
+			}
+#line 10241 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 325:
-
-/* Line 1455 of yacc.c  */
-#line 7117 "pnfha.ypp"
+#line 7117 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(6) - (7)]).to_string().get();
+			 String type = (yyvsp[-1]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11023,15 +10354,14 @@ yyreduce:
 
 			  conprint("FNCSTORE TNUMBER %d\n", fsaveindex + 1);
 			 }
-			;}
+			}
+#line 10359 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 326:
-
-/* Line 1455 of yacc.c  */
-#line 7233 "pnfha.ypp"
+#line 7233 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 switch (exptype)
 			 {
@@ -11073,15 +10403,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10408 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 327:
-
-/* Line 1455 of yacc.c  */
-#line 7278 "pnfha.ypp"
+#line 7278 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(6) - (6)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11135,15 +10464,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10469 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 328:
-
-/* Line 1455 of yacc.c  */
-#line 7337 "pnfha.ypp"
+#line 7337 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 switch (exptype)
 			 {
@@ -11185,15 +10513,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10518 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 329:
-
-/* Line 1455 of yacc.c  */
-#line 7382 "pnfha.ypp"
+#line 7382 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(6) - (6)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11247,17 +10574,16 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10579 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 330:
-
-/* Line 1455 of yacc.c  */
-#line 7441 "pnfha.ypp"
+#line 7441 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(2) - (4)]);
+			 (yyval) = (yyvsp[-2]);
 
-			 String type = (yyvsp[(4) - (4)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11270,28 +10596,26 @@ yyreduce:
 			  exptype = TSTRING;
 			 else
 			  yyerror("Invalid type.");
-			;}
+			}
+#line 10601 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 331:
-
-/* Line 1455 of yacc.c  */
-#line 7459 "pnfha.ypp"
+#line 7459 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 exptype = TVOID;
-			;}
+			}
+#line 10611 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 332:
-
-/* Line 1455 of yacc.c  */
-#line 7467 "pnfha.ypp"
+#line 7467 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(2) - (5)]);
+			 (yyval) = (yyvsp[-3]);
 
-			 String type = (yyvsp[(4) - (5)]).to_string().get();
+			 String type = (yyvsp[-1]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11304,26 +10628,24 @@ yyreduce:
 			  exptype = TSTRING;
 			 else
 			  yyerror("Invalid type.");
-			;}
+			}
+#line 10633 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 333:
-
-/* Line 1455 of yacc.c  */
-#line 7485 "pnfha.ypp"
+#line 7485 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 exptype = TVOID;
-			;}
+			}
+#line 10643 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 335:
-
-/* Line 1455 of yacc.c  */
-#line 7493 "pnfha.ypp"
+#line 7493 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 
 			 funcps[fsaveindex + 1].insert();
@@ -11332,37 +10654,34 @@ yyreduce:
 
 			 funcstk.get_function(fsaveindex + 1).defaultv(pnum5, (yyval));
 			 funcstk.get_function(fsaveindex + 1).syncdefaultp(pnum5);
-			;}
+			}
+#line 10659 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 336:
-
-/* Line 1455 of yacc.c  */
-#line 7507 "pnfha.ypp"
+#line 7507 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(2) - (4)]);
-			 pnum5 = (unsigned long)(yyvsp[(4) - (4)]).to_number().get();
-			;}
+			 (yyval) = (yyvsp[-2]);
+			 pnum5 = (unsigned long)(yyvsp[0]).to_number().get();
+			}
+#line 10668 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 338:
-
-/* Line 1455 of yacc.c  */
-#line 7514 "pnfha.ypp"
+#line 7514 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 fncdefault = true;
 			 conprint("FNCDEFAULT TVOID 0V\n");
-			;}
+			}
+#line 10677 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 339:
-
-/* Line 1455 of yacc.c  */
-#line 7521 "pnfha.ypp"
+#line 7521 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(2) - (4)]);
+			 (yyval) = (yyvsp[-2]);
 
-			 String type = (yyvsp[(4) - (4)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11375,28 +10694,26 @@ yyreduce:
 			  exptype = TSTRING;
 			 else
 			  yyerror("Invalid type.");
-			;}
+			}
+#line 10699 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 340:
-
-/* Line 1455 of yacc.c  */
-#line 7539 "pnfha.ypp"
+#line 7539 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 exptype = TVOID;
-			;}
+			}
+#line 10709 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 341:
-
-/* Line 1455 of yacc.c  */
-#line 7547 "pnfha.ypp"
+#line 7547 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(2) - (4)]);
+			 (yyval) = (yyvsp[-2]);
 
-			 String type = (yyvsp[(4) - (4)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11409,30 +10726,28 @@ yyreduce:
 			  exptype = TSTRING;
 			 else
 			  yyerror("Invalid type.");
-			;}
+			}
+#line 10731 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 342:
-
-/* Line 1455 of yacc.c  */
-#line 7565 "pnfha.ypp"
+#line 7565 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(1) - (1)]);
+			 (yyval) = (yyvsp[0]);
 
 			 exptype = TVOID;
-			;}
+			}
+#line 10741 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 343:
-
-/* Line 1455 of yacc.c  */
-#line 7573 "pnfha.ypp"
+#line 7573 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 pnum5 = 0;
 
 
-			 fsaveid = (yyvsp[(6) - (9)]);
-			 unsigned long index = funcstk.find((yyvsp[(6) - (9)]).to_string().get(), frets2, fparams2);
+			 fsaveid = (yyvsp[-3]);
+			 unsigned long index = funcstk.find((yyvsp[-3]).to_string().get(), frets2, fparams2);
 			 if (index == -1)
 			 {
 			  yyerror("Function not found.");
@@ -11443,13 +10758,12 @@ yyreduce:
 
 			 conprint("GOTOL TSTRING \"%s_END\"\n", funcstk.get_function(index).rname().getString().c_str());
 			 conprint("LBL TSTRING \"%s\"\n", funcstk.get_function(index).rname().getString().c_str());
-			;}
+			}
+#line 10763 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 344:
-
-/* Line 1455 of yacc.c  */
-#line 7591 "pnfha.ypp"
+#line 7591 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 unsigned long index = funcstk.find(fsaveid.to_string().get(), frets2, fparams2);
 			 if (index == -1)
@@ -11459,46 +10773,43 @@ yyreduce:
 			 }
 
 			 conprint("LBL TSTRING \"%s_END\"\n", funcstk.get_function(index).rname().getString().c_str());
-			;}
+			}
+#line 10778 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 345:
-
-/* Line 1455 of yacc.c  */
-#line 7602 "pnfha.ypp"
+#line 7602 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets2.length() - 1; i > 0; --i)
 			  frets2.remove();
 
 			 for (unsigned long i = fparams2.length() - 1; i > 0; --i)
 			  fparams2.remove();
-			;}
+			}
+#line 10790 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 347:
-
-/* Line 1455 of yacc.c  */
-#line 7617 "pnfha.ypp"
+#line 7617 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 funcptr = new Function();
 
 		  	 conprint("FNCNEW TVOID 0V\n");
 
 			 exptype = TVOID;
-			;}
+			}
+#line 10802 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 348:
-
-/* Line 1455 of yacc.c  */
-#line 7625 "pnfha.ypp"
+#line 7625 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 funcptr = new Function();
 
 		  	 conprint("FNCNEW TVOID 0V\n");
 
 
-			 String type = (yyvsp[(3) - (3)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -11576,15 +10887,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10892 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 349:
-
-/* Line 1455 of yacc.c  */
-#line 7711 "pnfha.ypp"
+#line 7711 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(5) - (5)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -11661,24 +10971,22 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 10976 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 350:
-
-/* Line 1455 of yacc.c  */
-#line 7793 "pnfha.ypp"
+#line 7793 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 exptype = TVOID;
-			;}
+			}
+#line 10984 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 351:
-
-/* Line 1455 of yacc.c  */
-#line 7797 "pnfha.ypp"
+#line 7797 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(3) - (3)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -11723,15 +11031,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11036 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 352:
-
-/* Line 1455 of yacc.c  */
-#line 7845 "pnfha.ypp"
+#line 7845 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(5) - (5)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -11776,23 +11083,21 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11088 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 353:
-
-/* Line 1455 of yacc.c  */
-#line 7895 "pnfha.ypp"
+#line 7895 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 exptype = TVOID;			;}
+			 exptype = TVOID;			}
+#line 11095 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 354:
-
-/* Line 1455 of yacc.c  */
-#line 7898 "pnfha.ypp"
+#line 7898 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(3) - (3)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -11851,15 +11156,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11161 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 355:
-
-/* Line 1455 of yacc.c  */
-#line 7960 "pnfha.ypp"
+#line 7960 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(5) - (5)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
 			  exptype = TVOID;
 			 else if (type == "boolean")
@@ -11925,24 +11229,22 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11234 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 356:
-
-/* Line 1455 of yacc.c  */
-#line 8167 "pnfha.ypp"
+#line 8167 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 exptype = TVOID;
-			;}
+			}
+#line 11242 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 357:
-
-/* Line 1455 of yacc.c  */
-#line 8171 "pnfha.ypp"
+#line 8171 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(3) - (3)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -11987,15 +11289,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11294 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 358:
-
-/* Line 1455 of yacc.c  */
-#line 8219 "pnfha.ypp"
+#line 8219 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(5) - (5)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -12040,24 +11341,22 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11346 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 359:
-
-/* Line 1455 of yacc.c  */
-#line 8269 "pnfha.ypp"
+#line 8269 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 exptype = TVOID;
-			;}
+			}
+#line 11354 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 360:
-
-/* Line 1455 of yacc.c  */
-#line 8273 "pnfha.ypp"
+#line 8273 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(3) - (3)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -12102,15 +11401,14 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11406 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 361:
-
-/* Line 1455 of yacc.c  */
-#line 8321 "pnfha.ypp"
+#line 8321 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 String type = (yyvsp[(5) - (5)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "boolean")
 			  exptype = TBOOLEAN;
 			 else if (type == "number")
@@ -12155,324 +11453,292 @@ yyreduce:
 			  default:
 			   yyerror("Invalid type.");
 			 }
-			;}
+			}
+#line 11458 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 362:
-
-/* Line 1455 of yacc.c  */
-#line 8373 "pnfha.ypp"
+#line 8373 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11467 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 363:
-
-/* Line 1455 of yacc.c  */
-#line 8378 "pnfha.ypp"
+#line 8378 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11476 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 364:
-
-/* Line 1455 of yacc.c  */
-#line 8383 "pnfha.ypp"
+#line 8383 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11485 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 365:
-
-/* Line 1455 of yacc.c  */
-#line 8388 "pnfha.ypp"
+#line 8388 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11494 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 366:
-
-/* Line 1455 of yacc.c  */
-#line 8393 "pnfha.ypp"
+#line 8393 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11503 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 367:
-
-/* Line 1455 of yacc.c  */
-#line 8398 "pnfha.ypp"
+#line 8398 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11512 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 368:
-
-/* Line 1455 of yacc.c  */
-#line 8403 "pnfha.ypp"
+#line 8403 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11521 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 369:
-
-/* Line 1455 of yacc.c  */
-#line 8408 "pnfha.ypp"
+#line 8408 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11530 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 370:
-
-/* Line 1455 of yacc.c  */
-#line 8413 "pnfha.ypp"
+#line 8413 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11539 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 371:
-
-/* Line 1455 of yacc.c  */
-#line 8418 "pnfha.ypp"
+#line 8418 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11548 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 372:
-
-/* Line 1455 of yacc.c  */
-#line 8423 "pnfha.ypp"
+#line 8423 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11557 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 373:
-
-/* Line 1455 of yacc.c  */
-#line 8428 "pnfha.ypp"
+#line 8428 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11566 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 374:
-
-/* Line 1455 of yacc.c  */
-#line 8433 "pnfha.ypp"
+#line 8433 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11575 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 375:
-
-/* Line 1455 of yacc.c  */
-#line 8438 "pnfha.ypp"
+#line 8438 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11584 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 376:
-
-/* Line 1455 of yacc.c  */
-#line 8443 "pnfha.ypp"
+#line 8443 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11593 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 377:
-
-/* Line 1455 of yacc.c  */
-#line 8448 "pnfha.ypp"
+#line 8448 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11602 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 378:
-
-/* Line 1455 of yacc.c  */
-#line 8453 "pnfha.ypp"
+#line 8453 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11611 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 379:
-
-/* Line 1455 of yacc.c  */
-#line 8458 "pnfha.ypp"
+#line 8458 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11620 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 380:
-
-/* Line 1455 of yacc.c  */
-#line 8463 "pnfha.ypp"
+#line 8463 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11629 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 381:
-
-/* Line 1455 of yacc.c  */
-#line 8468 "pnfha.ypp"
+#line 8468 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11638 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 382:
-
-/* Line 1455 of yacc.c  */
-#line 8473 "pnfha.ypp"
+#line 8473 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11647 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 383:
-
-/* Line 1455 of yacc.c  */
-#line 8478 "pnfha.ypp"
+#line 8478 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11656 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 384:
-
-/* Line 1455 of yacc.c  */
-#line 8483 "pnfha.ypp"
+#line 8483 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11665 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 385:
-
-/* Line 1455 of yacc.c  */
-#line 8488 "pnfha.ypp"
+#line 8488 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11674 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 386:
-
-/* Line 1455 of yacc.c  */
-#line 8493 "pnfha.ypp"
+#line 8493 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11683 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 387:
-
-/* Line 1455 of yacc.c  */
-#line 8498 "pnfha.ypp"
+#line 8498 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11692 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 388:
-
-/* Line 1455 of yacc.c  */
-#line 8503 "pnfha.ypp"
+#line 8503 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11701 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 389:
-
-/* Line 1455 of yacc.c  */
-#line 8508 "pnfha.ypp"
+#line 8508 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11710 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 390:
-
-/* Line 1455 of yacc.c  */
-#line 8513 "pnfha.ypp"
+#line 8513 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11719 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 391:
-
-/* Line 1455 of yacc.c  */
-#line 8518 "pnfha.ypp"
+#line 8518 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode command("command");
 		         tree.add_node(command);
-			;}
+			}
+#line 11728 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 397:
-
-/* Line 1455 of yacc.c  */
-#line 8531 "pnfha.ypp"
+#line 8531 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 conprint("PRINT TVOID 0V\n");
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11738 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 398:
-
-/* Line 1455 of yacc.c  */
-#line 8537 "pnfha.ypp"
+#line 8537 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 switch (exptype)
@@ -12482,16 +11748,16 @@ yyreduce:
 			   break;
 
 			  case TBOOLEAN:
-			   conprint("PRINT TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("PRINT TBOOLEAN %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  case TNUMBER:
-			   conprint("PRINT TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("PRINT TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   break;
 
 			  case TCHARACTER:
 			  {
-			   String str = (yyvsp[(2) - (2)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   
 			   String str2;
 			   for (unsigned long i = 0, j = 0; i < str.length(); ++i)
@@ -12510,47 +11776,44 @@ yyreduce:
 			  break;
 
 			  case TSTRING:
-			   conprint("PRINT TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("PRINT TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  default:
 			   yyerror("Invalid exptype.");
 			 }
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11788 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 399:
-
-/* Line 1455 of yacc.c  */
-#line 8583 "pnfha.ypp"
+#line 8583 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 
-			 if ((yyvsp[(2) - (2)]).to_string().get() == "ver")
+			 if ((yyvsp[0]).to_string().get() == "ver")
 			  conprint("VPRINT TVOID 0V\n");
 			 else
  			  yyerror("Invalid check type.");
 
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11803 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 400:
-
-/* Line 1455 of yacc.c  */
-#line 8594 "pnfha.ypp"
+#line 8594 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 conprint("PRINTLN TVOID 0V\n");
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11813 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 401:
-
-/* Line 1455 of yacc.c  */
-#line 8600 "pnfha.ypp"
+#line 8600 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 switch (exptype)
@@ -12560,16 +11823,16 @@ yyreduce:
 			   break;
 
 			  case TBOOLEAN:
-			   conprint("PRINTLN TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("PRINTLN TBOOLEAN %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  case TNUMBER:
-			   conprint("PRINTLN TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("PRINTLN TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   break;
 
 			  case TCHARACTER:
 			  {
-			   String str = (yyvsp[(2) - (2)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   
 			   String str2;
 			   for (unsigned long i = 0, j = 0; i < str.length(); ++i)
@@ -12588,47 +11851,44 @@ yyreduce:
 			  break;
 
 			  case TSTRING:
-                           conprint("PRINTLN TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+                           conprint("PRINTLN TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  default:
 			   yyerror("Invalid exptype.");
 			 }
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11863 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 402:
-
-/* Line 1455 of yacc.c  */
-#line 8646 "pnfha.ypp"
+#line 8646 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 
-			 if ((yyvsp[(2) - (2)]).to_string().get() == "ver")
+			 if ((yyvsp[0]).to_string().get() == "ver")
 			  conprint("VPRINTLN TVOID 0V\n");
 			 else
  			  yyerror("Invalid check type.");
 
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11878 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 403:
-
-/* Line 1455 of yacc.c  */
-#line 8657 "pnfha.ypp"
+#line 8657 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 conprint("EPRINT TVOID 0V\n");
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11888 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 404:
-
-/* Line 1455 of yacc.c  */
-#line 8663 "pnfha.ypp"
+#line 8663 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 switch (exptype)
@@ -12638,16 +11898,16 @@ yyreduce:
 			   break;
 
 			  case TBOOLEAN:
-			   conprint("EPRINT TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("EPRINT TBOOLEAN %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  case TNUMBER:
-			   conprint("EPRINT TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("EPRINT TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   break;
 
 			  case TCHARACTER:
 			  {
-			   String str = (yyvsp[(2) - (2)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   
 			   String str2;
 			   for (unsigned long i = 0, j = 0; i < str.length(); ++i)
@@ -12666,31 +11926,29 @@ yyreduce:
 			  break;
 
 			  case TSTRING:
-			   conprint("EPRINT TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("EPRINT TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  default:
 			   yyerror("Invalid exptype.");
 			 }
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11938 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 405:
-
-/* Line 1455 of yacc.c  */
-#line 8709 "pnfha.ypp"
+#line 8709 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 conprint("EPRINTLN TVOID 0V\n");
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11948 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 406:
-
-/* Line 1455 of yacc.c  */
-#line 8715 "pnfha.ypp"
+#line 8715 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 switch (exptype)
@@ -12700,16 +11958,16 @@ yyreduce:
 			   break;
 
 			  case TBOOLEAN:
-			   conprint("EPRINTLN TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("EPRINTLN TBOOLEAN %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  case TNUMBER:
-			   conprint("EPRINTLN TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("EPRINTLN TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   break;
 
 			  case TCHARACTER:
 			  {
-			   String str = (yyvsp[(2) - (2)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   
 			   String str2;
 			   for (unsigned long i = 0, j = 0; i < str.length(); ++i)
@@ -12728,30 +11986,28 @@ yyreduce:
 			  break;
 
 			  case TSTRING:
-			   conprint("EPRINTLN TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("EPRINTLN TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  default:
 			   yyerror("Invalid exptype.");
 			 }
 			 tree.add_node(print_command);
-			;}
+			}
+#line 11998 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 407:
-
-/* Line 1455 of yacc.c  */
-#line 8761 "pnfha.ypp"
+#line 8761 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 conprint("FPRINT TVOID 0V\n");
-			;}
+			}
+#line 12007 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 408:
-
-/* Line 1455 of yacc.c  */
-#line 8766 "pnfha.ypp"
+#line 8766 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 switch (exptype)
@@ -12761,16 +12017,16 @@ yyreduce:
 			   break;
 
 			  case TBOOLEAN:
-			   conprint("FPRINT TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("FPRINT TBOOLEAN %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  case TNUMBER:
-			   conprint("FPRINT TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("FPRINT TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   break;
 
 			  case TCHARACTER:
 			  {
-			   String str = (yyvsp[(2) - (2)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   
 			   String str2;
 			   for (unsigned long i = 0, j = 0; i < str.length(); ++i)
@@ -12789,31 +12045,29 @@ yyreduce:
 			  break;
 
 			  case TSTRING:
-			   conprint("FPRINT TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("FPRINT TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  default:
 			   yyerror("Invalid exptype.");
 			 }
 			 tree.add_node(print_command);
-			;}
+			}
+#line 12057 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 409:
-
-/* Line 1455 of yacc.c  */
-#line 8812 "pnfha.ypp"
+#line 8812 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 conprint("FPRINTLN TVOID 0V\n");
 			 tree.add_node(print_command);
-			;}
+			}
+#line 12067 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 410:
-
-/* Line 1455 of yacc.c  */
-#line 8818 "pnfha.ypp"
+#line 8818 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			 switch (exptype)
@@ -12823,16 +12077,16 @@ yyreduce:
 			   break;
 
 			  case TBOOLEAN:
-			   conprint("FPRINTLN TBOOLEAN %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			   conprint("FPRINTLN TBOOLEAN %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  case TNUMBER:
-			   conprint("FPRINTLN TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			   conprint("FPRINTLN TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			   break;
 
 			  case TCHARACTER:
 			  {
-			   String str = (yyvsp[(2) - (2)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   
 			   String str2;
 			   for (unsigned long i = 0, j = 0; i < str.length(); ++i)
@@ -12851,34 +12105,32 @@ yyreduce:
 			  break;
 
 			  case TSTRING:
-                           conprint("FPRINTLN TSTRING \"%s\"\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+                           conprint("FPRINTLN TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
 			   break;
 
 			  default:
 			   yyerror("Invalid exptype.");
 			 }
 			 tree.add_node(print_command);
-			;}
+			}
+#line 12117 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 411:
-
-/* Line 1455 of yacc.c  */
-#line 8864 "pnfha.ypp"
+#line 8864 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode print_command("print_command");
 			
-			 conprint("APREP TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			 conprint("APREP TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 conprint("APRINT TVOID 0V\n");
 
 			 tree.add_node(print_command);
-			;}
+			}
+#line 12130 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 412:
-
-/* Line 1455 of yacc.c  */
-#line 8876 "pnfha.ypp"
+#line 8876 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode read_command("read_command");
 
@@ -12886,7 +12138,7 @@ yyreduce:
 			 unsigned long address = 0;
 	     		 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 		  	 {
-	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
     		           address = varTable[scope][i].address();
@@ -12895,33 +12147,33 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " is not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 
 
 			 PNF_Variable v;
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "void")
+			 if ((yyvsp[-1]).to_string().get().getString() == "void")
 			 {
 			  yyerror("Cannot read a void.");
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "boolean")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "boolean")
 			 {
 			  conprint("READ TBOOLEAN 0V\n");
 			  ++varcount;
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "number")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "number")
 			 {
 			  conprint("READ TNUMBER 0V\n");
 			  ++varcount;
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "character")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "character")
 			 {
 			  conprint("READ TCHARACTER 0V\n");
 			  ++varcount;
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "string")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "string")
 			 {
 			  conprint("READ TSTRING 0V\n");
 			  ++varcount;
@@ -12936,13 +12188,12 @@ yyreduce:
 			 conprint("STOREA TVOID 0V\n");
 
 			 tree.add_node(read_command);
-			;}
+			}
+#line 12193 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 413:
-
-/* Line 1455 of yacc.c  */
-#line 8935 "pnfha.ypp"
+#line 8935 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode read_command("read_command");
 
@@ -12950,7 +12201,7 @@ yyreduce:
 			 unsigned long address = 0;
 	     		 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 		  	 {
-	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
     		           address = varTable[scope][i].address();
@@ -12959,33 +12210,33 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(3) - (3)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " is not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 
 
 			 PNF_Variable v;
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "void")
+			 if ((yyvsp[-1]).to_string().get().getString() == "void")
 			 {
 			  yyerror("Cannot read a void.");
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "boolean")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "boolean")
 			 {
 			  conprint("FREAD TBOOLEAN 0V\n");
 			  ++varcount;
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "number")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "number")
 			 {
 			  conprint("FREAD TNUMBER 0V\n");
 			  ++varcount;
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "character")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "character")
 			 {
 			  conprint("FREAD TCHARACTER 0V\n");
 			  ++varcount;
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "string")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "string")
 			 {
 			  conprint("FREAD TSTRING 0V\n");
 			  ++varcount;
@@ -13002,7 +12253,7 @@ yyreduce:
 
 			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 		  	 {
-	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(3) - (3)]).to_string().get().getString().c_str()) == 0)
+	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   PNF_Number n(0);
 			   v.put(n);
@@ -13011,58 +12262,55 @@ yyreduce:
 			  }
 			 }
 			 tree.add_node(read_command);
-			;}
+			}
+#line 12267 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 414:
-
-/* Line 1455 of yacc.c  */
-#line 9008 "pnfha.ypp"
+#line 9008 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode end_command("end_command");
-			 conprint("QUIT TVOID %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("QUIT TVOID %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(end_command);
-			;}
+			}
+#line 12277 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 415:
-
-/* Line 1455 of yacc.c  */
-#line 9016 "pnfha.ypp"
+#line 9016 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode asm_command("asm_command");
-			 conprint("%s %s %s\n", strip_quotes((yyvsp[(2) - (4)]).to_string().get()).getString().c_str(), 
-					      strip_quotes((yyvsp[(3) - (4)]).to_string().get()).getString().c_str(), strip_quotes((yyvsp[(4) - (4)]).to_string().get()).getString().c_str());
+			 conprint("%s %s %s\n", strip_quotes((yyvsp[-2]).to_string().get()).getString().c_str(), 
+					      strip_quotes((yyvsp[-1]).to_string().get()).getString().c_str(), strip_quotes((yyvsp[0]).to_string().get()).getString().c_str());
 			 tree.add_node(asm_command);
-			;}
+			}
+#line 12288 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 416:
-
-/* Line 1455 of yacc.c  */
-#line 9025 "pnfha.ypp"
+#line 9025 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
-			 if ((yyvsp[(3) - (4)]).to_string().get().getString() == "memory")
+			 if ((yyvsp[-1]).to_string().get().getString() == "memory")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			  {
-			   switch ((yyvsp[(4) - (4)]).getType())
+			   switch ((yyvsp[0]).getType())
 			   {
 			    case TBOOLEAN:
-    			     conprint("LOAD TBOOLEAN %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("LOAD TBOOLEAN %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TNUMBER:
-    	 		     conprint("LOAD TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    	 		     conprint("LOAD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TCHARACTER:
-    			     conprint("LOAD TCHARACTER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("LOAD TCHARACTER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TSTRING:
-    			     conprint("LOAD TSTRING %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("LOAD TSTRING %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    default:
@@ -13070,24 +12318,24 @@ yyreduce:
 			     break;
 			   }
 			  }
-			  else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%calc")
+			  else if ((yyvsp[-2]).to_string().get().getString() == "%calc")
 			  {
-			   switch ((yyvsp[(4) - (4)]).getType())
+			   switch ((yyvsp[0]).getType())
 			   {
 			    case TBOOLEAN:
-    			     conprint("LOADC TBOOLEAN %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("LOADC TBOOLEAN %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TNUMBER:
-    	 		     conprint("LOADC TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    	 		     conprint("LOADC TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TCHARACTER:
-    			     conprint("LOADC TCHARACTER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("LOADC TCHARACTER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TSTRING:
-    			     conprint("LOADC TSTRING %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("LOADC TSTRING %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    default:
@@ -13098,26 +12346,26 @@ yyreduce:
 			  else
 			   yyerror("Invalid register type.");
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "variable")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "variable")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			  {
-			   switch ((yyvsp[(4) - (4)]).getType())
+			   switch ((yyvsp[0]).getType())
 			   {
 			    case TBOOLEAN:
-    			     conprint("VLOAD TBOOLEAN %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOAD TBOOLEAN %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TNUMBER:
-    			     conprint("VLOAD TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOAD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TCHARACTER:
-    			     conprint("VLOAD TCHARACTER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOAD TCHARACTER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TSTRING:
-    			     conprint("VLOAD TSTRING %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOAD TSTRING %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    default:
@@ -13125,24 +12373,24 @@ yyreduce:
 			     break;
 			   }
 			  }
-			  else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%calc")
+			  else if ((yyvsp[-2]).to_string().get().getString() == "%calc")
 			  {
-			   switch ((yyvsp[(4) - (4)]).getType())
+			   switch ((yyvsp[0]).getType())
 			   {
 			    case TBOOLEAN:
-    			     conprint("VLOADC TBOOLEAN %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOADC TBOOLEAN %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TNUMBER:
-    			     conprint("VLOADC TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOADC TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TCHARACTER:
-    			     conprint("VLOADC TCHARACTER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOADC TCHARACTER %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    case TSTRING:
-    			     conprint("VLOADC TSTRING %g\n", (yyvsp[(4) - (4)]).to_number().get());
+    			     conprint("VLOADC TSTRING %g\n", (yyvsp[0]).to_number().get());
 			     break;
 
 			    default:
@@ -13151,31 +12399,31 @@ yyreduce:
 			   }
 			  }
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "args")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "args")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
-			   conprint("ARLOAD TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
+			   conprint("ARLOAD TVOID %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid register type.");
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "aload")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "aload")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
- 			   conprint("ALOAD TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
+ 			   conprint("ALOAD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
                            yyerror("Invalid register type.");
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "stk")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "stk")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
-                           conprint("LOADSP TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
+                           conprint("LOADSP TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid register type.");
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "seg1")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "seg1")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
-			   conprint("SEGLOAD TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
+			   conprint("SEGLOAD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror((char *)"Invalid register type.");
 			 }
@@ -13183,21 +12431,20 @@ yyreduce:
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12436 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 417:
-
-/* Line 1455 of yacc.c  */
-#line 9169 "pnfha.ypp"
+#line 9169 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
-			 if ((yyvsp[(3) - (4)]).to_string().get().getString() == "tend")
+			 if ((yyvsp[-1]).to_string().get().getString() == "tend")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			  {
  			   PNF_Type_Enum t;
-			   String str = (yyvsp[(4) - (4)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   if (str.getString() == "void")
 			    t = TVOID;
 			   else if (str.getString() == "boolean")
@@ -13234,10 +12481,10 @@ yyreduce:
 			     break;
 			   }
 		          }
-			  else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%calc")
+			  else if ((yyvsp[-2]).to_string().get().getString() == "%calc")
 			  {
  			   PNF_Type_Enum t;
-			   String str = (yyvsp[(4) - (4)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   if (str.getString() == "void")
 			    t = TVOID;
 			   else if (str.getString() == "boolean")
@@ -13281,118 +12528,112 @@ yyreduce:
 			  yyerror("Invalid register type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12533 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 418:
-
-/* Line 1455 of yacc.c  */
-#line 9262 "pnfha.ypp"
+#line 9262 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
-			 if ((yyvsp[(2) - (2)]).to_string().get().getString() == "typeof")
+			 if ((yyvsp[0]).to_string().get().getString() == "typeof")
 			 {
 			   conprint("TLOAD TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "iname")
+			 else if ((yyvsp[0]).to_string().get().getString() == "iname")
 			 {
 			  conprint("INLOAD TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "icount")
+			 else if ((yyvsp[0]).to_string().get().getString() == "icount")
 			 {
 			  conprint("ICLOAD TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "aload")
+			 else if ((yyvsp[0]).to_string().get().getString() == "aload")
 			 {
 			  conprint("ALOAD TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "argn")
+			 else if ((yyvsp[0]).to_string().get().getString() == "argn")
 			 {
 			  conprint("ARNLOAD TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "stk")
+			 else if ((yyvsp[0]).to_string().get().getString() == "stk")
 			  conprint("LOADSTACK TVOID 0V\n");	 
 			 else
 			  yyerror("Invalid load type.");
-			;}
+			}
+#line 12565 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 419:
-
-/* Line 1455 of yacc.c  */
-#line 9290 "pnfha.ypp"
+#line 9290 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "aload")
+			 if ((yyvsp[-1]).to_string().get().getString() == "aload")
 			 {
-			  conprint("ALOAD TBOOLEAN %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("ALOAD TBOOLEAN %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }			 else
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12580 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 420:
-
-/* Line 1455 of yacc.c  */
-#line 9301 "pnfha.ypp"
+#line 9301 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "aload")
+			 if ((yyvsp[-1]).to_string().get().getString() == "aload")
 			 {
-			  conprint("ALOAD TNUMBER %g\n", (yyvsp[(3) - (3)]).to_number().get());
+			  conprint("ALOAD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "rvalue")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "rvalue")
 			 {
-			  conprint("RNUM TNUMBER %d\n", (unsigned long)(yyvsp[(3) - (3)]).to_number().get());
+			  conprint("RNUM TNUMBER %d\n", (unsigned long)(yyvsp[0]).to_number().get());
 			  conprint("RETURNV TVOID 0V\n");
 			 }			 
 			 else
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12601 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 421:
-
-/* Line 1455 of yacc.c  */
-#line 9318 "pnfha.ypp"
+#line 9318 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "aload")
+			 if ((yyvsp[-1]).to_string().get().getString() == "aload")
 			 {
-			  conprint("ALOAD TCHARACTER %c\n", (yyvsp[(3) - (3)]).to_character().get());
+			  conprint("ALOAD TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			 }			 
 			 else
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12617 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 422:
-
-/* Line 1455 of yacc.c  */
-#line 9330 "pnfha.ypp"
+#line 9330 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "aload")
+			 if ((yyvsp[-1]).to_string().get().getString() == "aload")
 			 {
-			  conprint("ALOAD TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("ALOAD TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }			 
 			 else
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12633 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 423:
-
-/* Line 1455 of yacc.c  */
-#line 9342 "pnfha.ypp"
+#line 9342 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 
@@ -13401,7 +12642,7 @@ yyreduce:
                          bool declared = false;
 	     		 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 		  	 {
-	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[(4) - (4)]).to_string().get().getString().c_str()) == 0)
+	 		  if (strcmp(varTable[scope][i].name().getString().c_str(), (yyvsp[0]).to_string().get().getString().c_str()) == 0)
 			  {
 			   declared = true;
 			   p.put(varTable[scope][i].value());
@@ -13412,14 +12653,14 @@ yyreduce:
 
 			 if (!declared)
 			 {
-			  String str = (yyvsp[(4) - (4)]).to_string().get();
+			  String str = (yyvsp[0]).to_string().get();
 			  str += " was not declared.";
 			  yyerror(str.getString().c_str());
 			 }
 
-			 if ((yyvsp[(3) - (4)]).to_string().get().getString() == "memory")
+			 if ((yyvsp[-1]).to_string().get().getString() == "memory")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			  {
 			   switch (p.getType())
 			   {
@@ -13444,7 +12685,7 @@ yyreduce:
 			     break;
 			   }
 			  }
-			  else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%calc")
+			  else if ((yyvsp[-2]).to_string().get().getString() == "%calc")
 			  {
 			   switch (p.getType())
 			   {
@@ -13472,9 +12713,9 @@ yyreduce:
 			  else
 			   yyerror("Invalid register type.");
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "variable")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "variable")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			  {
 			   switch (p.getType())
 			   {
@@ -13499,7 +12740,7 @@ yyreduce:
 			     break;
 			   }
 			  }
-			  else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%calc")
+			  else if ((yyvsp[-2]).to_string().get().getString() == "%calc")
 			  {
 			   switch (p.getType())
 			   {
@@ -13525,16 +12766,16 @@ yyreduce:
 			   }
 			  }
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "args")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "args")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			   conprint("ARLOAD TVOID %g\n", p.to_number().get());
 			  else
 			   yyerror("Invalid register type.");
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "aload")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "aload")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			  {
 			   switch (p.getType())
 			   {
@@ -13562,138 +12803,131 @@ yyreduce:
 			  else
                            yyerror("Invalid register type.");
 			 }
-			 else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "seg2")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "seg2")
 			 {
-			  if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accmumulator")
+			  if ((yyvsp[-2]).to_string().get().getString() == "%accmumulator")
 			  {
-			   conprint("SEGVLOAD TBOOLEAN %s\n", (yyvsp[(4) - (4)]).to_boolean().get().getString().c_str());
+			   conprint("SEGVLOAD TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  }
 			 }
 			 else
 			  yyerror("Invalid load type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12819 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 424:
-
-/* Line 1455 of yacc.c  */
-#line 9524 "pnfha.ypp"
+#line 9524 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "heve")
-			  conprint("HEGET TVOID %g", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "sheve")
-			  conprint("SHEGET TVOID %g", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "eve")
-			  conprint("EGET TVOID %g", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "exe")
-			  conprint("EXGET TVOID %g", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "int")
-			  conprint("IGET TVOID %g", (yyvsp[(3) - (3)]).to_number().get());
+			 if ((yyvsp[-1]).to_string().get().getString() == "heve")
+			  conprint("HEGET TVOID %g", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "sheve")
+			  conprint("SHEGET TVOID %g", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "eve")
+			  conprint("EGET TVOID %g", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "exe")
+			  conprint("EXGET TVOID %g", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "int")
+			  conprint("IGET TVOID %g", (yyvsp[0]).to_number().get());
 		  	 else
 			  yyerror("Invalid subroutine type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12842 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 425:
-
-/* Line 1455 of yacc.c  */
-#line 9543 "pnfha.ypp"
+#line 9543 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "venum")
+			 if ((yyvsp[-1]).to_string().get() == "venum")
 			 {
-			  conprint("EPREP TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("EPREP TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  conprint("LOADE TVOID 0V\n");
 			 }
 			 else
 			  yyerror("Invalid VTYPE2.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12860 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 426:
-
-/* Line 1455 of yacc.c  */
-#line 9557 "pnfha.ypp"
+#line 9557 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 
-			 if ((yyvsp[(3) - (4)]).to_string().get() == "rtype1")
+			 if ((yyvsp[-1]).to_string().get() == "rtype1")
 			 {
-			  conprint("RLOAD1 TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  conprint("RLOAD1 TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
 			 else
 			  yyerror("Invalid Range Type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12877 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 427:
-
-/* Line 1455 of yacc.c  */
-#line 9570 "pnfha.ypp"
+#line 9570 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 
-			 if ((yyvsp[(3) - (7)]).to_string().get() == "rtype2")
+			 if ((yyvsp[-4]).to_string().get() == "rtype2")
 			 {
-			  conprint("RPREP2 TSTRING %s\n", (yyvsp[(4) - (7)]).to_string().get().getString().c_str());
-			  conprint("RLOAD2 TNUMBER %g\n", (yyvsp[(6) - (7)]).to_number().get());
+			  conprint("RPREP2 TSTRING %s\n", (yyvsp[-3]).to_string().get().getString().c_str());
+			  conprint("RLOAD2 TNUMBER %g\n", (yyvsp[-1]).to_number().get());
 			 }
 			 else
 			  yyerror("Invalid Range Type.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12895 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 428:
-
-/* Line 1455 of yacc.c  */
-#line 9584 "pnfha.ypp"
+#line 9584 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 
-			 conprint("APREP TSTRING %s\n", (yyvsp[(3) - (6)]).to_string().get().getString().c_str());
-			 conprint("AIPREP TNUMBER %g\n", (yyvsp[(5) - (6)]).to_number().get());
+			 conprint("APREP TSTRING %s\n", (yyvsp[-3]).to_string().get().getString().c_str());
+			 conprint("AIPREP TNUMBER %g\n", (yyvsp[-1]).to_number().get());
 			 conprint("LOADIA TVOID 0V\n");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12909 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 429:
-
-/* Line 1455 of yacc.c  */
-#line 9594 "pnfha.ypp"
+#line 9594 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 
-			 conprint("APREP TSTRING %s\n", (yyvsp[(3) - (5)]).to_string().get().getString().c_str());
+			 conprint("APREP TSTRING %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			 conprint("AIPREP TVOID 0V\n");
 			 conprint("LOADIA TVOID 0V\n");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12923 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 430:
-
-/* Line 1455 of yacc.c  */
-#line 9604 "pnfha.ypp"
+#line 9604 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 			 
-			 if ((yyvsp[(3) - (6)]).to_string().get() == "rvalue")
+			 if ((yyvsp[-3]).to_string().get() == "rvalue")
 			 {
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
@@ -13702,41 +12936,39 @@ yyreduce:
 			   exit(-1);
 			  }
 
-			  unsigned long rindex = (unsigned long)(yyvsp[(4) - (6)]).to_number().get();
+			  unsigned long rindex = (unsigned long)(yyvsp[-2]).to_number().get();
 
 			  conprint("FNCLOAD TNUMBER %d\n", index);
 			  conprint("RNUM TNUMBER %d\n", rindex);
-			  conprint("ALOAD TBOOLEAN %s\n", (yyvsp[(6) - (6)]).to_boolean().get().getString().c_str());
+			  conprint("ALOAD TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  conprint("FNCSRET TBOOLEAN 0V\n");
 			 }
 			 else
 			  yyerror("Bad LTYPE.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12952 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 431:
-
-/* Line 1455 of yacc.c  */
-#line 9629 "pnfha.ypp"
+#line 9629 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets6.length() - 1; i > 0; --i)
 			  frets6.remove();
 
 			 for (unsigned long i = fparams6.length() - 1; i > 0; --i)
 			  fparams6.remove();
-			;}
+			}
+#line 12964 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 432:
-
-/* Line 1455 of yacc.c  */
-#line 9637 "pnfha.ypp"
+#line 9637 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 			 
-			 if ((yyvsp[(3) - (6)]).to_string().get() == "rvalue")
+			 if ((yyvsp[-3]).to_string().get() == "rvalue")
 			 {
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
@@ -13745,41 +12977,39 @@ yyreduce:
 			   exit(-1);
 			  }
 
-			  unsigned long rindex = (unsigned long)(yyvsp[(4) - (6)]).to_number().get();
+			  unsigned long rindex = (unsigned long)(yyvsp[-2]).to_number().get();
 
 			  conprint("FNCLOAD TNUMBER %d\n", index);
 			  conprint("RNUM TNUMBER %d\n", rindex);
-			  conprint("ALOAD TNUMBER %g\n", (yyvsp[(6) - (6)]).to_number().get());
+			  conprint("ALOAD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  conprint("FNCSRET TNUMBER 0V\n");
 			 }
 			 else
 			  yyerror("Bad LTYPE.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 12993 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 433:
-
-/* Line 1455 of yacc.c  */
-#line 9662 "pnfha.ypp"
+#line 9662 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets6.length() - 1; i > 0; --i)
 			  frets6.remove();
 
 			 for (unsigned long i = fparams6.length() - 1; i > 0; --i)
 			  fparams6.remove();
-			;}
+			}
+#line 13005 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 434:
-
-/* Line 1455 of yacc.c  */
-#line 9670 "pnfha.ypp"
+#line 9670 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 			 
-			 if ((yyvsp[(3) - (6)]).to_string().get() == "rvalue")
+			 if ((yyvsp[-3]).to_string().get() == "rvalue")
 			 {
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
@@ -13788,41 +13018,39 @@ yyreduce:
 			   exit(-1);
 			  }
 
-			  unsigned long rindex = (unsigned long)(yyvsp[(4) - (6)]).to_number().get();
+			  unsigned long rindex = (unsigned long)(yyvsp[-2]).to_number().get();
 
 			  conprint("FNCLOAD TNUMBER %d\n", index);
 			  conprint("RNUM TNUMBER %d\n", rindex);
-			  conprint("ALOAD TCHARACTER %c\n", (yyvsp[(6) - (6)]).to_character().get());
+			  conprint("ALOAD TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			  conprint("FNCSRET TCHARACTER 0V\n");
 			 }
 			 else
 			  yyerror("Bad LTYPE.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 13034 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 435:
-
-/* Line 1455 of yacc.c  */
-#line 9695 "pnfha.ypp"
+#line 9695 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets6.length() - 1; i > 0; --i)
 			  frets6.remove();
 
 			 for (unsigned long i = fparams6.length() - 1; i > 0; --i)
 			  fparams6.remove();
-			;}
+			}
+#line 13046 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 436:
-
-/* Line 1455 of yacc.c  */
-#line 9703 "pnfha.ypp"
+#line 9703 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode load_command("load_command");
 			 
-			 if ((yyvsp[(3) - (6)]).to_string().get() == "rvalue")
+			 if ((yyvsp[-3]).to_string().get() == "rvalue")
 			 {
 			  unsigned long index = funcstk.find(fsaveid.to_string().get(), frets6, fparams6);
 			  if (index == -1)
@@ -13831,149 +13059,144 @@ yyreduce:
 			   exit(-1);
 			  }
 
-			  unsigned long rindex = (unsigned long)(yyvsp[(4) - (6)]).to_number().get();
+			  unsigned long rindex = (unsigned long)(yyvsp[-2]).to_number().get();
 
 			  conprint("FNCLOAD TNUMBER %d\n", index);
 			  conprint("RNUM TNUMBER %d\n", rindex);
-			  conprint("ALOAD TSTRING %s\n", (yyvsp[(6) - (6)]).to_string().get().getString().c_str());
+			  conprint("ALOAD TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  conprint("FNCSRET TSTRING 0V\n");
 			 }
 			 else
 			  yyerror("Bad LTYPE.");
 
 			 tree.add_node(load_command);
-			;}
+			}
+#line 13075 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 437:
-
-/* Line 1455 of yacc.c  */
-#line 9728 "pnfha.ypp"
+#line 9728 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets6.length() - 1; i > 0; --i)
 			  frets6.remove();
 
 			 for (unsigned long i = fparams6.length() - 1; i > 0; --i)
 			  fparams6.remove();
-			;}
+			}
+#line 13087 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 438:
-
-/* Line 1455 of yacc.c  */
-#line 9736 "pnfha.ypp"
+#line 9736 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"get\"")
+			 if ((yyvsp[0]).to_string().get().getString() == "\"get\"")
 			 {
 			  conprint("STRUCTGET TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"type1\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"type1\"")
 			 {
 			  conprint("STRUCTTYPE TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"type2\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"type2\"")
 			 {
 			  conprint("STRUCTTYPE2 TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"name1\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"name1\"")
 			 {
 			  conprint("STRUCTNAME2 TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"name2\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"name2\"")
 			 {
 			  conprint("STRUCTNAME3 TVOID 0V\n");
 			 }
 			 else
 			  yyerror((char *)"Invalid load type.");
-			;}
+			}
+#line 13116 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 439:
-
-/* Line 1455 of yacc.c  */
-#line 9761 "pnfha.ypp"
+#line 9761 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"get\"")
+			 if ((yyvsp[0]).to_string().get().getString() == "\"get\"")
 			 {
 			  conprint("UNIONGET TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"type1\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"type1\"")
 			 {
 			  conprint("UNIONTYPE TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"type2\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"type2\"")
 			 {
 			  conprint("UNIONTYPE2 TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"name1\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"name1\"")
 			 {
 			  conprint("UNIONNAME2 TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "\"name2\"")
+			 else if ((yyvsp[0]).to_string().get().getString() == "\"name2\"")
 			 {
 			  conprint("UNIONNAME3 TVOID 0V\n");
 			 }
 			 else
 			  yyerror((char *)"Invalid load type.");
-			;}
+			}
+#line 13145 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 440:
-
-/* Line 1455 of yacc.c  */
-#line 9786 "pnfha.ypp"
+#line 9786 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "tstruct")
+			 if ((yyvsp[-1]).to_string().get().getString() == "tstruct")
 			 {
-			  conprint("STRUCTUSE TSTRING \"%s\"\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("STRUCTUSE TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "tunion")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "tunion")
 			 {
-			  conprint("UNIONUSE TSTRING \"%s\"\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("UNIONUSE TSTRING \"%s\"\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
 			 else
 			  yyerror((char *)"Invalid object type.");
-			;}
+			}
+#line 13162 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 441:
-
-/* Line 1455 of yacc.c  */
-#line 9799 "pnfha.ypp"
+#line 9799 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 if ((yyvsp[(3) - (5)]).to_string().get().getString() == "seg2")
+			 if ((yyvsp[-2]).to_string().get().getString() == "seg2")
 			 {
-			  if ((yyvsp[(2) - (5)]).to_string().get().getString() == "%accumulator")
+			  if ((yyvsp[-3]).to_string().get().getString() == "%accumulator")
 			  {
-			   switch ((yyvsp[(4) - (5)]).getType())
+			   switch ((yyvsp[-1]).getType())
 			   {
 		 	    case TVOID:
 			    {
-			     conprint("SEGVLOAD TVOID %g\n", (yyvsp[(5) - (5)]).to_number().get());
+			     conprint("SEGVLOAD TVOID %g\n", (yyvsp[0]).to_number().get());
 			    }
 			    break;
 
 			    case TBOOLEAN:
 			    {
-			     conprint("SEGVLOAD TBOOLEAN %g\n", (yyvsp[(5) - (5)]).to_number().get());
+			     conprint("SEGVLOAD TBOOLEAN %g\n", (yyvsp[0]).to_number().get());
 			    }
 			    break;
 
 			   case TNUMBER:
 			    {
-			     conprint("SEGVLOAD TNUMBER %g\n", (yyvsp[(5) - (5)]).to_number().get());
+			     conprint("SEGVLOAD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			    }
 			    break;
 
 			    case TCHARACTER:
 			    {
-			     conprint("SEGVLOAD TCHARACTER %g\n", (yyvsp[(5) - (5)]).to_number().get());
+			     conprint("SEGVLOAD TCHARACTER %g\n", (yyvsp[0]).to_number().get());
 			    }
 			    break;
 
 			    case TSTRING:
 			    {
-			     conprint("SEGVLOAD TSTRING %g\n", (yyvsp[(5) - (5)]).to_number().get());
+			     conprint("SEGVLOAD TSTRING %g\n", (yyvsp[0]).to_number().get());
 			    }
 			    break;
 
@@ -13986,46 +13209,44 @@ yyreduce:
 			 }
 			 else
 			  yyerror((char *)"Invalid load type.");
-			;}
+			}
+#line 13214 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 442:
-
-/* Line 1455 of yacc.c  */
-#line 9849 "pnfha.ypp"
+#line 9849 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode goto_command("goto_command");
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "normal")
+			 if ((yyvsp[-1]).to_string().get().getString() == "normal")
 			 {
-			  conprint("GOTO TVOID %g\n", (yyvsp[(3) - (3)]).to_number().get());
+			  conprint("GOTO TVOID %g\n", (yyvsp[0]).to_number().get());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "condition")
-			  conprint("CGOTO TVOID %g\n", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "zero")
-			  conprint("ZGOTO TVOID %g\n", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "positive")
-			  conprint("PGOTO TVOID %g\n", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "negative")
-			  conprint("NGOTO TVOID %g\n", (yyvsp[(3) - (3)]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "condition")
+			  conprint("CGOTO TVOID %g\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "zero")
+			  conprint("ZGOTO TVOID %g\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "positive")
+			  conprint("PGOTO TVOID %g\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get().getString() == "negative")
+			  conprint("NGOTO TVOID %g\n", (yyvsp[0]).to_number().get());
 			 else
 			  yyerror("Invalid goto type.");
 
 			 tree.add_node(goto_command);
-			;}
+			}
+#line 13238 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 443:
-
-/* Line 1455 of yacc.c  */
-#line 9869 "pnfha.ypp"
+#line 9869 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode goto_command("goto_command");
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "normal")
+			 if ((yyvsp[-1]).to_string().get().getString() == "normal")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if (labelTable[i].name().getString() == (yyvsp[(3) - (3)]).to_string().get().getString())
+			   if (labelTable[i].name().getString() == (yyvsp[0]).to_string().get().getString())
 			   {
 			    declared = true;
 			    conprint("GOTOL TVOID %u\n", labelTable[i].address());
@@ -14034,17 +13255,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "condition")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "condition")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if (labelTable[i].name().getString() == (yyvsp[(3) - (3)]).to_string().get().getString())
+			   if (labelTable[i].name().getString() == (yyvsp[0]).to_string().get().getString())
 			   {
 			    declared = true;
 			    conprint("CGOTOL TVOID %u\n", labelTable[i].address());
@@ -14053,17 +13274,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "zero")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "zero")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if (labelTable[i].name().getString() == (yyvsp[(3) - (3)]).to_string().get().getString())
+			   if (labelTable[i].name().getString() == (yyvsp[0]).to_string().get().getString())
 			   {
 			    declared = true;
 			    conprint("ZGOTOL TVOID %u\n", labelTable[i].address());
@@ -14072,17 +13293,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "positive")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "positive")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if (labelTable[i].name().getString() == (yyvsp[(3) - (3)]).to_string().get().getString())
+			   if (labelTable[i].name().getString() == (yyvsp[0]).to_string().get().getString())
 			   {
 			    declared = true;
 			    conprint("PGOTOL TVOID %u\n", labelTable[i].address());
@@ -14091,17 +13312,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "negative")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "negative")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if (labelTable[i].name().getString() == (yyvsp[(3) - (3)]).to_string().get().getString())
+			   if (labelTable[i].name().getString() == (yyvsp[0]).to_string().get().getString())
 			   {
 			    declared = true;
 			    conprint("NGOTOL TVOID %u\n", labelTable[i].address());
@@ -14110,7 +13331,7 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -14119,582 +13340,531 @@ yyreduce:
 			  yyerror("Invalid goto type.");
 
 			 tree.add_node(goto_command);
-			;}
+			}
+#line 13345 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 444:
-
-/* Line 1455 of yacc.c  */
-#line 9974 "pnfha.ypp"
+#line 9974 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("ADD TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13355 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 445:
-
-/* Line 1455 of yacc.c  */
-#line 9980 "pnfha.ypp"
+#line 9980 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("ADD TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("ADD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13365 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 446:
-
-/* Line 1455 of yacc.c  */
-#line 9986 "pnfha.ypp"
+#line 9986 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("ADD TCHARACTER %c\n", (yyvsp[(2) - (2)]).to_character().get());
+			 conprint("ADD TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13375 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 447:
-
-/* Line 1455 of yacc.c  */
-#line 9992 "pnfha.ypp"
+#line 9992 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("ADD TSTRING %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			 conprint("ADD TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13385 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 448:
-
-/* Line 1455 of yacc.c  */
-#line 9998 "pnfha.ypp"
+#line 9998 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("SUB TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13395 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 449:
-
-/* Line 1455 of yacc.c  */
-#line 10004 "pnfha.ypp"
+#line 10004 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("SUB TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("SUB TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13405 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 450:
-
-/* Line 1455 of yacc.c  */
-#line 10010 "pnfha.ypp"
+#line 10010 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("MUL TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13415 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 451:
-
-/* Line 1455 of yacc.c  */
-#line 10016 "pnfha.ypp"
+#line 10016 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("MUL TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("MUL TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13425 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 452:
-
-/* Line 1455 of yacc.c  */
-#line 10022 "pnfha.ypp"
+#line 10022 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("DIV TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13435 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 453:
-
-/* Line 1455 of yacc.c  */
-#line 10028 "pnfha.ypp"
+#line 10028 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("DIV TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("DIV TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13445 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 454:
-
-/* Line 1455 of yacc.c  */
-#line 10034 "pnfha.ypp"
+#line 10034 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("MOD TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13455 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 455:
-
-/* Line 1455 of yacc.c  */
-#line 10040 "pnfha.ypp"
+#line 10040 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("MOD TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("MOD TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13465 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 456:
-
-/* Line 1455 of yacc.c  */
-#line 10046 "pnfha.ypp"
+#line 10046 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("POW TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13475 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 457:
-
-/* Line 1455 of yacc.c  */
-#line 10052 "pnfha.ypp"
+#line 10052 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("POW TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("POW TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13485 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 458:
-
-/* Line 1455 of yacc.c  */
-#line 10058 "pnfha.ypp"
+#line 10058 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("ROOT TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13495 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 459:
-
-/* Line 1455 of yacc.c  */
-#line 10064 "pnfha.ypp"
+#line 10064 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("ROOT TNUMBER %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("ROOT TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13505 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 460:
-
-/* Line 1455 of yacc.c  */
-#line 10070 "pnfha.ypp"
+#line 10070 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("INC TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13515 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 461:
-
-/* Line 1455 of yacc.c  */
-#line 10076 "pnfha.ypp"
+#line 10076 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("DEC TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13525 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 462:
-
-/* Line 1455 of yacc.c  */
-#line 10082 "pnfha.ypp"
+#line 10082 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("AND TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13535 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 463:
-
-/* Line 1455 of yacc.c  */
-#line 10088 "pnfha.ypp"
+#line 10088 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("OR TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13545 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 464:
-
-/* Line 1455 of yacc.c  */
-#line 10094 "pnfha.ypp"
+#line 10094 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("NOT TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13555 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 465:
-
-/* Line 1455 of yacc.c  */
-#line 10100 "pnfha.ypp"
+#line 10100 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("EQU TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13565 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 466:
-
-/* Line 1455 of yacc.c  */
-#line 10106 "pnfha.ypp"
+#line 10106 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("NEQU TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13575 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 467:
-
-/* Line 1455 of yacc.c  */
-#line 10112 "pnfha.ypp"
+#line 10112 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("LSS TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13585 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 468:
-
-/* Line 1455 of yacc.c  */
-#line 10118 "pnfha.ypp"
+#line 10118 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("GTR TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13595 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 469:
-
-/* Line 1455 of yacc.c  */
-#line 10124 "pnfha.ypp"
+#line 10124 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("LEQU TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13605 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 470:
-
-/* Line 1455 of yacc.c  */
-#line 10130 "pnfha.ypp"
+#line 10130 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("GEQU TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13615 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 471:
-
-/* Line 1455 of yacc.c  */
-#line 10136 "pnfha.ypp"
+#line 10136 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 
-			 String str = (yyvsp[(2) - (2)]).to_boolean().get();
+			 String str = (yyvsp[0]).to_boolean().get();
 
 			 conprint("EQU TBOOLEAN %s", str.getString().c_str());
 
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13629 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 472:
-
-/* Line 1455 of yacc.c  */
-#line 10146 "pnfha.ypp"
+#line 10146 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 
-			 String str = (yyvsp[(2) - (2)]).to_boolean().get();
+			 String str = (yyvsp[0]).to_boolean().get();
 
 			 conprint("NEQU TBOOLEAN %s", str.getString().c_str());
 
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13643 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 473:
-
-/* Line 1455 of yacc.c  */
-#line 10156 "pnfha.ypp"
+#line 10156 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("EQU TNUMBER %g", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("EQU TNUMBER %g", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13653 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 474:
-
-/* Line 1455 of yacc.c  */
-#line 10162 "pnfha.ypp"
+#line 10162 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("NEQU TNUMBER %g", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("NEQU TNUMBER %g", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13663 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 475:
-
-/* Line 1455 of yacc.c  */
-#line 10168 "pnfha.ypp"
+#line 10168 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("LSS TNUMBER %g", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("LSS TNUMBER %g", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13673 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 476:
-
-/* Line 1455 of yacc.c  */
-#line 10174 "pnfha.ypp"
+#line 10174 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("GTR TNUMBER %g", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("GTR TNUMBER %g", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13683 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 477:
-
-/* Line 1455 of yacc.c  */
-#line 10180 "pnfha.ypp"
+#line 10180 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("LEQU TNUMBER %g", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("LEQU TNUMBER %g", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13693 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 478:
-
-/* Line 1455 of yacc.c  */
-#line 10186 "pnfha.ypp"
+#line 10186 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("GEQU TNUMBER %g", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("GEQU TNUMBER %g", (yyvsp[0]).to_number().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13703 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 479:
-
-/* Line 1455 of yacc.c  */
-#line 10192 "pnfha.ypp"
+#line 10192 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("EQU TCHARACTER %c", (yyvsp[(2) - (2)]).to_character().get());
+			 conprint("EQU TCHARACTER %c", (yyvsp[0]).to_character().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13713 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 480:
-
-/* Line 1455 of yacc.c  */
-#line 10198 "pnfha.ypp"
+#line 10198 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("NEQU TCHARACTER %c", (yyvsp[(2) - (2)]).to_character().get());
+			 conprint("NEQU TCHARACTER %c", (yyvsp[0]).to_character().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13723 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 481:
-
-/* Line 1455 of yacc.c  */
-#line 10204 "pnfha.ypp"
+#line 10204 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("LSS TCHARACTER %c", (yyvsp[(2) - (2)]).to_character().get());
+			 conprint("LSS TCHARACTER %c", (yyvsp[0]).to_character().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13733 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 482:
-
-/* Line 1455 of yacc.c  */
-#line 10210 "pnfha.ypp"
+#line 10210 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("GTR TCHARACTER %c", (yyvsp[(2) - (2)]).to_character().get());
+			 conprint("GTR TCHARACTER %c", (yyvsp[0]).to_character().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13743 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 483:
-
-/* Line 1455 of yacc.c  */
-#line 10216 "pnfha.ypp"
+#line 10216 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("LEQU TCHARACTER %c", (yyvsp[(2) - (2)]).to_character().get());
+			 conprint("LEQU TCHARACTER %c", (yyvsp[0]).to_character().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13753 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 484:
-
-/* Line 1455 of yacc.c  */
-#line 10222 "pnfha.ypp"
+#line 10222 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 conprint("GEQU TCHARACTER %c", (yyvsp[(2) - (2)]).to_character().get());
+			 conprint("GEQU TCHARACTER %c", (yyvsp[0]).to_character().get());
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13763 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 485:
-
-/* Line 1455 of yacc.c  */
-#line 10228 "pnfha.ypp"
+#line 10228 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("BTAND TVOID 0V");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13773 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 486:
-
-/* Line 1455 of yacc.c  */
-#line 10234 "pnfha.ypp"
+#line 10234 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("BTOR TVOID 0V");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13783 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 487:
-
-/* Line 1455 of yacc.c  */
-#line 10240 "pnfha.ypp"
+#line 10240 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("BTXOR TVOID 0V");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13793 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 488:
-
-/* Line 1455 of yacc.c  */
-#line 10246 "pnfha.ypp"
+#line 10246 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("BTNOT TVOID 0V");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13803 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 489:
-
-/* Line 1455 of yacc.c  */
-#line 10252 "pnfha.ypp"
+#line 10252 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("BTSL TVOID 0V");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13813 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 490:
-
-/* Line 1455 of yacc.c  */
-#line 10258 "pnfha.ypp"
+#line 10258 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("BTSR TVOID 0V");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13823 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 492:
-
-/* Line 1455 of yacc.c  */
-#line 10265 "pnfha.ypp"
+#line 10265 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("CMP TVOID 0V");
-			;}
+			}
+#line 13831 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 493:
-
-/* Line 1455 of yacc.c  */
-#line 10269 "pnfha.ypp"
+#line 10269 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
 			 conprint("NTIMES TVOID 0V\n");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13841 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 494:
-
-/* Line 1455 of yacc.c  */
-#line 10275 "pnfha.ypp"
+#line 10275 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode operator_command("operator_command");
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "run")
+			 if ((yyvsp[-1]).to_string().get().getString() == "run")
 			 {
-			  conprint("RUN TSTRING %s", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("RUN TSTRING %s", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "jrun")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "jrun")
 			 {
-			  conprint("JRUN TSTRING %s", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("JRUN TSTRING %s", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "pnfrun")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "pnfrun")
 			 {
-			  conprint("PNFRUN TSTRING %s", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("PNFRUN TSTRING %s", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
 			 else
 			  yyerror((char *)"Bad run operator.");
 			 tree.add_node(operator_command);
-			;}
+			}
+#line 13864 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 495:
-
-/* Line 1455 of yacc.c  */
-#line 10297 "pnfha.ypp"
+#line 10297 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode top_commandp1("top_commandp1");
 
@@ -14705,24 +13875,22 @@ yyreduce:
 			 conprint("IFBEGIN TVOID 0V\n");
 
 			 tree.add_node(top_commandp1);
-			;}
+			}
+#line 13880 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 496:
-
-/* Line 1455 of yacc.c  */
-#line 10308 "pnfha.ypp"
+#line 10308 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode top_commandp2("top_commandp2");			 
 
 			 tree.add_node(top_commandp2);
-			;}
+			}
+#line 13890 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 497:
-
-/* Line 1455 of yacc.c  */
-#line 10314 "pnfha.ypp"
+#line 10314 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode top_commandp3("top_commandp3");
 
@@ -14730,13 +13898,12 @@ yyreduce:
 			conprint("ENDIF TVOID 0V\n");
 
 			 tree.add_node(top_commandp3);
-			;}
+			}
+#line 13903 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 498:
-
-/* Line 1455 of yacc.c  */
-#line 10323 "pnfha.ypp"
+#line 10323 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode top_commandp4("top_commandp4");
 
@@ -14744,13 +13911,12 @@ yyreduce:
 			 conprint("IFBEGIN TVOID 0V\n");
 
 			 tree.add_node(top_commandp4);
-			;}
+			}
+#line 13916 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 499:
-
-/* Line 1455 of yacc.c  */
-#line 10332 "pnfha.ypp"
+#line 10332 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode top_commandp5("top_commandp5");
 
@@ -14759,220 +13925,203 @@ yyreduce:
 			 conprint("EIF TVOID 0V\n");
 
 			 tree.add_node(top_commandp5);
-			;}
+			}
+#line 13930 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 500:
-
-/* Line 1455 of yacc.c  */
-#line 10344 "pnfha.ypp"
+#line 10344 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode st_command("st_command");
 			 conprint("ST TVOID 0V\n");
 			 tree.add_node(st_command);
-			;}
+			}
+#line 13940 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 501:
-
-/* Line 1455 of yacc.c  */
-#line 10352 "pnfha.ypp"
+#line 10352 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode stack_command("stack_command");
 			 conprint("PUSH TVOID 0V\n");
 			 tree.add_node(stack_command);
-			;}
+			}
+#line 13950 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 502:
-
-/* Line 1455 of yacc.c  */
-#line 10358 "pnfha.ypp"
+#line 10358 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode stack_command("stack_command");
 			 conprint("POP TVOID 0V\n");
 			 tree.add_node(stack_command);
-			;}
+			}
+#line 13960 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 503:
-
-/* Line 1455 of yacc.c  */
-#line 10366 "pnfha.ypp"
+#line 10366 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode typeof_command("typeof_command");
-			 if ((yyvsp[(2) - (2)]).to_string().get().getString() == "%accumulator")
+			 if ((yyvsp[0]).to_string().get().getString() == "%accumulator")
   			  conprint("TYPEOF TVOID 0V\n");
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "%calc")
+			 else if ((yyvsp[0]).to_string().get().getString() == "%calc")
   			  conprint("CTYPEOF TVOID 0V\n");
                          else
 			  yyerror("Invalid register type.");
 			 tree.add_node(typeof_command);
-			;}
+			}
+#line 13975 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 504:
-
-/* Line 1455 of yacc.c  */
-#line 10379 "pnfha.ypp"
+#line 10379 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode rm_command("rm_command");
 			 conprint("ATOC TVOID 0V\n");
 			 tree.add_node(rm_command);
-			;}
+			}
+#line 13985 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 505:
-
-/* Line 1455 of yacc.c  */
-#line 10385 "pnfha.ypp"
+#line 10385 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("ATOSP TVOID 0V\n");
-			;}
+			}
+#line 13993 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 506:
-
-/* Line 1455 of yacc.c  */
-#line 10389 "pnfha.ypp"
+#line 10389 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("SPTOA TVOID 0V\n");
-			;}
+			}
+#line 14001 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 507:
-
-/* Line 1455 of yacc.c  */
-#line 10393 "pnfha.ypp"
+#line 10393 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode rm_command("rm_command");
 			 conprint("SWITCH TVOID 0V\n");
 			 tree.add_node(rm_command);
-			;}
+			}
+#line 14011 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 508:
-
-/* Line 1455 of yacc.c  */
-#line 10401 "pnfha.ypp"
+#line 10401 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode crash_command("crash_command");
-			 conprint("CRASH TSTRING %s", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			 conprint("CRASH TSTRING %s", (yyvsp[0]).to_string().get().getString().c_str());
 			 tree.add_node(crash_command);
-			;}
+			}
+#line 14021 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 509:
-
-/* Line 1455 of yacc.c  */
-#line 10409 "pnfha.ypp"
+#line 10409 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode version_command("version_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "pnf")
-  			  conprint("VERSION TVOID %f\n", (yyvsp[(3) - (3)]).to_number().get());
-			 else if ((yyvsp[(2) - (3)]).to_string().get() == "pnfasm")
+			 if ((yyvsp[-1]).to_string().get().getString() == "pnf")
+  			  conprint("VERSION TVOID %f\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get() == "pnfasm")
 			  conprint("version TVOID 0V\n");
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "normal")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "normal")
   			  ; // Not used yet. This is the first version.
                          else
 			  yyerror("Invalid version type.");
 
 			 tree.add_node(version_command);
-			;}
+			}
+#line 14040 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 510:
-
-/* Line 1455 of yacc.c  */
-#line 10424 "pnfha.ypp"
+#line 10424 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode version_command("version_command");
 
-			 conprint("MODE TVOID %f\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("MODE TVOID %f\n", (yyvsp[0]).to_number().get());
 
 
 			 tree.add_node(version_command);
-			;}
+			}
+#line 14053 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 511:
-
-/* Line 1455 of yacc.c  */
-#line 10433 "pnfha.ypp"
+#line 10433 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode version_command("version_command");
 
-			 conprint("EXTMODE TVOID %f\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("EXTMODE TVOID %f\n", (yyvsp[0]).to_number().get());
 
 			 tree.add_node(version_command);
-			;}
+			}
+#line 14065 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 512:
-
-/* Line 1455 of yacc.c  */
-#line 10443 "pnfha.ypp"
+#line 10443 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode halt_command("halt_command");
 			 conprint("HALT TVOID 0V\n");
 			 tree.add_node(halt_command);
-			;}
+			}
+#line 14075 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 513:
-
-/* Line 1455 of yacc.c  */
-#line 10451 "pnfha.ypp"
+#line 10451 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode modt_command("modt_command");
 
-			 if ((yyvsp[(2) - (2)]).to_string().get().getString() == "%accumulator")
+			 if ((yyvsp[0]).to_string().get().getString() == "%accumulator")
   			  conprint("MODT TVOID 0V\n");
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "%calc")
+			 else if ((yyvsp[0]).to_string().get().getString() == "%calc")
   			  conprint("MODCT TVOID 0V\n");
                          else
 			  yyerror("Invalid register type.");
 
 			 tree.add_node(modt_command);
-			;}
+			}
+#line 14092 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 514:
-
-/* Line 1455 of yacc.c  */
-#line 10466 "pnfha.ypp"
+#line 10466 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode subroutine_command("subroutine_command");
 			 conprint("RET TVOID 0V\n");
 			 tree.add_node(subroutine_command);
-			;}
+			}
+#line 14102 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 515:
-
-/* Line 1455 of yacc.c  */
-#line 10472 "pnfha.ypp"
+#line 10472 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode subroutine_command("subroutine_command");
-			 conprint("CALL TVOID %g\n", (yyvsp[(2) - (2)]).to_number().get());
+			 conprint("CALL TVOID %g\n", (yyvsp[0]).to_number().get());
 			 tree.add_node(subroutine_command);
-			;}
+			}
+#line 14112 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 516:
-
-/* Line 1455 of yacc.c  */
-#line 10478 "pnfha.ypp"
+#line 10478 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode subroutine_command("subroutine_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "sub")
+			 if ((yyvsp[-1]).to_string().get().getString() == "sub")
 			 {
  			  bool declared = false;
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == labelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == labelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = labelTable[i].address();
@@ -14982,17 +14131,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "heve")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "heve")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = CELabel::hevents();
@@ -15002,17 +14151,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "sheve")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "sheve")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = CELabel::shevents();
@@ -15022,17 +14171,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "eve")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "eve")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = CELabel::events();
@@ -15042,17 +14191,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "exe")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "exe")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = CELabel::exceptions();
@@ -15062,17 +14211,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "int")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "int")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = CELabel::ints();
@@ -15082,7 +14231,7 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15091,37 +14240,36 @@ yyreduce:
 			  yyerror("Invalid subroutine type.");
 
 			 tree.add_node(subroutine_command);
-			;}
+			}
+#line 14245 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 517:
-
-/* Line 1455 of yacc.c  */
-#line 10609 "pnfha.ypp"
+#line 10609 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode register_command("register_command");
 
-			 if ((yyvsp[(2) - (2)]).to_string().get().getString() == "heve")
+			 if ((yyvsp[0]).to_string().get().getString() == "heve")
 			 {
 			  conprint("HEREM TVOID 0V\n");
  			  CELabel::dechevents();
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "sheve")
+			 else if ((yyvsp[0]).to_string().get().getString() == "sheve")
 			 {
 			  conprint("SHEREM TVOID 0V\n");
  			  CELabel::decshevents();
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "eve")
+			 else if ((yyvsp[0]).to_string().get().getString() == "eve")
 			 {
 			  conprint("EREM TVOID 0V\n");
  			  CELabel::decevents();
                          }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "exe")
+			 else if ((yyvsp[0]).to_string().get().getString() == "exe")
 			 {
 			  conprint("EXREM TVOID 0V\n");
  			  CELabel::decexceptions();
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get().getString() == "int")
+			 else if ((yyvsp[0]).to_string().get().getString() == "int")
 			 {
 			  conprint("IREM TVOID 0V\n");
  			  CELabel::decints();
@@ -15130,22 +14278,21 @@ yyreduce:
 			  yyerror("Invalid subroutine type.");
 
 			 tree.add_node(register_command);
-			;}
+			}
+#line 14283 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 518:
-
-/* Line 1455 of yacc.c  */
-#line 10643 "pnfha.ypp"
+#line 10643 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode register_command("register_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "heve")
+			 if ((yyvsp[-1]).to_string().get().getString() == "heve")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = eventLabelTable[i].address();
@@ -15157,17 +14304,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "sheve")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "sheve")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = eventLabelTable[i].address();
@@ -15179,17 +14326,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "eve")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "eve")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = eventLabelTable[i].address();
@@ -15201,17 +14348,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "exe")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "exe")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = eventLabelTable[i].address();
@@ -15223,17 +14370,17 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "int")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "int")
 			 {
 			  bool declared = false;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared = true;
 			    double d = eventLabelTable[i].address();
@@ -15245,7 +14392,7 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15254,17 +14401,16 @@ yyreduce:
 			  yyerror("Invalid subroutine type.");
 
 			 tree.add_node(register_command);
-			;}
+			}
+#line 14406 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 519:
-
-/* Line 1455 of yacc.c  */
-#line 10762 "pnfha.ypp"
+#line 10762 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode register_command("register_command");
 
-			 if ((yyvsp[(2) - (4)]).to_string().get().getString() == "heve")
+			 if ((yyvsp[-2]).to_string().get().getString() == "heve")
 			 {
 			  bool declared1 = false;
 			  bool declared2 = false;
@@ -15272,7 +14418,7 @@ yyreduce:
 			  double d2;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[-1]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared1 = true;
 			    d1 = eventLabelTable[i].address();
@@ -15281,7 +14427,7 @@ yyreduce:
 
 			  if (!declared1)
 			  {
-			   String str = (yyvsp[(3) - (4)]).to_string().get();
+			   String str = (yyvsp[-1]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15289,7 +14435,7 @@ yyreduce:
 
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(4) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared2 = true;
 			    d2 = eventLabelTable[i].address();
@@ -15298,7 +14444,7 @@ yyreduce:
 
 			  if (!declared2)
 			  {
-			   String str = (yyvsp[(4) - (4)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15307,7 +14453,7 @@ yyreduce:
 			  conprint("EVLOAD TVOID %g\n", d1);
 			  conprint("HEED TVOID %g\n", d2);
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "sheve")
+			 else if ((yyvsp[-2]).to_string().get().getString() == "sheve")
 			 {
 			  bool declared1 = false;
 			  bool declared2 = false;
@@ -15315,7 +14461,7 @@ yyreduce:
 			  double d2;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[-1]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared1 = true;
 			    d1 = eventLabelTable[i].address();
@@ -15324,7 +14470,7 @@ yyreduce:
 
 			  if (!declared1)
 			  {
-			   String str = (yyvsp[(3) - (4)]).to_string().get();
+			   String str = (yyvsp[-1]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15332,7 +14478,7 @@ yyreduce:
 
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(4) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared2 = true;
 			    d2 = eventLabelTable[i].address();
@@ -15341,7 +14487,7 @@ yyreduce:
 
 			  if (!declared2)
 			  {
-			   String str = (yyvsp[(4) - (4)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15350,7 +14496,7 @@ yyreduce:
 			  conprint("EVLOAD TVOID %g\n", d1);
 			  conprint("SHEED TVOID %g\n", d2);
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "eve")
+			 else if ((yyvsp[-2]).to_string().get().getString() == "eve")
 			 {
 			  bool declared1 = false;
 			  bool declared2 = false;
@@ -15358,7 +14504,7 @@ yyreduce:
 			  double d2;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[-1]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared1 = true;
 			    d1 = eventLabelTable[i].address();
@@ -15367,7 +14513,7 @@ yyreduce:
 
 			  if (!declared1)
 			  {
-			   String str = (yyvsp[(3) - (4)]).to_string().get();
+			   String str = (yyvsp[-1]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15375,7 +14521,7 @@ yyreduce:
 
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(4) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared2 = true;
 			    d2 = eventLabelTable[i].address();
@@ -15384,7 +14530,7 @@ yyreduce:
 
 			  if (!declared2)
 			  {
-			   String str = (yyvsp[(4) - (4)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15393,7 +14539,7 @@ yyreduce:
 			  conprint("EVLOAD TVOID %g\n", d1);
 			  conprint("EED TVOID %g\n", d2);
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "exe")
+			 else if ((yyvsp[-2]).to_string().get().getString() == "exe")
 			 {
 			  bool declared1 = false;
 			  bool declared2 = false;
@@ -15401,7 +14547,7 @@ yyreduce:
 			  double d2;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[-1]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared1 = true;
 			    d1 = eventLabelTable[i].address();
@@ -15410,7 +14556,7 @@ yyreduce:
 
 			  if (!declared1)
 			  {
-			   String str = (yyvsp[(3) - (4)]).to_string().get();
+			   String str = (yyvsp[-1]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15418,7 +14564,7 @@ yyreduce:
 
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(4) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared2 = true;
 			    d2 = eventLabelTable[i].address();
@@ -15427,7 +14573,7 @@ yyreduce:
 
 			  if (!declared2)
 			  {
-			   String str = (yyvsp[(4) - (4)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15436,7 +14582,7 @@ yyreduce:
 			  conprint("EVLOAD TVOID %g\n", d1);
 			  conprint("EXED TVOID %g\n", d2);
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "int")
+			 else if ((yyvsp[-2]).to_string().get().getString() == "int")
 			 {
 			  bool declared1 = false;
 			  bool declared2 = false;
@@ -15444,7 +14590,7 @@ yyreduce:
 			  double d2;
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[-1]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared1 = true;
 			    d1 = eventLabelTable[i].address();
@@ -15453,7 +14599,7 @@ yyreduce:
 
 			  if (!declared1)
 			  {
-			   String str = (yyvsp[(3) - (4)]).to_string().get();
+			   String str = (yyvsp[-1]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15461,7 +14607,7 @@ yyreduce:
 
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(4) - (4)]).to_string().get().getString() == eventLabelTable[i].name().getString())
+			   if ((yyvsp[0]).to_string().get().getString() == eventLabelTable[i].name().getString())
 			   {
 			    declared2 = true;
 			    d2 = eventLabelTable[i].address();
@@ -15470,7 +14616,7 @@ yyreduce:
 
 			  if (!declared2)
 			  {
-			   String str = (yyvsp[(4) - (4)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
@@ -15483,64 +14629,62 @@ yyreduce:
 			  yyerror("Invalid subroutine type.");
 
 			 tree.add_node(register_command);
-			;}
+			}
+#line 14634 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 520:
-
-/* Line 1455 of yacc.c  */
-#line 10986 "pnfha.ypp"
+#line 10986 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode register_command("register_command");
 
-			 if ((yyvsp[(3) - (4)]).to_string().get() == "heve")
-			  conprint("HEADDB TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			 else if ((yyvsp[(3) - (4)]).to_string().get() == "sheve")
-			  conprint("SHEADDB TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			 else if ((yyvsp[(3) - (4)]).to_string().get() == "eve")
-			  conprint("EADDB TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			 else if ((yyvsp[(3) - (4)]).to_string().get() == "exe")
-			  conprint("EXADDB TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			 else if ((yyvsp[(3) - (4)]).to_string().get() == "int")
-			  conprint("IADDB TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			 if ((yyvsp[-1]).to_string().get() == "heve")
+			  conprint("HEADDB TVOID %g\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get() == "sheve")
+			  conprint("SHEADDB TVOID %g\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get() == "eve")
+			  conprint("EADDB TVOID %g\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get() == "exe")
+			  conprint("EXADDB TVOID %g\n", (yyvsp[0]).to_number().get());
+			 else if ((yyvsp[-1]).to_string().get() == "int")
+			  conprint("IADDB TVOID %g\n", (yyvsp[0]).to_number().get());
 			 else
 			  yyerror("Invalid STYPE.");
 
 			 tree.add_node(register_command);
-			;}
+			}
+#line 14657 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 521:
-
-/* Line 1455 of yacc.c  */
-#line 11007 "pnfha.ypp"
+#line 11007 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode store_command("store_command");
 
-			 if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%accumulator")
+			 if ((yyvsp[-2]).to_string().get().getString() == "%accumulator")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get().getString() == "memory")
-			   conprint("STORE TVOID %g", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "variable")
+			  if ((yyvsp[-1]).to_string().get().getString() == "memory")
+			   conprint("STORE TVOID %g", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get().getString() == "variable")
 			  {
-			   conprint("VSTORE TVOID %g", (yyvsp[(4) - (4)]).to_number().get());
+			   conprint("VSTORE TVOID %g", (yyvsp[0]).to_number().get());
 			  }
-			  else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "stk")
-			   conprint("STORESP TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "seg1")
-			   conprint("SEGSTORE TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "seg2")
-			   conprint("SEGVSTORE TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get().getString() == "stk")
+			   conprint("STORESP TNUMBER %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get().getString() == "seg1")
+			   conprint("SEGSTORE TNUMBER %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get().getString() == "seg2")
+			   conprint("SEGVSTORE TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid store type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get().getString() == "%calc")
+			 else if ((yyvsp[-2]).to_string().get().getString() == "%calc")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get().getString() == "memory")
-			   conprint("STOREC TVOID %g", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get().getString() == "variable")
+			  if ((yyvsp[-1]).to_string().get().getString() == "memory")
+			   conprint("STOREC TVOID %g", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get().getString() == "variable")
 			  {
-			   conprint("VSTOREC TVOID %g", (yyvsp[(4) - (4)]).to_number().get());
+			   conprint("VSTOREC TVOID %g", (yyvsp[0]).to_number().get());
 			  }
 			  else
 			   yyerror("Invalid store type.");
@@ -15549,54 +14693,52 @@ yyreduce:
 			  yyerror("Invalid register type.");
 
 			 tree.add_node(store_command);
-			;}
+			}
+#line 14698 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 522:
-
-/* Line 1455 of yacc.c  */
-#line 11044 "pnfha.ypp"
+#line 11044 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 if ((yyvsp[(2) - (2)]).to_string().get().getString() == "stk")
+			 if ((yyvsp[0]).to_string().get().getString() == "stk")
 			 {
 			  conprint("STORESTACK TVOID 0V\n");
 			 }
 			 else
 			  yyerror("Invalid store type.");
-			;}
+			}
+#line 14711 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 523:
-
-/* Line 1455 of yacc.c  */
-#line 11053 "pnfha.ypp"
+#line 11053 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode store_command("store_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "%accumulator")
+			 if ((yyvsp[-1]).to_string().get().getString() == "%accumulator")
 			 {
-			  if ((yyvsp[(3) - (3)]).to_string().get().getString() == "variable")
+			  if ((yyvsp[0]).to_string().get().getString() == "variable")
 			  {
 			   conprint("VSTORE TVOID 0V");
 			   ++varcount;
 			  }
-			  else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "tend")
+			  else if ((yyvsp[0]).to_string().get().getString() == "tend")
 			   conprint("ESTORE TVOID 0V");
-			 else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "seg2")
+			 else if ((yyvsp[0]).to_string().get().getString() == "seg2")
 			 {
 			  conprint("SEGVSTORE TVOID 0V\n");
 			 }
 			  else
 			   yyerror("Invalid store type.");
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "%calc")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "%calc")
 			 {
-			  if ((yyvsp[(3) - (3)]).to_string().get().getString() == "variable")
+			  if ((yyvsp[0]).to_string().get().getString() == "variable")
 			  {
 			   conprint("VSTOREC TVOID 0V");
 		 	   ++varcount;
 			  }
-			  else if ((yyvsp[(3) - (3)]).to_string().get().getString() == "tend")
+			  else if ((yyvsp[0]).to_string().get().getString() == "tend")
 			   conprint("ESTOREC TVOID 0V");
 			  else
 			   yyerror("Invalid store type.");
@@ -15605,93 +14747,87 @@ yyreduce:
 			  yyerror("Invalid register type.");
 
 			 tree.add_node(store_command);
-			;}
+			}
+#line 14752 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 524:
-
-/* Line 1455 of yacc.c  */
-#line 11090 "pnfha.ypp"
+#line 11090 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode store_command("store_command");
 
 			 conprint("STOREA TVOID 0V\n");
 
 			 tree.add_node(store_command);
-			;}
+			}
+#line 14764 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 525:
-
-/* Line 1455 of yacc.c  */
-#line 11098 "pnfha.ypp"
+#line 11098 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode store_command("store_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "venum")
+			 if ((yyvsp[-1]).to_string().get() == "venum")
 			 {
-			  conprint("EPREP TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("EPREP TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  conprint("STOREE TVOID 0V\n");
 			 }
 			 else
 			  yyerror("Invalid VTYPE2.");
 
 			 tree.add_node(store_command);
-			;}
+			}
+#line 14782 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 526:
-
-/* Line 1455 of yacc.c  */
-#line 11112 "pnfha.ypp"
+#line 11112 "pnfha.ypp" /* yacc.c:1646  */
     {
  			 ASTNode store_command("store_command");
 
-			 if ((yyvsp[(3) - (4)]).to_string().get() == "rtype1")
+			 if ((yyvsp[-1]).to_string().get() == "rtype1")
 			 {
-			  conprint("RSTORE1 TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  conprint("RSTORE1 TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
 			 else
 			  yyerror("Invalid Range Type.");
 
 			 tree.add_node(store_command);
-			;}
+			}
+#line 14799 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 527:
-
-/* Line 1455 of yacc.c  */
-#line 11125 "pnfha.ypp"
+#line 11125 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode store_command("store_command");
 
-			 conprint("APREP TSTRING %s\n", (yyvsp[(3) - (6)]).to_string().get().getString().c_str());
-			 conprint("AIPREP TNUMBER %g\n", (yyvsp[(5) - (6)]).to_number().get());
+			 conprint("APREP TSTRING %s\n", (yyvsp[-3]).to_string().get().getString().c_str());
+			 conprint("AIPREP TNUMBER %g\n", (yyvsp[-1]).to_number().get());
 			 conprint("STOREIA TVOID 0V\n");
 
 			 tree.add_node(store_command);
-			;}
+			}
+#line 14813 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 528:
-
-/* Line 1455 of yacc.c  */
-#line 11135 "pnfha.ypp"
+#line 11135 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode store_command("store_command");
 
-			 conprint("APREP TSTRING %s\n", (yyvsp[(3) - (5)]).to_string().get().getString().c_str());
+			 conprint("APREP TSTRING %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			 conprint("AIPREP TVOID 0V\n");
 			 conprint("STOREIA TVOID 0V\n");
 
 			 tree.add_node(store_command);
-			;}
+			}
+#line 14827 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 529:
-
-/* Line 1455 of yacc.c  */
-#line 11147 "pnfha.ypp"
+#line 11147 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode break_command("break_command");
 
@@ -15708,13 +14844,12 @@ yyreduce:
 			 else if (breakinforever)
 			  conprint("GOTOL TSTRING \"forever_end_%u\"\n", forevercounter);
   			 tree.add_node(break_command);
-			;}
+			}
+#line 14849 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 530:
-
-/* Line 1455 of yacc.c  */
-#line 11165 "pnfha.ypp"
+#line 11165 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode break_command("break_command");
 
@@ -15723,7 +14858,7 @@ yyreduce:
 			  bool declared = false;
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if (labelTable[i].name().getString() == (yyvsp[(2) - (2)]).to_string().get().getString())
+			   if (labelTable[i].name().getString() == (yyvsp[0]).to_string().get().getString())
 			   {
 			    declared = true;
 			    conprint("GOTOL TVOID %u\n", labelTable[i].address());
@@ -15732,30 +14867,29 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(2) - (2)]).to_string().get();
+			   String str = (yyvsp[0]).to_string().get();
 			   str += " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			 }
 
   			 tree.add_node(break_command);
-			;}
+			}
+#line 14879 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 531:
-
-/* Line 1455 of yacc.c  */
-#line 11193 "pnfha.ypp"
+#line 11193 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode address_command("address_command");
 
 			 unsigned long address = 0;
 			 bool declared = false;
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "avariable")
+			 if ((yyvsp[-1]).to_string().get() == "avariable")
 			 {
 			  for (unsigned long i = 0; i < varTable[scope].length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get() == varTable[scope][i].name())
+			   if ((yyvsp[0]).to_string().get() == varTable[scope][i].name())
 			   {
 			    declared = true;
 			    address = varTable[scope][i].address();
@@ -15765,7 +14899,7 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get() + " was not declared.";
+			   String str = (yyvsp[0]).to_string().get() + " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			  else
@@ -15776,11 +14910,11 @@ yyreduce:
 			   conprint("VADD TVOID %u\n", address);
 			  }
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get() == "alabel")
+			 else if ((yyvsp[-1]).to_string().get() == "alabel")
 			 {
 			  for (unsigned long i = 0; i < labelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get() == labelTable[i].name())
+			   if ((yyvsp[0]).to_string().get() == labelTable[i].name())
 			   {
 		            declared = true;
 			    address = i - 1;
@@ -15790,16 +14924,16 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get() + " was not declared.";
+			   String str = (yyvsp[0]).to_string().get() + " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			  conprint("LADD TVOID %u\n", address);
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get() == "aevent")
+			 else if ((yyvsp[-1]).to_string().get() == "aevent")
 			 {
 			  for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
 			  {
-			   if ((yyvsp[(3) - (3)]).to_string().get() == eventLabelTable[i].name())
+			   if ((yyvsp[0]).to_string().get() == eventLabelTable[i].name())
 			   {
 		            declared = true;
 			    address = i - 1;
@@ -15809,7 +14943,7 @@ yyreduce:
 
 			  if (!declared)
 			  {
-			   String str = (yyvsp[(3) - (3)]).to_string().get() + " was not declared.";
+			   String str = (yyvsp[0]).to_string().get() + " was not declared.";
 			   yyerror(str.getString().c_str());
 			  }
 			  conprint("EADD TVOID %u\n", address);
@@ -15820,26 +14954,24 @@ yyreduce:
 			 }
 
 			 tree.add_node(address_command);
-			;}
+			}
+#line 14959 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 532:
-
-/* Line 1455 of yacc.c  */
-#line 11271 "pnfha.ypp"
+#line 11271 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode add2v_command("add2v_command");
 
 			 conprint("ADD2V TVOID 0V\n");
 
 		         tree.add_node(add2v_command);
-			;}
+			}
+#line 14971 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 533:
-
-/* Line 1455 of yacc.c  */
-#line 11281 "pnfha.ypp"
+#line 11281 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode continue_command("continue_command");
 
@@ -15855,67 +14987,66 @@ yyreduce:
 			  conprint("GOTOL TSTRING \"forever_%u\"\n", forevercounter);
 
 		         tree.add_node(continue_command);
-			;}
+			}
+#line 14992 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 534:
-
-/* Line 1455 of yacc.c  */
-#line 11300 "pnfha.ypp"
+#line 11300 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode check_command("check_command");
 
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "current_ver")
+			 if ((yyvsp[-2]).to_string().get() == "current_ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "void")
-			   conprint("VCHECK TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get() == "number")
-			   conprint("VCHECK TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-1]).to_string().get() == "void")
+			   conprint("VCHECK TVOID %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get() == "number")
+			   conprint("VCHECK TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "ver")
+			 else if ((yyvsp[-2]).to_string().get() == "ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "void")
-			   conprint("VSUPP TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get() == "number")
-			   conprint("VSUPP TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-1]).to_string().get() == "void")
+			   conprint("VSUPP TVOID %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get() == "number")
+			   conprint("VSUPP TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_vmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "void")
-			   conprint("MCHECK TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get() == "number")
-			   conprint("MCHECK TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-1]).to_string().get() == "void")
+			   conprint("MCHECK TVOID %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get() == "number")
+			   conprint("MCHECK TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "vmode")
+			 else if ((yyvsp[-2]).to_string().get() == "vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "void")
-			   conprint("MSUPP TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get() == "number")
-			   conprint("MSUPP TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-1]).to_string().get() == "void")
+			   conprint("MSUPP TVOID %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get() == "number")
+			   conprint("MSUPP TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_extvmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "void")
-			   conprint("MEXTCHECK TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get() == "number")
-			   conprint("MEXTCHECK TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-1]).to_string().get() == "void")
+			   conprint("MEXTCHECK TVOID %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get() == "number")
+			   conprint("MEXTCHECK TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "extvmode")
+			 else if ((yyvsp[-2]).to_string().get() == "extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "void")
-			   conprint("MEXTSUPP TVOID %g\n", (yyvsp[(4) - (4)]).to_number().get());
-			  else if ((yyvsp[(3) - (4)]).to_string().get() == "number")
-			   conprint("MEXTSUPP TNUMBER %g\n", (yyvsp[(4) - (4)]).to_number().get());
+			  if ((yyvsp[-1]).to_string().get() == "void")
+			   conprint("MEXTSUPP TVOID %g\n", (yyvsp[0]).to_number().get());
+			  else if ((yyvsp[-1]).to_string().get() == "number")
+			   conprint("MEXTSUPP TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
@@ -15923,55 +15054,54 @@ yyreduce:
 			  yyerror("Invalid check type.");
 
 		         tree.add_node(check_command);
-			;}
+			}
+#line 15059 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 535:
-
-/* Line 1455 of yacc.c  */
-#line 11363 "pnfha.ypp"
+#line 11363 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode check_command("check_command");
 
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "current_ver")
+			 if ((yyvsp[-2]).to_string().get() == "current_ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "boolean")
-			   conprint("VCHECK TBOOLEAN %s\n", (yyvsp[(4) - (4)]).to_boolean().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "boolean")
+			   conprint("VCHECK TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "ver")
+			 if ((yyvsp[-2]).to_string().get() == "ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "boolean")
-			   conprint("VSUPP TBOOLEAN %s\n", (yyvsp[(4) - (4)]).to_boolean().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "boolean")
+			   conprint("VSUPP TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_vmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "boolean")
-			   conprint("MCHECK TBOOLEAN %s\n", (yyvsp[(4) - (4)]).to_boolean().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "boolean")
+			   conprint("MCHECK TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "vmode")
+			 if ((yyvsp[-2]).to_string().get() == "vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "boolean")
-			   conprint("MSUPP TBOOLEAN %s\n", (yyvsp[(4) - (4)]).to_boolean().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "boolean")
+			   conprint("MSUPP TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_extvmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "boolean")
-			   conprint("MEXTCHECK TBOOLEAN %s\n", (yyvsp[(4) - (4)]).to_boolean().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "boolean")
+			   conprint("MEXTCHECK TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "extvmode")
+			 if ((yyvsp[-2]).to_string().get() == "extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "boolean")
-			   conprint("MEXTSUPP TBOOLEAN %s\n", (yyvsp[(4) - (4)]).to_boolean().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "boolean")
+			   conprint("MEXTSUPP TBOOLEAN %s\n", (yyvsp[0]).to_boolean().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
@@ -15979,55 +15109,54 @@ yyreduce:
 			  yyerror("Invalid check type.");
 
 		         tree.add_node(check_command);
-			;}
+			}
+#line 15114 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 536:
-
-/* Line 1455 of yacc.c  */
-#line 11414 "pnfha.ypp"
+#line 11414 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode check_command("check_command");
 
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "current_ver")
+			 if ((yyvsp[-2]).to_string().get() == "current_ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "character")
-			   conprint("VCHECK TCHARACTER %c\n", (yyvsp[(4) - (4)]).to_character().get());
+			  if ((yyvsp[-1]).to_string().get() == "character")
+			   conprint("VCHECK TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "ver")
+			 if ((yyvsp[-2]).to_string().get() == "ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "character")
-			   conprint("VSUPP TCHARACTER %c\n", (yyvsp[(4) - (4)]).to_character().get());
+			  if ((yyvsp[-1]).to_string().get() == "character")
+			   conprint("VSUPP TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_vmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "character")
-			   conprint("MCHECK TCHARACTER %c\n", (yyvsp[(4) - (4)]).to_character().get());
+			  if ((yyvsp[-1]).to_string().get() == "character")
+			   conprint("MCHECK TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "vmode")
+			 if ((yyvsp[-2]).to_string().get() == "vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "character")
-			   conprint("MSUPP TCHARACTER %c\n", (yyvsp[(4) - (4)]).to_character().get());
+			  if ((yyvsp[-1]).to_string().get() == "character")
+			   conprint("MSUPP TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_extvmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "character")
-			   conprint("MEXTCHECK TCHARACTER %c\n", (yyvsp[(4) - (4)]).to_character().get());
+			  if ((yyvsp[-1]).to_string().get() == "character")
+			   conprint("MEXTCHECK TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "extvmode")
+			 if ((yyvsp[-2]).to_string().get() == "extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "character")
-			   conprint("MEXTSUPP TCHARACTER %c\n", (yyvsp[(4) - (4)]).to_character().get());
+			  if ((yyvsp[-1]).to_string().get() == "character")
+			   conprint("MEXTSUPP TCHARACTER %c\n", (yyvsp[0]).to_character().get());
 			  else
 			   yyerror("Invalid type.");
 			 }
@@ -16035,55 +15164,54 @@ yyreduce:
 			  yyerror("Invalid check type.");
 
 		         tree.add_node(check_command);
-			;}
+			}
+#line 15169 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 537:
-
-/* Line 1455 of yacc.c  */
-#line 11465 "pnfha.ypp"
+#line 11465 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode check_command("check_command");
 
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "current_ver")
+			 if ((yyvsp[-2]).to_string().get() == "current_ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "string")
-			   conprint("VCHECK TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "string")
+			   conprint("VCHECK TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "ver")
+			 if ((yyvsp[-2]).to_string().get() == "ver")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "string")
-			   conprint("VSUPP TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "string")
+			   conprint("VSUPP TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_vmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "string")
-			   conprint("MCHECK TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "string")
+			   conprint("MCHECK TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "vmode")
+			 if ((yyvsp[-2]).to_string().get() == "vmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "string")
-			   conprint("MSUPP TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "string")
+			   conprint("MSUPP TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 else if ((yyvsp[(2) - (4)]).to_string().get() == "current_extvmode")
+			 else if ((yyvsp[-2]).to_string().get() == "current_extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "string")
-			   conprint("MEXTCHECK TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "string")
+			   conprint("MEXTCHECK TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
-			 if ((yyvsp[(2) - (4)]).to_string().get() == "extvmode")
+			 if ((yyvsp[-2]).to_string().get() == "extvmode")
 			 {
-			  if ((yyvsp[(3) - (4)]).to_string().get() == "string")
-			   conprint("MEXTSUPP TSTRING %s\n", (yyvsp[(4) - (4)]).to_string().get().getString().c_str());
+			  if ((yyvsp[-1]).to_string().get() == "string")
+			   conprint("MEXTSUPP TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			  else
 			   yyerror("Invalid type.");
 			 }
@@ -16091,46 +15219,44 @@ yyreduce:
 			  yyerror("Invalid check type.");
 
 		         tree.add_node(check_command);
-			;}
+			}
+#line 15224 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 538:
-
-/* Line 1455 of yacc.c  */
-#line 11516 "pnfha.ypp"
+#line 11516 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode check_command("check_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "instruction")
+			 if ((yyvsp[-1]).to_string().get() == "instruction")
 			 {
-   		          conprint("ISUPP TNUMBER %g\n", (yyvsp[(3) - (3)]).to_number().get());
+   		          conprint("ISUPP TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 }
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "type")
+			 if ((yyvsp[-1]).to_string().get() == "type")
 			 {
-			  conprint("TSUPP TNUMBER %g\n", (yyvsp[(3) - (3)]).to_number().get());
+			  conprint("TSUPP TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 }
 			 else
 			  yyerror("Invalid check type.");
 
 		         tree.add_node(check_command);
-			;}
+			}
+#line 15245 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 539:
-
-/* Line 1455 of yacc.c  */
-#line 11535 "pnfha.ypp"
+#line 11535 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode comment_command("comment_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "l2")
+			 if ((yyvsp[-1]).to_string().get() == "l2")
 			 {
-			  String str = strip_quotes((yyvsp[(3) - (3)]).to_string().get());
+			  String str = strip_quotes((yyvsp[0]).to_string().get());
 			  conprint(";\\ %s\n", str.getString().c_str());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get() == "l1")
+			 else if ((yyvsp[-1]).to_string().get() == "l1")
 			 {
-			  conprint("COMMENT TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("COMMENT TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
 			 else
 			 {
@@ -16138,36 +15264,35 @@ yyreduce:
                          }
 
 		         tree.add_node(comment_command);
-			;}
+			}
+#line 15269 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 540:
-
-/* Line 1455 of yacc.c  */
-#line 11557 "pnfha.ypp"
+#line 11557 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode file_command("file_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "input")
+			 if ((yyvsp[-1]).to_string().get() == "input")
 			 {
-			  if ((yyvsp[(3) - (3)]).to_string().get() == "in")
+			  if ((yyvsp[0]).to_string().get() == "in")
 			   conprint("FIMODE TSTRING \"in\"\n");
-			  else if ((yyvsp[(3) - (3)]).to_string().get() == "binary")
+			  else if ((yyvsp[0]).to_string().get() == "binary")
 			   conprint("FIMODE TSTRING \"binary\"\n");
 			  else
 			   yyerror("Invalid file mode command.");
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get() == "output")
+			 else if ((yyvsp[-1]).to_string().get() == "output")
 			 {
-			  if ((yyvsp[(3) - (3)]).to_string().get() == "out")
+			  if ((yyvsp[0]).to_string().get() == "out")
 			   conprint("FOMODE TSTRING \"out\"\n");
-			  else if ((yyvsp[(3) - (3)]).to_string().get() == "binary")
+			  else if ((yyvsp[0]).to_string().get() == "binary")
 			   conprint("FOMODE TSTRING \"binary\"\n");
-			  else if ((yyvsp[(3) - (3)]).to_string().get() == "ate")
+			  else if ((yyvsp[0]).to_string().get() == "ate")
 			   conprint("FOMODE TSTRING \"ate\"\n");
-			  else if ((yyvsp[(3) - (3)]).to_string().get() == "app")
+			  else if ((yyvsp[0]).to_string().get() == "app")
 			   conprint("FOMODE TSTRING \"app\"\n");
-			  else if ((yyvsp[(3) - (3)]).to_string().get() == "trunc")
+			  else if ((yyvsp[0]).to_string().get() == "trunc")
 			   conprint("FOMODE TSTRING \"trunc\"\n");
 			  else
 			   yyerror("Invalid file mode command.");
@@ -16176,43 +15301,41 @@ yyreduce:
 			  yyerror("Invalid basic file mode command.");
 
 			 tree.add_node(file_command);
-			;}
+			}
+#line 15306 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 541:
-
-/* Line 1455 of yacc.c  */
-#line 11590 "pnfha.ypp"
+#line 11590 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode file_command("file_command");
 
-			 if ((yyvsp[(2) - (3)]).to_string().get() == "input")
+			 if ((yyvsp[-1]).to_string().get() == "input")
 			 {
-			  conprint("FIOPEN TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+			  conprint("FIOPEN TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get() == "output")
+			 else if ((yyvsp[-1]).to_string().get() == "output")
 			 {
-  			  conprint("FOOPEN TSTRING %s\n", (yyvsp[(3) - (3)]).to_string().get().getString().c_str());
+  			  conprint("FOOPEN TSTRING %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 }
 			 else
 			  yyerror("Invalid basic file mode command.");
 
 			 tree.add_node(file_command);
-			;}
+			}
+#line 15327 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 542:
-
-/* Line 1455 of yacc.c  */
-#line 11607 "pnfha.ypp"
+#line 11607 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode file_command("file_command");
 
-			 if ((yyvsp[(2) - (2)]).to_string().get() == "input")
+			 if ((yyvsp[0]).to_string().get() == "input")
 			 {
 			  conprint("FICLOSE TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get() == "output")
+			 else if ((yyvsp[0]).to_string().get() == "output")
 			 {
   			  conprint("FOCLOSE TVOID 0V\n");
 			 }
@@ -16220,75 +15343,70 @@ yyreduce:
 			  yyerror("Invalid basic file mode command.");
 
 			 tree.add_node(file_command);
-			;}
+			}
+#line 15348 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 543:
-
-/* Line 1455 of yacc.c  */
-#line 11624 "pnfha.ypp"
+#line 11624 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode file_command("file_command");
 
 			 conprint("FIEOF TVOID 0V\n");
 
 			 tree.add_node(file_command);
-			;}
+			}
+#line 15360 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 544:
-
-/* Line 1455 of yacc.c  */
-#line 11634 "pnfha.ypp"
+#line 11634 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode meml_command("meml_command");
 
 			 conprint("MEML TVOID 0V\n");
 
 			 tree.add_node(meml_command);
-			;}
+			}
+#line 15372 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 545:
-
-/* Line 1455 of yacc.c  */
-#line 11644 "pnfha.ypp"
+#line 11644 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pnfasm_command("pnfasm_command");
 
-			 conprint("pnf %s %s %s\n", strip_quotes((yyvsp[(2) - (4)]).to_string().get()).getString().c_str(), 
-						 strip_quotes((yyvsp[(3) - (4)]).to_string().get()).getString().c_str(), strip_quotes((yyvsp[(4) - (4)]).to_string().get()).getString().c_str());
+			 conprint("pnf %s %s %s\n", strip_quotes((yyvsp[-2]).to_string().get()).getString().c_str(), 
+						 strip_quotes((yyvsp[-1]).to_string().get()).getString().c_str(), strip_quotes((yyvsp[0]).to_string().get()).getString().c_str());
 
 			 tree.add_node(pnfasm_command);
-			;}
+			}
+#line 15385 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 546:
-
-/* Line 1455 of yacc.c  */
-#line 11655 "pnfha.ypp"
+#line 11655 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode array_length_command("array_length_command");
 			
-			 conprint("APREP TSTRING %s\n", (yyvsp[(2) - (4)]).to_string().get().getString().c_str());
+			 conprint("APREP TSTRING %s\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			 conprint("ALENGTH TVOID 0V\n");
 
 			 tree.add_node(array_length_command);
-			;}
+			}
+#line 15398 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 547:
-
-/* Line 1455 of yacc.c  */
-#line 11665 "pnfha.ypp"
+#line 11665 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode dup_command("dup_command");
 
-			 if ((yyvsp[(2) - (2)]).to_string().get() == "%accumulator")
+			 if ((yyvsp[0]).to_string().get() == "%accumulator")
 			 {
 			  conprint("DUP TVOID 0V\n");
 			 }
-			 else if ((yyvsp[(2) - (2)]).to_string().get() == "%calc")
+			 else if ((yyvsp[0]).to_string().get() == "%calc")
 			 {
 			  conprint("CDUP TVOID 0V\n");
 			 }
@@ -16296,22 +15414,20 @@ yyreduce:
 			  yyerror((char *)"Invalid register.");
 
 			 tree.add_node(dup_command);
-			;}
+			}
+#line 15419 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 548:
-
-/* Line 1455 of yacc.c  */
-#line 11684 "pnfha.ypp"
+#line 11684 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("FRET TVOID 0V\n");
-			;}
+			}
+#line 15427 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 551:
-
-/* Line 1455 of yacc.c  */
-#line 11694 "pnfha.ypp"
+#line 11694 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 unsigned long index = funcstk.find(fsaveid.to_string().get(), frets5, fparams5);
 			 if (index == -1)
@@ -16324,7 +15440,7 @@ yyreduce:
 			 unsigned long pindex = 0;
 			 for (unsigned long i = 0; i < funcps[index].length(); ++i)
 			 {
-			  if (funcps[index][i].name() == (yyvsp[(2) - (3)]).to_string().get())
+			  if (funcps[index][i].name() == (yyvsp[-1]).to_string().get())
 			  {
 			   declared = true;
 			   pindex = i;
@@ -16341,7 +15457,7 @@ yyreduce:
 			 conprint("PNUM TNUMBER %d\n", pindex);
 			 conprint("ALOAD TNUMBER %d\n", index);
 			
-			 String str = (yyvsp[(3) - (3)]).to_string().get();
+			 String str = (yyvsp[0]).to_string().get();
 			 if (str == "void")
 			   conprint("PARAMF2 TVOID 0V\n");
 		         else if (str == "boolean")
@@ -16354,26 +15470,24 @@ yyreduce:
 			   conprint("PARAMF2 TSTRING 0V\n");
 			 else
 			   yyerror("Invalid type.");
-			;}
+			}
+#line 15475 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 552:
-
-/* Line 1455 of yacc.c  */
-#line 11738 "pnfha.ypp"
+#line 11738 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets5.length() - 1; i > 0; --i)
 			  frets5.remove();
 
 			 for (unsigned long i = fparams5.length() - 1; i > 0; --i)
 			  fparams5.remove();
-			;}
+			}
+#line 15487 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 553:
-
-/* Line 1455 of yacc.c  */
-#line 11748 "pnfha.ypp"
+#line 11748 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 unsigned long index = funcstk.find(fsaveid.to_string().get(), frets5, fparams5);
 			 if (index == -1)
@@ -16386,7 +15500,7 @@ yyreduce:
 			 unsigned long pindex = 0;
 			 for (unsigned long i = 0; i < funcps[index].length(); ++i)
 			 {
-			  if (funcps[index][i].name() == (yyvsp[(2) - (4)]).to_string().get())
+			  if (funcps[index][i].name() == (yyvsp[-2]).to_string().get())
 			  {
 			   declared = true;
 			   pindex = i;
@@ -16404,7 +15518,7 @@ yyreduce:
 
 			 conprint("PNUM TNUMBER %d\n", pindex);
 
-			 String type = (yyvsp[(4) - (4)]).to_string().get();
+			 String type = (yyvsp[0]).to_string().get();
 			 if (type == "void")
  			  conprint("FNCSPARAM TVOID 0V\n");
 			 else if (type == "boolean")
@@ -16419,594 +15533,550 @@ yyreduce:
 			  yyerror("Invalid type.");
 
 			 conprint("FNCSTORE TNUMBER %d\n", index);
-			;}
+			}
+#line 15538 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 554:
-
-/* Line 1455 of yacc.c  */
-#line 11795 "pnfha.ypp"
+#line 11795 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 for (unsigned long i = frets5.length() - 1; i > 0; --i)
 			  frets5.remove();
 
 			 for (unsigned long i = fparams5.length() - 1; i > 0; --i)
 			  fparams5.remove();
-			;}
+			}
+#line 15550 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 555:
-
-/* Line 1455 of yacc.c  */
-#line 11805 "pnfha.ypp"
+#line 11805 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(5) - (8)]);
-			;}
+			 (yyval) = (yyvsp[-3]);
+			}
+#line 15558 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 556:
-
-/* Line 1455 of yacc.c  */
-#line 11811 "pnfha.ypp"
+#line 11811 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 (yyval) = (yyvsp[(5) - (8)]);
-			;}
+			 (yyval) = (yyvsp[-3]);
+			}
+#line 15566 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 557:
-
-/* Line 1455 of yacc.c  */
-#line 11817 "pnfha.ypp"
+#line 11817 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("STRUCTUSING TVOID 0V\n");
-			;}
+			}
+#line 15574 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 558:
-
-/* Line 1455 of yacc.c  */
-#line 11821 "pnfha.ypp"
+#line 11821 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("STRUCTUSINGNAME TVOID 0V\n");
-			;}
+			}
+#line 15582 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 559:
-
-/* Line 1455 of yacc.c  */
-#line 11827 "pnfha.ypp"
+#line 11827 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("UNIONUSING TVOID 0V\n");
-			;}
+			}
+#line 15590 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 560:
-
-/* Line 1455 of yacc.c  */
-#line 11831 "pnfha.ypp"
+#line 11831 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("UNIONUSINGNAME TVOID 0V\n");
-			;}
+			}
+#line 15598 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 561:
-
-/* Line 1455 of yacc.c  */
-#line 11837 "pnfha.ypp"
+#line 11837 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("CPY TVOID 0V\n");
-			;}
+			}
+#line 15606 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 562:
-
-/* Line 1455 of yacc.c  */
-#line 11843 "pnfha.ypp"
+#line 11843 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("ADDSEG TVOID 0V\n");
-			;}
+			}
+#line 15614 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 563:
-
-/* Line 1455 of yacc.c  */
-#line 11847 "pnfha.ypp"
+#line 11847 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("REMSEG TVOID 0V\n");
-			;}
+			}
+#line 15622 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 564:
-
-/* Line 1455 of yacc.c  */
-#line 11851 "pnfha.ypp"
+#line 11851 "pnfha.ypp" /* yacc.c:1646  */
     {
-			 if ((yyvsp[(2) - (3)]).to_string().get().getString() == "collapse")
+			 if ((yyvsp[-1]).to_string().get().getString() == "collapse")
 			 {
-			  conprint("COLLSEG TNUMBER %g\n", (yyvsp[(3) - (3)]).to_number().get());
+			  conprint("COLLSEG TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 }
-			 else if ((yyvsp[(2) - (3)]).to_string().get().getString() == "expand")
+			 else if ((yyvsp[-1]).to_string().get().getString() == "expand")
 			 {
-			  conprint("EXPSEG TNUMBER %g\n", (yyvsp[(3) - (3)]).to_number().get());
+			  conprint("EXPSEG TNUMBER %g\n", (yyvsp[0]).to_number().get());
 			 }
 			 else
 			  yyerror((char *)"Invalid CETYPE.");
-			;}
+			}
+#line 15639 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 565:
-
-/* Line 1455 of yacc.c  */
-#line 11864 "pnfha.ypp"
+#line 11864 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("CPYSEG TVOID 0V\n");
-			;}
+			}
+#line 15647 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 566:
-
-/* Line 1455 of yacc.c  */
-#line 11868 "pnfha.ypp"
+#line 11868 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("PUSHSEG TVOID 0V\n");
-			;}
+			}
+#line 15655 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 567:
-
-/* Line 1455 of yacc.c  */
-#line 11872 "pnfha.ypp"
+#line 11872 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("POPSEG TVOID 0V\n");
-			;}
+			}
+#line 15663 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 568:
-
-/* Line 1455 of yacc.c  */
-#line 11876 "pnfha.ypp"
+#line 11876 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 conprint("TOPSEG TVOID 0V\n");
-			;}
+			}
+#line 15671 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 569:
-
-/* Line 1455 of yacc.c  */
-#line 11882 "pnfha.ypp"
+#line 11882 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_directive("pp_directive");
 			 conprint("#BIN#\n");
 			 tree.add_node(pp_directive);
-			;}
+			}
+#line 15681 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 570:
-
-/* Line 1455 of yacc.c  */
-#line 11888 "pnfha.ypp"
+#line 11888 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_directive("pp_directive");
 			 conprint("#PBIN#\n");
 			 tree.add_node(pp_directive);
-			;}
+			}
+#line 15691 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 571:
-
-/* Line 1455 of yacc.c  */
-#line 11894 "pnfha.ypp"
+#line 11894 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_directive("pp_directive");
 			 conprint("#LIB#\n");
 			 tree.add_node(pp_directive);
-			;}
+			}
+#line 15701 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 572:
-
-/* Line 1455 of yacc.c  */
-#line 11902 "pnfha.ypp"
+#line 11902 "pnfha.ypp" /* yacc.c:1646  */
     { 
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#include %s", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			 conprint("#include %s", (yyvsp[0]).to_string().get().getString().c_str());
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15711 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 573:
-
-/* Line 1455 of yacc.c  */
-#line 11908 "pnfha.ypp"
+#line 11908 "pnfha.ypp" /* yacc.c:1646  */
     { 
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#include <%s>", (yyvsp[(2) - (4)]).to_string().get().getString().c_str()); 
+			 conprint("#include <%s>", (yyvsp[-2]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15721 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 574:
-
-/* Line 1455 of yacc.c  */
-#line 11914 "pnfha.ypp"
+#line 11914 "pnfha.ypp" /* yacc.c:1646  */
     { 
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#import %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str());
+			 conprint("#import %s\n", (yyvsp[0]).to_string().get().getString().c_str());
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15731 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 575:
-
-/* Line 1455 of yacc.c  */
-#line 11920 "pnfha.ypp"
+#line 11920 "pnfha.ypp" /* yacc.c:1646  */
     { 
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#import <%s>\n", (yyvsp[(2) - (4)]).to_string().get().getString().c_str());
+			 conprint("#import <%s>\n", (yyvsp[-2]).to_string().get().getString().c_str());
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15741 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 576:
-
-/* Line 1455 of yacc.c  */
-#line 11926 "pnfha.ypp"
+#line 11926 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#define %s %s\n", (yyvsp[(2) - (3)]).to_string().get().getString().c_str(), 
-						    (yyvsp[(3) - (3)]).to_string().get().getString().c_str()); 
+			 conprint("#define %s %s\n", (yyvsp[-1]).to_string().get().getString().c_str(), 
+						    (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15752 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 577:
-
-/* Line 1455 of yacc.c  */
-#line 11933 "pnfha.ypp"
+#line 11933 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#macro %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("#macro %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15762 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 578:
-
-/* Line 1455 of yacc.c  */
-#line 11939 "pnfha.ypp"
+#line 11939 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("#endm\n");
 			 tree.add_node(pp_statement);
-		 	;}
+		 	}
+#line 15772 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 579:
-
-/* Line 1455 of yacc.c  */
-#line 11945 "pnfha.ypp"
+#line 11945 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#undef %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("#undef %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15782 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 580:
-
-/* Line 1455 of yacc.c  */
-#line 11951 "pnfha.ypp"
+#line 11951 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#ifdef %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("#ifdef %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15792 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 581:
-
-/* Line 1455 of yacc.c  */
-#line 11957 "pnfha.ypp"
+#line 11957 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("#infdef %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("#infdef %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15802 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 582:
-
-/* Line 1455 of yacc.c  */
-#line 11963 "pnfha.ypp"
+#line 11963 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("#else\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15812 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 583:
-
-/* Line 1455 of yacc.c  */
-#line 11969 "pnfha.ypp"
+#line 11969 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("#endif\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15822 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 584:
-
-/* Line 1455 of yacc.c  */
-#line 11975 "pnfha.ypp"
+#line 11975 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("_DATE()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15832 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 585:
-
-/* Line 1455 of yacc.c  */
-#line 11981 "pnfha.ypp"
+#line 11981 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("_TIME()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15842 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 586:
-
-/* Line 1455 of yacc.c  */
-#line 11987 "pnfha.ypp"
+#line 11987 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("_LINE()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15852 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 587:
-
-/* Line 1455 of yacc.c  */
-#line 11993 "pnfha.ypp"
+#line 11993 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("_FILE()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15862 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 588:
-
-/* Line 1455 of yacc.c  */
-#line 11999 "pnfha.ypp"
+#line 11999 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("_CDATE()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15872 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 589:
-
-/* Line 1455 of yacc.c  */
-#line 12005 "pnfha.ypp"
+#line 12005 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("_CTIME()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15882 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 590:
-
-/* Line 1455 of yacc.c  */
-#line 12011 "pnfha.ypp"
+#line 12011 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-		 	 conprint("%%include %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+		 	 conprint("%%include %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15892 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 591:
-
-/* Line 1455 of yacc.c  */
-#line 12017 "pnfha.ypp"
+#line 12017 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%include <%s>\n", (yyvsp[(2) - (4)]).to_string().get().getString().c_str()); 
+			 conprint("%%include <%s>\n", (yyvsp[-2]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15902 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 592:
-
-/* Line 1455 of yacc.c  */
-#line 12023 "pnfha.ypp"
+#line 12023 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%import %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("%%import %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15912 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 593:
-
-/* Line 1455 of yacc.c  */
-#line 12029 "pnfha.ypp"
+#line 12029 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%import <%s>\n", (yyvsp[(2) - (4)]).to_string().get().getString().c_str()); 
+			 conprint("%%import <%s>\n", (yyvsp[-2]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15922 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 594:
-
-/* Line 1455 of yacc.c  */
-#line 12035 "pnfha.ypp"
+#line 12035 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%define %s %s\n", (yyvsp[(2) - (3)]).to_string().get().getString().c_str(), 
-						     (yyvsp[(3) - (3)]).to_string().get().getString().c_str()); 
+			 conprint("%%define %s %s\n", (yyvsp[-1]).to_string().get().getString().c_str(), 
+						     (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15933 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 595:
-
-/* Line 1455 of yacc.c  */
-#line 12042 "pnfha.ypp"
+#line 12042 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%macro %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("%%macro %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15943 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 596:
-
-/* Line 1455 of yacc.c  */
-#line 12048 "pnfha.ypp"
+#line 12048 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%endm\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15953 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 597:
-
-/* Line 1455 of yacc.c  */
-#line 12054 "pnfha.ypp"
+#line 12054 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%undef %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("%%undef %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15963 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 598:
-
-/* Line 1455 of yacc.c  */
-#line 12060 "pnfha.ypp"
+#line 12060 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%ifdef %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("%%ifdef %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15973 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 599:
-
-/* Line 1455 of yacc.c  */
-#line 12066 "pnfha.ypp"
+#line 12066 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
-			 conprint("%%infdef %s\n", (yyvsp[(2) - (2)]).to_string().get().getString().c_str()); 
+			 conprint("%%infdef %s\n", (yyvsp[0]).to_string().get().getString().c_str()); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15983 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 600:
-
-/* Line 1455 of yacc.c  */
-#line 12072 "pnfha.ypp"
+#line 12072 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%else\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 15993 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 601:
-
-/* Line 1455 of yacc.c  */
-#line 12078 "pnfha.ypp"
+#line 12078 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%endif\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 16003 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 602:
-
-/* Line 1455 of yacc.c  */
-#line 12084 "pnfha.ypp"
+#line 12084 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%_DATE()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 16013 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 603:
-
-/* Line 1455 of yacc.c  */
-#line 12090 "pnfha.ypp"
+#line 12090 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%_TIME()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 16023 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 604:
-
-/* Line 1455 of yacc.c  */
-#line 12096 "pnfha.ypp"
+#line 12096 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%_LINE()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 16033 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 605:
-
-/* Line 1455 of yacc.c  */
-#line 12102 "pnfha.ypp"
+#line 12102 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%_FILE()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 16043 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 606:
-
-/* Line 1455 of yacc.c  */
-#line 12108 "pnfha.ypp"
+#line 12108 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%_CDATE()\n");
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 16053 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 607:
-
-/* Line 1455 of yacc.c  */
-#line 12114 "pnfha.ypp"
+#line 12114 "pnfha.ypp" /* yacc.c:1646  */
     {
 			 ASTNode pp_statement("pp_statement");
 			 conprint("%%_CTIME()\n"); 
 			 tree.add_node(pp_statement);
-			;}
+			}
+#line 16063 "pnfha.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-
-/* Line 1455 of yacc.c  */
-#line 17008 "pnfha.tab.cpp"
+#line 16067 "pnfha.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
+  /* User semantic actions sometimes alter yychar, and that requires
+     that yytoken be updated with the new translation.  We take the
+     approach of translating immediately before every use of yytoken.
+     One alternative is translating here after every semantic action,
+     but that translation would be missed if the semantic action invokes
+     YYABORT, YYACCEPT, or YYERROR immediately after altering yychar or
+     if it invokes YYBACKUP.  In the case of YYABORT or YYACCEPT, an
+     incorrect destructor might then be invoked immediately.  In the
+     case of YYERROR or YYBACKUP, subsequent parser actions might lead
+     to an incorrect destructor call or verbose syntax error message
+     before the lookahead is translated.  */
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
 
   YYPOPSTACK (yylen);
@@ -17015,7 +16085,7 @@ yyreduce:
 
   *++yyvsp = yyval;
 
-  /* Now `shift' the result of the reduction.  Determine what state
+  /* Now 'shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
      number reduced by.  */
 
@@ -17030,10 +16100,14 @@ yyreduce:
   goto yynewstate;
 
 
-/*------------------------------------.
-| yyerrlab -- here on detecting error |
-`------------------------------------*/
+/*--------------------------------------.
+| yyerrlab -- here on detecting error.  |
+`--------------------------------------*/
 yyerrlab:
+  /* Make sure we have latest lookahead translation.  See comments at
+     user semantic actions for why this is necessary.  */
+  yytoken = yychar == YYEMPTY ? YYEMPTY : YYTRANSLATE (yychar);
+
   /* If not already recovering from an error, report this error.  */
   if (!yyerrstatus)
     {
@@ -17041,37 +16115,36 @@ yyerrlab:
 #if ! YYERROR_VERBOSE
       yyerror (YY_("syntax error"));
 #else
+# define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
+                                        yyssp, yytoken)
       {
-	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
-	if (yymsg_alloc < yysize && yymsg_alloc < YYSTACK_ALLOC_MAXIMUM)
-	  {
-	    YYSIZE_T yyalloc = 2 * yysize;
-	    if (! (yysize <= yyalloc && yyalloc <= YYSTACK_ALLOC_MAXIMUM))
-	      yyalloc = YYSTACK_ALLOC_MAXIMUM;
-	    if (yymsg != yymsgbuf)
-	      YYSTACK_FREE (yymsg);
-	    yymsg = (char *) YYSTACK_ALLOC (yyalloc);
-	    if (yymsg)
-	      yymsg_alloc = yyalloc;
-	    else
-	      {
-		yymsg = yymsgbuf;
-		yymsg_alloc = sizeof yymsgbuf;
-	      }
-	  }
-
-	if (0 < yysize && yysize <= yymsg_alloc)
-	  {
-	    (void) yysyntax_error (yymsg, yystate, yychar);
-	    yyerror (yymsg);
-	  }
-	else
-	  {
-	    yyerror (YY_("syntax error"));
-	    if (yysize != 0)
-	      goto yyexhaustedlab;
-	  }
+        char const *yymsgp = YY_("syntax error");
+        int yysyntax_error_status;
+        yysyntax_error_status = YYSYNTAX_ERROR;
+        if (yysyntax_error_status == 0)
+          yymsgp = yymsg;
+        else if (yysyntax_error_status == 1)
+          {
+            if (yymsg != yymsgbuf)
+              YYSTACK_FREE (yymsg);
+            yymsg = (char *) YYSTACK_ALLOC (yymsg_alloc);
+            if (!yymsg)
+              {
+                yymsg = yymsgbuf;
+                yymsg_alloc = sizeof yymsgbuf;
+                yysyntax_error_status = 2;
+              }
+            else
+              {
+                yysyntax_error_status = YYSYNTAX_ERROR;
+                yymsgp = yymsg;
+              }
+          }
+        yyerror (yymsgp);
+        if (yysyntax_error_status == 2)
+          goto yyexhaustedlab;
       }
+# undef YYSYNTAX_ERROR
 #endif
     }
 
@@ -17080,20 +16153,20 @@ yyerrlab:
   if (yyerrstatus == 3)
     {
       /* If just tried and failed to reuse lookahead token after an
-	 error, discard it.  */
+         error, discard it.  */
 
       if (yychar <= YYEOF)
-	{
-	  /* Return failure if at end of input.  */
-	  if (yychar == YYEOF)
-	    YYABORT;
-	}
+        {
+          /* Return failure if at end of input.  */
+          if (yychar == YYEOF)
+            YYABORT;
+        }
       else
-	{
-	  yydestruct ("Error: discarding",
-		      yytoken, &yylval);
-	  yychar = YYEMPTY;
-	}
+        {
+          yydestruct ("Error: discarding",
+                      yytoken, &yylval);
+          yychar = YYEMPTY;
+        }
     }
 
   /* Else will try to reuse lookahead token after shifting the error
@@ -17112,7 +16185,7 @@ yyerrorlab:
   if (/*CONSTCOND*/ 0)
      goto yyerrorlab;
 
-  /* Do not reclaim the symbols of the rule which action triggered
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYERROR.  */
   YYPOPSTACK (yylen);
   yylen = 0;
@@ -17125,35 +16198,37 @@ yyerrorlab:
 | yyerrlab1 -- common code for both syntax error and YYERROR.  |
 `-------------------------------------------------------------*/
 yyerrlab1:
-  yyerrstatus = 3;	/* Each real token shifted decrements this.  */
+  yyerrstatus = 3;      /* Each real token shifted decrements this.  */
 
   for (;;)
     {
       yyn = yypact[yystate];
-      if (yyn != YYPACT_NINF)
-	{
-	  yyn += YYTERROR;
-	  if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
-	    {
-	      yyn = yytable[yyn];
-	      if (0 < yyn)
-		break;
-	    }
-	}
+      if (!yypact_value_is_default (yyn))
+        {
+          yyn += YYTERROR;
+          if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
+            {
+              yyn = yytable[yyn];
+              if (0 < yyn)
+                break;
+            }
+        }
 
       /* Pop the current state because it cannot handle the error token.  */
       if (yyssp == yyss)
-	YYABORT;
+        YYABORT;
 
 
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp);
+                  yystos[yystate], yyvsp);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
     }
 
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
 
   /* Shift the error token.  */
@@ -17177,7 +16252,7 @@ yyabortlab:
   yyresult = 1;
   goto yyreturn;
 
-#if !defined(yyoverflow) || YYERROR_VERBOSE
+#if !defined yyoverflow || YYERROR_VERBOSE
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -17189,16 +16264,21 @@ yyexhaustedlab:
 
 yyreturn:
   if (yychar != YYEMPTY)
-     yydestruct ("Cleanup: discarding lookahead",
-		 yytoken, &yylval);
-  /* Do not reclaim the symbols of the rule which action triggered
+    {
+      /* Make sure we have latest lookahead translation.  See comments at
+         user semantic actions for why this is necessary.  */
+      yytoken = YYTRANSLATE (yychar);
+      yydestruct ("Cleanup: discarding lookahead",
+                  yytoken, &yylval);
+    }
+  /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
   YY_STACK_PRINT (yyss, yyssp);
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp);
+                  yystos[*yyssp], yyvsp);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -17209,14 +16289,9 @@ yyreturn:
   if (yymsg != yymsgbuf)
     YYSTACK_FREE (yymsg);
 #endif
-  /* Make sure YYID is used.  */
-  return YYID (yyresult);
+  return yyresult;
 }
-
-
-
-/* Line 1675 of yacc.c  */
-#line 12120 "pnfha.ypp"
+#line 12120 "pnfha.ypp" /* yacc.c:1906  */
 
 /* Additional C/C++ Code */
 void actual_parameters(PNF_Variable v)
@@ -17311,4 +16386,3 @@ void actual_parameters2()
   yyerror("Invalid type.");
 			 }
 }
-

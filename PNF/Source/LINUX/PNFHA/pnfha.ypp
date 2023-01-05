@@ -6574,7 +6574,7 @@ struct_var_declaration3:	STRUCT ID ID OPDOT ID OPEQUAL expression
 
 				  case TBOOLEAN:
 				  {
-				   conprint("ALOAD TBOOLEAN %s\n", $7.to_boolean().get().getString().c_str());
+				   conprint("ALOAD TBOOLEAN %s\n", $7.to_boolean().get());
 				  }
 				  break;
 
@@ -6653,7 +6653,7 @@ union_var_declaration3:		UNION ID ID OPDOT ID OPEQUAL expression
 
 				  case TBOOLEAN:
 				  {
-				   conprint("ALOAD TBOOLEAN %s\n", $7.to_boolean().get().getString().c_str());
+				   conprint("ALOAD TBOOLEAN %s\n", $7.to_boolean().get());
 				  }
 				  break;
 

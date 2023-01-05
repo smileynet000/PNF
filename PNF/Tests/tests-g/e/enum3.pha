@@ -1,0 +1,20 @@
+println "Defining an enum...";
+
+enum a = 
+{
+ "a",
+ "b",
+ "c"
+};
+
+println "Implementing an enum...";
+enumv "a" "a" = "c";
+
+
+println "Testing load and store...";
+print "enum a: ";
+load venum "a";
+println;
+
+println "Quitting...";
+end 0;

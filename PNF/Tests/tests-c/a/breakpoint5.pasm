@@ -1,0 +1,20 @@
+VERSION TVOID 0V
+
+
+PRINTLN TSTRING "Before first breakpoint."
+EXADD TVOID 0
+PRINTLN TSTRING "After first breakpoint."
+QUIT TVOID 0
+
+
+ELBL TVOID 0V
+CALLL TSTRING "phello"
+RET TVOID 0V
+
+
+LBL TSTRING "phello"
+PRINTLN TSTRING "In breakpoint."
+RET TVOID 0V
+
+
+END TVOID 0V

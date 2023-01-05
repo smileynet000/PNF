@@ -50,7 +50,6 @@ template <class T>
 Array2<T>::Array2(const Array2 & r)
 {
  size = r.size;
- delete[] data;
  data = new T[size];
  
  for (unsigned long i = 0; i < size; ++i)
@@ -60,7 +59,6 @@ Array2<T>::Array2(const Array2 & r)
 template <class T>       
 Array2<T>::~Array2()
 {
- delete[] data;
  data = NULL;
 }       
 

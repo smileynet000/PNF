@@ -71,7 +71,6 @@ This file is part of pnfasm.
 			12. Added RUN, JRUN, & PNFRUN instructions.
 			13. Added struct instructions.
 			14. Added more struct instructions.
-			15. Implemented segment instructions.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -818,7 +817,7 @@ unsigned long pifend = 0;
 /* Bison Declarations */
 %error-verbose
 
-%expect 311
+%expect 294
 
 
 %token ASMVERSION
@@ -1115,23 +1114,7 @@ unsigned long pifend = 0;
 %token IUNIONNAME3
 %token IMODE
 %token IEXTMODE
-%token IMCHECK
-%token IMSUPP
-%token IMEXTCHECK
-%token IMEXTSUPP
-%token ICPY
-%token IADDSEG
-%token IREMSEG
-%token ICOLLSEG
-%token IEXPSEG
-%token ICPYSEG
-%token ISEGLOAD
-%token ISEGSTORE
-%token ISEGPUSH
-%token ISEGPOP
-%token ISEGTOP
-%token ISEGVLOAD
-%token ISEGVSTORE
+
 
 
 %token TVOID
@@ -2200,156 +2183,13 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 						 fprintf(output, "266 0 0\n");
 						}
 
-		| IMODE TVOID NUMBER		{ 
+		| IMODE TVOID VOID	{ 
 						 fprintf(output, "267 0 0\n");
 						}
 
-		| IEXTMODE TVOID NUMBER		{ 
+		| IEXTMODE TVOID VOID	{ 
 						 fprintf(output, "268 0 0\n");
 						}
-
-		| IMCHECK TVOID NUMBER		{ fprintf(output, "269 0 %s\n", $3.getString().c_str()); }
-		| IMCHECK TBOOLEAN BOOLEAN
-		{
-		 if ($3 == "true")
-		  fprintf(output, "269 1 1\n");
-		 else
-		  fprintf(output, "269 1 0\n");
-		}
-		| IMCHECK TNUMBER NUMBER	{ fprintf(output, "269 2 %s\n", $3.getString().c_str()); }
-		| IMCHECK TCHARACTER CHARACTER
-		{
-		 char * dup = strdup($3.getString().c_str());
-		 int ch = (int)dup[1];
-		 fprintf(output, "269 3 %i\n", ch);
-		}
-		| IMCHECK TSTRING STRING
-		{
-		 fprintf(output, "269 4 ");
-		 for (unsigned long i = 0; i < $3.length(); ++i)
-                 {
-		  if ($3[i] != '\"')
-                   fprintf(output, "%d ", (int)($3[i]));
-		 }
-		 fprintf(output, "0\n");
-		}
-		| IMSUPP TVOID NUMBER		{ fprintf(output, "270 0 %s\n", $3.getString().c_str()); }
-		| IMSUPP TBOOLEAN BOOLEAN
-		{
-		 if ($3 == "true")
-		  fprintf(output, "270 1 1\n");
-		 else
-		  fprintf(output, "270 1 0\n");
-		}
-		| IMSUPP TNUMBER NUMBER	{ fprintf(output, "270 2 %s\n", $3.getString().c_str()); }
-		| IMSUPP TCHARACTER CHARACTER
-		{
-		 char * dup = strdup($3.getString().c_str());
-		 int ch = (int)dup[1];
-		 fprintf(output, "270 3 %i\n", ch);
-		}
-		| IMSUPP TSTRING STRING
-		{
-		 fprintf(output, "270 4 ");
-		 for (unsigned long i = 0; i < $3.length(); ++i)
-                 {
-		  if ($3[i] != '\"')
-                   fprintf(output, "%d ", (int)($3[i]));
-		 }
-		 fprintf(output, "0\n");
-		}
-		| IMEXTCHECK TVOID NUMBER		{ fprintf(output, "271 0 %s\n", $3.getString().c_str()); }
-		| IMEXTCHECK TBOOLEAN BOOLEAN
-		{
-		 if ($3 == "true")
-		  fprintf(output, "271 1 1\n");
-		 else
-		  fprintf(output, "271 1 0\n");
-		}
-		| IMEXTCHECK TNUMBER NUMBER	{ fprintf(output, "271 2 %s\n", $3.getString().c_str()); }
-		| IMEXTCHECK TCHARACTER CHARACTER
-		{
-		 char * dup = strdup($3.getString().c_str());
-		 int ch = (int)dup[1];
-		 fprintf(output, "271 3 %i\n", ch);
-		}
-		| IMEXTCHECK TSTRING STRING
-		{
-		 fprintf(output, "271 4 ");
-		 for (unsigned long i = 0; i < $3.length(); ++i)
-                 {
-		  if ($3[i] != '\"')
-                   fprintf(output, "%d ", (int)($3[i]));
-		 }
-		 fprintf(output, "0\n");
-		}
-		| IMEXTSUPP TVOID NUMBER		{ fprintf(output, "272 0 %s\n", $3.getString().c_str()); }
-		| IMEXTSUPP TBOOLEAN BOOLEAN
-		{
-		 if ($3 == "true")
-		  fprintf(output, "272 1 1\n");
-		 else
-		  fprintf(output, "272 1 0\n");
-		}
-		| IMEXTSUPP TNUMBER NUMBER	{ fprintf(output, "272 2 %s\n", $3.getString().c_str()); }
-		| IMEXTSUPP TCHARACTER CHARACTER
-		{
-		 char * dup = strdup($3.getString().c_str());
-		 int ch = (int)dup[1];
-		 fprintf(output, "272 3 %i\n", ch);
-		}
-		| IMEXTSUPP TSTRING STRING
-		{
-		 fprintf(output, "272 4 ");
-		 for (unsigned long i = 0; i < $3.length(); ++i)
-                 {
-		  if ($3[i] != '\"')
-                   fprintf(output, "%d ", (int)($3[i]));
-		 }
-		 fprintf(output, "0\n");
-		}
-
-		| ICPY TVOID VOID		{ 
-						 fprintf(output, "273 0 0\n");
-						}
-
-		| IADDSEG TVOID VOID		{ 
-						 fprintf(output, "274 0 0\n");
-						}
-
-		| IREMSEG TVOID VOID		{ 
-						 fprintf(output, "275 0 0\n");
-						}
-
-		| ICOLLSEG TNUMBER NUMBER	{ fprintf(output, "276 2 %s\n", $3.getString().c_str()); }
-
-		| IEXPSEG TNUMBER NUMBER	{ fprintf(output, "277 2 %s\n", $3.getString().c_str()); }
-
-		| ICPYSEG TVOID VOID		{ 
-						 fprintf(output, "278 0 0\n");
-						}
-
-		| ISEGLOAD TNUMBER NUMBER	{ fprintf(output, "279 2 %s\n", $3.getString().c_str()); }
-
-		| ISEGSTORE TNUMBER NUMBER	{ fprintf(output, "280 2 %s\n", $3.getString().c_str()); }
-		
-		| ISEGPUSH TVOID VOID		{ 
-						 fprintf(output, "281 0 0\n");
-						}
-
-		| ISEGPOP TVOID VOID		{ 
-						 fprintf(output, "282 0 0\n");
-						}
-
-		| ISEGTOP TVOID VOID		{ 
-						 fprintf(output, "283 0 0\n");
-						}
-		| ISEGVLOAD TBOOLEAN NUMBER	{ fprintf(output, "284 1 %s\n", $3.getString().c_str()); }
-		| ISEGVLOAD TNUMBER NUMBER		{ fprintf(output, "284 2 %s\n", $3.getString().c_str()); }
-		| ISEGVLOAD TCHARACTER NUMBER	{ fprintf(output, "284 3 %s\n", $3.getString().c_str()); }
-		| ISEGVLOAD TSTRING NUMBER		{ fprintf(output, "284 4 %s\n", $3.getString().c_str()); }
-		| ISEGVSTORE TVOID VOID		{ fprintf(output, "285 0 0\n"); }
-		| ISEGVSTORE TNUMBER NUMBER	{ fprintf(output, "285 2 %s\n", $3.getString().c_str()); }
 		
 		| ASMVERSION TVOID VOID		{ /* Do nothing... */ }
 		| PNF NUMBER NUMBER NUMBER	{ fprintf(output, "%s %s %s\n", $2.getString().c_str(), $3.getString().c_str(), $4.getString().c_str()); }

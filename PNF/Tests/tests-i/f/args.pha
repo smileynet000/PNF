@@ -1,0 +1,21 @@
+cswitch (load argn;)
+{
+ ccase load aload 4;:
+ {
+  cswitch (load %accumulator args 5;)
+  {
+   ccase load aload "a";:
+    break;
+
+   cdefault:
+    println "I don't know that name.";
+  }
+  break;
+ }
+
+ cdefault:
+  println "* ERROR: Wrong arguments.";
+}
+
+
+end 0;

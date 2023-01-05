@@ -32,6 +32,8 @@ CHANGELOG
 =========
 7/26/15 Original a - The first version.
 */
+class PNF_Struct;
+class PNF_Class;
 
 
 template <class T>

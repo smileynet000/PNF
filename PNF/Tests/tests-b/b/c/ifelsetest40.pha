@@ -1,0 +1,25 @@
+println "Hello World!";
+println "Hello Space!";
+println "Hello you!";
+println "Hello.";
+println "Hi.";
+;
+;
+;
+
+
+if (3 + 2)
+{
+ ;
+ ;
+ println "Hello World!";
+ ;
+ ;
+ ;
+}
+else
+ ;
+
+
+println "Hello World!";
+end 0;

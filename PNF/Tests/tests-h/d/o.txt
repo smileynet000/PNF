@@ -1,0 +1,8 @@
+#define "tree" "\\512"
+#define "I" "\98a"
+#define "little" "tree"
+#define "the" #"tree"
+#define "stan." #"a" ## "."
+
+
+I have a little tree in my backyard. I named the tree stan.

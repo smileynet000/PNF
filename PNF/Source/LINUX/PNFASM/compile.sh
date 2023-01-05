@@ -26,7 +26,7 @@
 
 echo Cleaning...
 rm *.cpp 2> /dev/null
-rm *.exe 2> /dev/null
+rm pnfasm 2> /dev/null
 
 echo Bison...
 bison -t -opnfasm.tab.cpp pnfasm.ypp

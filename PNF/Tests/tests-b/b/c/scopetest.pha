@@ -1,0 +1,14 @@
+var a = 2;
+load %accumulator variable a;
+println;
+
+{
+ var a = 5;
+ load %accumulator variable a;
+ println;
+}
+load %accumulator variable a;
+println;
+
+
+end 0;

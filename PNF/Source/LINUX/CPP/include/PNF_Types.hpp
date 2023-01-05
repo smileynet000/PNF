@@ -24,6 +24,7 @@
  9/5/20 Origional a 	- The first version.
 */
 #include "Array2.cpp"
+#include "String2.cpp"
 
 
 // Forward declarations
@@ -548,6 +549,11 @@ class PNF_Basic_Object2
   
   void print();
   void println();
+
+  void read();
+
+  long getType() const;
+  void setType(long t);
 };
 
 class PNF_Object2
@@ -607,6 +613,11 @@ class PNF_Object2
   
   void print();
   void println();
+
+  void read();
+
+  long getType() const;
+  void setType(long t);
   
   
   PNF_Object2 & operator=(const PNF_Object2 & o);
@@ -629,6 +640,108 @@ class PNF_Array : public Array<T>
   void name(String name);
 };
 
+class Param
+{
+ protected:
+  String itsname;
+  PNF_Variable itsparam;
+  PNF_Variable itsdefault;
+
+
+ public:
+  Param(int i = 0);
+
+  Param(const Param & p);
+
+
+  String name();
+  void name(String n);
+
+  PNF_Variable & param();
+  void param(PNF_Variable v);
+
+  PNF_Variable & defaultv();
+  void defaultv(PNF_Variable v);
+
+  void syncdefault();
+};
+
+class Function
+{
+ protected:
+  Array<Param> itsret;
+  String itsname;
+  Array<Param> itsparam;
+  unsigned long itsdef;
+
+ public:
+  Function(int i = 0);
+
+  Function(const Function & f);
+
+
+  ~Function();
+
+
+ PNF_Variable ret(unsigned long i);
+ PNF_Variable retdefaultv(unsigned long i);
+ Array<Param> rets();
+ String name();
+ String rname();
+ Array<Param> params();
+ PNF_Variable & param(unsigned long i);
+ String pname(unsigned long i);
+ PNF_Variable & defaultv(unsigned long i);
+ unsigned long definition();
+
+ void ret(unsigned long i, PNF_Variable r);
+ void retdefaultv(unsigned long i, PNF_Variable r);
+ void name(String n);
+ void rname(String n);
+ void params(Array<Param> p);
+ void param(unsigned long i, PNF_Variable v);
+ void pname(unsigned long i, String n);
+ void defaultv(unsigned long i, PNF_Variable v);
+ void definition(unsigned long d);
+
+ void syncdefaultr(unsigned long i);
+ void syncdefaultp(unsigned long i);
+
+ String & mangle();
+ String & unmangle();
+};
+
+class Function_Stack
+{
+ protected:
+  Array2<Function> itsstk;
+
+ 
+ public:
+  Function_Stack(int i = 0);
+
+  Array2<Function> get();
+  
+  void set(Array2<Function> f);
+
+  void add_function(Function f);
+  void add_function2(Function f);
+  Function & get_function(unsigned long i);
+  Function & get_function(String n, bool & f);
+  Function & get_function2(unsigned long i);
+  Function & last_function();
+  void mod_function(unsigned long i, Function f);
+  void mod_function2(unsigned long i, Function f);
+  void remove_function(unsigned long i);
+
+  unsigned long length();
+
+ unsigned long find(String name);
+ unsigned long find(String name, Array<String> rets, Array<String> params);
+ unsigned long find2(String name, Array<String> rets, Array<String> params);
+ unsigned long find_duplicate(Function f, bool & b);
+};
+
 class PNF_Struct
 {
  protected:
@@ -636,7 +749,7 @@ class PNF_Struct
   Array<String> itsmembernames;
   unsigned long itsuse;
   String itsname;
-  String itstype;
+  String2 itstype;
   
   
  public:
@@ -648,10 +761,10 @@ class PNF_Struct
   String UsingName();
   
   String name();
-  void name(String n);
+  void name(const String & n);
   
   String type();
-  void type(String n);
+  void type(const String & n);
   
   PNF_Object2 & get();
   void put(PNF_Object2 & p, String name = "");
@@ -668,6 +781,167 @@ class PNF_Union : public PNF_Struct
 
 
   void put(PNF_Object2 & p, String name = "");
+};
+
+
+class PNF_Interface;
+
+
+class PNF_Class : public PNF_Struct
+{
+ protected:
+  Array2<PNF_VIEW_CONTROL> itsaccess;
+  bool itsinclass;
+  Function_Stack itsmethods;
+  Array2<PNF_VIEW_CONTROL> itsmethodsaccess;
+  PNF_VIEW_CONTROL itsallmethodsaccess;
+  Array<String> itssubclasses;
+ 
+
+ public:
+  PNF_Class(int i = 0);
+
+
+  PNF_VIEW_CONTROL getaccess();
+  void setaccess(PNF_VIEW_CONTROL access);
+
+  PNF_VIEW_CONTROL getfuncaccess(unsigned long i);
+  void setfuncaccess(unsigned long i, PNF_VIEW_CONTROL access);
+
+  PNF_VIEW_CONTROL getmethodsaccess();
+  void setmethodsaccess(PNF_VIEW_CONTROL access);
+
+
+  bool getinclass();
+  bool inclass();
+  
+
+  void add();
+
+  PNF_Object2 & get();
+  void put(PNF_Object2 & p, String name = "");
+
+  Function_Stack & methods();
+  void put(unsigned long i, Function & f);
+  Function & get(unsigned long i);
+
+  String subclass(unsigned long i);
+  void subclass(unsigned long i, String thesubclass);
+  unsigned long subclass_length();
+
+  unsigned long find_subclass(String thesubclass);
+
+
+ void extend(PNF_VIEW_CONTROL access, PNF_Class & theclass);
+ void implement(PNF_VIEW_CONTROL access, PNF_Interface & theinterface);
+};
+
+class PNF_Interface : public PNF_Class
+{
+ public:
+  void implement(PNF_VIEW_CONTROL access, PNF_Interface & theinterface);
+};
+
+template <class T>
+class Array3
+{
+ private:
+         T * data;
+         unsigned long size;
+         
+         
+ public:
+        Array3(unsigned long s);
+        
+        Array3(const Array3 & r);
+        
+        ~Array3();
+        
+        
+        T & get(unsigned long s);
+        void put(T d, unsigned long s);
+        unsigned long length() const;
+        
+        Array3<T> & operator=(const Array3<T> & rhs);
+        T & operator[](unsigned long offSet);
+        
+        void insert();
+        void remove();
+        
+        void insert(T d, unsigned long offset);
+        void remove(unsigned long offset);
+        void copy(unsigned long d1, unsigned long d2);
+        void move(unsigned long d1, unsigned long d2);
+};
+
+template <class T>
+class Array4
+{
+ private:
+         T * data;
+         unsigned long size;
+         
+         
+ public:
+        Array4(unsigned long s);
+        
+        Array4(const Array4 & r);
+        
+        ~Array4();
+        
+        
+        T & get(unsigned long s);
+        void put(T d, unsigned long s);
+        unsigned long length() const;
+        
+        Array4<T> & operator=(const Array4<T> & rhs);
+        T & operator[](unsigned long offSet);
+        
+        void insert();
+        void remove();
+        
+        void insert(T d, unsigned long offset);
+        void remove(unsigned long offset);
+        void copy(unsigned long d1, unsigned long d2);
+        void move(unsigned long d1, unsigned long d2);
+};
+
+class PNF_BasicFeeling
+{
+ protected:
+  Array<unsigned long> itsfeelings;
+  Array<unsigned long> itsintensitys; // Purposely misspelled for ease of use. May change later...
+  String itstrigger;
+
+  unsigned long itsindex;
+
+ public:
+  PNF_BasicFeeling();
+
+  PNF_BASIC_FEELING get_feeling(PNF_BASIC_FEELING i);
+  unsigned long get_intensity(PNF_BASIC_FEELING i);
+  String get_trigger();
+  PNF_BASIC_FEELING get_index();
+
+  void set_feeling(PNF_BASIC_FEELING i, PNF_BASIC_FEELING f);
+  void set_intensity(PNF_BASIC_FEELING i, unsigned long it);
+  void set_trigger(String t);
+  void set_index(PNF_BASIC_FEELING i);
+};
+
+class PNF_Instinct
+{
+ protected:
+  PNF_BasicFeeling itsfeelings;
+  Function_Stack itsactions;
+
+
+ public:
+  PNF_Instinct(int i = 0);
+
+
+ PNF_BasicFeeling & feeling();
+ Function_Stack & action();
 };
 
 

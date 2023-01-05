@@ -583,7 +583,7 @@ long PNF_Basic_Variable::getType() const
 
 void PNF_Basic_Variable::setType(long t)
 {
- long t2 = type;
+ long t2 = t;
  type = t;
 
  switch (t2)
@@ -1081,8 +1081,8 @@ void PNF_Basic_Variable::read()
   case TSTRING:
   {
    s.read();
-   }
-   break;
+  }
+  break;
 
   default:
    error(ERRORMSG, (char *)"Invalid Type.");
@@ -2705,6 +2705,57 @@ void PNF_Basic_Object2::println()
  }
 }
 
+void PNF_Basic_Object2::read()
+{
+ switch (type())
+ {
+  case TSIMPLE:
+   itssimple.read();
+   break;
+   
+  // Fall through, here for reminders
+  case TRANGET1:  
+  case TRANGET2: 
+  case TENUM:   
+  default:
+   error(ERRORMSG, (char *)"Invalid type.");
+ }
+}
+
+long PNF_Basic_Object2::getType() const
+{
+ switch (type())
+ {
+  case TSIMPLE:
+   itssimple.getType();
+   break;
+   
+  // Fall through, here for reminders
+  case TRANGET1:  
+  case TRANGET2: 
+  case TENUM:   
+  default:
+   error(ERRORMSG, (char *)"Invalid type.");
+ }
+}
+
+void PNF_Basic_Object2::setType(long t)
+{
+ switch (type())
+ {
+  case TSIMPLE:
+   itssimple.setType(t);
+   break;
+   
+  // Fall through, here for reminders
+  case TRANGET1:  
+  case TRANGET2: 
+  case TENUM:   
+  default:
+   error(ERRORMSG, (char *)"Invalid type.");
+ }
+}
+
 
 PNF_Object2::PNF_Object2(const PNF_Variable & v)
 {
@@ -2984,6 +3035,72 @@ void PNF_Object2::println()
  }
 }
 
+void PNF_Object2::read()
+{
+ switch (type())
+ {
+  case TOBJECT:
+   itsobject.read();
+   break;
+    
+  case TDOBJECT:
+   itspobject->read();
+   break;
+   
+  case TROBJECT:
+   itsrobject->read();
+   break;
+   
+  case TAOBJECT:
+  {
+   for (unsigned long i = 0; i < alength(); ++i)
+    itsaobject[i]->read();
+  }
+  break;
+
+  //  
+  case TPOBJECT:
+  default:
+   error(ERRORMSG, (char *)"Invalid type.");
+ }
+}
+
+long PNF_Object2::getType() const
+{
+ switch (type())
+ {
+  case TOBJECT:
+   itsobject.getType();
+   break;
+
+  // Reminder   
+  case TPOBJECT:  
+  case TDOBJECT:
+  case TROBJECT:
+  case TAOBJECT:
+  default:
+   error(ERRORMSG, (char *)"Invalid type.");
+ }
+}
+
+void PNF_Object2::setType(long t)
+{
+ switch (type())
+ {
+  case TOBJECT:
+   itsobject.setType(t);
+   break;
+
+  // Reminder   
+  case TPOBJECT:  
+  case TDOBJECT:
+  case TROBJECT:
+  case TAOBJECT:
+  default:
+   error(ERRORMSG, (char *)"Invalid type.");
+ }
+}
+
 PNF_Object2 & PNF_Object2::operator=(const PNF_Object2 & o)
 {
  if (this == &o)
@@ -3018,7 +3135,677 @@ void PNF_Array<T>::name(String name)
 }
 
 
-PNF_Struct::PNF_Struct(int i) : itsname(""), itstype("")
+Param::Param(int i)
+{
+ itsname = (char *)"";
+ PNF_Void v;
+ itsparam.put(v);
+ itsdefault.put(v);
+}
+
+Param::Param(const Param & p)
+{
+ itsname = p.itsname;
+ itsparam = p.itsparam;
+ itsdefault = p.itsdefault;
+}
+
+String Param::name()
+{
+ return itsname;
+}
+
+void Param::name(String n)
+{
+ itsname = n;
+}
+
+PNF_Variable & Param::param()
+{
+ return itsparam;
+}
+
+void Param::param(PNF_Variable v)
+{
+ switch (v.getType())
+ {
+  case TVOID:
+   itsparam.put(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+  {
+   PNF_Boolean b(v.to_boolean());
+   itsparam.put(b);
+  }
+  break;
+
+  case TNUMBER:
+   itsparam.put(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsparam.put(v.to_character());
+   break;
+
+  case TSTRING:
+   itsparam.put(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.";
+ }
+}
+
+PNF_Variable & Param::defaultv()
+{
+ return itsdefault;
+}
+
+void Param::defaultv(PNF_Variable v)
+{
+ switch (v.getType())
+ {
+  case TVOID:
+   itsdefault.put(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+  {
+   PNF_Boolean b(v.to_boolean());
+   itsdefault.put(b);
+  }
+  break;
+
+  case TNUMBER:
+   itsdefault.put(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsdefault.put(v.to_character());
+   break;
+
+  case TSTRING:
+   itsdefault.put(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.";
+ }
+
+ syncdefault();
+}
+
+void Param::syncdefault()
+{
+ itsparam = itsdefault;
+}
+
+
+Function::Function(int i) : itsdef(0)
+{
+ itsname = (char *)"";
+
+ PNF_Variable v;
+ itsparam[0].param(v);
+ itsret[0].param(v);
+}
+
+Function::Function(const Function & f)
+{
+ itsname = f.itsname;
+ itsret = f.itsret;
+ itsparam = f.itsparam;
+ itsdef = f.itsdef;
+}
+
+Function::~Function()
+{
+
+}
+
+PNF_Variable Function::ret(unsigned long i)
+{
+ return itsret[i].param();
+}
+
+PNF_Variable Function::retdefaultv(unsigned long i)
+{
+ return itsret[i].defaultv();
+}
+
+Array<Param> Function::rets()
+{
+ return itsret;
+}
+
+String Function::name()
+{
+ return unmangle();
+}
+
+String Function::rname()
+{
+ return itsname;
+}
+
+Array<Param> Function::params()
+{
+ return itsparam;
+}
+
+PNF_Variable & Function::param(unsigned long i)
+{
+ return itsparam[i].param();
+}
+
+String Function::pname(unsigned long i)
+{
+ return itsparam[i].name();
+}
+
+PNF_Variable & Function::defaultv(unsigned long i)
+{
+ return itsparam[i].defaultv();
+}
+
+unsigned long Function::definition()
+{
+ return itsdef;
+}
+
+void Function::ret(unsigned long i, PNF_Variable r)
+{
+ for (unsigned long is = i; is > itsret.length() - 1; --is)
+  itsret.insert();
+
+ itsret[i].param(r);
+}
+
+void Function::retdefaultv(unsigned long i, PNF_Variable r)
+{
+ for (unsigned long is = i; is > itsret.length() - 1; --is)
+  itsret.insert();
+
+ itsret[i].defaultv(r);
+}
+
+void Function::name(String n)
+{
+ itsname = n;
+ String str = mangle();
+ itsname = str;
+}
+
+void Function::rname(String n)
+{
+ itsname = n;
+}
+
+void Function::params(Array<Param> p)
+{
+ itsparam = p;
+}
+
+void Function::param(unsigned long i, PNF_Variable v)
+{
+ for (unsigned long is = i; is > itsparam.length() - 1; --is)
+  itsparam.insert();
+
+ switch (v.getType())
+ {
+  case TVOID:
+   itsparam[i].param(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+   itsparam[i].param(v.to_boolean());
+   break;
+
+  case TNUMBER:
+   itsparam[i].param(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsparam[i].param(v.to_character());
+   break;
+
+  case TSTRING:
+   itsparam[i].param(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.\n";
+ }
+}
+
+void Function::pname(unsigned long i, String n)
+{
+ for (unsigned long is = i; is > itsparam.length() - 1; --is)
+  itsparam.insert();
+
+ itsparam[i].name(n);
+}
+
+void Function::defaultv(unsigned long i, PNF_Variable v)
+{
+ for (unsigned long is = i; is > itsparam.length() - 1; --is)
+  itsparam.insert();
+
+ switch (v.getType())
+ {
+  case TVOID:
+   itsparam[i].defaultv(v.to_Void());
+   break;
+
+  case TBOOLEAN:
+   itsparam[i].defaultv(v.to_boolean());
+   break;
+
+  case TNUMBER:
+   itsparam[i].defaultv(v.to_number());
+   break;
+
+  case TCHARACTER:
+   itsparam[i].defaultv(v.to_character());
+   break;
+
+  case TSTRING:
+   itsparam[i].defaultv(v.to_string());
+   break;
+
+  default:
+   cout << "* ERROR: Invalid type.\n";
+ }
+}
+
+void Function::definition(unsigned long d)
+{
+ itsdef = d;
+}
+
+void Function::syncdefaultr(unsigned long i)
+{
+ itsret[i].syncdefault();
+}
+
+void Function::syncdefaultp(unsigned long i)
+{
+ itsparam[i].syncdefault();
+}
+
+String & Function::mangle()
+{
+ String * str = new String();
+ *str = unmangle();
+
+ for (unsigned long i = 0; i < itsret.length(); ++i)
+ {
+  switch (itsret[i].param().getType())
+  {
+   case TVOID:
+    *str += (char *)"_rVOID";
+    break;
+
+   case TBOOLEAN:
+    *str += (char *)"_rBOOLEAN";
+    break;
+
+   case TNUMBER:
+    *str += (char *)"_rNUMBER";
+    break;
+
+   case TCHARACTER:
+    *str += (char *)"_rCHARACTER";
+    break;
+
+   case TSTRING:
+    *str += (char *)"_rSTRING";
+    break;
+
+   default:
+    *str += (char *)"_rNONE";
+  }
+ }
+
+ for (unsigned long i = 0; i < itsparam.length(); ++i)
+ {
+  switch (itsparam[i].param().getType())
+  {
+   case TVOID:
+    *str += (char *)"_VOID";
+    break;
+
+   case TBOOLEAN:
+    *str += (char *)"_BOOLEAN";
+    break;
+
+   case TNUMBER:
+    *str += (char *)"_NUMBER";
+    break;
+
+   case TCHARACTER:
+    *str += (char *)"_CHARACTER";
+    break;
+
+   case TSTRING:
+    *str += (char *)"_STRING";
+    break;
+
+   default:
+    *str += (char *)"_NONE";
+  }
+ }
+
+ return *str;
+}
+
+String & Function::unmangle()
+{
+ String *str = new String((char *)"");
+
+ for (unsigned long i = 0; i < itsname.length(); ++i)
+ {
+  if (itsname[i] == '_')
+   break;
+  *str += itsname[i];
+ }
+
+ return *str;
+}
+
+
+Function_Stack::Function_Stack(int i)
+{
+
+}
+
+Array2<Function> Function_Stack::get()
+{
+ return itsstk;
+}
+  
+void Function_Stack::set(Array2<Function> f)
+{
+ itsstk = f;
+}
+
+void Function_Stack::add_function(Function f)
+{
+ try
+ {
+  mod_function(itsstk.length(), f);
+ }
+ catch (Exception e)
+ {
+  e.file((char *)__FILE__);
+  e.line(__LINE__);
+  e.display();
+  exit(1);
+ }
+}
+
+void Function_Stack::add_function2(Function f)
+{
+ try
+ {
+  mod_function2(itsstk.length(), f);
+ }
+ catch (Exception e)
+ {
+  e.file((char *)__FILE__);
+  e.line(__LINE__);
+  e.display();
+  exit(1);
+ }
+}
+
+Function & Function_Stack::get_function(unsigned long i)
+{
+ for (unsigned long is = i; is > itsstk.length(); --is)
+  itsstk.insert();
+
+ return itsstk[i];
+}
+
+Function & Function_Stack::get_function2(unsigned long i)
+{
+ unsigned long length = itsstk.length();
+ for (unsigned long j = i; j >= length; --j)
+ {
+  if (j == 0 && length == 0)
+  {
+   itsstk.insert();
+   break;
+  }
+
+  itsstk.insert();
+ }
+
+ return itsstk[i];
+}
+
+Function & Function_Stack::get_function(String n, bool & f)
+{
+ Function * itsnull = new Function();
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  String name = itsstk[i].rname();
+  if (name == n)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == false)
+ {
+  f = false;
+  return *itsnull;
+ }
+ else
+ {
+  f = true;
+  return itsstk[i];
+ }
+}
+
+Function & Function_Stack::last_function()
+{
+ return itsstk[itsstk.length() - 1];
+}
+
+void Function_Stack::mod_function(unsigned long i, Function f)
+{
+ for (unsigned long j = i; j >= itsstk.length(); --i)
+  itsstk.insert();
+
+ itsstk[i] = f;
+}
+
+void Function_Stack::mod_function2(unsigned long i, Function f)
+{
+ unsigned long length = itsstk.length();
+ for (unsigned long j = i; j >= length; --j)
+ {
+  if (j == 0 && length == 0)
+  {
+   itsstk.insert();
+   break;
+  }
+
+  itsstk.insert();
+ }
+
+ itsstk[i] = f;
+}
+
+void Function_Stack::remove_function(unsigned long i)
+{
+ itsstk.remove(i);
+}
+
+unsigned long Function_Stack::length()
+{
+ return itsstk.length();
+}
+
+unsigned long Function_Stack::find(String n)
+{
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  String str = itsstk[i].name();
+  if (str == n)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == true)
+  return i;
+ else
+  return -1;
+}
+
+unsigned long Function_Stack::find(String name, Array<String> rets, Array<String> params)
+{
+ rets.remove();
+ params.remove();
+
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  bool params2 = false, params3 = false;
+  String str = itsstk[i].rname();
+  if (i == 0)
+  {
+   for (unsigned long j = 0; j < rets.length(); ++j)
+   {
+    if (j == 0)
+     params3 = true;
+    name += ((char *)"_r" + rets[j]);
+   }
+
+   if (params3 == false)
+    name += (char *)"_rVOID";
+
+   for (unsigned long j = 0; j < params.length(); ++j)
+   {
+    if (j == 0)
+     params2 = true;
+    name += ((char *)"_" + params[j]);
+   }
+
+   if (params2 == false)
+    name += (char *)"_VOID";
+
+
+  }
+
+  if (str == name)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == true)
+  return i;
+ else
+  return -1;
+}
+
+unsigned long Function_Stack::find2(String name, Array<String> rets, Array<String> params)
+{
+ rets.remove();
+ params.remove();
+
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  bool params2 = false, params3 = false;
+  String str = itsstk[i].rname();
+
+  for (unsigned long j = 0; j < rets.length(); ++j)
+  {
+   if (j == 0)
+    params3 = true;
+   name += ((char *)"_r" + rets[j]);
+  }
+
+  if (params3 == false)
+   name += (char *)"_rVOID";
+
+  for (unsigned long j = 0; j < params.length(); ++j)
+  {
+   if (j == 0)
+    params2 = true;
+   name += ((char *)"_" + params[j]);
+  }
+
+  if (params2 == false)
+   name += (char *)"_VOID";
+
+  if (str == name)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == true)
+  return i;
+ else
+  return -1;
+}
+
+unsigned long Function_Stack::find_duplicate(Function f, bool & b)
+{
+ try
+ {
+  unsigned long ret;
+  b = false;
+  unsigned long i;
+  for (i = 0; i < itsstk.length(); ++i)
+  {
+   if (itsstk[i].rname() == f.rname())
+   {
+    b = false;
+    for (unsigned long j = 0; j < itsstk[i].rets().length(); ++j)
+    {
+     if (itsstk[i].ret(j).getm() == f.ret(j).getm())
+     {
+      for (unsigned k = 0; k < itsstk[i].params().length(); ++k)
+      {
+       if (itsstk[i].param(k).getm() != f.param(k).getm())
+        b = true;
+      }
+     }
+    }
+   }
+  }
+
+  ret = i;
+  return ret;
+ }
+ catch (Exception e)
+ {
+  e.file((char *)__FILE__);
+  e.line(__LINE__);
+  e.display();
+  exit(1);
+ }
+}
+
+
+PNF_Struct::PNF_Struct(int i) : itsname(""), itstype(""), itsuse(0)
 {
  for (unsigned long i = 0; i < itsmembers.length(); ++i)
  {
@@ -3076,19 +3863,21 @@ String PNF_Struct::name()
  return itsname;
 }
 
-void PNF_Struct::name(String n)
+void PNF_Struct::name(const String & n)
 {
  itsname = n;
 }
 
 String PNF_Struct::type()
 {
- return itstype;
+ return itstype.getString();
 }
 
-void PNF_Struct::type(String n)
+void PNF_Struct::type(const String & n)
 {
- itstype = n;
+ char * temp = n.getString().c_str();
+ String2 temp2 = temp;
+ itstype = temp2;
 }
   
 PNF_Object2 & PNF_Struct::get()
@@ -3149,6 +3938,901 @@ void PNF_Union::put(PNF_Object2 & p, String name)
  }
 }
 
+
+PNF_Class::PNF_Class(int i)
+{
+ itsaccess[0] = PUBLIC;
+ itsinclass = false;
+}
+
+PNF_VIEW_CONTROL PNF_Class::getaccess()
+{
+ return itsaccess[itsuse];
+}
+
+void PNF_Class::setaccess(PNF_VIEW_CONTROL access)
+{
+ if (itsuse >= itsaccess.length())
+ {
+  for (unsigned long i = 0; i != itsuse; ++i)
+   itsaccess.insert();
+ }
+
+ if (access <= itsaccess[itsuse])
+  return;
+ itsaccess[itsuse] = access;
+}
+
+PNF_VIEW_CONTROL PNF_Class::getfuncaccess(unsigned long i)
+{
+ return itsmethodsaccess[i];
+}
+
+void PNF_Class::setfuncaccess(unsigned long i, PNF_VIEW_CONTROL access)
+{
+ if (i >= itsmethodsaccess.length())
+ {
+  for (unsigned long is = 0; is != i; ++is)
+   itsmethodsaccess.insert();
+ }
+
+ if (access <= itsmethodsaccess[i])
+  return;
+ itsmethodsaccess[i] = access;
+}
+
+PNF_VIEW_CONTROL PNF_Class::getmethodsaccess()
+{
+ return itsallmethodsaccess;
+}
+
+void PNF_Class::setmethodsaccess(PNF_VIEW_CONTROL access)
+{
+ itsallmethodsaccess = access;
+}
+
+bool PNF_Class::inclass()
+{
+ itsinclass = itsinclass == false ? true : false;
+ return itsinclass;
+}
+
+bool PNF_Class::getinclass()
+{
+ return itsinclass;
+}
+
+void PNF_Class::add()
+{
+ PNF_Struct::add();
+
+ itsaccess.insert();
+ itsmethodsaccess.insert();
+}
+
+PNF_Object2 & PNF_Class::get()
+{
+ if (itsaccess[itsuse] == PUBLIC)
+  PNF_Struct::get();
+ else if (itsinclass)
+  PNF_Struct::get();
+}
+
+void PNF_Class::put(PNF_Object2 & p, String name)
+{
+ if (itsaccess[itsuse] == PUBLIC)
+  PNF_Struct::put(p, name);
+ else if (itsinclass)
+  PNF_Struct::put(p, name);
+
+}
+
+
+Function_Stack & PNF_Class::methods()
+{
+ if (itsallmethodsaccess == PUBLIC || getinclass())
+  return itsmethods;
+ else
+  throw new Exception("Cannot get methods.",__FILE__, __LINE__);
+}
+
+void PNF_Class::put(unsigned long i, Function & f)
+{
+ if (i >= itsmethods.length())
+ {
+  itsmethods.add_function(f);
+ }
+ else
+ {
+  itsmethods.mod_function(i, f);
+ }
+ itsmethodsaccess = PUBLIC;
+}
+
+Function & PNF_Class::get(unsigned long i)
+{
+ if (i >= itsmethods.length())
+ {
+  String s2;
+  s2.from_long(i);
+  throw Exception((String)"PNF_Class::get: Index out of bounds." + (char *)"\n", (char *)__FILE__, __LINE__);
+ }
+ else
+ {
+  if (itsaccess[itsuse] == PUBLIC)
+   itsmethods.get_function(i);
+  else if (itsinclass)
+   itsmethods.get_function(i);
+ }
+}
+
+String PNF_Class::subclass(unsigned long i)
+{
+ for (unsigned long is = i; is >= itssubclasses.length(); --is)
+  itssubclasses.insert();
+
+ return itssubclasses[i];
+}
+
+void PNF_Class::subclass(unsigned long i, String thesubclass)
+{
+ for (unsigned long is = i; is >= itssubclasses.length(); --is)
+  itssubclasses.insert();
+
+ itssubclasses[i] = thesubclass;
+}
+
+unsigned long PNF_Class::subclass_length()
+{
+ return itssubclasses.length();
+}
+
+unsigned long PNF_Class::find_subclass(String thesubclass)
+{
+ unsigned long i;
+ bool found = false;
+ for (i = 0; i < itssubclasses.length(); ++i)
+ {
+  if (itssubclasses[i] == thesubclass)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (!found)
+  return -1;
+ else
+  return i;
+}
+
+void PNF_Class::extend(PNF_VIEW_CONTROL access, PNF_Class & theclass)
+{
+ if (access == PUBLIC)
+ {
+  for (unsigned long i = 0; i < theclass.itsmembers.length(); ++i)
+  {
+   put(theclass.itsmembers[i], theclass.itsmembernames[i]);
+   Use(i);
+   setaccess(theclass.getaccess());
+   put(i, theclass.itsmethods.get_function(i));
+   if (i != 0)
+    setfuncaccess(i, theclass.getfuncaccess(i));
+  }
+ }
+ else
+ {
+  for (unsigned long i = 0; i < theclass.itsmembers.length(); ++i)
+  {
+   put(theclass.itsmembers[i], theclass.itsmembernames[i]);
+   Use(i);
+   setaccess(access);
+   put(i, theclass.itsmethods.get_function(i));
+   setfuncaccess(i, access);
+  }
+ }
+}
+
+void PNF_Class::implement(PNF_VIEW_CONTROL access, PNF_Interface & theinterface)
+{
+ if (access == PUBLIC)
+ {
+  for (unsigned long i = 0; i < theinterface.itsmembers.length(); ++i)
+  {
+   put(theinterface.itsmembers[i], theinterface.itsmembernames[i]);
+   put(i, theinterface.itsmethods.get_function(i));
+  }
+ }
+ else
+ {
+  for (unsigned long i = 0; i < theinterface.itsmembers.length(); ++i)
+  {
+   put(theinterface.itsmembers[i], theinterface.itsmembernames[i]);
+   Use(i);
+   setaccess(access);
+   put(i, theinterface.itsmethods.get_function(i));
+   setfuncaccess(i, access);
+  }
+ }
+}
+
+void PNF_Interface::implement(PNF_VIEW_CONTROL access, PNF_Interface & theinterface)
+{
+
+}
+
+
+template <class T>        
+Array3<T>::Array3(unsigned long s = 1)
+{
+ data = new T[s];
+ size = s;
+}
+
+template <class T>
+Array3<T>::Array3(const Array3 & r)
+{
+ size = r.size;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = r[i];
+}
+
+template <class T>       
+Array3<T>::~Array3()
+{
+ data = NULL;
+}       
+
+template <class T>
+T & Array3<T>::get(unsigned long s)
+{
+ if (s < length())
+ {
+  return data[s];
+ }
+ else
+ {
+  String s2;
+  s2.from_long(s);
+  throw Exception((String)"get: Index Out of Bounds. index = " + (String)s2 + (char *)"\n", (char *)__FILE__, __LINE__);
+ }
+}
+
+template <>
+PNF_Class & Array3<PNF_Class>::get(unsigned long s)
+{
+ if (s < length())
+ {
+  static PNF_Class temp = 0;
+  temp = data[s];
+  if (temp.type() == "")
+  {
+   cout << "NULL...\n";
+   exit(-1);
+  }
+  return temp;
+ }
+ else
+ {
+  String s2;
+  s2.from_long(s);
+  throw Exception((String)"get: Index Out of Bounds. index = " + (String)s2 + (char *)"\n", (char *)__FILE__, __LINE__);
+ }
+}
+
+template <class T>
+void Array3<T>::put(T d, unsigned long s)
+{
+ if (s < length())
+ {
+  data[s] = d;
+ }
+ else
+ {
+  String s2;
+  s2.from_long(s);
+  throw Exception((String)"put: Index Out of Bounds. index = " + s2 + "\n", __FILE__, __LINE__);
+ }
+}
+
+template <class T>
+unsigned long Array3<T>::length() const
+{
+ return size;
+}
+
+template <class T>
+Array3<T> & Array3<T>::operator=(const Array3<T> & rhs)
+{
+ if (this == &rhs)
+ {
+  return *this;
+ }
+  
+ size = rhs.length();
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < length(); ++i)
+  data[i] = rhs.data[i];
+  
+ 
+ return (*this);
+}
+
+template <class T>
+T & Array3<T>::operator[](unsigned long offSet)
+{
+ return (get(offSet));
+}
+
+template <class T>
+void Array3<T>::insert()
+{
+ T * temp = new T[size + 1];
+ for (unsigned long i = 0; i < size; ++i)
+  temp[i] = data[i];
+ temp[size] = 0;
+ 
+ ++size;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = temp[i];
+}
+
+template <>
+void Array3<PNF_Class>::insert()
+{
+ PNF_Class * temp = new PNF_Class[size + 1];
+ memcpy(temp, data, sizeof(data));
+ 
+ ++size;
+ data = new PNF_Class[size];
+
+ memcpy(data, temp, sizeof(temp)); 
+}
+
+template <>
+void Array3<String>::insert()
+{
+ String * temp = new String[size + 1];
+ for (unsigned long i = 0; i < size; ++i)
+  temp[i] = data[i];
+ temp[size + 1] = (char *)"";
+ 
+ ++size;
+ data = new String[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = temp[i];
+}
+
+template <class T>
+void Array3<T>::remove()
+{
+ T * temp = new T[size - 1];
+ for (unsigned long i = 0; i < size - 1; ++i)
+  temp[i] = data[i];
+  
+ --size;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = temp[i];
+}
+
+template <class T>
+void Array3<T>::insert(T d, unsigned long offset)
+{
+ Array<T> d1;
+ unsigned long len;
+ 
+ if (offset == length())
+  len = offset + 1;
+ else if (offset > length())
+  len = offset;
+ else
+  len = length();
+  
+ 
+ for (unsigned long i = 0; i < len; ++i)
+ { 
+  if (i == offset)
+  {
+   if (i != 0)
+    d1.insert();
+   d1[i] = d;
+  }
+  else
+  {   
+   if (i != 0)
+    d1.insert();
+    
+   if (i >= length())
+   {
+   	d1[i] = 0;
+   	continue;
+   }
+   
+   d1[i] = data[i];
+  }
+ }
+ 
+ for (unsigned long i = 0; i < d1.length(); ++i)
+ {
+  if (i >= length())
+   insert();
+  data[i] = d1[i];
+ }
+}
+
+template <>
+void Array3<String>::insert(String d, unsigned long offset)
+{
+ Array<String> d1;
+ unsigned long len;
+ 
+ if (offset == length())
+  len = offset + 1;
+ else if (offset > length())
+  len = offset;
+ else
+  len = length();
+  
+  
+ for (unsigned long i = 0; i < len; ++i)
+ { 
+  if (i == offset)
+  {
+   if (i != 0)
+    d1.insert();
+   d1[i] = d;
+  }
+  else
+  {  
+   if (i != 0)
+    d1.insert();
+    
+   if (i >= length())
+   {
+   	d1[i] = (char *)"";
+   	continue;
+   }
+   d1[i] = data[i];
+  }
+ }
+ 
+ for (unsigned long i = 0; i < d1.length(); ++i)
+ {
+  if (i >= length())
+   insert();
+  data[i] = d1[i];
+ }
+}
+
+template <class T>
+void Array3<T>::remove(unsigned long offset)
+{
+ if (offset >= size)
+  remove();
+  
+ T * d1 = new T[size - 1];
+ for (unsigned long i = 0, j = 0; j < size - 1; ++i, ++j)
+ {
+  if (i == offset)
+  {
+   --j;
+   continue;
+  }
+   
+  d1[j] = data[i];
+ }
+ 
+ --size;
+ delete [] data;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = d1[i];
+}
+
+template <class T>
+void Array3<T>::copy(unsigned long d1, unsigned long d2)
+{
+ insert(data[d1], d2);
+}
+
+template <class T>
+void Array3<T>::move(unsigned long d1, unsigned long d2)
+{
+ copy(d1, d2);
+ data[d1] = 0;
+}
+
+template <>
+void Array3<String>::move(unsigned long d1, unsigned long d2)
+{
+ copy(d1, d2);
+ data[d1] = (char *)"";
+}
+
+
+template <class T>        
+Array4<T>::Array4(unsigned long s = 1)
+{
+ data = new T[s];
+ size = s;
+}
+
+template <class T>
+Array4<T>::Array4(const Array4 & r)
+{
+ size = r.size;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = r[i];
+}
+
+template <class T>       
+Array4<T>::~Array4()
+{
+ data = NULL;
+}       
+
+template <class T>
+T & Array4<T>::get(unsigned long s)
+{
+ if (s < length())
+ {
+  return data[s];
+ }
+ else
+ {
+  String s2;
+  s2.from_long(s);
+  throw Exception((String)"get: Index Out of Bounds. index = " + (String)s2 + (char *)"\n", (char *)__FILE__, __LINE__);
+ }
+}
+
+
+template <class T>
+void Array4<T>::put(T d, unsigned long s)
+{
+ if (s < length())
+ {
+  data[s] = d;
+ }
+ else
+ {
+  String s2;
+  s2.from_long(s);
+  throw Exception((String)"put: Index Out of Bounds. index = " + s2 + "\n", __FILE__, __LINE__);
+ }
+}
+
+template <class T>
+unsigned long Array4<T>::length() const
+{
+ return size;
+}
+
+template <class T>
+Array4<T> & Array4<T>::operator=(const Array4<T> & rhs)
+{
+ if (this == &rhs)
+ {
+  return *this;
+ }
+  
+ size = rhs.length();
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < length(); ++i)
+  data[i] = rhs.data[i];
+  
+ 
+ return (*this);
+}
+
+template <>
+Array4<PNF_Class> & Array4<PNF_Class>::operator=(const Array4<PNF_Class> & rhs)
+{
+ if (this == &rhs)
+ {
+  return *this;
+ }
+  
+ size = rhs.length();
+ data = new PNF_Class[size];
+
+ memcpy(data, rhs.data, sizeof(rhs.data)); 
+  
+ 
+ return (*this);
+}
+
+template <class T>
+T & Array4<T>::operator[](unsigned long offSet)
+{
+ return (get(offSet));
+}
+
+template <class T>
+void Array4<T>::insert()
+{
+ T * temp = new T[size + 1];
+ for (unsigned long i = 0; i < size; ++i)
+  temp[i] = data[i];
+ temp[size] = 0;
+ 
+ ++size;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = temp[i];
+}
+
+template <>
+void Array4<PNF_Class>::insert()
+{
+ PNF_Class * temp = new PNF_Class[size + 1];
+ //for (unsigned long i = 0; i < size; ++i)
+  //temp[i] = data[i];
+ memcpy(temp, data, sizeof(data));
+ 
+ ++size;
+ data = new PNF_Class[size];
+
+ //for (unsigned long i = 0; i < size; ++i)
+  //data[i] = temp[i];
+ memcpy(data, temp, sizeof(temp));
+}
+
+template <>
+void Array4<String>::insert()
+{
+ String * temp = new String[size + 1];
+ for (unsigned long i = 0; i < size; ++i)
+  temp[i] = data[i];
+ temp[size + 1] = (char *)"";
+ 
+ ++size;
+ data = new String[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = temp[i];
+}
+
+template <class T>
+void Array4<T>::remove()
+{
+ T * temp = new T[size - 1];
+ for (unsigned long i = 0; i < size - 1; ++i)
+  temp[i] = data[i];
+  
+ --size;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = temp[i];
+}
+
+template <class T>
+void Array4<T>::insert(T d, unsigned long offset)
+{
+ Array<T> d1;
+ unsigned long len;
+ 
+ if (offset == length())
+  len = offset + 1;
+ else if (offset > length())
+  len = offset;
+ else
+  len = length();
+  
+ 
+ for (unsigned long i = 0; i < len; ++i)
+ { 
+  if (i == offset)
+  {
+   if (i != 0)
+    d1.insert();
+   d1[i] = d;
+  }
+  else
+  {   
+   if (i != 0)
+    d1.insert();
+    
+   if (i >= length())
+   {
+   	d1[i] = 0;
+   	continue;
+   }
+   
+   d1[i] = data[i];
+  }
+ }
+ 
+ for (unsigned long i = 0; i < d1.length(); ++i)
+ {
+  if (i >= length())
+   insert();
+  data[i] = d1[i];
+ }
+}
+
+template <>
+void Array4<String>::insert(String d, unsigned long offset)
+{
+ Array<String> d1;
+ unsigned long len;
+ 
+ if (offset == length())
+  len = offset + 1;
+ else if (offset > length())
+  len = offset;
+ else
+  len = length();
+  
+  
+ for (unsigned long i = 0; i < len; ++i)
+ { 
+  if (i == offset)
+  {
+   if (i != 0)
+    d1.insert();
+   d1[i] = d;
+  }
+  else
+  {  
+   if (i != 0)
+    d1.insert();
+    
+   if (i >= length())
+   {
+   	d1[i] = (char *)"";
+   	continue;
+   }
+   d1[i] = data[i];
+  }
+ }
+ 
+ for (unsigned long i = 0; i < d1.length(); ++i)
+ {
+  if (i >= length())
+   insert();
+  data[i] = d1[i];
+ }
+}
+
+template <class T>
+void Array4<T>::remove(unsigned long offset)
+{
+ if (offset >= size)
+  remove();
+  
+ T * d1 = new T[size - 1];
+ for (unsigned long i = 0, j = 0; j < size - 1; ++i, ++j)
+ {
+  if (i == offset)
+  {
+   --j;
+   continue;
+  }
+   
+  d1[j] = data[i];
+ }
+ 
+ --size;
+ data = new T[size];
+ 
+ for (unsigned long i = 0; i < size; ++i)
+  data[i] = d1[i];
+}
+
+template <class T>
+void Array4<T>::copy(unsigned long d1, unsigned long d2)
+{
+ insert(data[d1], d2);
+}
+
+template <class T>
+void Array4<T>::move(unsigned long d1, unsigned long d2)
+{
+ copy(d1, d2);
+ data[d1] = 0;
+}
+
+template <>
+void Array4<String>::move(unsigned long d1, unsigned long d2)
+{
+ copy(d1, d2);
+ data[d1] = (char *)"";
+}
+
+PNF_BasicFeeling::PNF_BasicFeeling()
+{
+ for (unsigned long i = 0; i < BFEND; ++i)
+ {
+  if (i == 0)
+   continue;
+
+  itsfeelings.insert();
+ }
+
+ for (unsigned long i = 0; i < BFEND; ++i)
+ {
+  if (i == 0)
+   continue;
+
+  itsintensitys.insert();
+ }
+
+ itsindex = 0;
+ itstrigger = "";
+}
+
+PNF_BASIC_FEELING PNF_BasicFeeling::get_feeling(PNF_BASIC_FEELING i)
+{
+ return itsfeelings[i];
+}
+
+unsigned long PNF_BasicFeeling::get_intensity(PNF_BASIC_FEELING i)
+{
+ return itsintensitys[i];
+}
+
+String PNF_BasicFeeling::get_trigger()
+{
+ return itstrigger;
+}
+
+PNF_BASIC_FEELING PNF_BasicFeeling::get_index()
+{
+ return itsindex;
+}
+
+void PNF_BasicFeeling::set_feeling(PNF_BASIC_FEELING i, PNF_BASIC_FEELING f)
+{
+ itsfeelings[i] = f;
+}
+
+void PNF_BasicFeeling::set_intensity(PNF_BASIC_FEELING i, unsigned long it)
+{
+ if (it < 0 || it > 10)
+  throw new Exception("Feeling Intensity Out of Range", __FILE__, __LINE__);
+ itsintensitys[i] = it;
+}
+
+void PNF_BasicFeeling::set_trigger(String t)
+{
+ itstrigger = t;
+}
+
+void PNF_BasicFeeling::set_index(PNF_BASIC_FEELING i)
+{
+ itsindex = i;
+}
+
+
+PNF_Instinct::PNF_Instinct(int i)
+{
+
+}
+
+PNF_BasicFeeling & PNF_Instinct::feeling()
+{
+ return itsfeelings;
+}
+
+Function_Stack & PNF_Instinct::action()
+{
+ return itsactions;
+}
 
 
 #endif // PNF_Types_cpp
