@@ -3506,7 +3506,7 @@ case IESTOREC:
    case IMODT:
         {
          if (reg.operand == 0)
-          reg.accumulator.object().simple().setType(reg.type);
+          reg.accumulator.setType(reg.type);
          else
           crash((char *)"Invalid Operand.");
         }
@@ -3894,7 +3894,7 @@ case IESTOREC:
         {
          if (reg.type == TVOID && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() == reg.calc.object().simple().to_number().get());
            PNF_Boolean b2;
@@ -3946,7 +3946,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() != reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -4001,7 +4001,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() > reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -4045,7 +4045,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() < reg.calc.object().simple().to_number().get());
            PNF_Boolean b2;
@@ -4086,7 +4086,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() >= reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -4130,7 +4130,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() <= reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -11847,6 +11847,7 @@ case IUNIONPUT:
   {
    for (is = i; mem.get(is) != IFORE; ++is)
     ;
+   is += 3;
   }
   else if (reg.accumulator.object().simple().to_boolean().get() == "true")
   {
@@ -11869,9 +11870,9 @@ case IUNIONPUT:
    crash((char *)"Invalid instruction. Not in this version.");
 
   unsigned long is;
-  for (is = 0; mem.get(is) != IFORINIT; --is)
+  for (is = i; mem.get(is) != IFORINIT; --is)
    ;
-
+  
   i = is - 3;
   j = i + 1;
   k = i + 2;
@@ -11899,25 +11900,145 @@ case IUNIONPUT:
    crash((char *)"Invalid instruction. Not in this version.");
 
   
+  // Backup to the beginning of the loop.
+  unsigned long is = 0;
+  for (is = i; mem.get(is) != IFORCOND; --is)
+   ;
+  is += 3;
+
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IFORBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+ }
+ break;
+
+ case IFORBBINIT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(i) != IFORBBB; ++i)
+   ;
+  is += 3;
+
+  i = is + -3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case IFORBBCOND:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
 
   unsigned is = 0;
   if (reg.accumulator.object().simple().to_boolean().get() == "false")
   {
-   // Done with loop
+   for (is = i; mem.get(is) != IFORE; ++is)
+    ;
+   is += 3;
   }
   else if (reg.accumulator.object().simple().to_boolean().get() == "true")
   {
-   // Backup to the beginning of the loop.
-    unsigned long is = 0;
-    for (is = i; mem.get(is) != IFORCOND; --is)
-     ;
-    // Advance...
-    is += 3;
-
-    i = is - 3;
-    j = i + 1;
-    k = i + 2;
+   for (is = i; mem.get(is) != IFORBBB; ++is)
+    ;
   }
+
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IFORBBINC:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(i) != IFORBBINIT; ++i)
+   ;
+  is += 3;
+
+  i = is + -3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case IFORBBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(i) != IFORBB; ++i)
+   ;
+
+  i = is + -3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case IFORBBE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(i) != IFORBBCOND; ++i)
+   ;
+   is += 3;
+
+  i = is + -3;
+  j = i + 1;
+  k = j + 1;
  }
  break;
 

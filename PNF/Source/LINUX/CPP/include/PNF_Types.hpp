@@ -285,6 +285,9 @@ class PNF_Variable
         long getType() const;
         void setType(long t);
 
+        long type() const;
+        void type(long t);
+
 
         void put(PNF_Void v);
         void put(PNF_Boolean b);

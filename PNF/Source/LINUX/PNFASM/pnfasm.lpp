@@ -1403,6 +1403,22 @@ IFORB       "FORB"
 
 IFORE       "FORE"
 
+IFORBB        "FORBB"
+
+IFORBBINIT    "FORBBINIT"
+
+IFORBBCOND    "FORBBCOND"
+
+IFORBBINC     "FORBBINC"
+
+IFORBBB       "FORBBB"
+
+IFORBBE       "FORBBE"
+
+IFOREVER      "FOREVER"
+
+IFOREVERE     "FOREVERE"
+
 ICLASS	"CLASS"
 
 ICLASSVAR	"CLASSVAR"
@@ -2181,55 +2197,71 @@ IFNCFIND		yylval = "221"; return IFNCFIND;
 
 {IFORE}        yylval = "304"; return IFORE;
 
-{ICLASS}		yylval = "305"; return ICLASS;
+{IFORBB}        yylval = "305"; return IFORBB;
 
-{ICLASSVAR}		yylval = "306"; return ICLASSVAR;
+{IFORBBINIT}        yylval = "306"; return IFORBBINIT;
 
-{IENDCLASS}		yylval = "307"; return IENDCLASS;
+{IFORBBCOND}        yylval = "307"; return IFORBBCOND;
 
-{ICLASSNAME}		yylval = "308"; return ICLASSNAME;
+{IFORBBINC}        yylval = "308"; return IFORBBINC;
 
-{ICLASSONAME}		yylval = "309"; return ICLASSONAME;
+{IFORBBB}        yylval = "309"; return IFORBBB;
 
-{ICLASSD}		yylval = "310"; return ICLASSD;
+{IFORBBE}        yylval = "310"; return IFORBBE;
 
-{ICLASSUSE}		yylval = "311"; return ICLASSUSE;
+{IFOREVER}        yylval = "311"; return IFOREVER;
 
-{ICLASSUSING}		yylval = "312"; return ICLASSUSING;
+{IFOREVERE}        yylval = "312"; return IFOREVERE;
 
-{ICLASSUSINGNAME}	yylval = "313"; return ICLASSUSINGNAME;
+{ICLASS}		yylval = "313"; return ICLASS;
 
-{ICLASSGET}		        yylval = "314"; return ICLASSGET;
+{ICLASSVAR}		yylval = "314"; return ICLASSVAR;
 
-{ICLASSPUT}		        yylval = "315"; return ICLASSPUT;
+{IENDCLASS}		yylval = "315"; return IENDCLASS;
 
-{ICLASSTYPE}		    yylval = "316"; return ICLASSTYPE;
+{ICLASSNAME}		yylval = "316"; return ICLASSNAME;
 
-{ICLASSTYPE2}		    yylval = "317"; return ICLASSTYPE2;
+{ICLASSONAME}		yylval = "317"; return ICLASSONAME;
 
-{ICLASSNAME2}		    yylval = "318"; return ICLASSNAME2;
+{ICLASSD}		yylval = "318"; return ICLASSD;
 
-{ICLASSNAME3}		    yylval = "319"; return ICLASSNAME3;
+{ICLASSUSE}		yylval = "319"; return ICLASSUSE;
 
-{ICLASSMETHOD}		    yylval = "320"; return ICLASSMETHOD;
+{ICLASSUSING}		yylval = "320"; return ICLASSUSING;
 
-{ICLASSMETHOD2}		    yylval = "321"; return ICLASSMETHOD2;
+{ICLASSUSINGNAME}	yylval = "321"; return ICLASSUSINGNAME;
 
-{ICLASSMETHODCALL}	    yylval = "322"; return ICLASSMETHODCALL;
+{ICLASSGET}		        yylval = "322"; return ICLASSGET;
 
-{ICLASSMETHODCPARAMS}   yylval = "323"; return ICLASSMETHODCPARAMS;
+{ICLASSPUT}		        yylval = "323"; return ICLASSPUT;
 
-{ICLASSMETHODECPARAMS}  yylval = "324"; return ICLASSMETHODECPARAMS;
+{ICLASSTYPE}		    yylval = "324"; return ICLASSTYPE;
 
-{ICLASSMETHODECALL}	    yylval = "325"; return ICLASSMETHODECALL;
+{ICLASSTYPE2}		    yylval = "325"; return ICLASSTYPE2;
 
-{ICLASSEXTENDACCESS}	yylval = "326"; return ICLASSEXTENDACCESS;
+{ICLASSNAME2}		    yylval = "326"; return ICLASSNAME2;
 
-{ICLASSEXTEND}      	yylval = "327"; return ICLASSEXTEND;
+{ICLASSNAME3}		    yylval = "327"; return ICLASSNAME3;
 
-{ICLASSIMPLEMENTACCESS}	yylval = "328"; return ICLASSIMPLEMENTACCESS;
+{ICLASSMETHOD}		    yylval = "328"; return ICLASSMETHOD;
 
-{ICLASSIMPLEMENT}   	yylval = "329"; return ICLASSIMPLEMENT;
+{ICLASSMETHOD2}		    yylval = "329"; return ICLASSMETHOD2;
+
+{ICLASSMETHODCALL}	    yylval = "330"; return ICLASSMETHODCALL;
+
+{ICLASSMETHODCPARAMS}   yylval = "331"; return ICLASSMETHODCPARAMS;
+
+{ICLASSMETHODECPARAMS}  yylval = "332"; return ICLASSMETHODECPARAMS;
+
+{ICLASSMETHODECALL}	    yylval = "333"; return ICLASSMETHODECALL;
+
+{ICLASSEXTENDACCESS}	yylval = "334"; return ICLASSEXTENDACCESS;
+
+{ICLASSEXTEND}      	yylval = "335"; return ICLASSEXTEND;
+
+{ICLASSIMPLEMENTACCESS}	yylval = "336"; return ICLASSIMPLEMENTACCESS;
+
+{ICLASSIMPLEMENT}   	yylval = "337"; return ICLASSIMPLEMENT;
 
 
 {TVOID}			yylval = yytext; return TVOID;

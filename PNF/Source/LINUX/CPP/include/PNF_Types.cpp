@@ -1343,6 +1343,16 @@ void PNF_Variable::setType(long t)
  itstype = t;
 }
 
+long PNF_Variable::type() const
+{
+ return itssimple.getType();
+}
+
+void PNF_Variable::type(long t)
+{
+ return itssimple.setType(t);
+}
+
 void PNF_Variable::put(PNF_Void v)
 {
  itssimple.put(v);
@@ -2727,7 +2737,7 @@ long PNF_Basic_Object2::getType() const
  switch (type())
  {
   case TSIMPLE:
-   itssimple.getType();
+   itssimple.type();
    break;
    
   // Fall through, here for reminders
@@ -2744,7 +2754,7 @@ void PNF_Basic_Object2::setType(long t)
  switch (type())
  {
   case TSIMPLE:
-   itssimple.setType(t);
+   itssimple.type(t);
    break;
    
   // Fall through, here for reminders
