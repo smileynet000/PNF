@@ -1,0 +1,103 @@
+Copyright (c)  2019  Dennis Earl Smiley.
+    Permission is granted to copy, distribute and/or modify this document
+    under the terms of the GNU Free Documentation License, Version 1.3
+    or any later version published by the Free Software Foundation;
+    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    A copy of the license is included in the section entitled "GNU
+    Free Documentation License".
+
+
+CHANGELOG
+=========
+
+5/25/15 Original a - The first version.
+
+3/31/17 Original a-a Added a section on preprocessing commands.
+
+
+INTRODUCTION
+============
+
+	This tutorial is for the language PNFASM (Portable Numbers Format Assembler). It assumes only that you have learned to use PNF first. By the time you are done, you should be able to write simple programs in PNFASM. I recommend that you follow this tutorial, and then try to come up with a working program of your own at the end of it. So what is PNFASM? It is an assembly language, for PNF. It is the next level up from PNF.
+
+
+THE BASICS
+==========
+
+	You already know how to use PNF, so what's different about PNFASM? It uses "friendly names" instead of numbers to express the ins and outs of the language. Remember how the PNF tutorial was written with friendly names? Well, you can pick out everything but the signature, and that is a valid PNFASM program! But first, I'll show you how to run these programs.
+	Running a PNFASM program is not the same as running a PNF program. The computer can't directly interpret it. So what you need to do, is run it through the PNFASM program. It takes an input file, and an output file. The output file, better have the .pnf extension, if you intend to interpret it. You may also have the .pppnf extension, if it will need preprocessing before it's run. For example, let's take this program here:
+
+---
+hello.pasm
+---
+VERSION TVOID 0V
+
+
+PRINTLN TSTRING "Hello World!"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+
+You would first use this command line:
+
+---
+pnfasm hello.pasm hello.pnf
+---
+
+Then this one to run it:
+
+---
+pnf hello.pnf
+---
+
+The input should have the .pasm extension. That is all there is to running PNFASM programs and creating a PNF file from it! Now, I think you should take a moment to copy and paste all the code I have given you before, and create PNFASM files from it. You should review each one and what it does. Use the "trick" I showed you to take only a valid PNFASM file out of that code. Once you have done that, come back here and read on.
+
+
+COMMENTS IN PNFASM
+==================
+
+	The features in PNFASM are exactly the same as in PNF, except for there is a concept of a comment. Unlike the COMMENT instruction, a PNFASM comment will NOT be embedded into your program. Use it at such times when embedding it is inappropriate, but you still need a comment. Think about what goes on at the lower level while writing your code, although you don't have to think too hard. Here is an example program, with a comment in it:
+
+---
+comment.pasm
+---
+VERSION TVOID 0V
+
+
+; This next line prints "Hello World!"
+PRINTLN TSTRING "Hello World!"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+
+That is that with comments!
+
+
+PREPROCESSING COMMANDS
+======================
+
+If you want, you can use preprocessing commands that will be passed to the lower level. Better use the .pppnf extension if you use those. Just take any preprocessing command that begins with '#', and replace that with '%'. That is a valid preprocessing command. It will be passed to the lower level. For a comment, use the symbol "'!" instead of the quote alone.
+
+If you use an extension of .PPPASM, you may preprocess the PASM file first before PNFASM assembles the file. That's all there is to preprocessing commands!
+
+
+CONCLUSION
+==========
+
+	Well, that didn't take too long, did it? Now you know how to write in the PNFASM language. You would use this language most of the time, and only "tweak" a PNF program. That is that with PNFASM! Now go write your own program in PNFASM to re-enforce the concepts. Thanks for reading this!

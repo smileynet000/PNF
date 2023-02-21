@@ -1,0 +1,38 @@
+Copyright Cost
+==============
+
+1. pnf
+2. PNF program
+3. PNF2CPP
+4. PNFMKLIB
+5. PNFPP
+6. PNFASM
+7. PNFHA
+8. language
+
+===
+8 * $45 = $360
+
+===
+Documentation
+=============
+
+1. instruction_set
+2. PNF-extensions
+3. PNF-tutorial
+4. PNFPP-tutorial
+5. PNFASM-extensions
+6. PNFASM-tutorial
+7. PNFHA
+8. PNFHA-extensions
+9. PNFHA-tutorial
+
+===
+9 * $45 = $405
+
+===
+1. $360 Source Code
+2. $405 Documentation
+
+===
+$765 Total Cost

@@ -1,0 +1,4 @@
+load aload true; ? println "true"; : println "false";;
+
+
+end 0;

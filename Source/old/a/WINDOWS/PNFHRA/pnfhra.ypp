@@ -1,0 +1,6180 @@
+%{
+/* Prologue */
+/*
+Copyright (C) 2019 Dennis Earl Smiley
+
+This file is part of pnfhra.
+
+    pnfhra is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    pnfhra is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with pnfhra.  If not, see <https://www.gnu.org/licenses/>. 
+*/
+/*
+CHANGELOG
+=========
+
+5/3/19 Origional a-a-a - 1. The first version.
+			 2. Added structs.
+*/
+#include <deslib/deslib.hpp>
+#include <cmath>
+#include <sstream>
+#include <typeinfo>
+
+#include "..\pnf.hpp"
+
+
+#define YYSTYPE PNF_Variable
+#define YYDEBUG 1
+
+
+int main(int argc, char ** argv);
+void yyerror(char const * c);
+String get_extension(String fileName);
+String strip_extension(String fileName);
+void preprocess(String arg);
+int conprint(const char * format, ...);
+void movelineno(unsigned long index, unsigned long line);
+void sort(Array<unsigned long> & array);
+void sort_lines(Array<String> & array);
+int yylex();
+String strip_quotes(String str);
+FILE * output;
+
+PNF_Type_Enum exptype;
+
+
+class Var
+{
+ private:
+  String itsname;
+  PNF_Variable itsvalue;
+  unsigned long itsaddress;
+
+ public:
+  Var();
+  Var(int v);
+
+
+  void name(String name);
+  String name();
+
+  void value(PNF_Variable value);
+  PNF_Variable value();
+
+  void address(unsigned long a);
+  unsigned long address();
+
+  Var operator=(const Var & v);
+};
+
+Var::Var()
+{
+ itsname = "";
+ itsvalue.to_number().put(0);
+ itsaddress = 0;
+}
+
+Var::Var(int v)
+{
+ itsname = "";
+ PNF_Number n(v);
+ PNF_Variable p(n);
+ itsvalue = p;
+ itsaddress = 0;
+}
+
+void Var::name(String name)
+{
+ itsname = name;
+}
+
+String Var::name()
+{
+ return itsname;
+}
+
+void Var::value(PNF_Variable value)
+{
+ itsvalue = value;
+}
+
+PNF_Variable Var::value()
+{
+ return itsvalue;
+}
+
+void Var::address(unsigned long a)
+{
+ itsaddress = a;
+}
+
+unsigned long Var::address()
+{
+ return itsaddress;
+}
+
+Var Var::operator=(const Var & v)
+{
+ if (this == &v)
+  return *this;
+
+ itsname = v.itsname;
+ itsvalue = v.itsvalue;
+ itsaddress = v.itsaddress;
+  
+  
+ return (*this);
+}
+
+
+class CLabel
+{
+ private:
+  String itsname;
+  unsigned long itsaddress;
+  bool itsdeclared;
+
+ public:
+  CLabel();
+  CLabel(int i);
+
+
+  void name(String name);
+  String name();
+
+  void address(unsigned long a);
+  unsigned long address();
+
+  void declared(bool d);
+  bool declared();
+};
+
+CLabel::CLabel()
+{
+ itsname = "";
+ itsaddress = 0;
+}
+
+CLabel::CLabel(int i)
+{
+ itsname = "";
+ itsaddress = i;
+ itsdeclared = false;
+}
+
+void CLabel::name(String name)
+{
+ itsname = name;
+}
+
+String CLabel::name()
+{
+ return itsname;
+}
+
+void CLabel::address(unsigned long a)
+{
+ itsaddress = a;
+}
+
+unsigned long CLabel::address()
+{
+ return itsaddress;
+}
+
+void CLabel::declared(bool d)
+{
+ itsdeclared = d;
+}
+
+bool CLabel::declared()
+{
+ return itsdeclared;
+}
+
+class CELabel : public CLabel
+{
+ protected:
+  static unsigned long itshevents;
+  static unsigned long itsshevents;
+  static unsigned long itsevents;
+  static unsigned long itsexceptions;
+  static unsigned long itsints;
+
+ 
+ public:
+  CELabel();
+  CELabel(int i);
+
+  static void inchevents();
+  static void dechevents();
+  static unsigned long hevents();
+
+  static void incshevents();
+  static void decshevents();
+  static unsigned long shevents();
+
+  static void incevents();
+  static void decevents();
+  static unsigned long events();
+
+  static void incexceptions();
+  static void decexceptions();
+  static unsigned long exceptions();
+
+  static void incints();
+  static void decints();
+  static unsigned long ints();
+};
+
+
+unsigned long CELabel::itshevents = 0;
+unsigned long CELabel::itsshevents = 0;
+unsigned long CELabel::itsevents = 0;
+unsigned long CELabel::itsexceptions = 0;
+unsigned long CELabel::itsints = 0;
+
+CELabel::CELabel() : CLabel()
+{
+
+}
+
+CELabel::CELabel(int i) : CLabel(i)
+{
+
+}
+
+void CELabel::inchevents()
+{
+ ++itshevents;
+}
+
+void CELabel::dechevents()
+{
+ --itshevents;
+}
+
+unsigned long CELabel::hevents()
+{
+ return itshevents;
+}
+
+void CELabel::incshevents()
+{
+ ++itsshevents;
+}
+
+void CELabel::decshevents()
+{
+ --itsshevents;
+}
+
+unsigned long CELabel::shevents()
+{
+ return itsshevents;
+}
+
+void CELabel::incevents()
+{
+ ++itsevents;
+}
+
+void CELabel::decevents()
+{
+ --itsevents;
+}
+
+unsigned long CELabel::events()
+{
+ return itsevents;
+}
+
+void CELabel::incexceptions()
+{
+ ++itsexceptions;
+}
+
+void CELabel::decexceptions()
+{
+ --itsexceptions;
+}
+
+unsigned long CELabel::exceptions()
+{
+ return itsexceptions;
+}
+
+void CELabel::incints()
+{
+ ++itsints;
+}
+
+void CELabel::decints()
+{
+ --itsints;
+}
+
+unsigned long CELabel::ints()
+{
+ return itsints;
+}
+
+class Param
+{
+ protected:
+  String itsname;
+  PNF_Variable itsparam;
+
+
+ public:
+  Param(int i = 0);
+
+  String name();
+  void name(String n);
+
+  PNF_Variable param();
+  void param(PNF_Variable v);
+};
+
+Param::Param(int i)
+{
+ itsname = "";
+ PNF_Void v;
+ itsparam.put(v);
+}
+
+String Param::name()
+{
+ return itsname;
+}
+
+void Param::name(String n)
+{
+ itsname = n;
+}
+
+PNF_Variable Param::param()
+{
+ return itsparam;
+}
+
+void Param::param(PNF_Variable v)
+{
+ itsparam = v;
+}
+
+class Function
+{
+ protected:
+  PNF_Variable itsret;
+  String itsname;
+  Array<Param> itsparam;
+
+ public:
+  Function();
+  Function(int i);
+
+  Function(const Function & f);
+
+
+  ~Function();
+
+
+ PNF_Variable ret();
+ String name();
+ Array<Param> params();
+ PNF_Variable param(unsigned long i);
+ String pname(unsigned long i);
+
+ void ret(PNF_Variable r);
+ void name(String n);
+ void params(Array<Param> p);
+ void param(unsigned long i, PNF_Variable v);
+ void pname(unsigned long i, String n);
+};
+
+Function::Function()
+{
+ PNF_Void v;
+ PNF_Variable v2(v);
+ itsret = v2;
+
+ itsname = "";
+}
+
+Function::Function(int i)
+{
+ Function();
+}
+
+Function::Function(const Function & f)
+{
+ itsret = f.itsret;
+ itsname = f.itsname;
+ itsparam = f.itsparam;
+}
+
+Function::~Function()
+{
+
+}
+
+PNF_Variable Function::ret()
+{
+ return itsret;
+}
+
+String Function::name()
+{
+ return itsname;
+}
+
+Array<Param> Function::params()
+{
+ return itsparam;
+}
+
+PNF_Variable Function::param(unsigned long i)
+{
+ return itsparam[i].param();
+}
+
+String Function::pname(unsigned long i)
+{
+ return itsparam[i].name();
+}
+
+void Function::ret(PNF_Variable r)
+{
+ itsret = r;
+}
+
+void Function::name(String n)
+{
+ itsname = n;
+}
+
+void Function::params(Array<Param> p)
+{
+ itsparam = p;
+}
+
+void Function::param(unsigned long i, PNF_Variable v)
+{
+ itsparam[i].param(v);
+}
+
+void Function::pname(unsigned long i, String n)
+{
+ itsparam[i].name(n);
+}
+
+class Function_Stack
+{
+ protected:
+  Array<Function> itsstk;
+
+ 
+ public:
+  Function_Stack(int i = 0);
+
+  Array<Function> get();
+  
+  void set(Array<Function> f);
+
+  void add_function(Function f);
+  Function get_function(unsigned long i);
+  Function get_function(String n, bool & f);
+  void mod_function(unsigned long i, Function f);
+
+ unsigned long find_duplicate(Function f, bool & b);
+};
+
+Function_Stack::Function_Stack(int i)
+{
+
+}
+
+Array<Function> Function_Stack::get()
+{
+ return itsstk;
+}
+  
+void Function_Stack::set(Array<Function> f)
+{
+ itsstk = f;
+}
+
+void Function_Stack::add_function(Function f)
+{
+ bool b = false;
+ unsigned long index = find_duplicate(f, b);
+ if (!b)
+ {
+  if (itsstk.length() != 1)
+   itsstk.insert();
+
+  itsstk[itsstk.length() - 1] = f;
+ }
+}
+
+Function Function_Stack::get_function(unsigned long i)
+{
+ return itsstk[i];
+}
+
+Function Function_Stack::get_function(String n, bool & f)
+{
+ Function itsnull;
+ bool found = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  String name = itsstk[i].name();
+  if (name == n)
+  {
+   found = true;
+   break;
+  }
+ }
+
+ if (found == false)
+ {
+  f = false;
+  return itsnull;
+ }
+ else
+ {
+  f = true;
+  return itsstk[i];
+ }
+}
+
+void Function_Stack::mod_function(unsigned long i, Function f)
+{
+ itsstk[i] = f;
+}
+
+unsigned long Function_Stack::find_duplicate(Function f, bool & b)
+{
+ unsigned long ret;
+ b = false;
+ unsigned long i;
+ for (i = 0; i < itsstk.length(); ++i)
+ {
+  if (itsstk[i].name() == f.name())
+  {
+   b = false;
+   if (itsstk[i].ret().getm() == f.ret().getm())
+   {
+    for (unsigned j = 0; j < itsstk[i].params().length(); ++j)
+    {
+     if (itsstk[i].param(j).getm() != f.param(j).getm())
+      b = true;
+    }
+   }
+  }
+ }
+
+ ret = i;
+ return ret;
+}
+
+class Struct
+{
+ protected:
+  String itsname;
+  Array<Var> itsvars;
+
+ public:
+  Struct(int i = 0);
+
+  String name();
+  void name(String n);
+
+  Array<Var> vars();
+  
+  Var var(unsigned long i);
+  void var(unsigned long i, Var v);
+
+  unsigned long vnumber();
+};
+
+Struct::Struct(int i)
+{
+
+}
+
+String Struct::name()
+{
+ return itsname;
+}
+
+void Struct::name(String n)
+{
+ itsname = n;
+}
+
+Array<Var> Struct::vars()
+{
+ return itsvars;
+}
+  
+Var Struct::var(unsigned long i)
+{
+if (i >= itsvars.length())
+ {
+  for (unsigned long j = i; j >= itsvars.length(); --j)
+   itsvars.insert();
+ }
+ return itsvars[i];
+}
+
+void Struct::var(unsigned long i, Var v)
+{
+ if (i >= itsvars.length())
+ {
+  for (unsigned long j = i; j >= itsvars.length(); --j)
+   itsvars.insert();
+ }
+ itsvars[i] = v;
+}
+
+unsigned long Struct::vnumber()
+{
+ return itsvars.length();
+}
+
+
+class ASTNode
+{
+ protected:
+  String name;
+  Array<String> value;
+  unsigned long valuecount;
+
+
+ public:
+  ASTNode(const String n = "");
+  ASTNode(char * n);
+  ASTNode(const Array<String> v, const String n = "");
+	
+  ASTNode(ASTNode & n);
+
+  ~ASTNode();
+
+  
+  String getName();
+  Array<String> getValue();
+
+  void setName(const String n);
+  void setValue(const Array<String> v);
+
+  void setNode(const ASTNode n);
+
+
+  int conprint(const char * format, ...);
+
+
+  ASTNode operator=(ASTNode & n);
+};
+
+ASTNode::ASTNode(const String n)
+{
+ name = n;
+ valuecount = 0;
+}
+
+ASTNode::ASTNode(char * n)
+{
+ name = n;
+ valuecount = 0;
+}
+
+ASTNode::ASTNode(const Array<String> v, const String n)
+{
+ name = n;
+ value = v;
+ valuecount = value.length();
+}
+
+ASTNode::ASTNode(ASTNode & n)
+{
+ name = n.getName();
+ 
+ for (unsigned long i = 0; i < n.value.length(); ++i)
+ {
+  if (i != 0)
+   value.insert();
+
+  value[i] = n.value[i];
+ }
+}
+
+ASTNode::~ASTNode()
+{
+ 
+}
+
+String ASTNode::getName()
+{
+ return name;
+}
+
+Array<String> ASTNode::getValue()
+{
+ return value;
+}
+
+void ASTNode::setName(String n)
+{
+ name = n;
+}
+
+void ASTNode::setValue(Array<String> v)
+{
+ for (unsigned long i = 0; i < v.length(); ++i)
+ {
+  if (i != 0)
+   value.insert();
+
+  value[i] = v[i];
+ }
+}
+
+void ASTNode::setNode(ASTNode n)
+{
+ name = n.getName();
+ 
+ for (unsigned long i = 0; i < n.value.length(); ++i)
+ {
+  if (i != 0)
+   value.insert();
+
+  value[i] = n.value[i];
+ }
+}
+
+int ASTNode::conprint(const char * format, ...)
+{
+ char outbuffer[256];
+
+
+ va_list arg;
+ int done = 0;
+
+ va_start(arg, format);
+
+ value.insert();
+ done = vsnprintf(outbuffer, 256, format, arg);
+ String str = "";
+ if (outbuffer != NULL)
+  str += outbuffer;
+ value[valuecount] = str;
+ ++valuecount;
+
+ va_end(arg);
+
+
+ return done;
+}
+
+ASTNode ASTNode::operator=(ASTNode & n)
+{
+ if (this == &n)
+  return *this;
+
+ name = n.name;
+ value = n.value;
+
+ return *this; 
+}
+
+class ASTTree
+{
+ protected:
+  Array<ASTNode *> nodes;
+
+
+ public:
+  ASTTree();
+  ASTTree(ASTTree & t);
+  ~ASTTree();
+
+
+  void add_node(ASTNode & node);
+  void remove_node();
+  void remove_node(String n);
+
+  ASTNode & getNode(String n);
+  ASTNode & getNode(unsigned long offset);
+  void setNode(String n, ASTNode & node);
+  void setNode(unsigned long offset, ASTNode & node);
+
+  unsigned long nodenumber();
+};
+
+ASTTree::ASTTree()
+{
+ nodes[0] = 0;
+}
+
+ASTTree::ASTTree(ASTTree & t)
+{
+ nodes = t.nodes;
+}
+
+ASTTree::~ASTTree()
+{
+ for (unsigned long i = 1; i < nodenumber(); ++i)
+  remove_node();
+}
+
+void ASTTree::add_node(ASTNode & node)
+{
+ if (nodes.length() == 1 && nodes[0] == NULL)
+  nodes[0] = new ASTNode (node);
+ else
+ {
+  nodes.insert();
+  nodes[nodes.length() - 1] = new ASTNode(node);
+ }
+}
+
+void ASTTree::remove_node()
+{
+ if (nodes.length() > 1)
+ {
+  delete nodes[nodes.length() - 1];
+  nodes[nodes.length() - 1] = NULL;
+  nodes.remove();
+ }
+ else if (nodes.length() == 1 && nodes[0] != NULL)
+ {
+  delete nodes[0];
+  nodes[0] = NULL;
+ }
+ else
+ {
+  cout << "* ERROR: Called ASTTree::remove_node(), but nothing to do." << endl;
+  exit(-1);
+ }
+}
+
+void ASTTree::remove_node(String n)
+{
+ for (unsigned long i = 0; i < nodes.length(); ++i)
+ {
+  if (nodes[i]->getName().getString() == n.getString())
+  {
+   nodes.remove(i);
+  }
+ }
+}
+
+ASTNode & ASTTree::getNode(String n)
+{
+ for (unsigned long i = 0; i < nodes.length(); ++i)
+ {
+  if (nodes[i]->getName().getString() == n.getString())
+   return *nodes[i];
+ }
+}
+ 
+ASTNode & ASTTree::getNode(unsigned long offset)
+{
+ if (offset < nodes.length())
+ {
+  return *nodes[offset];
+ }
+ else if (offset < 0 || offset > nodes.length())
+ {
+  String errormsg = "Index out of bounds. node = ";
+  String temp;
+  char temp2[33];
+  itoa(offset, temp2, 10);
+  temp = temp2;
+  errormsg += temp;
+  cout << "* ERROR: " << errormsg.getString().c_str() << endl;
+  exit(-1);
+ }
+}
+
+void ASTTree::setNode(String n, ASTNode & node)
+{
+ for (unsigned long i = 0; i < nodes.length(); ++i)
+ {
+  if (nodes[i]->getName().getString() == n.getString())
+  {
+   nodes[i] = NULL;
+   nodes[i] = new ASTNode(node);
+  }
+ }
+}
+
+void ASTTree::setNode(unsigned long offset, ASTNode & node)
+{
+ if (offset < nodes.length())
+ {
+  nodes[offset] = NULL;
+  nodes[offset] = new ASTNode(node);
+ }
+ else
+ {
+  String errormsg = "Index out of bounds. node = ";
+  String temp;
+  char temp2[33];
+  itoa(offset, temp2, 10);
+  temp = temp2;
+  errormsg += temp;
+  cout << "* ERROR: " << errormsg.getString().c_str() << endl;
+  exit(-1);
+ }
+}
+
+unsigned long ASTTree::nodenumber()
+{
+ return nodes.length();
+}
+
+
+unsigned long scope = 0;
+Array< Array<Var> > varTable;
+Array<CLabel> labelTable;
+Array<CELabel> eventLabelTable;
+Array<CLabel> parameterTable;
+
+Array<String> out;
+char outbuffer[256];
+unsigned long outcount;
+
+Function_Stack funcs;
+unsigned long paramcount;
+unsigned long paramcount2;
+Function * current_func;
+unsigned long current_param = 0;
+
+Array<Struct> structs;
+unsigned long struct_counter = 0;
+unsigned long svarcounter = 0;
+
+
+ASTTree tree;
+%}
+/* Bison Declarations */
+%debug
+
+
+%expect 20
+%error-verbose
+
+
+%left OPINC OPDEC
+%left NEG
+%left OPNOT OPBTNOT
+%left OPAMP
+%right OPPOWER OPROOT
+%left OPTIMES OPDIV OPMODULUS
+%left OPMINUS OPPLUS
+%left OPBTSL OPBTSR
+%left OPLSS OPLEQU OPGTR OPGEQU
+%left OPEQU OPNEQU
+%left OPBTXOR OPBTOR
+%left OPAND
+%left OPOR
+%right OPEQUAL
+
+%token LEFTP
+%token RIGHTP
+%token LEFTB
+%token RIGHTB
+
+%token VOIDV
+%token BOOLEANV
+%token NUMBERV
+%token CHARACTERV
+%token STRINGV
+
+%token SEND
+%token COMMA
+
+%token OPEQUAL
+%token OPPLUS
+%token OPMINUS
+%token OPTIMES
+%token OPDIV
+%token OPMODULUS
+%token OPPOWER
+%token OPROOT
+%token OPINC
+%token OPDEC
+%token OPAND
+%token OPAMP
+%token OPOR
+%token OPNOT
+%token OPQUES
+%token OPCOLON
+%token OPSUB
+%token OPEQU
+%token OPNEQU
+%token OPGTR
+%token OPLSS
+%token OPLEQU
+%token OPGEQU
+%token OPBTOR
+%token OPBTXOR
+%token OPBTNOT
+%token OPBTSL
+%token OPBTSR
+%token OPSTR
+
+%token ID
+
+%token VAR
+%token PRINT
+%token PRINTLN
+%token EPRINT
+%token EPRINTLN
+%token END
+%token ASM
+%token TYPE
+%token READ
+%token LOAD
+%token LTYPE
+%token GOTO
+%token GTYPE
+%token ST
+%token PUSH
+%token POP
+%token TYPEOF
+%token RTYPE
+%token ATOC
+%token SWITCH
+%token CSWITCH
+%token CRASH
+%token VERSION
+%token VTYPE
+%token HALT
+%token MODT
+%token RETURN
+%token GOSUB
+%token SUB
+%token EVENT
+%token STYPE
+%token ATYPE
+%token CTYPE
+%token CMTYPE
+%token BFMODEC
+%token FMODEC
+%token UNREGISTER
+%token REGISTER
+%token REREGISTER
+%token STORE
+%token IF
+%token ELSE
+%token CASE
+%token CCASE
+%token DEFAULT
+%token CDEFAULT
+%token BREAK
+%token LABEL
+%token WHILE
+%token ADDRESSOF
+%token ADD2V
+%token STOREA
+%token DOWHILE
+%token DOFOR
+%token FOR
+%token FVAR
+%token FOREVER
+%token CONTINUE
+%token CHECK
+%token HCMNT
+%token FMODE
+%token FOPEN
+%token FCLOSE
+%token FEOF
+%token FPRINT
+%token FPRINTLN
+%token FREAD
+%token MEML
+%token ENUM
+%token ENUMV
+%token VTYPE2
+%token RANGE
+%token RTYPE2
+%token OPDOT
+%token RANGEV
+%token OPLSQ
+%token OPRSQ
+%token ARRAY
+%token BLANK
+%token PNFASM
+%token LENGTH
+%token DUP
+%token THEN
+%token ENDIF
+%token DONEIF
+%token ATOSP
+%token SPTOA
+%token FUNCTION
+%token STRUCT
+%token STRUCTD
+
+
+%token PBIN
+%token PPBIN
+%token PLIB
+
+%token PINCLUDE
+%token PIMPORT
+%token PDEFINE
+%token PMACRO
+%token PENDM
+%token PUNDEF
+%token PIFDEF
+%token PIFNDEF
+%token PELSE
+%token PENDIF
+%token PPDATE
+%token PPTIME
+%token PPLINE
+%token PPFILE
+%token PPCDATE
+%token PPCTIME
+
+%token PPINCLUDE
+%token PPIMPORT
+%token PPDEFINE
+%token PPMACRO
+%token PPENDM
+%token PPUNDEF
+%token PPIFDEF
+%token PPIFNDEF
+%token PPELSE
+%token PPENDIF
+%token PPPDATE
+%token PPPTIME
+%token PPPLINE
+%token PPPFILE
+%token PPPCDATE
+%token PPPCTIME
+
+%%
+/* Grammar Rules */
+
+input:	// Empty
+	| input line {  }
+	;
+
+line:	{
+	}
+	"\n"
+	| statement
+	| error		{ yyerrok; }
+	;
+
+statement:	{
+		}
+		stmt
+		| statement COMMA stmt
+		;
+
+stmt:		control_statement { }
+		| SEND { conprint("VOID TVOID 0V\n"); }
+		| expression_statement  { }
+		| declaration_statement  { }
+		| label_statement  { }
+		| command_statement  { }
+		| statement_block  {
+				   }
+		| pp_directive
+		| pp_statement
+		;
+
+expression_statement:	expression SEND
+			{
+			}
+			;
+
+declaration_statement:	declaration SEND
+			{
+			}
+			;
+
+command_statement:	command SEND
+			{
+			}
+			;
+
+label_statement:	ID OPCOLON 
+			{
+			 conprint("%s:\n", $1.to_string().get().getString().c_str());
+			}
+			| SUB ID OPCOLON
+			{
+			 conprint("sub %s:\n", $1.to_string().get().getString().c_str());
+			}
+			| EVENT ID OPCOLON
+			{
+			 conprint("event %s:\n", $1.to_string().get().getString().c_str());
+			}
+			;
+
+control_statement:	if_statement
+			{
+			}
+			| switch_statement
+			{
+			}
+			| loop_statement
+			{
+			}
+			;
+
+if_statement:		IF LEFTP
+			{
+			 conprint("if ({\n");
+			} 
+			stmt 
+			RIGHTP
+			{
+			 conprint ("\n})");
+			}
+			THEN			
+			{
+			 conprint(" then\n");			 
+			}
+			stmt
+			{
+			}
+			ENDIF
+			{
+			 conprint("\nendif\n");
+			}
+			opt_else
+			{
+			}
+			eif			
+			{
+			 conprint("\ndoneif\n");
+			}
+			;
+
+opt_else:		| ELSE
+			{
+			 conprint("\nelse\n");
+			}
+			stmt
+			ENDIF
+			{
+			 conprint("\nendif\n");
+			}
+			;
+
+eif:			DONEIF
+			;
+			
+switch_statement:	SWITCH LEFTP expression RIGHTP LEFTB
+			{
+			 conprint("switch (%s)\n{", $3.to_string().get().getString().c_str());
+			}
+			case_statements
+			{
+
+			}
+			opt_default_statement
+			{
+			}
+			{
+
+			}
+			RIGHTB
+			{
+			}
+			| CSWITCH LEFTP
+			{
+			 conprint("cswitch (");
+			}
+			stmt 
+			RIGHTP
+			{
+			 conprint(")\n");
+			}
+			LEFTB
+			{
+			 conprint("{\n");
+			}
+			case_statements2
+			{
+			}
+			RIGHTB
+			{
+			 conprint("}\n");
+			}
+			;
+
+case_statements:	{
+			}
+			case_statement
+			| case_statements case_statement
+			;
+
+case_statement:		CASE expression
+			{
+			 conprint("case %s:\n", $2.to_string().get().getString().c_str());
+			}
+			OPCOLON stmt
+			{
+			}
+			;
+
+opt_default_statement:	| DEFAULT OPCOLON
+			{
+			 conprint("default:\n");
+			}
+			stmt
+			{
+
+			}
+			;
+
+case_statements2:	{
+			}
+			case_statement2
+			| case_statements2 case_statement2
+			;
+
+case_statement2:	CCASE expression
+			{
+			 conprint("ccase %s:\n", $2.to_string().get().getString().c_str());
+			}
+			OPCOLON
+			{
+			}
+			stmt
+			{
+			}
+			;
+
+opt_default_statement2:	| CDEFAULT OPCOLON
+			{
+			 conprint("cdefault:\n");
+			}
+			stmt
+			{
+
+			}
+			;
+
+loop_statement:		{
+			}
+			while_loop
+			{
+			}
+			| whileb_loop
+			{
+			}
+			| for_loop
+			{
+			}
+			| forb_loop
+			{
+			}
+			| forever_loop
+			{
+			}
+			{
+			}
+			;
+
+while_loop:		WHILE LEFTP
+			{
+			 conprint("while (");
+			}
+			stmt
+			{
+			}
+			RIGHTP
+			{
+			 conprint(")\n");
+			}
+			stmt
+			{
+			}
+			;
+
+whileb_loop:		{
+			}
+			DOWHILE
+			{
+			 conprint("dowhile\n");
+			}
+			stmt
+			WHILE 
+			{
+			 conprint("while");
+			}
+			LEFTP
+			{
+			 conprint("(");
+			}
+			stmt
+			{
+			}
+			RIGHTP
+			{
+			 conprint(")");
+			}
+			;
+
+for_loop:		{
+			}
+			FOR LEFTP
+			{
+			 conprint("for (");
+			}
+			stmt 
+			SEND	// Initialization
+			{
+			 conprint ("; ");
+			}
+			stmt
+			SEND	// Condition
+			{
+			 conprint("; ");
+			}
+			stmt		// Increment Statement
+			{
+			}
+			RIGHTP
+			{
+			 conprint(")\n");
+			}
+			stmt
+			{
+			}
+			;
+
+forb_loop:		DOFOR
+			{
+			 conprint("dofor\n");
+			}
+			stmt
+			{
+			}
+			FOR LEFTP
+			{
+			 conprint("for (");
+			}
+			stmt
+			SEND	// Initialization
+			{
+			 conprint("; ");
+			}
+			stmt
+			SEND	// Condition
+			{
+			 conprint("; ");
+			}
+			stmt		// Increment Statement
+			{
+			}
+			RIGHTP
+			{
+			 conprint(")");
+			}
+			;
+
+forever_loop:		FOREVER 
+			{
+			 conprint("forever\n");
+			}
+			stmt
+			{
+			}
+
+statement_block:	LEFTB
+			{
+			 conprint("{\n");
+			}
+			statements
+			RIGHTB
+			{
+			 conprint("}\n");
+			}
+			;
+
+statements:		statement
+			{
+			}
+			| statement statements
+			{
+			}
+			;
+
+expression:	void_expression { exptype = TVOID; }
+		| boolean_expression
+		{
+		 exptype = TBOOLEAN;		 
+		}
+		| number_expression { exptype = TNUMBER; }
+		| character_expression { exptype = TCHARACTER; }
+		| string_expression { exptype = TSTRING; }
+		| id_expression
+		{		 
+		 exptype = (PNF_Type_Enum)$$.getType();
+		}
+		| relational_expression { exptype = TBOOLEAN; }
+		| mixed_expression { exptype = (PNF_Type_Enum)$$.getType(); }
+		| function_expression { exptype = (PNF_Type_Enum)$$.getType(); }
+		;
+
+void_expression:
+			VOIDV
+			{
+		 	 PNF_String s("0V");
+			 $$.put(s);
+			}
+			| LEFTP void_expression RIGHTP
+			{
+			 $$ = $2;
+			}
+			;
+
+boolean_expression:	BOOLEANV 
+			{ 
+			 $$ = $1;
+			}
+			| OPNOT boolean_expression 
+			{
+			 bool b;
+			 String str = $2.to_boolean().get();
+
+			 if (str.getString() == "true")
+			  b = true;
+			 else
+			  b = false;
+
+			 PNF_Boolean b2(b);
+			 b2.opnot();
+			 $$.put(b2);
+			}
+			| boolean_expression OPAND boolean_expression
+			{
+			 String bl = $3.to_boolean().get();
+			 bool b;
+			
+			 if (bl.getString() == "true")
+			  b = true;
+			 else if (bl.getString() == "false")
+			  b = false;
+			 else
+			  b = false;
+
+			 PNF_Boolean b2($1.to_boolean());
+			 b2.opand(b);
+			 $$.put(b2);
+			}
+			| boolean_expression OPOR boolean_expression
+			{
+			 String bl = $3.to_boolean().get();
+			 bool b;
+			
+			 if (bl.getString() == "true")
+			  b = true;
+			 else if (bl.getString() == "false")
+			  b = false;
+			 else
+			  b = false;
+
+			 PNF_Boolean b2($1.to_boolean());
+			 b2.opor(b);
+			 $$.put(b2);
+			}
+			| LEFTP boolean_expression RIGHTP
+			{
+			 $$ = $2;
+			}
+			;
+
+number_expression:	NUMBERV
+			{
+			 PNF_Number n(yylval.to_number().get());
+			 $$.put(n);
+			}
+			| number_expression OPPLUS number_expression	
+			{
+			 double d2 = $2.to_number().get();
+			 double d1 = $1.to_number().get();
+			 double d3 = d1 + d2;
+			 PNF_Number n(d3);
+			 $$.put(n);
+			}
+			| number_expression OPMINUS number_expression
+			{
+			 double d = $2.to_number().get();
+			 $1.to_number().sub(d);
+			 $$ = $1;
+			}
+			| number_expression OPTIMES number_expression
+			{
+			 double d = $2.to_number().get();
+			 $1.to_number().mul(d);
+			 $$ = $1;
+			}
+			| number_expression OPDIV number_expression
+			{
+			 double d = $2.to_number().get();
+			 $1.to_number().div(d);
+			 $$ = $1;
+			}
+			| number_expression OPMODULUS number_expression
+			{
+			 double d = $2.to_number().get();
+			 $1.to_number().mod(d);
+			 $$ = $1;
+			}
+			| OPMINUS number_expression	%prec NEG	
+			{
+			 char * str = "-";
+			 strcat(str, $2.to_string().get().getString().c_str());
+			 PNF_String s(str);
+			 PNF_Variable v(s);
+			 $$ = v;
+			}
+			| number_expression OPPOWER number_expression	
+			{
+			 double d = $2.to_number().get();
+			 $1.to_number().pow(d);
+			 $$ = $1;
+			}
+			| number_expression OPROOT number_expression
+			{
+			 double d = $2.to_number().get();
+			 $1.to_number().root(d);
+			 $$ = $1;
+			}
+			| OPINC number_expression
+			{
+			 PNF_Number n($2.to_number().get());
+			 n.inc(1);
+			 $$.put(n);
+			}
+			| number_expression OPINC
+			{
+			 PNF_Number n($1.to_number().get());
+			 $$.put(n);
+			 n.inc(1);
+			}
+			| OPDEC number_expression
+			{
+			 PNF_Number n($2.to_number().get());
+			 n.dec(1);
+			 $$.put(n);
+			}
+			| number_expression OPDEC
+			{
+			 PNF_Number n($1.to_number().get());
+			 $$.put(n);
+			 n.dec(1);
+			}
+			| number_expression OPAMP number_expression
+			{
+			 int d1 = (int)$1.to_number().get();
+			 int d2 = (int)$3.to_number().get();
+			 int d3 = d1 & d2;
+			 PNF_Number n(d3);
+			 $$.put(n);
+			}
+			| number_expression OPBTOR number_expression
+			{
+			 int d1 = (int)$1.to_number().get();
+			 int d2 = (int)$3.to_number().get();
+			 int d3 = d1 | d2;
+			 PNF_Number n(d3);
+			 $$.put(n);
+			}
+			| number_expression OPBTXOR number_expression
+			{
+			 int d1 = (int)$1.to_number().get();
+			 int d2 = (int)$3.to_number().get();
+			 int d3 = d1 ^ d2;
+			 PNF_Number n(d3);
+			 $$.put(n);
+			}
+			| OPBTNOT number_expression
+			{
+			 int d = (int)$2.to_number().get();
+			 d = ~d;
+			 PNF_Number n(d);
+			 $$.put(n);
+			}
+			| number_expression OPBTSL number_expression
+			{
+			 int d1 = (int)$1.to_number().get();
+			 int d2 = (int)$3.to_number().get();
+			 int d3 = d1 << d2;
+			 PNF_Number n(d3);
+			 $$.put(n);
+			}
+			| number_expression OPBTSR number_expression
+			{
+			 int d1 = (int)$1.to_number().get();
+			 int d2 = (int)$3.to_number().get();
+			 int d3 = d1 >> d2;
+			 PNF_Number n(d3);
+			 $$.put(n);
+			}
+			| LEFTP number_expression RIGHTP
+			{
+			 $$ = $2;
+			}
+			;
+
+character_expression:	CHARACTERV
+			{
+			 $$ = $1;
+			}
+			| character_expression OPPLUS character_expression	
+			{
+			 char d = $1.to_character().get();
+			 PNF_Character c(d);
+			 c.add($3.to_character().get());
+			 $$.put(c);
+			}
+			| character_expression OPMINUS character_expression
+			{
+			 char d = $1.to_character().get();
+			 PNF_Character c(d);
+			 c.sub($3.to_character().get());
+			 $$.put(c);
+			}
+			| character_expression OPTIMES character_expression
+			{
+			 char d = $1.to_character().get();
+			 PNF_Character c(d);
+			 c.mul($3.to_character().get());
+			 $$.put(c);
+			}
+			| character_expression OPDIV character_expression
+			{
+			 char d = $1.to_character().get();
+			 PNF_Character c(d);
+			 c.div($3.to_character().get());
+			 $$.put(c);
+			}
+			| character_expression OPMODULUS character_expression
+			{
+			 char d = $1.to_character().get();
+			 PNF_Character c(d);
+			 c.mod($3.to_character().get());
+			 $$.put(c);
+			}
+			| character_expression OPPOWER character_expression	
+			{
+			 char d = $3.to_character().get();
+			 PNF_Character c($1.to_character());
+			 c.pow(d);
+			 $$.put(c);
+			}
+			| character_expression OPROOT character_expression
+			{
+			 char d = $1.to_character().get();
+			 PNF_Character c($3.to_character());
+			 c.root(d);
+			 $$.put(c);
+			}
+			| OPINC character_expression
+			{
+			 PNF_Character n($2.to_character().get());
+			 n.inc(1);
+			 $$.put(n);
+			}
+			| character_expression OPINC
+			{
+ 			 PNF_Character n($1.to_character().get());
+			 $$.put(n);
+			 n.inc(1);
+			}
+			| OPDEC character_expression
+			{
+ 			 PNF_Character n($2.to_character().get());
+			 n.dec(1);
+			 $$.put(n);
+			}
+			| character_expression OPDEC
+			{
+			 PNF_Character n($1.to_character().get());
+			 $$.put(n);
+			 n.dec(1);
+			}
+			| LEFTP character_expression RIGHTP
+			{
+			 $$ = $2;
+			}
+			;
+
+string_expression:	STRINGV
+			{
+			 $$ = $1;
+			}
+			| string_expression OPPLUS string_expression
+			{
+			 String d = $1.to_string().get();
+			 PNF_String s(d);
+			 s.add($3.to_string().get());
+
+			 String str = s.get();
+			 String str2 = "";
+	   	         for (unsigned long i = 0, j = 0; i < str.length(); ++i)
+			 {
+			  if (str[i] == '\"')
+			   continue;
+			  else
+			  {
+			   str2 += str[i];
+			   ++j;
+			  }
+			 }
+
+			 String str3 = '\"';
+			 str3 += str2;
+			 str3 += '\"';
+			 s.put(str3);
+			 $$.put(s);
+			}
+			| OPSTR string_expression
+			{
+			 String str = $2.to_string().get();
+			 String str2 = "\"" + str + "\"";
+			 PNF_String s(str2);
+			 $$.put(s);
+			}
+			| LEFTP string_expression RIGHTP
+			{
+			 $$ = $2;
+			}
+			;
+
+id_expression:		ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   $$ = varTable[scope][i].value();			   			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $1.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}			
+			| OPAMP id_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $2.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   PNF_Number n(varTable[scope][i].address());
+			   $$.put(n);
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  for (unsigned long i = 0; i < labelTable.length(); ++i)
+			  {
+			   if (strcmp(labelTable[i].name().getString().c_str(), $2.to_string().get().getString().c_str()) == 0)
+			   {
+			    declared = true;
+			    PNF_Number n(labelTable[i].address());
+			    $$.put(n);
+			   }
+ 			  }
+
+
+			  if (!declared)
+			  {
+			   for (unsigned long i = 0; i < eventLabelTable.length(); ++i)
+			   {
+			    if (strcmp(eventLabelTable[i].name().getString().c_str(), $2.to_string().get().getString().c_str()) == 0)
+			    {
+			     declared = true;
+			     PNF_Number n(eventLabelTable[i].address());
+			     $$.put(n);
+			    }
+  			   }
+			  }
+			 }
+			}
+			| OPNOT id_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $2.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   PNF_Boolean b;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b.put(true);
+			   else
+			   {
+			    bool b2;
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    if (str.getString() == "true")
+			     b2 = true;
+			    else if (str.getString() == "false")
+			     b2 = false;
+			    else
+			     b2 = true;
+
+			    b.put(b2);
+			   }
+
+			   b.opnot();
+			   $$.put(b);
+			   varTable[scope][i].value(b);			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $2.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| id_expression OPAND id_expression
+			{
+			 bool declared1 = false;
+			 bool declared2 = false;
+  		   	 PNF_Boolean b1;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared1 = true;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b1.put(true);
+			   else
+			   {
+			    bool b2;
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    if (str.getString() == "true")
+			     b2 = true;
+			    else if (str.getString() == "false")
+			     b2 = false;
+			    else
+			     b2 = true;
+
+			    b1.put(b2);
+			   }
+			  }
+			 }
+
+			 if (!declared1)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+
+			 PNF_Boolean b3;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared2 = true;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b3.put(true);
+			   else
+			   {
+			    bool b4;
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    if (str.getString() == "true")
+			     b4 = true;
+			    else if (str.getString() == "false")
+			     b4 = false;
+			    else
+			     b4 = true;
+			    b3.put(b4);
+			   }
+			  }
+			 }
+
+			 if (!declared2)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+
+			 bool b5;
+			 String str = b3.get();
+			 if (str.getString() == "true")
+			  b5 = true;
+			 else if (str.getString() == "false")
+			  b5 = false;
+			 else
+			  b5 = true;
+
+			 b1.opand(b5);
+			 $$.put(b1);
+			}
+			| id_expression OPOR id_expression
+			{
+			 bool declared1 = false;
+			 bool declared2 = false;
+			 PNF_Boolean b1;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared1 = true;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b1.put(true);
+			   else
+			   {
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    bool b2;
+			    if (str.getString() == "true")
+			     b2 = true;
+			    else if (str.getString() == "false")
+			     b2 = false;
+			    else
+			     b2 = true;
+
+			    b1.put(b2);
+			   }
+			  }
+			 }
+
+			 if (!declared1)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+
+
+   		         PNF_Boolean b3;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared2 = true;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b3.put(true);
+			   else
+			   {
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    bool b4;
+			    if (str.getString() == "true")
+			     b4 = true;
+			    else if (str.getString() == "false")
+			     b4 = false;
+			    else
+			     b4 = true;
+
+			    b3.put(b4);
+			   }
+			  }
+			 }
+
+			 if (!declared2)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+
+			 bool b5;
+			 String str = b3.get();
+			 if (str.getString() == "true")
+			  b5 = true;
+			 else if (str.getString() == "false")
+			  b5 = false;
+			 else
+			  b5 = true;
+
+			 b1.opor(b5);
+			 $$.put(b1);
+			}
+			| id_expression OPPLUS id_expression	
+			{
+			 switch ($1.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   if ($3.getType() != TNUMBER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   double d = $3.to_number().get();
+			   PNF_Number n($1.to_number());
+			   n.add(d);
+			   $$.put(n);
+			  }
+			  break;
+
+		          case TCHARACTER:
+			  {
+			   if ($3.getType() != TCHARACTER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   char d = $3.to_character().get();
+			   PNF_Character n($1.to_character());
+			   n.add(d);
+			   $$.put(n);
+			  }
+			  break;
+
+			  case TSTRING:
+			  {
+			   if ($3.getType() != TSTRING)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+
+			   String str = $3.to_string().get();
+			   String str2 = "";
+			   for (unsigned long i = 0; i < str.length(); ++i)
+ 			   {
+			    if (str[i] == '\"')
+			     continue;
+			    str2 += str[i];
+			   }
+
+			   str = $1.to_string().get();
+			   String str3 = "";
+			   for (unsigned long i = 0; i < str.length(); ++i)
+ 			   {
+			    if (str[i] == '\"')
+			     continue;
+			    str3 += str[i];
+			   }
+
+			   PNF_String s(str3);
+			   s.add(str2);
+
+			   str = s.get();
+			   String str4 = "\"";
+			   for (unsigned long i = 0; i < str.length(); ++i)
+ 			   {			    
+			    str4 += str[i];
+			   }
+			   str4 += "\"";
+			   s.put(str4);
+
+			   $$.put(s);
+			  }
+			  break;
+
+			  default:
+			   PNF_Number n(0);
+			   $$.put(n);
+			   break;
+			 }
+			}
+			| id_expression OPMINUS id_expression
+			{
+			 switch ($1.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   if ($3.getType() != TNUMBER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   double d = $3.to_number().get();
+			   PNF_Number n($1.to_number());
+			   n.sub(d);
+			   $$.put(n);
+			  }
+			  break;
+
+		          case TCHARACTER:
+			  {
+			   if ($3.getType() != TCHARACTER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   char d = $3.to_character().get();
+			   PNF_Character n($1.to_character());
+			   n.sub(d);
+			   $$.put(n);
+			  }
+			  break;			
+
+			  default:
+			   PNF_Number n(0);
+			   $$.put(n);
+			   break;
+			 }
+			}
+			| id_expression OPTIMES id_expression
+			{
+			 switch ($1.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   if ($3.getType() != TNUMBER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   double d = $3.to_number().get();
+			   PNF_Number n($1.to_number());
+			   n.mul(d);
+			   $$.put(n);
+			  }
+			  break;
+
+		          case TCHARACTER:
+			  {
+			   if ($3.getType() != TCHARACTER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   char d = $3.to_character().get();
+			   PNF_Character n($1.to_character());
+			   n.mul(d);
+			   $$.put(n);
+			  }
+			  break;				
+
+			  default:
+			   PNF_Number n(0);
+			   $$.put(n);
+			   break;
+			 }
+			}
+			| id_expression OPDIV id_expression
+			{
+			 switch ($1.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   if ($3.getType() != TNUMBER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   double d = $3.to_number().get();
+			   PNF_Number n($1.to_number());
+			   n.div(d);
+			   $$.put(n);
+			  }
+			  break;
+
+		          case TCHARACTER:
+			  {
+			   if ($3.getType() != TCHARACTER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   char d = $3.to_character().get();
+			   PNF_Character n($1.to_character());
+			   n.div(d);
+			   $$.put(n);
+			  }
+			  break;			
+
+			  default:
+			   PNF_Number n(0);
+			   $$.put(n);
+			   break;
+			 }
+			}
+			| id_expression OPMODULUS id_expression
+			{
+			 switch ($1.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   if ($3.getType() != TNUMBER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   double d = $3.to_number().get();
+			   PNF_Number n($1.to_number());
+			   n.mod(d);
+			   $$.put(n);
+			  }
+			  break;
+
+		          case TCHARACTER:
+			  {
+			   if ($3.getType() != TCHARACTER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   char d = $3.to_character().get();
+			   PNF_Character n($1.to_character());
+			   n.mod(d);
+			   $$.put(n);
+			  }
+			  break;	
+
+			  default:
+			   PNF_Number n(0);
+			   $$.put(n);
+			   break;
+			 }
+			}
+			| OPMINUS id_expression %prec NEG
+			{
+			 if ($2.getType() != TNUMBER)
+			 {
+			  PNF_Number n(0);
+                          $$.put(n);
+			 }
+			 double d = $2.to_number().get();
+			 d = -d;
+			 PNF_Number n(d);
+			 PNF_Variable v(n);
+			 $$ = v;
+			}
+			| id_expression OPPOWER id_expression
+			{
+			 switch ($1.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   if ($3.getType() != TNUMBER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   double d = $3.to_number().get();
+			   PNF_Number n($1.to_number());
+			   n.pow(d);
+			   $$.put(n);
+			  }
+			  break;
+
+		          case TCHARACTER:
+			  {
+			   if ($3.getType() != TCHARACTER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   char d = $3.to_character().get();
+			   PNF_Character n($1.to_character());
+			   n.pow(d);
+			   $$.put(n);
+			  }
+			  break;	
+
+			  default:
+			   PNF_Number n(0);
+			   $$.put(n);
+			   break;
+			 }
+			}
+			| id_expression OPROOT id_expression
+			{
+			 switch ($1.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   if ($3.getType() != TNUMBER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   double d = $1.to_number().get();
+			   PNF_Number n($3.to_number());
+			   n.root(d);
+			   $$.put(n);
+			  }
+			  break;
+
+		          case TCHARACTER:
+			  {
+			   if ($3.getType() != TCHARACTER)
+			   {
+			    PNF_Number n(0);
+			    $$.put(n);
+			   }
+			   char d = $1.to_character().get();
+			   PNF_Character n($3.to_character());
+			   n.root(d);
+			   $$.put(n);
+			  }
+			  break;	
+
+			  default:
+			   PNF_Number n(0);
+			   $$.put(n);
+			   break;
+			 }
+			}
+			| OPINC id_expression
+			{
+			 switch ($2.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   PNF_Number n($2.to_number().get());
+			   n.inc(1);
+			   $$.put(n);
+			  }
+			  break;
+
+			  case TCHARACTER:
+			  {
+			   PNF_Character c($2.to_character().get());
+			   c.inc(1);
+			   $$.put(c);
+			  }
+	                  break;
+			  
+			  default:
+			  {
+			   PNF_Number n(0);
+                           $$.put(n);
+			  }
+			  break;
+			 }
+			}
+			| id_expression OPINC
+			{
+			 switch ($2.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   PNF_Number n($2.to_number().get());
+			   $$.put(n);
+			   n.inc(1);
+			  }
+			  break;
+
+			  case TCHARACTER:
+			  {
+			   PNF_Character c($2.to_character().get());
+			   $$.put(c);
+			   c.inc(1);
+			  }
+	                  break;
+			  
+			  default:
+			  {
+			   PNF_Number n(0);
+                           $$.put(n);
+			  }
+			  break;
+			 }
+			}
+			| OPDEC id_expression
+			{
+			 switch ($2.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   PNF_Number n($2.to_number().get());
+			   n.dec(1);
+			   $$.put(n);
+			  }
+			  break;
+
+			  case TCHARACTER:
+			  {
+			   PNF_Character c($2.to_character().get());
+			   c.dec(1);
+			   $$.put(c);
+			  }
+	                  break;
+			  
+			  default:
+			  {
+			   PNF_Number n(0);
+                           $$.put(n);
+			  }
+			  break;
+			 }
+			}
+			| id_expression OPDEC
+			{
+			 switch ($2.getType())
+			 {
+			  case TNUMBER:
+			  {
+			   PNF_Number n($2.to_number().get());
+			   $$.put(n);
+			   n.dec(1);
+			  }
+			  break;
+
+			  case TCHARACTER:
+			  {
+			   PNF_Character c($2.to_character().get());
+			   $$.put(c);
+			   c.dec(1);
+			  }
+	                  break;
+			  
+			  default:
+			  {
+			   PNF_Number n(0);
+                           $$.put(n);
+			  }
+			  break;
+			 }
+			}
+			| LEFTP id_expression RIGHTP
+			{
+			 $$ = $2;
+			}
+			;
+
+relational_expression:	number_expression OPEQU number_expression
+			{
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b = d1 == d2;
+			 PNF_Boolean b2(b);
+			 $$.put(b2);
+			}
+			| number_expression OPNEQU number_expression
+			{
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b = d1 != d2;
+			 PNF_Boolean b2(b);
+			 $$.put(b2);
+			}
+			| number_expression OPLSS number_expression
+			{
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b = d1 < d2;
+			 PNF_Boolean b2(b);
+			 $$.put(b2);
+			}
+			| number_expression OPGTR number_expression
+			{
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b = d1 > d2;
+			 PNF_Boolean b2(b);
+			 $$.put(b2);
+			}
+			| number_expression OPLEQU number_expression
+			{
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b = d1 <= d2;
+			 PNF_Boolean b2(b);
+			 $$.put(b2);
+			}
+			| number_expression OPGEQU number_expression
+			{
+			 double d1 = $1.to_number().get();
+			 double d2 = $3.to_number().get();
+			 bool b = d1 >= d2;
+			 PNF_Boolean b2(b);
+			 $$.put(b2);
+			}
+			;
+
+mixed_expression:	
+			LEFTP mixed_expression RIGHTP 
+			{
+			 $$ = $2;
+			}
+			| ID OPAND boolean_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   PNF_Boolean b1;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b1.put(true);
+			   else
+			   {
+			    bool b2;
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    if (str.getString() == "true")
+			     b2 = true;
+			    else if (str.getString() == "false")
+			     b2 = false;
+			    else
+			     b2 = true;
+
+			    b1.put(b2);
+			   }
+
+			   bool b2;
+			   String str = $3.to_boolean().get();
+			   if (str.getString() == "true")
+			    b2 = true;
+			   else if (str.getString() == "false")
+			    b2 = false;
+			   else
+			    b2 = true;
+
+			   b1.opand(b2);
+
+			   $$.put(b1);
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| boolean_expression OPAND ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   PNF_Boolean b1;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b1.put(true);
+			   else
+			   {
+			    bool b2;
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    if (str.getString() == "true")
+			     b2 = true;
+			    else if (str.getString() == "false")
+			     b2 = false;
+			    else
+			     b2 = true;
+
+			    b1.put(b2);
+			   }
+
+			   bool b2;
+			   String str = $1.to_boolean().get();
+			   if (str.getString() == "true")
+			    b2 = true;
+			   else if (str.getString() == "false")
+			    b2 = false;
+			   else
+			    b2 = true;
+
+			   b1.opand(b2);
+
+			   $$.put(b1);
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPOR boolean_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   PNF_Boolean b1;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b1.put(true);
+			   else
+			   {
+			    bool b2;
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    if (str.getString() == "true")
+                             b2 = true;
+			    else if (str.getString() == "false")
+			     b2 = false;
+			    else
+			     b2 = true;
+
+			    b1.put(b2);
+			   }
+
+			   bool b2;
+			   String str = $3.to_boolean().get();
+			   if (str.getString() == "true")
+			    b2 = true;
+			   else if (str.getString() == "false")
+			    b2 = false;
+			   else
+			    b2 = true;
+
+			   b1.opor(b2);
+
+			   $$.put(b1);
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| boolean_expression OPOR ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   PNF_Boolean b1;
+			   if (varTable[scope][i].value().getType() != TBOOLEAN)
+             		    b1.put(true);
+			   else
+			   {
+			    bool b2;
+			    String str = varTable[scope][i].value().to_boolean().get();
+			    if (str.getString() == "true")
+			     b2 = true;
+			    else if (str.getString() == "false")
+			     b2 = false;
+			    else
+			     b2 = true;
+
+			    b1.put(b2);
+			   }
+
+			   bool b2;
+			   String str = $1.to_boolean().get();
+			   if (str.getString() == "true")
+			    b2 = true;
+			   else if (str.getString() == "false")
+			    b2 = false;
+			   else
+			    b2 = true;
+
+			   b1.opor(b2);
+
+			   $$.put(b1);
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPPLUS number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $3.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.add(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPMINUS number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $3.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.sub(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPTIMES number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $3.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.mul(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPDIV number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $3.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.div(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPPOWER number_expression	
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $3.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.pow(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPROOT number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = varTable[scope][i].value().to_number().get();
+			     PNF_Number n($3.to_number());
+			     n.root(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| number_expression OPPLUS ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $1.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.add(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPMINUS ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $1.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.sub(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| number_expression OPTIMES ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $1.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.mul(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| number_expression OPDIV ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $1.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.div(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| number_expression OPPOWER ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = $1.to_number().get();
+			     PNF_Number n(varTable[scope][i].value().to_number());
+			     n.pow(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| number_expression OPROOT ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     double d = varTable[scope][i].value().to_number().get();
+			     PNF_Number n($1.to_number());
+			     n.root(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPPLUS character_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($3.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $3.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.add(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPMINUS character_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($3.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $3.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.sub(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPTIMES character_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($3.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $3.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.mul(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPDIV character_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($3.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $3.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.div(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPPOWER character_expression	
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($3.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $3.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.pow(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPROOT character_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($3.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = varTable[scope][i].value().to_character().get();
+			     PNF_Character n($3.to_character());
+			     n.root(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| character_expression OPPLUS ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($1.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $1.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.add(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| character_expression OPMINUS ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($1.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $1.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.sub(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| character_expression OPTIMES ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($1.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $1.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.mul(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| character_expression OPDIV ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($1.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $1.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.div(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| character_expression OPPOWER ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($1.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = $1.to_character().get();
+			     PNF_Character n(varTable[scope][i].value().to_character());
+			     n.pow(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| character_expression OPROOT ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TCHARACTER:
+			    {
+			     if ($1.getType() != TCHARACTER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+			     char d = varTable[scope][i].value().to_character().get();
+			     PNF_Character n($1.to_character());
+			     n.root(d);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| ID OPPLUS string_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TSTRING:
+			    {
+			     if ($3.getType() != TSTRING)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     String d = $3.to_string().get();
+			     String str = "";
+			     for (unsigned is = 0; is < d.length(); ++is)
+			     {
+			      if (d[is] == '\"')
+			       continue;
+			      str += d[is];
+			     }
+			     String str2 = varTable[scope][i].value().to_string().get();
+			     String str3 = "";
+			     for (unsigned is = 0; is < str2.length(); ++is)
+			     {
+			      if (str2[is] == '\"')
+			       continue;
+			      str3 += str2[is];
+			     }
+
+			     PNF_String n(str3);
+			     n.add(str);
+	  		     String str4 = "\"";
+			     str4 += n.get();
+			     str4 += "\"";
+			     PNF_String n2(str4);
+			     $$.put(n2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| string_expression OPPLUS ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TSTRING:
+			    {
+			     if ($1.getType() != TSTRING)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     String d = $1.to_string().get();
+			     String str = "";
+			     for (unsigned is = 0; is < d.length(); ++is)
+			     {
+			      if (d[is] == '\"')
+			       continue;
+			      str += d[is];
+			     }
+			     String str2 = varTable[scope][i].value().to_string().get();
+			     String str3 = "";
+			     for (unsigned is = 0; is < str2.length(); ++is)
+			     {
+			      if (str2[is] == '\"')
+			       continue;
+			      str3 += str2[is];
+			     }
+
+			     PNF_String n(str3);
+			     n.add(str);
+	  		     String str4 = "\"";
+			     str4 += n.get();
+			     str4 += "\"";
+			     PNF_String n2(str4);
+			     $$.put(n2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+                	}
+			| number_expression OPEQU ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $1.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 == d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPNEQU ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $1.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 != d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPLSS ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $1.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 < d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPGTR ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $1.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 > d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPLEQU ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $1.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 <= d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPGEQU ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $1.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 >= d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPEQU number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $3.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 == d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPNEQU number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $3.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 != d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPLSS number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $3.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 < d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPGTR number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $3.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 > d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPLEQU number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $3.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 <= d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPGEQU number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     double d1 = $3.to_number().get();
+			     double d2 = varTable[scope][i].value().to_number().get();
+			     bool b = d1 >= d2;
+			     PNF_Boolean b2(b);
+			     $$.put(b2);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPAMP number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$3.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 & d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPBTOR number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$3.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 | d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPBTXOR number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$3.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 ^ d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPAMP ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$1.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 & d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPBTOR ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$1.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 | d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPBTXOR ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$1.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 ^ d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }	
+			}
+			| OPBTNOT ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $2.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     int d1 = (int)varTable[scope][i].value().to_number().get();
+			     int d2 = ~d1;
+			     PNF_Number n(d1);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $2.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPBTSL number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$3.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 << d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| ID OPBTSR number_expression
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $1.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($3.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$3.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 >> d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPBTSL ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$1.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 << d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			| number_expression OPBTSR ID
+			{
+			 bool declared = false;
+			 for (unsigned long i = 0; i < varTable[scope].length(); ++i)
+			 {
+  			  if (strcmp(varTable[scope][i].name().getString().c_str(), $3.to_string().get().getString().c_str()) == 0)
+			  {
+			   declared = true;
+			   	
+			   switch (varTable[scope][i].value().getType())
+			   {
+  			    case TNUMBER:
+			    {
+			     if ($1.getType() != TNUMBER)
+			     {
+			      PNF_Number n(0);
+			      $$.put(n);
+			     }
+
+
+			     int d1 = (int)$1.to_number().get();
+			     int d2 = (int)varTable[scope][i].value().to_number().get();
+			     int d3 = d1 >> d2;
+			     PNF_Number n(d3);
+			     $$.put(n);
+			    }
+			    break;
+
+    		            default:
+			     PNF_Number n(0);
+			     $$.put(n);
+			     break;
+			   }
+			  }
+			 }
+
+			 if (!declared)
+			 {
+			  String str = $3.to_string().get();
+			  str += " was not declared.";
+			  yyerror(str.getString().c_str());
+			 }
+			}
+			;
+
+function_expression:	function_command
+			| LEFTP function_expression RIGHTP
+			;
+
+declaration:		variable_declaration
+			{
+			}
+			| label_declaration
+			{
+			}
+			| enum_declaration
+			{
+			}
+			| range_declaration
+			{
+			}
+			| function_declaration
+			{
+			}
+			| function_declaration2
+			{
+			}
+			| struct_declaration
+			{
+			}
+			| struct_declaration2
+			;
+
+variable_declaration:	VAR ID
+			{
+			 Var v;
+			 v.name($2.to_string().get());
+			 varTable[scope][varTable[scope].length() - 1] = v;
+
+			 varTable[scope].insert();
+
+			 conprint("var %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| VAR ID OPEQUAL expression
+			{
+			 Var v;
+			 v.name($2.to_string().get());
+			 v.value($4);
+			 varTable[scope][varTable[scope].length() - 1] = v;
+
+			 switch ($4.getType())
+			 {
+			  case TVOID:
+			   conprint("var %s = %s;\n", $2.to_string().get().getString().c_str(), $4.to_string().get().getString().c_str());
+			   break;
+
+			  case TBOOLEAN:
+			   conprint("var %s = %s;\n", $2.to_string().get().getString().c_str(), $4.to_boolean().get().getString().c_str());
+			   break;
+
+			  case TNUMBER:
+			   conprint("var %s = %g;\n", $2.to_string().get().getString().c_str(), $4.to_number().get());
+			   break;
+
+			  case TCHARACTER:
+			   conprint("var %s = %c;\n", $2.to_string().get().getString().c_str(), $4.to_character().get());
+			   break;
+
+			  case TSTRING:
+			   conprint("var %s = %s;\n", $2.to_string().get().getString().c_str(), $4.to_string().get().getString().c_str());
+			   break;
+
+			  default:
+			   yyerror("Bad type.");
+			 }
+
+			 varTable[scope].insert();
+			}
+			| FVAR ID
+			{
+			 conprint("fvar %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| enumv_declaration
+			{
+			}
+			| rangev_declaration
+			{
+			}
+			| array_declaration
+			{
+			}
+			;
+
+enumv_declaration:	ENUMV STRINGV STRINGV OPEQUAL STRINGV
+			{
+			 Var v;
+			 v.name($2.to_string().get());
+			 v.value($5);
+			 varTable[scope][varTable.length() - 1] = v;
+
+			 conprint("enumv %s %s = %s\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $5.to_string().get().getString().c_str());
+			}
+			;
+
+rangev_declaration:	RANGEV RTYPE2 STRINGV STRINGV OPEQUAL STRINGV
+			{
+			 Var v;
+			 v.name($3.to_string().get());
+			 v.value($6);
+			 varTable[scope][varTable.length() - 1] = v;
+
+			 conprint("rangev %s %s %s = %s\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str(), $6.to_string().get().getString().c_str());
+			}
+			| RANGEV RTYPE2 STRINGV STRINGV
+			{
+			 Var v;
+			 v.name($2.to_string().get());
+			 v.value($4);
+			 varTable[scope][varTable.length() - 1] = v;
+			
+			 conprint("rangev %s %s %s\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str());
+			}
+			;
+
+array_declaration:	ARRAY STRINGV OPLSQ number_expression OPRSQ
+			{
+			 Var v;
+			 v.name($2.to_string().get());
+			 PNF_String str((char *)"{array}");
+			 v.value(str);
+			 varTable[scope][varTable.length() - 1] = v;
+
+			 conprint("array %s[%s]\n", $2.to_string().get().getString().c_str(), $4.to_string().get().getString().c_str());
+			}
+			;
+
+enum_declaration:	ENUM ID OPEQUAL LEFTB 
+			{
+			 conprint("enum %s = {\n", $2.to_string().get().getString().c_str());
+			}
+			enum_strings
+			{
+			}
+			RIGHTB
+			{
+			 conprint("}\n");
+			}
+			;
+
+enum_strings:		STRINGV
+			{
+			 conprint("%s\n", $1.to_string().get().getString().c_str());
+			}
+			| enum_strings COMMA STRINGV
+			{
+			 conprint("%s, %s\n", $1.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			;
+
+range_declaration:	RANGE RTYPE2 STRINGV OPEQUAL STRINGV OPDOT OPDOT STRINGV
+			{
+			 conprint("range %s %s = %s..%s\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $5.to_string().get().getString().c_str(), $8.to_string().get().getString().c_str());
+			}
+			;
+
+label_declaration:	SUB ID
+			{
+			 conprint("sub %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| EVENT ID
+			{
+			 conprint("event %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| LABEL ID
+			{
+			 conprint("label %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+function_declaration:	VOIDV ID LEFTP parameter_declaration RIGHTP
+			{
+			 Function f;
+			 f.name($2.to_string().get());
+			 PNF_Void v;
+			 PNF_Variable v2(v);
+			 f.ret(v2);
+
+			 for (unsigned long i = 0; i < paramcount; ++i)
+                         {
+			  String str = "";
+			  str.from_long(i);
+			  String str2 = "p";
+			  str2 += str;
+
+			  f.param(i, v2);
+			  f.pname(i, str2);
+			 }
+			 paramcount = 0;
+			 funcs.add_function(f);
+
+			 conprint("subroutine %s;\n", $2.to_string().get().getString().c_str());
+			 conprint("var %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| VAR ID LEFTP parameter_declaration RIGHTP
+			{
+			 Function f;
+			 f.name($2.to_string().get());
+			 PNF_Void v;
+			 PNF_Variable v2(v);
+			 f.ret(v2);
+
+			 for (unsigned long i = 0; i < paramcount; ++i)
+                         {
+			  f.param(i, v2);
+			  f.pname(i, $4.to_string().get());
+			 }
+			 paramcount = 0;
+			 funcs.add_function(f);
+			 
+			 conprint("subroutine %s;\n", $2.to_string().get().getString().c_str());
+			 conprint("var %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+parameter_declaration:	opt_var
+			{
+			 ++paramcount;
+			 $$ = $1;
+			}
+			| parameter_declaration "," VAR ID
+			;
+
+parameter_declaration2:	opt_var2
+			{
+			 ++paramcount2;
+			}
+			| parameter_declaration "," VAR ID
+			;
+
+opt_var:		VAR ID
+			{
+			 $$ = $2;
+			}
+			| VOIDV
+			;
+
+opt_var2:		VAR ID
+			{
+			 conprint("var %s;\n", $2.to_string().get().getString().c_str());			 
+			}
+			| VOIDV
+			;
+
+function_declaration2:	FUNCTION VOIDV ID LEFTP parameter_declaration2 RIGHTP
+			{
+			 Function f;
+			 f.name($3.to_string().get());
+			 PNF_Void v;
+			 PNF_Variable v2(v);
+			 f.ret(v2);
+
+			 for (unsigned long i = 0; i < paramcount2; ++i)
+                         {
+			  f.param(i, v2);
+			  			 }
+			 paramcount2 = 0;
+
+			 bool b = false;
+			 funcs.find_duplicate(f, b);
+			 if (b)
+			  yyerror("Function mismatch.");
+
+			 conprint("%s:\n", $3.to_string().get().getString().c_str());
+			}
+			function_body
+			{
+			}
+			| FUNCTION VAR ID LEFTP parameter_declaration RIGHTP
+			{
+			 Function f;
+			 f.name($3.to_string().get());
+			 PNF_Void v;
+			 PNF_Variable v2(v);
+			 f.ret(v2);
+
+			 for (unsigned long i = 0; i < paramcount2; ++i)
+                         {
+			  f.param(i, v2);
+			 }
+			 paramcount2 = 0;
+
+			 bool b = false;
+			 funcs.find_duplicate(f, b);
+			 if (b)
+			  yyerror("Function mismatch.");
+			 conprint("%s:\n", $3.to_string().get().getString().c_str());
+			}
+			function_body
+			{
+			}
+			;
+
+function_body:		LEFTB
+			statements
+			RIGHTB
+			;
+
+struct_declaration:	{	 
+   			}
+			STRUCT ID
+			{
+			 structs.insert();
+
+			 String str = yytext;
+			 cout << str << endl;
+			 structs[struct_counter].name(str);
+			 struct_counter++;
+			}
+			struct_body
+			{
+			 svarcounter = 0;
+			}
+			;
+
+struct_body:		LEFTB vars SEND RIGHTB
+			;
+
+vars:			variable_declaration2
+			{
+			
+			}
+			| variable_declaration2 vars
+			{
+			 
+			}
+			;
+
+variable_declaration2:	STRUCT variable_declaration3 SEND
+			{
+			 cout << "a...\n";
+			}
+			;
+
+variable_declaration3:	VAR ID
+			{
+			 Var v;
+			 v.name($2.to_string().get());
+			 structs[struct_counter].var(svarcounter, v);
+			 ++svarcounter;
+			}
+			| VAR ID OPEQUAL expression
+			{
+			 Var v;
+			 v.name($2.to_string().get());
+			 v.value($4);
+			 structs[struct_counter].var(svarcounter, v);
+			 ++svarcounter;		
+			}
+			| FVAR ID
+			{
+			 conprint("fvar %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| enumv_declaration
+			{
+			}
+			| rangev_declaration
+			{
+			}
+			| array_declaration
+			{
+			}
+			;
+
+struct_declaration2:	STRUCTD ID ID
+			{
+			 bool found = false;
+			 unsigned long i;
+			 for (i = 0; i < struct_counter; ++i)
+			 {
+			  cout << structs[i].name() << " " << $2.to_string().get() << endl;
+			  if (structs[i].name() == $2.to_string().get())
+			  {
+			   found = true;
+			   break;
+			  }
+			 }
+
+			 if (found)
+			 {
+			  for (unsigned long j = 0; j < structs[i].vnumber(); ++j)
+			  {
+			   conprint((char *)"var %s %s = %s;\n", (char *)((char *)($2.to_string().get() + (char *)"_").getString().c_str() +
+				    $3.to_string().get()).getString().c_str(),
+				    (char *)structs[i].var(j).name().getString().c_str(),
+				    (structs[i].var(j).value().to_string().get() == "") ? "0V" : 
+				    (char *)structs[i].var(j).value().to_string().get().getString().c_str());
+			  }
+			 }
+			}
+			;
+
+command:		print_command
+			{
+			}
+			| read_command
+			{
+			}
+			| end_command
+			{
+			}
+			| asm_command
+			{
+			}
+			| load_command
+			{
+			}
+			| goto_command
+			{
+			}
+			| operator_command
+			{
+			}
+			| st_command
+			{
+			}
+			| stack_command
+			{
+			}
+			| typeof_command
+			{
+			}
+			| rm_command
+			{
+			}
+			| crash_command
+			{
+			}
+			| version_command
+			{
+			}
+			| halt_command
+			{
+			}
+			| modt_command
+			{
+			}
+			| subroutine_command
+			{
+			}
+			| register_command
+			{
+			}
+			| store_command
+			{
+			}
+			| break_command
+			{
+			}
+			| address_command
+			{
+			}
+			| add2v_command
+			{
+			}
+			| continue_command
+			{
+			}
+			| check_command
+			{
+			}
+			| comment_command
+			{
+			}
+			| file_command
+			{
+			}
+			| meml_command
+			{
+			}
+			| pnfasm_command
+			{
+			}
+			| array_length_command
+			{
+			}
+			| dup_command
+			{
+			}
+			;
+
+print_command:		
+			PRINT
+			{
+			 conprint("print;\n");
+			}
+			| PRINT expression
+			{
+			 conprint("print %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| PRINT CTYPE
+			{
+			 conprint("print %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| PRINTLN
+			{
+			 conprint("println;");
+			}
+			| PRINTLN expression
+			{
+			 conprint("println %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| PRINTLN CTYPE
+			{
+			 conprint("println %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| EPRINT
+			{
+			 conprint("eprint;");
+			}
+			| EPRINT expression
+			{
+			 conprint("eprint %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| EPRINTLN
+			{
+			 conprint("eprintln;");
+			}
+			| EPRINTLN expression
+			{
+			 conprint("eprintln %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| FPRINT
+			{
+			 conprint("fprint;");
+			}
+			| FPRINT expression
+			{
+			 conprint("fprint %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| FPRINTLN
+			{
+			 conprint("fprintln;");
+			}
+			| FPRINTLN expression
+			{
+			 conprint("fprintln %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| PRINT ARRAY STRINGV
+			{
+			 conprint("print array %s\n", $3.to_string().get().getString().c_str());
+			}
+			;
+
+read_command:
+			READ TYPE ID
+			{
+			 conprint("read %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| FREAD TYPE ID
+			{
+			 conprint("fread %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			;
+
+end_command:
+			END number_expression
+			{
+			 conprint("end %g;\n", $2.to_number().get());
+			}
+			;
+
+asm_command:		ASM STRINGV STRINGV string_expression
+			{
+			 conprint("asm %s %s %s\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str());
+			}
+			;
+
+load_command:		LOAD RTYPE LTYPE number_expression
+			{
+			 conprint("load %s %s %g;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), $4.to_number().get());
+			}
+			| LOAD RTYPE LTYPE TYPE
+			{
+			 conprint("load %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| LOAD LTYPE
+			{
+			 conprint("load %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| LOAD LTYPE boolean_expression
+			{
+			 conprint("load %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_boolean().get().getString().c_str());
+			}
+			| LOAD LTYPE number_expression
+			{
+			 conprint("load %s %g;\n", $2.to_string().get().getString().c_str(), $3.to_number().get());
+			}
+			| LOAD LTYPE character_expression
+			{
+			 conprint("load %s %c;\n", $2.to_string().get().getString().c_str(), $3.to_character().get());
+			}
+			| LOAD LTYPE string_expression
+			{
+			 conprint("load %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| LOAD RTYPE LTYPE ID
+			{
+			 conprint("load %s %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str());
+			}
+			| LOAD RANGE RTYPE2 STRINGV
+			{
+			 conprint("load %s %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str());
+			}
+			| LOAD RANGE RTYPE2 STRINGV OPLSQ number_expression OPRSQ
+			{
+			 conprint("load %s %s %s[%g];\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $5.to_number().get());
+			}
+			| LOAD ARRAY STRINGV OPLSQ number_expression OPRSQ
+			{
+			 conprint("load array %s[%g];\n", $3.to_string().get().getString().c_str(), $5.to_number().get());
+			}
+			| LOAD ARRAY STRINGV OPLSQ OPRSQ
+			{
+			 conprint("load array %s[];\n", $3.to_string().get().getString().c_str());
+			}
+			;
+
+goto_command:		GOTO GTYPE number_expression
+			{
+			 conprint("goto %s %g;\n", $2.to_string().get().getString().c_str(), $3.to_number().get());
+			}
+			| GOTO GTYPE ID
+			{
+			 conprint("goto %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			;
+
+operator_command:	OPPLUS
+			{
+			 conprint("+;\n");
+			}
+			| OPPLUS number_expression
+			{
+			 conprint("+ %g;\n", $2.to_number().get());
+			}
+			| OPPLUS character_expression
+			{
+			 conprint("+ %c;\n", $2.to_character().get());
+			}
+			| OPPLUS string_expression
+			{
+			 conprint("+ %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| OPMINUS
+			{
+			 conprint("-;\n");
+			}
+			| OPSUB number_expression
+			{
+			 conprint("- %g;\n", $2.to_number().get());
+			}
+			| OPTIMES
+			{
+			 conprint("*;\n");
+			}
+			| OPTIMES number_expression
+			{
+			 conprint("* %g;\n", $2.to_number().get());
+			}
+			| OPDIV
+			{
+			 conprint("/;\n");
+			}
+			| OPDIV number_expression
+			{
+			 conprint("/ %g;\n", $2.to_number().get());
+			}
+			| OPMODULUS
+			{
+			 conprint("%%;\n");
+			}
+			| OPMODULUS number_expression
+			{
+			 conprint("%% %g;\n", $2.to_number().get());
+			}
+			| OPPOWER
+			{
+			 conprint("^;\n");
+			}
+			| OPPOWER number_expression
+			{
+			 conprint("^ %g;\n", $2.to_number().get());
+			}
+			| OPROOT
+			{
+			 conprint("!^;\n");
+			}
+			| OPROOT number_expression
+			{
+			 conprint("!^ %g;\n", $2.to_number().get());
+			}
+			| OPINC
+			{
+			 conprint("++;\n");
+			}
+			| OPDEC
+			{
+			 conprint("--;\n");
+			}
+			| OPAND
+			{
+			 conprint("&&;\n");
+			}
+			| OPOR
+			{
+			 conprint("||;\n");
+			}
+			| OPNOT
+			{
+			 conprint("!;\n");
+			}
+			| OPEQU
+			{
+			 conprint("==;\n");
+			}
+			| OPNEQU
+			{
+			 conprint("!=;\n");
+			}
+			| OPLSS
+			{
+			 conprint("<;\n");
+			}
+			| OPGTR
+			{
+			 conprint(">;\n");
+			}
+			| OPLEQU
+			{
+			 conprint("<=;\n");
+			}
+			| OPGEQU
+			{
+			 conprint(">=;\n");
+			}
+			| OPEQU boolean_expression
+			{
+			 conprint("== %s;\n", $2.to_boolean().get().getString().c_str());
+			}
+			| OPNEQU boolean_expression
+			{
+			 conprint("!= %s;\n", $2.to_boolean().get().getString().c_str());
+			}
+			| OPEQU number_expression
+			{
+			 conprint("== %g;\n", $2.to_number().get());
+			}
+			| OPNEQU number_expression
+			{
+			 conprint("!= %g;\n", $2.to_number().get());
+			}
+			| OPLSS number_expression
+			{
+			 conprint("< %g;\n", $2.to_number().get());
+			}
+			| OPGTR number_expression
+			{
+			 conprint("> %g;\n", $2.to_number().get());
+			}
+			| OPLEQU number_expression
+			{
+			 conprint("<= %g;\n", $2.to_number().get());
+			}
+			| OPGEQU number_expression
+			{
+			 conprint(">= %g;\n", $2.to_number().get());
+			}
+			| OPEQU character_expression
+			{
+			 conprint("== %c;\n", $2.to_character().get());
+			}
+			| OPNEQU character_expression
+			{
+			 conprint("!= %c;\n", $2.to_character().get());
+			}
+			| OPLSS character_expression
+			{
+			 conprint("< %c;\n", $2.to_character().get());
+			}
+			| OPGTR character_expression
+			{
+			 conprint("> %c;\n", $2.to_character().get());
+			}
+			| OPLEQU character_expression
+			{
+			 conprint("<= %c;\n", $2.to_character().get());
+			}
+			| OPGEQU character_expression
+			{
+			 conprint(">= %c;\n", $2.to_character().get());
+			}
+			| OPAMP
+			{
+			 conprint("&;\n");
+			}
+			| OPBTOR
+			{
+			 conprint("|;\n");
+			}
+			| OPBTXOR
+			{
+			 conprint("^|;\n");
+			}
+			| OPBTNOT
+			{
+			 conprint("~;\n");
+			}
+			| OPBTSL
+			{
+			 conprint("<<;\n");
+			}
+			| OPBTSR
+			{
+			 conprint(">>;\n");
+			}
+			| top_command
+			{
+			 conprint("\n;\n");
+			}
+			;
+
+
+top_command:		stmt
+			OPQUES
+			{
+			 conprint("? ");
+			}
+			{
+			}
+			stmt
+			{
+			}
+ 			OPCOLON
+			{
+			 conprint(": ");
+			}
+			stmt
+			{
+			}
+			;
+
+st_command:		ST
+			{
+			 conprint("st;\n");
+			}
+			;
+
+stack_command:		PUSH
+			{
+			 conprint("push;\n");
+			}
+			| POP
+			{
+			 conprint("pop;\n");
+			}
+			;
+
+typeof_command:		TYPEOF RTYPE
+			{
+			 conprint("typeof %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+rm_command:		ATOC
+			{
+			 conprint("atoc;\n");
+			}
+			| ATOSP
+			{
+			 conprint("atosp;\n");
+			}
+			| SPTOA
+			{
+			 conprint("sptoa;\n");
+			}
+			| SWITCH
+			{
+			 conprint("switch;\n");
+			}
+			;
+
+crash_command:		CRASH string_expression
+			{
+			 conprint("crash %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+version_command:	VERSION VTYPE
+			{
+			 conprint("version %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+halt_command:		HALT
+			{
+			 conprint("halt;\n");
+			}
+			;
+
+modt_command:		MODT RTYPE
+			{
+			 conprint("modt %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+subroutine_command:	RETURN
+			{
+			 conprint("return;\n");
+			}
+			| GOSUB number_expression
+			{
+			 conprint("gosub %g;\n", $2.to_number().get());
+			}
+			| GOSUB STYPE ID
+			{
+			 conprint("gosub %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			;
+
+register_command:	UNREGISTER STYPE
+			{
+			 conprint("unregister %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| REGISTER STYPE ID
+			{
+			 conprint("register %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| REREGISTER STYPE ID ID
+			{
+			 conprint("reregister %s %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str());
+			}
+			| REGISTER BLANK STYPE number_expression
+			{
+			 conprint("register blank %s %g;\n", $2.to_string().get().getString().c_str(), $3.to_number().get());
+			}
+			;
+
+store_command:		STORE RTYPE LTYPE number_expression
+			{
+			 conprint("store %s %s %g;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), $4.to_number().get());
+			}
+			| STORE LTYPE
+			{
+			 conprint("store %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| STORE RTYPE LTYPE
+			{
+			 conprint("store %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| STORE STOREA
+			{
+			 conprint("store storea;\n");
+			}
+			| STORE VTYPE2 STRINGV
+			{
+			 conprint("store %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| STORE RANGE RTYPE2 STRINGV
+			{
+			 conprint("store range %s %s;\n", $3.to_string().get().getString().c_str(), $4.to_string().get().getString().c_str());
+			}
+			| STORE ARRAY STRINGV OPLSQ number_expression OPRSQ
+			{
+			 conprint("store array %s[%g];\n", $3.to_string().get().getString().c_str(), $4.to_number().get());
+			}
+			| STORE ARRAY STRINGV OPLSQ OPRSQ
+			{
+			 conprint("store array %s[];\n", $3.to_string().get().getString().c_str());
+			}
+			;
+
+break_command:		BREAK
+			{
+			 conprint("break;\n");
+			}
+			| BREAK ID
+			{
+			 conprint("break %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+address_command:	ADDRESSOF ATYPE ID
+			{
+			 conprint("addressof %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			;
+
+add2v_command:		ADD2V
+			{
+			 conprint("add2v;\n");
+			}
+			;
+
+continue_command:	CONTINUE
+			{
+			 conprint("continue;\n");
+			}
+			;
+
+check_command:		CHECK CTYPE TYPE number_expression
+			{
+			 conprint("check %s %s %g;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), $4.to_number().get());
+			}
+			| CHECK CTYPE TYPE boolean_expression
+			{
+			 conprint("check %s %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(),
+				  $4.to_boolean().get().getString().c_str());
+			}
+			| CHECK CTYPE TYPE string_expression
+			{
+			 conprint("check %s %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str());
+			}
+			| CHECK CTYPE number_expression
+			{
+			 conprint("check %s %g;\n", $2.to_string().get().getString().c_str(), $3.to_number().get());
+			}
+			;
+
+comment_command:	HCMNT CMTYPE string_expression
+			{
+			 conprint("hcmnt %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			;
+
+file_command:		FMODE BFMODEC FMODEC
+			{
+			 conprint("fmode %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| FOPEN BFMODEC string_expression
+			{
+			 conprint("fopen %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| FCLOSE BFMODEC
+			{
+			 conprint("fclose %s;\n", $2.to_string().get().getString().c_str());
+			}
+			| FEOF
+			{
+			 conprint("feof;\n");
+			}			
+			;
+
+meml_command:		MEML
+			{
+			 conprint("meml;\n");
+			}
+			;
+
+pnfasm_command:		PNFASM STRINGV STRINGV STRINGV
+			{
+			 conprint("pnfasm %s %s %s;\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str(), 
+				  $4.to_string().get().getString().c_str());
+			}
+			;
+
+array_length_command:	ARRAY STRINGV OPDOT LENGTH
+			{
+			 conprint("array %s.length;\n", $2.to_string().get().getString().c_str());
+			}
+
+dup_command:		DUP RTYPE
+			{
+			 conprint("dup %s;\n", $2.to_string().get().getString().c_str());
+			}
+			;
+
+function_command:	ID LEFTP actual_function_parameters RIGHTP
+			{
+			 current_param = 0;
+			
+			 bool found = false;
+			 Function f = funcs.get_function($1.to_string().get(), found);
+			 
+			 if (!found)
+			  yyerror("Function not found.");
+
+			 Array<Param> p;
+			 p = f.params();
+			 Array<Param> p2;
+			 p2 = current_func->params();
+
+			 if (p.length() != p2.length())
+			  yyerror("Function parameter mismatch.");
+
+			 delete current_func;
+
+			 for (unsigned long i = 0; i < p.length(); ++i)
+			 {
+			  switch (p[i].param().getType())
+			  {
+			   case TVOID:
+  			    conprint("var %s = %s;\n", p[i].name().getString().c_str(), (char *)"0V");
+			    break;
+
+			   case TBOOLEAN:
+  			    conprint("var %s = %s;\n", p[i].name().getString().c_str(), (p[i]).param().to_boolean().get().getString().c_str());
+			    break;
+
+			   case TNUMBER:
+  			    conprint("var %s = %g;\n", p[i].name().getString().c_str(), (p[i]).param().to_number().get());
+   			    break;
+
+			   case TCHARACTER:
+  			    conprint("var %s = %c;\n", p[i].name().getString().c_str(), (p[i]).param().to_character().get());
+			    break;
+
+			   case TSTRING:
+  			    conprint("var %s = %s;\n", p[i].name().getString().c_str(), (p[i]).param().to_string().get().getString().c_str());
+			    break;
+
+			   default:
+			    yyerror("Invalid function parameter type.");
+			  };
+			 }
+
+			 conprint("gosub sub %s;\n", $1.to_string().get().getString().c_str());
+			}
+			;
+
+actual_function_parameters:	{
+				 current_func = new Function();
+				}
+				| opt_expression
+				{
+				 current_func->param(current_param++, $1);
+				}
+				| actual_function_parameters "," expression
+				;
+
+opt_expression:			expression
+				{
+				 $$ = $1;
+				}
+				;
+
+pp_directive:		PBIN
+			{
+			 conprint("%BIN%\n");
+			}
+			| PPBIN
+			{
+			 conprint("%PBIN%\n");
+			}
+			| PLIB
+			{
+			 conprint("%LIB%\n");
+			}
+			;
+
+pp_statement:		PINCLUDE STRINGV 
+			{
+			 conprint("%include %s\n", $2.to_string().get().getString().c_str()); 
+			}
+			| PINCLUDE "<" STRINGV ">" 
+			{ 
+			 conprint("%include <%s>\n", $3.to_string().get().getString().c_str());
+			}
+			| PIMPORT STRINGV 
+			{
+			 conprint("%import %s\n", $2.to_string().get().getString().c_str()); 
+			}
+			| PIMPORT "<" STRINGV ">" 
+			{
+			 conprint("%import <%s>\n", $3.to_string().get().getString().c_str()); 
+			}
+			| PDEFINE STRINGV STRINGV 
+			{
+			 conprint("%define %s %s\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| PMACRO STRINGV 
+			{
+			 conprint("%macro %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PENDM 
+			{
+			 conprint("%endm\n");
+		 	}
+			| PUNDEF STRINGV 
+			{
+			 conprint("%undef %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PIFDEF STRINGV 
+			{
+ 			 conprint("%ifdef %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PIFNDEF STRINGV 
+			{
+			 conprint("%ifndef %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PELSE 
+			{
+			 conprint("else\n");
+			}
+			| PENDIF 
+			{
+			 conprint("endif\n");
+			}
+			| PPDATE 
+			{
+			 conprint("%_DATE()\n");
+			}
+			| PPTIME 
+			{
+			 conprint("%_TIME()\n");
+			}
+			| PPLINE 
+			{
+			 conprint("%_LINE()\n");
+			}
+			| PPFILE 
+			{
+			 conprint("%_FILE()\n");
+			}
+			| PPCDATE 
+			{
+			 conprint("%_CDATE()\n");
+			}
+			| PPCTIME 
+			{
+			 conprint("%_CTIME()\n");
+			}			
+			| PPINCLUDE STRINGV 
+			{
+			 conprint("%%include %s\n", $2.to_string().get().getString().c_str()); 
+			}
+			| PPINCLUDE "<" STRINGV ">" 
+			{
+			 conprint("%%include <%s>\n", $3.to_string().get().getString().c_str()); 
+			}
+			| PPIMPORT STRINGV 
+			{
+			 conprint("%%import %s\n", $2.to_string().get().getString().c_str()); 
+			}
+			| PPIMPORT "<" STRINGV ">" 
+			{
+			 conprint("%%import <%s>\n", $3.to_string().get().getString().c_str()); 
+			}
+			| PPDEFINE STRINGV STRINGV 
+			{
+			 conprint("%%define %s %s\n", $2.to_string().get().getString().c_str(), $3.to_string().get().getString().c_str());
+			}
+			| PPMACRO STRINGV 
+			{
+			 conprint("%%macro %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PPENDM 
+			{
+			 conprint("%%endm\n");
+			}
+			| PPUNDEF STRINGV 
+			{
+			 conprint("%%undef %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PPIFDEF STRINGV 
+			{
+			 conprint("%%ifdef %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PPIFNDEF STRINGV 
+			{
+			 conprint("%%ifndef %s\n", $2.to_string().get().getString().c_str());
+			}
+			| PPELSE 
+			{
+			 conprint("%%else\n");
+			}
+			| PPENDIF 
+			{
+			 conprint("%%endif\n");
+			}
+			| PPPDATE 
+			{
+			 conprint("%%_DATE()\n");
+			}
+			| PPPTIME 
+			{
+			 conprint("%%_TIME()\n");
+			}
+			| PPPLINE 
+			{
+			 conprint("%%_LINE()\n");
+			}
+			| PPPFILE 
+			{
+			 conprint("%%_FILE\n");
+			}
+			| PPPCDATE 
+			{
+			 conprint("%%_CDATE()\n");
+			}
+			| PPPCTIME 
+			{
+			 conprint("%%_CTIME()\n");
+			}
+
+%%
+/* Additional C/C++ Code */

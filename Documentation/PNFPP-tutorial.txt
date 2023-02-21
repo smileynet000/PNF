@@ -1,0 +1,190 @@
+Copyright (c)  2019  Dennis Earl Smiley.
+    Permission is granted to copy, distribute and/or modify this document
+    under the terms of the GNU Free Documentation License, Version 1.3
+    or any later version published by the Free Software Foundation;
+    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    A copy of the license is included in the section entitled "GNU
+    Free Documentation License".
+
+
+CHANGELOG
+=========
+
+3/30/17 Original a - The first version.
+
+
+INTRODUCTION
+============
+
+PNFPP stands for Portable Numbers Format Preprocessor. It is a preprocessor made for the PNF suite of languages. It is in actuallity, nothing more than a text processor. It was based off of the C++ Preprocessor, but it's significantly different. This tutorial, will teach you how to use the preprocessing language.
+
+
+GENERAL SYNTAX
+==============
+
+A file to preprocess will have preprocessing commands in it. Most preprocessing commands start with "#". Here are the possible types of commands:
+
+* include command
+* import command
+* define command
+* macro command
+* if command
+  * ifdef command
+  * ifndef command
+* Predefined command
+
+A file to preprocess will have one or more commands in it.
+
+
+INCLUDE COMMAND
+===============
+
+The include command allows you to include a file into your program. In the output, it will appear exactly where you put it. You may include a file more than once, and there is no way to prevent it from being able to be included more than once.
+
+The syntax of the include command is as follows:
+
+---
+#include <[file]>
+
+or
+
+#include "[file]"
+---
+
+[file] is the filename to include, which could also be a pathname. If you use the first version, it will look one level up from where the executable is, and look in the include directory. If you use the second version, it will look relative to where you are.
+
+
+IMPORT COMMAND
+==============
+
+The import command functions exactly the same as the include command. The difference is that it only allows the file to be included once. It's syntax is exactly the same, except for it uses "#import", instead of "#include". The meaning of the brackets and quotes is exactly the same as before.
+
+
+DEFINE COMMAND
+==============
+
+The define command lets you do simple text substitution. It's syntax is:
+
+---
+#define [string] [string]
+---
+
+Where [string] is quoted text. Anywhere the preprocessor sees the first string, it will replace it with the second string. That's what that does!
+
+
+MACRO COMMAND
+=============
+
+This one takes a little bit of explaining. A macro is similar to what some languages call subroutines. A macro functions on text only. It is a way of transforming text. First we will consider macros without parameters.
+
+The syntax of macros without parameters is:
+
+---
+#macro [string]()
+[tstrings]
+#endm
+---
+
+Where [string] is the name of the macro, with quotes around it. [tstrings] is any text at all. That is the macro's definition. But nothing will happen until we actually call the macro. We can call it with this syntax:
+
+---
+[string]()
+---
+
+Where [string] is the name of the macro you defined, without parameters, with quotes around it. When you call a macro without parameters, it will take the tstrings in it's definition, and replace the call with that, but all on one line.
+
+Now for macros with parameters. You can have any number of parameters you'd like. You define a macro with parameters, like this:
+
+---
+#macro [string]([parameter list])
+[tstrings]
+#endm
+---
+
+Here, [string] represents the same thing as above, and so does [tstrings]. The only difference is the parameter list, and the special code you may stick into the tstrings. The parameter list has syntax like this:
+
+---
+[parameter list] = [parameter], [parameter], ...
+---
+
+Where [parameter] is a quoted string and ... means that you can continue in the exact same pattern. Now for tstrings' magic.
+
+In tstrings, you can reference one of the parameters, by using it's name without quotes. Again, nothing will happen until you call the macro. So how do you call the macro? Like this:
+
+---
+[string]([parameter list])
+---
+
+Where [string] is the quoted name of the macro you defined. [parameter list] is as above. The number of parameters in you're call must match the number of parameters in your definition. What happens after one of these calls? Everywhere there is seen to be a parameter name, it will be replaced with what you called it with. Then the text will be put in where the call is verbatim from that. That's macros!
+
+
+IF COMMANDS
+===========
+
+The if commands allow you to do conditional compilation. There are two if commmands:
+
+* ifdef command
+* ifndef command
+
+First we shall go over ifdef.
+
+
+ifdef
+-----
+
+The ifdef command is used to determine if a definition has been defined or not. It's syntax is:
+
+---
+#ifdef [string]
+[code]
+#endif
+---
+
+[string] is the name you are testing. It shows you whether it is defined or not. If it's defined, it will execute the code. If it's not defined, it will not execute the code. You cannot use '#' commands inside of the code block.
+
+There is another form of this command. You may have an optional else block, so that it would look like this:
+
+---
+#ifdef [string]
+[code]
+#else
+[code]
+#endif
+---
+
+The else code will execute if the condition is false. That is ifdef!
+
+
+ifndef
+------
+
+The ifndef command will function exactly like the ifdef command. The only difference is it tests for whether or not a definition has NOT been defined or not. Just stick the 'n' where it belongs, and you have it's proper syntax! That's the ifndef command.
+
+
+PREDEFINED COMMAND
+==================
+
+A predefinded command is simply a built in macro. You never need to define it, and trying to would produce an error. Here are the built in commands:
+
+---
+_DATE()
+_TIME()
+_LINE()
+_FILE()
+_CDATE()
+_CTIME()
+---
+
+"_DATE()" produces the date when it's called. "_TIME()" produces the time when it's called. "_LINE()" produces the line number in the file you are in, when it's called. "_FILE()" produces the file you are looking at when it's called. "_CDATE()" produces the date the preprocessor was compiled when it's called. "_CTIME()" produces the time the preprocessor was compiled when it's called.
+
+
+PREPROCESSOR COMMENTS
+=====================
+
+There is one more construct to go after. If you wish to produce a preprocessor comment, which is ignored at preprocessing time, then begin a line with "' ". That's all there is to it!
+
+
+CONCLUSION
+==========
+
+Now you should see how to use the preprocessor! Wow, that was a lot of commands, now wasn't it? Now go write a program that allows you to demonstrate the preprocessor!

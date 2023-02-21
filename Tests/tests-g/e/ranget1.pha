@@ -1,0 +1,6 @@
+println "Defining a t1 range...";
+range rtype1 "a" = "5".."10";
+
+
+println "Quitting...";
+end 0;

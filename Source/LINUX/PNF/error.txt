@@ -1,0 +1,387 @@
+In file included from ../CPP/include/PNF_Types.hpp:26,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/Array2.cpp:43:1: warning: redeclaration of ‘Array2<T>::Array2(long unsigned int)’ may not have default arguments [-fpermissive]
+   43 | Array2<T>::Array2(unsigned long s = 1)
+      | ^~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:27,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/String2.cpp: In constructor ‘String2::String2()’:
+../CPP/include/String2.cpp:43:9: warning: invalid conversion from ‘const char*’ to ‘char’ [-fpermissive]
+   43 |  *str = "";
+      |         ^~
+      |         |
+      |         const char*
+../CPP/include/String2.cpp: In member function ‘String2 String2::operator=(const String2&)’:
+../CPP/include/String2.cpp:157:25: warning: passing ‘const String2’ as ‘this’ argument discards qualifiers [-fpermissive]
+  157 |  str = new char[s.length() + 1];
+      |                 ~~~~~~~~^~
+In file included from ../CPP/include/String2.cpp:37,
+                 from ../CPP/include/PNF_Types.hpp:27,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/String2.hpp:80:23: note:   in call to ‘long unsigned int String2::length()’
+   80 |         unsigned long length();
+      |                       ^~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:27,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/String2.cpp:158:25: warning: passing ‘const String2’ as ‘this’ argument discards qualifiers [-fpermissive]
+  158 |  strcpy(str, s.getString());
+      |              ~~~~~~~~~~~^~
+In file included from ../CPP/include/String2.cpp:37,
+                 from ../CPP/include/PNF_Types.hpp:27,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/String2.hpp:74:16: note:   in call to ‘char* String2::getString()’
+   74 |         char * getString();
+      |                ^~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:27,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/String2.cpp: In member function ‘void String2::clear()’:
+../CPP/include/String2.cpp:216:9: warning: invalid conversion from ‘const char*’ to ‘char’ [-fpermissive]
+  216 |  *str = "";
+      |         ^~
+      |         |
+      |         const char*
+In file included from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.hpp: At global scope:
+../CPP/include/PNF_Types.hpp:370:9: warning: ISO C++ forbids declaration of ‘PNF_RangeT1_init’ with no type [-fpermissive]
+  370 |         PNF_RangeT1_init(String nm, PNF_Number f, PNF_Number t, PNF_Number n);
+      |         ^~~~~~~~~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Basic_Variable::put(const PNF_Basic_Variable&)’:
+../CPP/include/PNF_Types.cpp:818:17: warning: passing ‘const PNF_Basic_Variable’ as ‘this’ argument discards qualifiers [-fpermissive]
+  818 |    put(v.to_Void());
+      |        ~~~~~~~~~^~
+In file included from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.hpp:250:20: note:   in call to ‘PNF_Void& PNF_Basic_Variable::to_Void()’
+  250 |         PNF_Void & to_Void();
+      |                    ^~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp:822:20: warning: passing ‘const PNF_Basic_Variable’ as ‘this’ argument discards qualifiers [-fpermissive]
+  822 |    put(v.to_boolean());
+      |        ~~~~~~~~~~~~^~
+In file included from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.hpp:251:23: note:   in call to ‘PNF_Boolean& PNF_Basic_Variable::to_boolean()’
+  251 |         PNF_Boolean & to_boolean();
+      |                       ^~~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp:826:19: warning: passing ‘const PNF_Basic_Variable’ as ‘this’ argument discards qualifiers [-fpermissive]
+  826 |    put(v.to_number());
+      |        ~~~~~~~~~~~^~
+In file included from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.hpp:252:22: note:   in call to ‘PNF_Number& PNF_Basic_Variable::to_number()’
+  252 |         PNF_Number & to_number();
+      |                      ^~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp:830:22: warning: passing ‘const PNF_Basic_Variable’ as ‘this’ argument discards qualifiers [-fpermissive]
+  830 |    put(v.to_character());
+      |        ~~~~~~~~~~~~~~^~
+In file included from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.hpp:253:25: note:   in call to ‘PNF_Character& PNF_Basic_Variable::to_character()’
+  253 |         PNF_Character & to_character();
+      |                         ^~~~~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp:834:19: warning: passing ‘const PNF_Basic_Variable’ as ‘this’ argument discards qualifiers [-fpermissive]
+  834 |    put(v.to_string());
+      |        ~~~~~~~~~~~^~
+In file included from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.hpp:254:22: note:   in call to ‘PNF_String& PNF_Basic_Variable::to_string()’
+  254 |         PNF_String & to_string();
+      |                      ^~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Basic_Variable PNF_Variable::getsimple() const’:
+../CPP/include/PNF_Types.cpp:1468:24: warning: passing ‘const Array<PNF_Basic_Variable>’ as ‘this’ argument discards qualifiers [-fpermissive]
+ 1468 |     return itsasimple[0];
+      |                        ^
+In file included from /usr/include/c++/11/desLib/classes/classes.hpp:43,
+                 from /usr/include/c++/11/desLib/deslib.hpp:43,
+                 from ../pnf.hpp:123,
+                 from main.cpp:45:
+/usr/include/c++/11/desLib/classes/Array.cpp:140:5: note:   in call to ‘T& Array<T>::operator[](long unsigned int) [with T = PNF_Basic_Variable]’
+  140 | T & Array<T>::operator[](unsigned long offSet)
+      |     ^~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Variable::print()’:
+../CPP/include/PNF_Types.cpp:1677:12: warning: cast from ‘PNF_Basic_Variable*’ to ‘int’ loses precision [-fpermissive]
+ 1677 |    cout << (int)itspsimple;
+      |            ^~~~~~~~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Variable::println()’:
+../CPP/include/PNF_Types.cpp:1713:12: warning: cast from ‘PNF_Basic_Variable*’ to ‘int’ loses precision [-fpermissive]
+ 1713 |    cout << (int)itspsimple << endl;
+      |            ^~~~~~~~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Variable::eprint()’:
+../CPP/include/PNF_Types.cpp:1750:12: warning: cast from ‘PNF_Basic_Variable*’ to ‘int’ loses precision [-fpermissive]
+ 1750 |    cerr << (int)itspsimple;
+      |            ^~~~~~~~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Variable::eprintln()’:
+../CPP/include/PNF_Types.cpp:1786:12: warning: cast from ‘PNF_Basic_Variable*’ to ‘int’ loses precision [-fpermissive]
+ 1786 |    cerr << (int)itspsimple << endl;
+      |            ^~~~~~~~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Variable::read()’:
+../CPP/include/PNF_Types.cpp:1826:17: warning: invalid conversion from ‘int’ to ‘PNF_Basic_Variable*’ [-fpermissive]
+ 1826 |    itspsimple = (int)n.get();
+      |                 ^~~~~~~~~~~~
+      |                 |
+      |                 int
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Variable::fprint(std::ofstream&)’:
+../CPP/include/PNF_Types.cpp:1867:12: warning: cast from ‘PNF_Basic_Variable*’ to ‘int’ loses precision [-fpermissive]
+ 1867 |    fout << (int)itspsimple;
+      |            ^~~~~~~~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Variable::fread(std::ifstream&)’:
+../CPP/include/PNF_Types.cpp:1906:17: warning: invalid conversion from ‘int’ to ‘PNF_Basic_Variable*’ [-fpermissive]
+ 1906 |    itspsimple = (int)n.get();
+      |                 ^~~~~~~~~~~~
+      |                 |
+      |                 int
+../CPP/include/PNF_Types.cpp: At global scope:
+../CPP/include/PNF_Types.cpp:2042:1: warning: ISO C++ forbids declaration of ‘PNF_RangeT1_init’ with no type [-fpermissive]
+ 2042 | PNF_RangeT1::PNF_RangeT1_init(String nm = (char *)"", PNF_Number f = -1, PNF_Number t = -1, PNF_Number n = 1)
+      | ^~~~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘int PNF_RangeT1::PNF_RangeT1_init(String, PNF_Number, PNF_Number, PNF_Number)’:
+../CPP/include/PNF_Types.cpp:2046:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ 2046 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Variable& PNF_Basic_Object2::simple()’:
+../CPP/include/PNF_Types.cpp:2569:11: warning: reference to local variable ‘v’ returned [-Wreturn-local-addr]
+ 2569 |    return v;
+      |           ^
+../CPP/include/PNF_Types.cpp:2568:17: note: declared here
+ 2568 |    PNF_Variable v(n);
+      |                 ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Enum& PNF_Basic_Object2::Enum()’:
+../CPP/include/PNF_Types.cpp:2626:11: warning: reference to local variable ‘e’ returned [-Wreturn-local-addr]
+ 2626 |    return e;
+      |           ^
+../CPP/include/PNF_Types.cpp:2625:13: note: declared here
+ 2625 |    PNF_Enum e;
+      |             ^
+../CPP/include/PNF_Types.cpp: In member function ‘long int PNF_Basic_Object2::getType() const’:
+../CPP/include/PNF_Types.cpp:2737:14: warning: passing ‘const PNF_Basic_Object2’ as ‘this’ argument discards qualifiers [-fpermissive]
+ 2737 |  switch (type())
+      |          ~~~~^~
+../CPP/include/PNF_Types.cpp:2658:15: note:   in call to ‘PNF_Type_Enum PNF_Basic_Object2::type()’
+ 2658 | PNF_Type_Enum PNF_Basic_Object2::type()
+      |               ^~~~~~~~~~~~~~~~~
+../CPP/include/PNF_Types.cpp:2750:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ 2750 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Object2::aput(long unsigned int, const PNF_Basic_Object2&)’:
+../CPP/include/PNF_Types.cpp:2933:17: warning: invalid conversion from ‘const PNF_Basic_Object2*’ to ‘PNF_Basic_Object2*’ [-fpermissive]
+ 2933 |  itsaobject.put(&o, index);
+      |                 ^~
+      |                 |
+      |                 const PNF_Basic_Object2*
+In file included from /usr/include/c++/11/desLib/classes/classes.hpp:43,
+                 from /usr/include/c++/11/desLib/deslib.hpp:43,
+                 from ../pnf.hpp:123,
+                 from main.cpp:45:
+/usr/include/c++/11/desLib/classes/Array.cpp:89:22: note:   initializing argument 1 of ‘void Array<T>::put(T, long unsigned int) [with T = PNF_Basic_Object2*]’
+   89 | void Array<T>::put(T d, unsigned long s)
+      |                    ~~^
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp: In member function ‘long int PNF_Object2::getType() const’:
+../CPP/include/PNF_Types.cpp:3080:14: warning: passing ‘const PNF_Object2’ as ‘this’ argument discards qualifiers [-fpermissive]
+ 3080 |  switch (type())
+      |          ~~~~^~
+../CPP/include/PNF_Types.cpp:2973:15: note:   in call to ‘PNF_Type_Enum PNF_Object2::type()’
+ 2973 | PNF_Type_Enum PNF_Object2::type()
+      |               ^~~~~~~~~~~
+../CPP/include/PNF_Types.cpp:3094:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ 3094 | }
+      | ^
+../CPP/include/PNF_Types.cpp: At global scope:
+../CPP/include/PNF_Types.cpp:3124:1: warning: redeclaration of ‘PNF_Array<T>::PNF_Array(long unsigned int)’ may not have default arguments [-fpermissive]
+ 3124 | PNF_Array<T>::PNF_Array(unsigned long s = 1)
+      | ^~~~~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘void PNF_Struct::type(const String&)’:
+../CPP/include/PNF_Types.cpp:3888:27: warning: passing ‘const String’ as ‘this’ argument discards qualifiers [-fpermissive]
+ 3888 |  char * temp = n.getString().c_str();
+      |                ~~~~~~~~~~~^~
+In file included from /usr/include/c++/11/desLib/functions/error.cpp:32,
+                 from /usr/include/c++/11/desLib/functions/error.hpp:33,
+                 from /usr/include/c++/11/desLib/functions/functions.hpp:47,
+                 from /usr/include/c++/11/desLib/deslib.hpp:41,
+                 from ../pnf.hpp:123,
+                 from main.cpp:45:
+/usr/include/c++/11/desLib/classes/String.cpp:165:8: note:   in call to ‘std::string String::getString()’
+  165 | string String::getString()
+      |        ^~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp:3888:35: warning: invalid conversion from ‘const char*’ to ‘char*’ [-fpermissive]
+ 3888 |  char * temp = n.getString().c_str();
+      |                ~~~~~~~~~~~~~~~~~~~^~
+      |                                   |
+      |                                   const char*
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Object2& PNF_Class::get()’:
+../CPP/include/PNF_Types.cpp:4029:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ 4029 | }
+      | ^
+../CPP/include/PNF_Types.cpp: At global scope:
+../CPP/include/PNF_Types.cpp:4176:1: warning: redeclaration of ‘Array3<T>::Array3(long unsigned int)’ may not have default arguments [-fpermissive]
+ 4176 | Array3<T>::Array3(unsigned long s = 1)
+      | ^~~~~~~~~
+../CPP/include/PNF_Types.cpp:4473:1: warning: redeclaration of ‘Array4<T>::Array4(long unsigned int)’ may not have default arguments [-fpermissive]
+ 4473 | Array4<T>::Array4(unsigned long s = 1)
+      | ^~~~~~~~~
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_BASIC_FEELING PNF_BasicFeeling::get_feeling(PNF_BASIC_FEELING)’:
+../CPP/include/PNF_Types.cpp:4791:22: warning: invalid conversion from ‘long unsigned int’ to ‘PNF_BASIC_FEELING’ [-fpermissive]
+ 4791 |  return itsfeelings[i];
+      |                      ^
+      |                      |
+      |                      long unsigned int
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_BASIC_FEELING PNF_BasicFeeling::get_index()’:
+../CPP/include/PNF_Types.cpp:4806:9: warning: invalid conversion from ‘long unsigned int’ to ‘PNF_BASIC_FEELING’ [-fpermissive]
+ 4806 |  return itsindex;
+      |         ^~~~~~~~
+      |         |
+      |         long unsigned int
+In file included from main.cpp:45:
+../pnf.hpp: In member function ‘Registers& Registers::copy(const Registers&)’:
+../pnf.hpp:1608:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ 1608 | }
+      | ^
+In file included from main.cpp:45:
+../pnf.hpp: In member function ‘String PNF::execute()’:
+../pnf.hpp:11604:22: error: expected ‘;’ before ‘}’ token
+11604 |    reg.inloop = false
+      |                      ^
+      |                      ;
+11605 |   }
+      |   ~                   
+../pnf.hpp: In member function ‘ProgramState PNF::builtin_invalid_range1_exception(ProgramState)’:
+../pnf.hpp:13225:1: warning: no return statement in function returning non-void [-Wreturn-type]
+13225 | }
+      | ^
+../pnf.hpp: In member function ‘ProgramState PNF::builtin_invalid_range2_exception(ProgramState)’:
+../pnf.hpp:13230:1: warning: no return statement in function returning non-void [-Wreturn-type]
+13230 | }
+      | ^
+../pnf.hpp: In member function ‘ProgramState PNF::builtin_invalid_enum_exception(ProgramState)’:
+../pnf.hpp:13235:1: warning: no return statement in function returning non-void [-Wreturn-type]
+13235 | }
+      | ^
+In file included from ../CPP/include/PNF_Types.hpp:26,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/Array2.cpp: In instantiation of ‘Array2<T>::Array2(const Array2<T>&) [with T = Function]’:
+../CPP/include/PNF_Types.cpp:3535:9:   required from here
+../CPP/include/Array2.cpp:56:14: warning: passing ‘const Array2<Function>’ as ‘this’ argument discards qualifiers [-fpermissive]
+   56 |   data[i] = r[i];
+      |             ~^
+../CPP/include/Array2.cpp:116:5: note:   in call to ‘T& Array2<T>::operator[](long unsigned int) [with T = Function]’
+  116 | T & Array2<T>::operator[](unsigned long offSet)
+      |     ^~~~~~~~~
+../CPP/include/Array2.cpp: In instantiation of ‘void Array2<T>::insert() [with T = PNF_VIEW_CONTROL]’:
+../CPP/include/PNF_Types.cpp:3968:20:   required from here
+../CPP/include/Array2.cpp:127:15: warning: invalid conversion from ‘int’ to ‘PNF_VIEW_CONTROL’ [-fpermissive]
+  127 |  temp[size] = 0;
+      |               ^
+      |               |
+      |               int
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp: In instantiation of ‘Array4<T>::Array4(const Array4<T>&) [with T = double]’:
+../pnf.hpp:954:15:   required from here
+../CPP/include/PNF_Types.cpp:4486:14: warning: passing ‘const Array4<double>’ as ‘this’ argument discards qualifiers [-fpermissive]
+ 4486 |   data[i] = r[i];
+      |             ~^
+../CPP/include/PNF_Types.cpp:4568:5: note:   in call to ‘T& Array4<T>::operator[](long unsigned int) [with T = double]’
+ 4568 | T & Array4<T>::operator[](unsigned long offSet)
+      |     ^~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:26,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/Array2.cpp: In instantiation of ‘Array2<T>::Array2(const Array2<T>&) [with T = PNF_VIEW_CONTROL]’:
+../CPP/include/Array2.cpp:103:11:   required from ‘Array2<T> Array2<T>::operator=(const Array2<T>&) [with T = PNF_VIEW_CONTROL]’
+../CPP/include/PNF_Types.cpp:4059:21:   required from here
+../CPP/include/Array2.cpp:56:14: warning: passing ‘const Array2<PNF_VIEW_CONTROL>’ as ‘this’ argument discards qualifiers [-fpermissive]
+   56 |   data[i] = r[i];
+      |             ~^
+../CPP/include/Array2.cpp:116:5: note:   in call to ‘T& Array2<T>::operator[](long unsigned int) [with T = PNF_VIEW_CONTROL]’
+  116 | T & Array2<T>::operator[](unsigned long offSet)
+      |     ^~~~~~~~~
+In file included from ../CPP/include/PNF_Types.hpp:951,
+                 from ../pnf.hpp:837,
+                 from main.cpp:45:
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Basic_Variable PNF_Variable::getsimple() const’:
+../CPP/include/PNF_Types.cpp:1475:2: warning: control reaches end of non-void function [-Wreturn-type]
+ 1475 |  }
+      |  ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Basic_Variable* PNF_Variable::getpsimple() const’:
+../CPP/include/PNF_Types.cpp:1516:2: warning: control reaches end of non-void function [-Wreturn-type]
+ 1516 |  }
+      |  ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Basic_Variable* PNF_Variable::getrsimple() const’:
+../CPP/include/PNF_Types.cpp:1557:2: warning: control reaches end of non-void function [-Wreturn-type]
+ 1557 |  }
+      |  ^
+../CPP/include/PNF_Types.cpp: In member function ‘Array<PNF_Basic_Variable> PNF_Variable::getasimple() const’:
+../CPP/include/PNF_Types.cpp:1598:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 1598 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Number PNF_RangeT2::get(long unsigned int)’:
+../CPP/include/PNF_Types.cpp:2146:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 2146 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Basic_Object2& PNF_Object2::object()’:
+../CPP/include/PNF_Types.cpp:2845:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 2845 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Basic_Object2* PNF_Object2::pobject()’:
+../CPP/include/PNF_Types.cpp:2867:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 2867 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Basic_Object2* PNF_Object2::robject()’:
+../CPP/include/PNF_Types.cpp:2887:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 2887 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘Array<PNF_Basic_Object2*> PNF_Object2::aobject()’:
+../CPP/include/PNF_Types.cpp:2907:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 2907 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘PNF_Object2& PNF_Object2::operator=(const PNF_Object2&)’:
+../CPP/include/PNF_Types.cpp:3120:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 3120 | }
+      | ^
+../CPP/include/PNF_Types.cpp: In member function ‘Function& PNF_Class::get(long unsigned int)’:
+../CPP/include/PNF_Types.cpp:4077:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 4077 | }
+      | ^
+In file included from main.cpp:45:
+../pnf.hpp: In member function ‘bool PNF_Version::check(PNF_Variable, double)’:
+../pnf.hpp:1247:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 1247 | }
+      | ^
+main.cpp: In function ‘int Main(Array<String>)’:
+main.cpp:80:1: warning: control reaches end of non-void function [-Wreturn-type]
+   80 | }
+      | ^

@@ -1,0 +1,11 @@
+#macro "TWICE"("x")
+((x) * 2);
+#endm
+
+#macro "POWER"("x", "power")
+((x) ^ (power));
+#endm
+
+
+var a = "TWICE"("2")
+var b = "POWER"("2", "2")

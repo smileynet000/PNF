@@ -1,0 +1,3 @@
+var a = "Hello";
+println a + " World!";
+end 0;
