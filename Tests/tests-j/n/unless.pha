@@ -1,0 +1,28 @@
+load aload 22;
+switch; 
+load aload 22; 
+switch;
+
+unless ( ==; ) then
+ println "false";
+endif
+else
+ println "true";
+endif
+doneif
+
+load aload 22;
+switch; 
+load aload 22; 
+switch;
+
+if ( ==; ) then
+ println "false";
+endif
+else
+ println "true";
+endif
+doneif
+
+
+end 0;

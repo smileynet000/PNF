@@ -1,0 +1,6 @@
+R jrun "Hello";
+R run "java Hello";
+R pnfrun "ntimes.pnf";
+
+
+end 0;

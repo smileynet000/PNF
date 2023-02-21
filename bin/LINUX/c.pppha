@@ -1,0 +1,7 @@
+#define "string" "println"
+
+
+string "Hello World!";
+string "";
+
+end 0;

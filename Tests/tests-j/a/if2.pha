@@ -1,0 +1,6 @@
+if (load aload false;) then
+ println "if...";
+endif
+doneif
+
+end 0;

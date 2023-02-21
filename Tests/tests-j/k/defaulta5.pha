@@ -1,0 +1,260 @@
+funcdef (0V) a(0V);
+funcdef (0V) b(var a: number);
+funcdef (0V) c(var b: string, var c: number);
+funcdef (0V) d(var d: string, var e: number, var f: number);
+funcdef (0V) e(0V);
+funcdef (0V) f(0V);
+funcdef (0V) g(var g: string);
+funcdef (0V) h(0V);
+funcdef (0V) i(var h: boolean);
+funcdef (0V) j(0V);
+funcdef (var: number) k(0V);
+funcdef (var: boolean) l(0V);
+funcdef (var: number, var: boolean) m(0V);
+funcdef (0V) n(var a: boolean, var b: number);
+funcdef (0V) o(var a: number);
+funcdef (0V) p(var a: number);
+funcdef (0V) q(var a: boolean);
+funcdef (0V) r(var a: boolean, var b: number);
+funcdef (0V) s(var a: boolean, var b: number);
+funcdef (0V) t(var a: boolean, var b: number, var c: boolean);
+
+
+function (0V) a(0V)
+{
+ println "a()";
+ fret;
+};
+
+function (0V) b(var a: number)
+{
+ println "b()";
+ load aload 77;
+ fparameter (0V) b(var a: number) a number number;
+ print '"';
+ fparameter (0V) b(var a: number) a number;
+ print;
+ println '"';
+ fret;
+};
+
+function (0V) c(var b: string, var c: number)
+{
+ println "c()";
+ fret;
+};
+
+function (0V) d(var d: string, var e: number, var f: number)
+{
+ println "d()";
+ fret;
+};
+
+function (0V) e(0V)
+{
+ println "e()";
+ fret;
+};
+
+function (0V) f(0V)
+{
+ println "f()";
+ fret;
+};
+
+function (0V) g(var g: string)
+{
+ println "g()";
+ fret;
+};
+
+function (0V) h(0V)
+{
+ println "h()";
+ funccall : 1 (0V) a(0V);
+ fret;
+};
+
+function (0V) i(var h: boolean)
+{
+ println "i()";
+ fparameter (0V) i(var h: boolean) h boolean;
+ println;
+ fret;
+};
+
+function (0V) j(0V)
+{
+ println "j()";
+ funccall : 7 (0V) h(0V);
+ fret;
+};
+
+function (var: number) k(0V)
+{
+ println "k()";
+ load function (var: number) k(0V) rvalue 0 : 76;
+ fret;
+};
+
+function (var: boolean) l(0V)
+{
+ println "l()";
+ load function (var: boolean) l(0V) rvalue 0 : true;
+ fret;
+};
+
+function (var: number, var: boolean) m(0V)
+{
+ println "m()";
+ load function (var: number, var: boolean) m(0V) rvalue 0 : 75;
+ load function (var: number, var: boolean) m(0V) rvalue 1 : true;
+ fret;
+};
+
+function (0V) n(var a: boolean, var b: number)
+{
+ println "n()";
+
+ print "Values: ";
+ fparameter (0V) n(var a: boolean, var b: number) a boolean;
+ print;
+ print " ";
+ fparameter (0V) n(var a: boolean, var b: number) b number;
+ println;
+ fret;
+};
+
+function (0V) o(var a: number)
+{
+ println "o()";
+
+ print "Value: ";
+ fparameter (0V) o(var a: number) a number;
+ println;
+ fret;
+};
+
+function defaultv (0V) p(var a: number = 92: 0)
+{
+ println "p()";
+
+ print "Value is: ";
+ fparameter (0V) p(var a: number) a number;
+ println;
+
+ fret;
+};
+
+function defaultv (0V) q(var a: boolean = true: 0)
+{
+ println "q()";
+ fparameter (0V) q(var a: boolean) a boolean;
+ println;
+
+ fret;
+};
+
+function defaultv (0V) r(var a: boolean, var b: number = 72: 1)
+{
+ println "r()";
+ fparameter (0V) r(var a: boolean, var b: number) a boolean;
+ print;
+ print " ";
+ fparameter (0V) r(var a: boolean, var b: number) b number;
+ println;
+
+ fret;
+};
+
+function defaultv (0V) s(var a: boolean = true: 0, var b: number = 3: 1)
+{
+ println "s()";
+ fparameter (0V) s(var a: boolean, var b: number) a boolean;
+ print;
+ print " ";
+ fparameter (0V) s(var a: boolean, var b: number) b number;
+ println;
+
+ fret;
+};
+
+function defaultv (0V) t(var a: boolean = true: 0, var b: number = 3: 1, var c: boolean = false: 2)
+{
+ println "t()";
+ fparameter (0V) t(var a: boolean, var b: number, var c: boolean) a boolean;
+ print;
+ print " ";
+ fparameter (0V) t(var a: boolean, var b: number, var c: boolean) b number;
+ print;
+ print " ";
+ fparameter (0V) t(var a: boolean, var b: number, var c: boolean) c boolean;
+ println;
+
+ fret;
+};
+
+
+funccall : 0 (0V) a(0V);
+funccall : 1 (0V) b(22);
+funccall : 2 (0V) c("true", 77);
+funccall : 3 (0V) d("hello", 76, 79);
+funccall : 4 (0V) e(0V);
+funccall : 5 (0V) f(0V);
+funccall : 6 (0V) g("not a toy.");
+funccall : 7 (0V) h(0V);
+funccall : 8 (0V) i(true);
+funccall : 9 (0V) j(0V);
+
+println "";
+funccall : 10 (var: number) k(0V);
+load rvalue 0;
+print "The value returned was: ";
+println;
+
+println "";
+funccall : 11 (var: boolean) l(0V);
+load rvalue 0;
+print "The value returned was: ";
+println;
+
+println "";
+funccall : 12 (var: number, var: boolean) m(0V);
+load rvalue 0;
+print "The first return value was: ";
+println;
+load rvalue 1;
+print "The second return value was: ";
+println;
+
+println "";
+funccall : 13 (0V) n(true, 99);
+
+println "";
+funccall : 14 (0V) o(62);
+
+println "";
+funccall : 15 (0V) p(100);
+funccall : 15 (0V) p(defaultv2: number);
+
+println "";
+funccall : 16 (0V) q(false);
+funccall : 16 (0V) q(defaultv2: boolean);
+
+println "";
+funccall : 17 (0V) r(true, 99);
+funccall : 17 (0V) r(true, defaultv2: number);
+funccall : 17 (0V) r(false, defaultv2: number);
+
+println "";
+funccall : 18 (0V) s(false, 67);
+funccall : 18 (0V) s(false, defaultv2: number);
+//funccall : 18 (0V) s(defaultv2: boolean, 67); - Function not found error.
+
+println "";
+funccall : 19 (0V) t(false, 92, true);
+//funccall : 19 (0V) t(false, defaultv2: number, true);
+funccall : 19 (0V) t(false, defaultv2: number, defaultv2: boolean);
+
+
+end 0;

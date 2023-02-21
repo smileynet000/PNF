@@ -1,0 +1,8 @@
+subroutine hello_world;
+var hello_world;
+var p0 = 0V;
+gosub sub hello_world;
+end 0;
+hello_world:
+println "Hello World!";
+return;

@@ -1,0 +1,7 @@
+load aload 2;
+atoc;
+load aload "Hello World!";
+x;
+println;
+
+end 0;

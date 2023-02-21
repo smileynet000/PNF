@@ -1,0 +1,21 @@
+if (load aload true;) then
+{
+ println "if...";
+
+ if (load aload false;) then
+  println "subif...";
+ endif
+ doneif
+
+ if (load aload true;) then
+  println "subif2...";
+ endif
+ doneif
+}
+endif
+else
+ println "else...";
+endif
+doneif
+
+end 0;

@@ -110,6 +110,15 @@
 					       15. Finished work on unions
 					       16. Added segments and some simple instructions for them.
 					       17. Implemented segment instructions.
+                           18. Worked on CLASS instructions.
+                           19. Debugged...
+                           20. Worked on loop instructions and debugged.
+                           21. Problem #1: READ instruction broken.
+                           22. Fixed problem with comparison instructions
+                           23. General debugging
+                           24. Implemented while, until, whileb, and untilb loops
+                           25. Implemented for loop
+                           26. General debugging
 */
 #include <desLib/deslib.hpp>
 #include <cstdlib>
@@ -881,7 +890,7 @@ void PNF_Var::type(unsigned long t)
 class Memory
 {
  private:
-         Array<double> mem;
+         Array4<double> mem;
 
 
  public:
@@ -893,8 +902,8 @@ class Memory
         void put(unsigned long i, double d);
         long length();
 
-        Array<double> getmem();
-        void setmem(Array<double> a);
+        Array4<double> getmem();
+        void setmem(Array4<double> a);
 
         void insert();
         void remove();
@@ -902,7 +911,7 @@ class Memory
 
 Memory::Memory()
 {
-
+ mem[0] = 0;
 }
 
 Memory::~Memory()
@@ -912,7 +921,8 @@ Memory::~Memory()
 
 double Memory::get(unsigned long i)
 {
- if (i >= length())
+ unsigned long size = mem.length();
+ if (i >= size)
  {
   for (unsigned j = mem.length(); i >= mem.length(); ++j)
   {
@@ -939,12 +949,12 @@ long Memory::length()
  return mem.length();
 }
 
-Array<double> Memory::getmem()
+Array4<double> Memory::getmem()
 {
  return this->mem;
 }
 
-void Memory::setmem(Array<double> a)
+void Memory::setmem(Array4<double> a)
 {
  this->mem = a;
 }
@@ -1277,672 +1287,6 @@ ifstruct::ifstruct(int n)
 
 }
 
-class Param
-{
- protected:
-  String itsname;
-  PNF_Variable itsparam;
-  PNF_Variable itsdefault;
-
-
- public:
-  Param(int i = 0);
-
-  Param(const Param & p);
-
-
-  String name();
-  void name(String n);
-
-  PNF_Variable & param();
-  void param(PNF_Variable v);
-
-  PNF_Variable & defaultv();
-  void defaultv(PNF_Variable v);
-
-  void syncdefault();
-};
-
-Param::Param(int i)
-{
- itsname = (char *)"";
- PNF_Void v;
- itsparam.put(v);
- itsdefault.put(v);
-}
-
-Param::Param(const Param & p)
-{
- itsname = p.itsname;
- itsparam = p.itsparam;
- itsdefault = p.itsdefault;
-}
-
-String Param::name()
-{
- return itsname;
-}
-
-void Param::name(String n)
-{
- itsname = n;
-}
-
-PNF_Variable & Param::param()
-{
- return itsparam;
-}
-
-void Param::param(PNF_Variable v)
-{
- switch (v.getType())
- {
-  case TVOID:
-   itsparam.put(v.to_Void());
-   break;
-
-  case TBOOLEAN:
-  {
-   PNF_Boolean b(v.to_boolean());
-   itsparam.put(b);
-  }
-  break;
-
-  case TNUMBER:
-   itsparam.put(v.to_number());
-   break;
-
-  case TCHARACTER:
-   itsparam.put(v.to_character());
-   break;
-
-  case TSTRING:
-   itsparam.put(v.to_string());
-   break;
-
-  default:
-   cout << "* ERROR: Invalid type.";
- }
-}
-
-PNF_Variable & Param::defaultv()
-{
- return itsdefault;
-}
-
-void Param::defaultv(PNF_Variable v)
-{
- switch (v.getType())
- {
-  case TVOID:
-   itsdefault.put(v.to_Void());
-   break;
-
-  case TBOOLEAN:
-  {
-   PNF_Boolean b(v.to_boolean());
-   itsdefault.put(b);
-  }
-  break;
-
-  case TNUMBER:
-   itsdefault.put(v.to_number());
-   break;
-
-  case TCHARACTER:
-   itsdefault.put(v.to_character());
-   break;
-
-  case TSTRING:
-   itsdefault.put(v.to_string());
-   break;
-
-  default:
-   cout << "* ERROR: Invalid type.";
- }
-
- syncdefault();
-}
-
-void Param::syncdefault()
-{
- itsparam = itsdefault;
-}
-
-class Function
-{
- protected:
-  Array<Param> itsret;
-  String itsname;
-  Array<Param> itsparam;
-  unsigned long itsdef;
-
- public:
-  Function(int i = 0);
-
-  Function(const Function & f);
-
-
-  ~Function();
-
-
- PNF_Variable ret(unsigned long i);
- PNF_Variable retdefaultv(unsigned long i);
- Array<Param> rets();
- String name();
- String rname();
- Array<Param> params();
- PNF_Variable & param(unsigned long i);
- String pname(unsigned long i);
- PNF_Variable & defaultv(unsigned long i);
- unsigned long definition();
-
- void ret(unsigned long i, PNF_Variable r);
- void retdefaultv(unsigned long i, PNF_Variable r);
- void name(String n);
- void rname(String n);
- void params(Array<Param> p);
- void param(unsigned long i, PNF_Variable v);
- void pname(unsigned long i, String n);
- void defaultv(unsigned long i, PNF_Variable v);
- void definition(unsigned long d);
-
- void syncdefaultr(unsigned long i);
- void syncdefaultp(unsigned long i);
-
- String & mangle();
- String & unmangle();
-};
-
-Function::Function(int i) : itsdef(0)
-{
- itsname = (char *)"";
-
- PNF_Variable v;
- itsparam[0].param(v);
- itsret[0].param(v);
-}
-
-Function::Function(const Function & f)
-{
- itsname = f.itsname;
- itsret = f.itsret;
- itsparam = f.itsparam;
- itsdef = f.itsdef;
-}
-
-Function::~Function()
-{
-
-}
-
-PNF_Variable Function::ret(unsigned long i)
-{
- return itsret[i].param();
-}
-
-PNF_Variable Function::retdefaultv(unsigned long i)
-{
- return itsret[i].defaultv();
-}
-
-Array<Param> Function::rets()
-{
- return itsret;
-}
-
-String Function::name()
-{
- return unmangle();
-}
-
-String Function::rname()
-{
- return itsname;
-}
-
-Array<Param> Function::params()
-{
- return itsparam;
-}
-
-PNF_Variable & Function::param(unsigned long i)
-{
- return itsparam[i].param();
-}
-
-String Function::pname(unsigned long i)
-{
- return itsparam[i].name();
-}
-
-PNF_Variable & Function::defaultv(unsigned long i)
-{
- return itsparam[i].defaultv();
-}
-
-unsigned long Function::definition()
-{
- return itsdef;
-}
-
-void Function::ret(unsigned long i, PNF_Variable r)
-{
- for (unsigned long is = i; is > itsret.length() - 1; --is)
-  itsret.insert();
-
- itsret[i].param(r);
-}
-
-void Function::retdefaultv(unsigned long i, PNF_Variable r)
-{
- for (unsigned long is = i; is > itsret.length() - 1; --is)
-  itsret.insert();
-
- itsret[i].defaultv(r);
-}
-
-void Function::name(String n)
-{
- itsname = n;
- String str = mangle();
- itsname = str;
-}
-
-void Function::rname(String n)
-{
- itsname = n;
-}
-
-void Function::params(Array<Param> p)
-{
- itsparam = p;
-}
-
-void Function::param(unsigned long i, PNF_Variable v)
-{
- for (unsigned long is = i; is > itsparam.length() - 1; --is)
-  itsparam.insert();
-
- switch (v.getType())
- {
-  case TVOID:
-   itsparam[i].param(v.to_Void());
-   break;
-
-  case TBOOLEAN:
-   itsparam[i].param(v.to_boolean());
-   break;
-
-  case TNUMBER:
-   itsparam[i].param(v.to_number());
-   break;
-
-  case TCHARACTER:
-   itsparam[i].param(v.to_character());
-   break;
-
-  case TSTRING:
-   itsparam[i].param(v.to_string());
-   break;
-
-  default:
-   cout << "* ERROR: Invalid type.\n";
- }
-}
-
-void Function::pname(unsigned long i, String n)
-{
- for (unsigned long is = i; is > itsparam.length() - 1; --is)
-  itsparam.insert();
-
- itsparam[i].name(n);
-}
-
-void Function::defaultv(unsigned long i, PNF_Variable v)
-{
- for (unsigned long is = i; is > itsparam.length() - 1; --is)
-  itsparam.insert();
-
- switch (v.getType())
- {
-  case TVOID:
-   itsparam[i].defaultv(v.to_Void());
-   break;
-
-  case TBOOLEAN:
-   itsparam[i].defaultv(v.to_boolean());
-   break;
-
-  case TNUMBER:
-   itsparam[i].defaultv(v.to_number());
-   break;
-
-  case TCHARACTER:
-   itsparam[i].defaultv(v.to_character());
-   break;
-
-  case TSTRING:
-   itsparam[i].defaultv(v.to_string());
-   break;
-
-  default:
-   cout << "* ERROR: Invalid type.\n";
- }
-}
-
-void Function::definition(unsigned long d)
-{
- itsdef = d;
-}
-
-void Function::syncdefaultr(unsigned long i)
-{
- itsret[i].syncdefault();
-}
-
-void Function::syncdefaultp(unsigned long i)
-{
- itsparam[i].syncdefault();
-}
-
-String & Function::mangle()
-{
- String * str = new String();
- *str = unmangle();
-
- for (unsigned long i = 0; i < itsret.length(); ++i)
- {
-  switch (itsret[i].param().getType())
-  {
-   case TVOID:
-    *str += (char *)"_rVOID";
-    break;
-
-   case TBOOLEAN:
-    *str += (char *)"_rBOOLEAN";
-    break;
-
-   case TNUMBER:
-    *str += (char *)"_rNUMBER";
-    break;
-
-   case TCHARACTER:
-    *str += (char *)"_rCHARACTER";
-    break;
-
-   case TSTRING:
-    *str += (char *)"_rSTRING";
-    break;
-
-   default:
-    *str += (char *)"_rNONE";
-  }
- }
-
- for (unsigned long i = 0; i < itsparam.length(); ++i)
- {
-  switch (itsparam[i].param().getType())
-  {
-   case TVOID:
-    *str += (char *)"_VOID";
-    break;
-
-   case TBOOLEAN:
-    *str += (char *)"_BOOLEAN";
-    break;
-
-   case TNUMBER:
-    *str += (char *)"_NUMBER";
-    break;
-
-   case TCHARACTER:
-    *str += (char *)"_CHARACTER";
-    break;
-
-   case TSTRING:
-    *str += (char *)"_STRING";
-    break;
-
-   default:
-    *str += (char *)"_NONE";
-  }
- }
-
- return *str;
-}
-
-String & Function::unmangle()
-{
- String *str = new String((char *)"");
-
- for (unsigned long i = 0; i < itsname.length(); ++i)
- {
-  if (itsname[i] == '_')
-   break;
-  *str += itsname[i];
- }
-
- return *str;
-}
-
-class Function_Stack
-{
- protected:
-  Array<Function> itsstk;
-
- 
- public:
-  Function_Stack(int i = 0);
-
-  Array<Function> get();
-  
-  void set(Array<Function> f);
-
-  void add_function(Function f);
-  Function & get_function(unsigned long i);
-  Function & get_function(String n, bool & f);
-  Function & last_function();
-  void mod_function(unsigned long i, Function f);
-
-  unsigned long length();
-
- unsigned long find(String name);
- unsigned long find(String name, Array<String> rets, Array<String> params);
- unsigned long find_duplicate(Function f, bool & b);
-};
-
-Function_Stack::Function_Stack(int i)
-{
-
-}
-
-Array<Function> Function_Stack::get()
-{
- return itsstk;
-}
-  
-void Function_Stack::set(Array<Function> f)
-{
- itsstk = f;
-}
-
-void Function_Stack::add_function(Function f)
-{
- try
- {
-  mod_function(itsstk.length(), f);
- }
- catch (Exception e)
- {
-  e.file((char *)__FILE__);
-  e.line(__LINE__);
-  e.display();
-  exit(1);
- }
-}
-
-Function & Function_Stack::get_function(unsigned long i)
-{
- for (unsigned long is = i; is > itsstk.length(); --is)
-  itsstk.insert();
-
- return itsstk[i];
-}
-
-Function & Function_Stack::get_function(String n, bool & f)
-{
- Function * itsnull = new Function();
- bool found = false;
- unsigned long i;
- for (i = 0; i < itsstk.length(); ++i)
- {
-  String name = itsstk[i].rname();
-  if (name == n)
-  {
-   found = true;
-   break;
-  }
- }
-
- if (found == false)
- {
-  f = false;
-  return *itsnull;
- }
- else
- {
-  f = true;
-  return itsstk[i];
- }
-}
-
-Function & Function_Stack::last_function()
-{
- return itsstk[itsstk.length() - 1];
-}
-
-void Function_Stack::mod_function(unsigned long i, Function f)
-{
- for (unsigned long j = i; j >= itsstk.length(); --i)
-  itsstk.insert();
-
- itsstk[i] = f;
-}
-
-unsigned long Function_Stack::length()
-{
- return itsstk.length();
-}
-
-unsigned long Function_Stack::find(String n)
-{
- bool found = false;
- unsigned long i;
- for (i = 0; i < itsstk.length(); ++i)
- {
-  String str = itsstk[i].name();
-  if (str == n)
-  {
-   found = true;
-   break;
-  }
- }
-
- if (found == true)
-  return i;
- else
-  return -1;
-}
-
-unsigned long Function_Stack::find(String name, Array<String> rets, Array<String> params)
-{
- rets.remove();
- params.remove();
-
- bool found = false;
- unsigned long i;
- for (i = 0; i < itsstk.length(); ++i)
- {
-  bool params2 = false, params3 = false;
-  String str = itsstk[i].rname();
-  if (i == 0)
-  {
-   for (unsigned long j = 0; j < rets.length(); ++j)
-   {
-    if (j == 0)
-     params3 = true;
-    name += ((char *)"_r" + rets[j]);
-   }
-
-   if (params3 == false)
-    name += (char *)"_rVOID";
-
-   for (unsigned long j = 0; j < params.length(); ++j)
-   {
-    if (j == 0)
-     params2 = true;
-    name += ((char *)"_" + params[j]);
-   }
-
-   if (params2 == false)
-    name += (char *)"_VOID";
-
-
-   // DEBUG: cout << "str: " << str << " name: " << name << endl;
-  }
-
-  if (str == name)
-  {
-   found = true;
-   break;
-  }
- }
-
- if (found == true)
-  return i;
- else
-  return -1;
-}
-
-unsigned long Function_Stack::find_duplicate(Function f, bool & b)
-{
- try
- {
-  unsigned long ret;
-  b = false;
-  unsigned long i;
-  for (i = 0; i < itsstk.length(); ++i)
-  {
-   if (itsstk[i].rname() == f.rname())
-   {
-    b = false;
-    for (unsigned long j = 0; j < itsstk[i].rets().length(); ++j)
-    {
-     if (itsstk[i].ret(j).getm() == f.ret(j).getm())
-     {
-      for (unsigned k = 0; k < itsstk[i].params().length(); ++k)
-      {
-       if (itsstk[i].param(k).getm() != f.param(k).getm())
-        b = true;
-      }
-     }
-    }
-   }
-  }
-
-  ret = i;
-  return ret;
- }
- catch (Exception e)
- {
-  e.file((char *)__FILE__);
-  e.line(__LINE__);
-  e.display();
-  exit(1);
- }
-}
-
 
 class Registers
 {
@@ -2068,16 +1412,26 @@ class Registers
   PNF_Object2 fdefaultvalue;
  
  
-  Array2<PNF_Struct> structs;
-  Array2<PNF_Struct> ostructs;
+  Array4<PNF_Struct> structs;
+  Array4<PNF_Struct> ostructs;
   String struct_type;
   String struct_name;
 
 
-  Array2<PNF_Union> unions;
-  Array2<PNF_Union> ounions;
+  Array4<PNF_Union> unions;
+  Array4<PNF_Union> ounions;
   String union_type;
   String union_name;
+
+  Array4<PNF_Class> classes;
+  Array4<PNF_Class> oclasses;
+  String savename;
+  String class_type;
+  String class_name;
+  PNF_VIEW_CONTROL extendaccess;
+  PNF_VIEW_CONTROL implementaccess;
+
+  Array4<PNF_Interface> interfaces;
 
 
   PNF_Version mode;
@@ -2085,6 +1439,12 @@ class Registers
 
   PNF_Version extmode;
   Array<PNF_Version> sextmode;
+
+
+  Function * cfpointer1;
+
+
+  bool while_loop;
 
 
 
@@ -2655,6 +2015,14 @@ String PNF::execute()
  reg.sextmode[0].base.put(m2);
  reg.sextmode[0].top = 0;
 
+ reg.sextmode.insert();
+ reg.sextmode[1].base.put(m2);
+ reg.sextmode[1].top = 1;
+
+
+ // The whileb loop variables...
+ reg.while_loop = true;
+
 
 
   // Load the supported instructions...
@@ -2731,6 +2099,10 @@ String PNF::execute()
  // Set up unions
  reg.union_type = "";
  reg.union_name = "";
+
+ // Set up classes
+ reg.class_type = "";
+ reg.class_name = "";
 
 
  
@@ -3301,7 +2673,14 @@ reg.switchindex = 0;
    break;
 
    case IREAD:
-        reg.accumulator.object().simple().setType(reg.type);
+   {
+    PNF_Void v;
+    bool s = reg.version.check(v, 1);
+    bool s2 = reg.extmode.check(v, 1);
+
+    if (s == false && s2 == false)
+    {  
+     reg.accumulator.object().simple().setType(reg.type);
 
         if (reg.operand != 0)
          crash((char *)"Invalid Parameter.");
@@ -3309,8 +2688,75 @@ reg.switchindex = 0;
         {
          reg.accumulator.object().simple().read();
         }
+     }
+     else if (s == true && s2 == false)
+     {
+     reg.accumulator.object().simple().setType(reg.type);
 
-        break;
+        if (reg.operand != 0)
+         crash((char *)"Invalid Parameter.");
+        else
+        {
+         reg.accumulator.object().simple().read();
+        }
+     }
+     else if (s == false && s2 == true)
+      crash((char *)"Invalid version state.");
+     else
+     {
+      if (reg.operand != 0)
+       crash((char *)"Invalid Parameter.");
+
+      reg.accumulator.setType(reg.type);
+      switch (reg.accumulator.getType())
+      {
+       case TVOID:
+       {
+        PNF_Void v;
+        PNF_Variable v2(v);
+        reg.accumulator.put(v2);
+       }
+       break;
+
+       case TBOOLEAN:
+       {
+        PNF_Boolean b;
+        PNF_Variable v2(b);
+        reg.accumulator.put(v2);
+       }
+       break;
+
+       case TNUMBER:
+       {
+        PNF_Number n;
+        PNF_Variable v2(n);
+        reg.accumulator.put(v2);
+       }
+       break;
+
+       case TCHARACTER:
+       {
+        PNF_Character c;
+        PNF_Variable v2(c);
+        reg.accumulator.put(v2);
+       }
+       break;
+
+       case TSTRING:
+       {
+        PNF_String s;
+        PNF_Variable v2(s);
+        reg.accumulator.put(v2);
+       }
+       break;
+
+       default:
+        crash((char *)"Invalid Type");
+      };
+      reg.accumulator.read();
+     }
+    }
+    break;
 
    case ILOAD:
         {
@@ -4065,7 +3511,7 @@ case IESTOREC:
    case IMODT:
         {
          if (reg.operand == 0)
-          reg.accumulator.object().simple().setType(reg.type);
+          reg.accumulator.setType(reg.type);
          else
           crash((char *)"Invalid Operand.");
         }
@@ -4375,25 +3821,53 @@ case IESTOREC:
 
    case IINC:
         {
-         if (reg.operand == 0 && reg.type == 0)
+         PNF_Void v;
+         bool s = reg.version.check(v, 1);
+         
+         if (s == true)
          {
-          switch (reg.accumulator.object().simple().getType())
+          if (reg.operand == 0 && reg.type == 0)
           {
-           case TNUMBER:
+           switch (reg.accumulator.object().simple().getType())
            {
-            PNF_Number tn = reg.accumulator.object().simple().to_number();
-            tn.inc(1);
-            reg.accumulator.object().simple().put(tn);
-            break;
-           }
+            case TNUMBER:
+            {
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.inc(1);
+             reg.accumulator.object().simple().put(tn);
+             break;
+            }
 
-           default:
-            crash((char *)"Invalid INC Instruction.");
-            break;
+            default:
+             crash((char *)"Invalid INC Instruction.");
+             break;
+           }
           }
+          else
+           crash((char *)"Invalid INC Instruction.");
          }
          else
-          crash((char *)"Invalid INC Instruction.");
+         {
+          if (reg.operand == 0 && reg.type == 0)
+          {
+           switch (reg.accumulator.object().simple().getType())
+           {
+            case TVOID:
+            {
+             PNF_Number tn = reg.accumulator.object().simple().to_number();
+             tn.inc(1);
+             reg.accumulator.object().simple().put(tn);
+             break;
+            }
+
+            default:
+             crash((char *)"Invalid INC Instruction.");
+             break;
+           }
+          }
+          else
+           crash((char *)"Invalid INC Instruction.");
+         }
         }
         break;
 
@@ -4425,7 +3899,7 @@ case IESTOREC:
         {
          if (reg.type == TVOID && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() == reg.calc.object().simple().to_number().get());
            PNF_Boolean b2;
@@ -4477,7 +3951,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() != reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -4532,7 +4006,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() > reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -4576,7 +4050,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() < reg.calc.object().simple().to_number().get());
            PNF_Boolean b2;
@@ -4617,7 +4091,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() >= reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -4661,7 +4135,7 @@ case IESTOREC:
         {
          if (reg.type == 0 && reg.operand == 0)
          {
-          if (reg.accumulator.object().simple().getType() == reg.calc.object().simple().getType())
+          if (reg.accumulator.getType() == reg.calc.getType())
           {
            bool b = (reg.accumulator.object().simple().to_number().get() <= reg.calc.object().simple().to_number().get());
            if (b == true)
@@ -9026,93 +8500,191 @@ case IESTOREC:
   if (s == false)
    crash((char *)"Invalid instruction. Not in this version.");
 
-  double d = reg.accumulator.object().simple().to_number().get();
-  unsigned long index = (unsigned long)d;
+  bool s2 = reg.extmode.check(v, 0);
+  bool s3 = reg.extmode.check(v, 1);
 
-  switch (reg.type)
+  if (s2 == true)
   {
-   case TVOID:
+   double d = reg.accumulator.object().simple().to_number().get();
+   unsigned long index = (unsigned long)d;
+
+   switch (reg.type)
    {
-    if (reg.operand != 0)
-     crash((char *)"Invalid operand.");
+    case TVOID:
+    {
+     if (reg.operand != 0)
+      crash((char *)"Invalid operand.");
 
-    PNF_Void v2;
-    PNF_Variable v3(v);
+     PNF_Void v2;
+     PNF_Variable v3(v);
 
-    reg.fpointer1.get_function(index).param(reg.pnum, v3);
-    reg.fparams[reg.fparams.length() - 1] = (char *)"VOID";
-    reg.fparams.insert();
-   }
-   break;
+     reg.fpointer1.get_function(index).param(reg.pnum, v3);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"VOID";
+     reg.fparams.insert();
+    }
+    break;
 
-   case TBOOLEAN:
-   {
-    if (reg.operand != 0 && reg.operand != 1)
-     crash((char *)"Invalid operand.");
+    case TBOOLEAN:
+    {
+     if (reg.operand != 0 && reg.operand != 1)
+      crash((char *)"Invalid operand.");
 
-    bool b = reg.operand == 0 ? false : true;
-    PNF_Boolean b2;
-    b2.put(b);
-    PNF_Variable v2(b2);
+     bool b = reg.operand == 0 ? false : true;
+     PNF_Boolean b2;
+     b2.put(b);
+     PNF_Variable v2(b2);
 
-    reg.fpointer3 = &reg.fpointer1.get_function(index);
-    reg.fpointer3->param(reg.pnum, v2);
-    reg.fparams[reg.fparams.length() - 1] = (char *)"BOOLEAN";
-    reg.fparams.insert();
-   }
-   break;
+     reg.fpointer3 = &reg.fpointer1.get_function(index);
+     reg.fpointer3->param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"BOOLEAN";
+     reg.fparams.insert();
+    }
+    break;
 
-   case TNUMBER:
-   {
-    PNF_Number n;
-    n.put(reg.operand);
-    PNF_Variable v2(n);
+    case TNUMBER:
+    {
+     PNF_Number n;
+     n.put(reg.operand);
+     PNF_Variable v2(n);
 
-    reg.fpointer3 = &reg.fpointer1.get_function(index);
-    reg.fpointer3->param(reg.pnum, v2);
-    reg.fparams[reg.fparams.length() - 1] = (char *)"NUMBER";
-    reg.fparams.insert();
-   }
-   break;
+     reg.fpointer3 = &reg.fpointer1.get_function(index);
+     reg.fpointer3->param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"NUMBER";
+     reg.fparams.insert();
+    }
+    break;
 
-   case TCHARACTER:
-   {
-    char ch = (char)reg.operand;
-    PNF_Variable v2((PNF_Character)ch);
+    case TCHARACTER:
+    {
+     char ch = (char)reg.operand;
+     PNF_Variable v2((PNF_Character)ch);
 
-    reg.fpointer1.get_function(index).param(reg.pnum, v2);
-    reg.fparams[reg.fparams.length() - 1] = (char *)"CHARACTER";
-    reg.fparams.insert();
-   }
-   break;
+     reg.fpointer1.get_function(index).param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"CHARACTER";
+     reg.fparams.insert();
+    }
+    break;
 
-   case TSTRING:
-   {
-    PNF_String s;
+    case TSTRING:
+    {
+     PNF_String s;
     
-    unsigned long is;
-    String str = (char *)"";
-    for (is = k; mem.get(is) != 0; ++is)
-     str += (char)mem.get(is);
+     unsigned long is;
+     String str = (char *)"";
+     for (is = k; mem.get(is) != 0; ++is)
+      str += (char)mem.get(is);
 
-    s.put(str);
+     s.put(str);
     
-    PNF_Variable v2(s);
+     PNF_Variable v2(s);
 
-    reg.fpointer1.get_function(index).param(reg.pnum, v2);
-    reg.fparams[reg.fparams.length() - 1] = (char *)"STRING";
-    reg.fparams.insert();
+     reg.fpointer1.get_function(index).param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"STRING";
+     reg.fparams.insert();
 
-    i = is + 1;
-    j = i + 1;
-    k = j + 1;
-    i -= 3, j -= 3, k -= 3;
-   }
+     i = is + 1;
+     j = i + 1;
+     k = j + 1;
+     i -= 3, j -= 3, k -= 3;
+    }
    break;
 
-   default:
-    crash((char *)"Invalid type.");
+    default:
+     crash((char *)"Invalid type.");
+   };
   }
+  else if (s3 == true)
+  {
+   double d = reg.accumulator.object().simple().to_number().get();
+   unsigned long index = (unsigned long)d;
+
+   switch (reg.type)
+   {
+    case TVOID:
+    {
+     if (reg.operand != 0)
+      crash((char *)"Invalid operand.");
+
+     PNF_Void v2;
+     PNF_Variable v3(v);
+
+     reg.fpointer1.get_function2(index).param(reg.pnum, v3);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"VOID";
+     reg.fparams.insert();
+    }
+    break;
+
+    case TBOOLEAN:
+    {
+     if (reg.operand != 0 && reg.operand != 1)
+      crash((char *)"Invalid operand.");
+
+     bool b = reg.operand == 0 ? false : true;
+     PNF_Boolean b2;
+     b2.put(b);
+     PNF_Variable v2(b2);
+
+     reg.fpointer3 = &reg.fpointer1.get_function2(index);
+     reg.fpointer3->param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"BOOLEAN";
+     reg.fparams.insert();
+    }
+    break;
+
+    case TNUMBER:
+    {
+     PNF_Number n;
+     n.put(reg.operand);
+     PNF_Variable v2(n);
+
+     reg.fpointer3 = &reg.fpointer1.get_function2(index);
+     reg.fpointer3->param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"NUMBER";
+     reg.fparams.insert();
+    }
+    break;
+
+    case TCHARACTER:
+    {
+     char ch = (char)reg.operand;
+     PNF_Variable v2((PNF_Character)ch);
+
+     reg.fpointer1.get_function2(index).param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"CHARACTER";
+     reg.fparams.insert();
+    }
+    break;
+
+    case TSTRING:
+    {
+     PNF_String s;
+    
+     unsigned long is;
+     String str = (char *)"";
+     for (is = k; mem.get(is) != 0; ++is)
+      str += (char)mem.get(is);
+
+     s.put(str);
+    
+     PNF_Variable v2(s);
+
+     reg.fpointer1.get_function2(index).param(reg.pnum, v2);
+     reg.fparams[reg.fparams.length() - 1] = (char *)"STRING";
+     reg.fparams.insert();
+
+     i = is + 1;
+     j = i + 1;
+     k = j + 1;
+     i -= 3, j -= 3, k -= 3;
+    }
+   break;
+
+    default:
+     crash((char *)"Invalid type.");
+   };
+  }
+  else
+   crash((char *)"Invalid instruction. Not in this EXTMODE.");
  }
  break;
 
@@ -9508,23 +9080,51 @@ case IESTOREC:
   if (s == false)
    crash((char *)"Invalid instruction. Not in this version.");
 
-  switch (reg.type)
+  bool s2 = reg.extmode.check(v, 0);
+  bool s3 = reg.extmode.check(v, 1);
+
+  if (s2 == true)
   {
-   case TVOID:
+   switch (reg.type)
    {
-    reg.fpointer1.add_function((*reg.fpointer2));
-   }
-   break;
+    case TVOID:
+    {
+     reg.fpointer1.add_function((*reg.fpointer2));
+    }
+    break;
 
-   case TNUMBER:
-   {
-    reg.fpointer1.mod_function(reg.operand, (*reg.fpointer2));
-   }
-   break;
+    case TNUMBER:
+    {
+     reg.fpointer1.mod_function(reg.operand, (*reg.fpointer2));
+    }
+    break;
 
-   default:
-    crash((char *)"Invalid type.");
+    default:
+     crash((char *)"Invalid type.");
+   }
   }
+  else if (s3 == true)
+  {
+   switch (reg.type)
+   {
+    case TVOID:
+    {
+     reg.fpointer1.add_function2((*reg.fpointer2));
+    }
+    break;
+
+    case TNUMBER:
+    {
+     reg.fpointer1.mod_function2(reg.operand, (*reg.fpointer2));
+    }
+    break;
+
+    default:
+     crash((char *)"Invalid type.");
+   }
+  }
+  else
+   crash((char *)"Invalid instruction. Not in this EXTMODE.");
  }
  break;
 
@@ -11319,10 +10919,41 @@ case IUNIONPUT:
   if (s == false)
    crash((char *)"Invalid instruction. Not in this version.");
 
-  if (reg.type != TVOID && reg.operand != 0)
-   crash((char *)"Invaild EXTMODE instruction.");
+  switch (reg.type)
+        {
+         case TVOID:
+         {
+          PNF_Void v;
+          reg.extmode.base.put(v);
+          
+ 	      switch (reg.operand)
+	      {
+	       case 0: // 0V
+           {
+               if (reg.operand != 0)
+                crash((char *)"Invalid VOID Value.");
+               else
+               {               	
+               	reg.extmode.top = 0;
+               }
+          }
+	      break;
 
-  // One extmode so far, so does nothing...
+	      case 1:
+          {
+	       reg.extmode.top = 1;
+          }
+          break;
+
+          default:
+           crash((char *)"SETEXTMODE; Invalid operand.");
+      };
+     }
+     break;
+
+    default:
+     crash((char *)"SETEXTMODE; Invalid Type.");
+  }; 
  }
  break;
 
@@ -11871,6 +11502,1416 @@ case IUNIONPUT:
     }
    }
    break;
+
+ case IMSG:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TVOID)
+   crash((char *)"Invalid MSG instruction.");
+
+  switch (reg.operand)
+  {
+   case 0:
+    cout << "Sexual abuse is not cool! If you are being sexually abused, Timothy Kahn and others in his office, in Bellvue, WA, are great people to talk to." << endl;
+    break;
+
+   case 1:
+    cout << "Abuse of any kind is not good. If you are being threatened for your life, call 911!" << endl;
+    break;
+
+   case 2:
+    cout << "Suicide is not the answer. If you or anyone you know is in danger of suicide, call the national suicide hotline at 1-800-273-8255" << endl;
+    break;
+
+   case 3:
+    cout << "There is a God. He loves you very, very much. He would like you to believe and confess and repent from sin." << endl;
+    break;
+
+   case 4:
+     cout << "John 3:16 - For God so loved the world, that he gave his only begotten son, that whosoever believeth in him, shall not parish, but have everlasting life."
+          << endl;
+     break;
+
+   case 5:
+    cout << "Sins that are wrong, range from sexual immorality, to lying and witchcraft. You can read about sin, in the Holy Bible." << endl;
+    break;
+
+   case 6:
+    cout << "Love the Lord your God, with all your heart. (Paraphrase). See the Holy Bible for the whole commmandment" << endl;
+    break;
+
+   case 7:
+    cout << "If you admit your a sinner, and tell God, and earnestly want to follow him (just shout it out and he'll hear you) and you tell that to God, he will "
+         << "save you." << endl;
+    break;
+
+  case 8:
+   cout << "Life is all about God." << endl;
+   break;
+
+  case 9:
+   cout << "God is 3 parts: Father, Son and Holy Spirit, but one God." << endl;
+   break;
+
+
+   default:
+    crash((char *)"Invalid MSG instruction.");
+    break;
+  }
+ }
+ break;
+
+ case IWHILE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   for (is = i; mem.get(is) != IWHILEE; ++is)
+    ;
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   for (is = i; mem.get(is) != IWHILEB; ++is)
+    ;
+  }
+
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IWHILEB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  // Work done on WHILE...
+ }
+ break;
+
+ case IWHILEE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   // Done with loop
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   // Backup to the beginning of the loop.
+    unsigned long is = 0;
+    for (is = i; mem.get(is) != IWHILEB; --is)
+     ;
+
+    i = is - 3;
+    j = i + 1;
+    k = i + 2;
+  }
+ }
+ break;
+
+ case IWHILEBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   // Loop done...
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   for (is = i; mem.get(is) != IWHILEBBB; --is)
+    ;
+
+   i = is - 3;
+   j = i + 1;
+   k = i + 2;
+  } 
+ }
+ break;
+
+ case IWHILEBBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  // Work done on WHILEBB...
+ }
+ break;
+
+ case IWHILEBBE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  // Work done on WHILEBB...
+ }
+ break;
+
+ case IUNTIL:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   for (is = i; mem.get(is) != IUNTILE; ++is)
+    ;
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   for (is = i; mem.get(is) != IUNTILB; ++is)
+    ;
+  }
+
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IUNTILB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  // Work done on WHILE...
+ }
+ break;
+
+ case IUNTILE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   // Done with loop
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   // Backup to the beginning of the loop.
+    unsigned long is = 0;
+    for (is = i; mem.get(is) != IUNTILB; --is)
+     ;
+
+    i = is - 3;
+    j = i + 1;
+    k = i + 2;
+  }
+ }
+ break;
+
+ case IUNTILBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   // Loop done...
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   for (is = i; mem.get(is) != IUNTILBBB; --is)
+    ;
+
+   i = is - 3;
+   j = i + 1;
+   k = i + 2;
+  } 
+ }
+ break;
+
+ case IUNTILBBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  // Work done on WHILEBB...
+ }
+ break;
+
+ case IUNTILBBE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  // Work done on WHILEBB...
+ }
+ break;
+
+ case IFOR:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  // Begin for init...
+ }
+ break;
+
+ case IFORINIT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+ }
+ break;
+
+ case IFORCOND:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != 0 && reg.operand != 0)
+   crash((char *)"Invalid FORCOND instruction.");
+
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   for (is = i; mem.get(is) != IFORE; ++is)
+    ;
+   is += 3;
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   for (is = i; mem.get(is) != IFORB; ++is)
+    ;
+  }
+
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IFORINC:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  unsigned long is;
+  for (is = i; mem.get(is) != IFORINIT; --is)
+   ;
+  
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IFORB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  // Work done on FORINIT...
+ }
+ break;
+
+ case IFORE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  
+  // Backup to the beginning of the loop.
+  unsigned long is = 0;
+  for (is = i; mem.get(is) != IFORCOND; --is)
+   ;
+  is += 3;
+
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IFORBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+ }
+ break;
+
+ case IFORBBINIT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(is) != IFORBBB; --is)
+   ;
+  is += 3;
+
+  i = is - 3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case IFORBBCOND:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned is = 0;
+  if (reg.accumulator.object().simple().to_boolean().get() == "false")
+  {
+   for (is = i; mem.get(is) != IFORBBINC; ++is)
+    ;
+   is += 3;
+  }
+  else if (reg.accumulator.object().simple().to_boolean().get() == "true")
+  {
+   for (is = i; mem.get(is) != IFORBBB; --is)
+    ;
+  }
+
+  i = is - 3;
+  j = i + 1;
+  k = i + 2;
+ }
+ break;
+
+ case IFORBBINC:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(is) != IFORBBINIT; --is)
+   ;
+  is += 3;
+
+  i = is - 3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case IFORBBB:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(is) != IFORBB; ++is)
+   ;
+
+  i = is - 3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case IFORBBE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(is) != IFORBBCOND; ++is)
+   ;
+   is += 3;
+
+  i = is - 3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case IFOREVER:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+ }
+ break;
+
+ case IFOREVERE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid expression.");
+
+  unsigned long is;
+  for (is = i; mem.get(is) != IFOREVER; --is)
+   ;
+
+  i = is - 3;
+  j = i + 1;
+  k = j + 1;
+ }
+ break;
+
+ case ICLASS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid CLASS instruction.");
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+   
+
+  reg.classes.insert();
+  reg.classes[reg.classes.length() - 1].type(str);
+  
+  i = is + 1;
+  j = i + 1;
+  k = i + 2;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ICLASSVAR:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild CLASSVAR instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  PNF_Object2 o;
+  reg.classes[reg.classes.length() - 1].Use(reg.classes[reg.classes.length() - 1].mlength() - 1);
+  reg.classes[reg.classes.length() - 1].put(o, str);
+  reg.classes[reg.classes.length() - 1].add();
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case IENDCLASS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+   
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild ENDCLASS instruction.");
+ }
+ break;
+ 
+ case ICLASSNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild CLASSNAME instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  reg.class_type = str;
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ICLASSONAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild CLASSONAME instruction.");
+  
+   
+  String str = "";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  reg.class_name = str;
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ICLASSD:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invaild CLASSD instruction.");
+  
+   
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+  
+   
+  unsigned long is2 = 0;
+  bool found = false;
+  for (is2 = 0; is2 < reg.classes.length(); ++is2)
+  {
+   if (reg.classes[is2].type() == reg.class_type)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"class: " + reg.class_type + " undefined.");
+   
+  reg.oclasses.insert();
+  reg.oclasses[reg.oclasses.length() - 1] = reg.classes[is2];
+  reg.oclasses[reg.oclasses.length() - 1].name(str);
+
+  if (reg.oclasses.length() == 2) 
+   reg.savename = str;
+  
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+ 
+ case ICLASSUSE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  switch (reg.type)
+  {
+   case TVOID:
+   {
+    if (reg.operand != 0)
+     crash((char *)"Invaild CLASSUSE instruction.");
+  
+    
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+    {
+     if (reg.oclasses[is2].name() == reg.class_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.class_name + " not found.");
+   
+    bool uvalue = reg.oclasses[is2].Use(reg.class_name);
+
+    if (!uvalue)
+     crash(reg.class_name + (char *)"." + reg.class_name + (char *)": not found.");
+   }
+   break;
+
+   case TNUMBER:
+   {
+    if (reg.operand != 0)
+     crash((char *)"Invaild CLASSUSE instruction.");
+
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+    {
+     if (reg.oclasses[is2].name() == reg.class_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.class_name + " not found.");
+  
+    bool uvalue = reg.oclasses[is2].Use((unsigned long)reg.accumulator.object().simple().to_number().get());
+
+    char str1[1000];
+    sprintf(str1, "%lu", (unsigned long)reg.accumulator.object().simple().to_number().get());
+    String str = str1;
+
+    if (!uvalue)
+     crash(reg.class_name + (char *)"." + str + (char *)": not found.");
+   }
+   break;
+
+   case TSTRING:
+   {
+    String str = (char *)"";
+    unsigned long is;
+    for (is = k; mem.get(is) != 0; ++is)
+     str += (char)mem.get(is);
+  
+    
+    unsigned long is2;
+    bool found = false;
+    for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+    {
+     if (reg.oclasses[is2].name() == reg.class_name)
+     {
+      found = true;
+      break;
+     }
+    }
+  
+    if (!found)
+     crash((char *)"object: " + reg.class_name + " not found.");
+  
+    bool uvalue = reg.oclasses[is2].Use(str);
+ 
+    if (!uvalue)
+     crash(reg.class_name + (char *)"." + str + (char *)": not found.");
+
+
+    i = is + 1;
+    j = i + 1;
+    k = i + 2;
+
+    i -= 3, j -= 3, k -= 3;
+   }
+   break;
+
+
+   default:
+    crash((char *)"Invalid STRUCTUSE instruction.");
+  };
+ }
+ break;
+
+ case ICLASSUSING:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSUSING instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+  {
+   if (reg.oclasses[is2].name() == reg.class_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.class_name + " not found.");
+
+  reg.accumulator.object().simple().put((PNF_Number)reg.oclasses[is2].Using());
+ }
+ break;
+
+ case ICLASSUSINGNAME:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSUSINGNAME instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+  {
+   if (reg.oclasses[is2].name() == reg.class_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.class_name + " not found.");
+
+  reg.accumulator.object().simple().put(reg.oclasses[is2].UsingName());
+ }
+ break;
+
+ case ICLASSGET:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSGET instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+  {
+   if (reg.oclasses[is2].name() == reg.class_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.class_name + " not found.");
+
+  reg.accumulator.object(reg.oclasses[is2].get().object());
+ }
+ break;
+
+case ICLASSPUT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSPUT instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+  {
+   if (reg.oclasses[is2].name() == reg.class_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.class_name + " not found.");
+
+  reg.oclasses[is2].put(reg.accumulator, reg.oclasses[is2].UsingName());
+ }
+ break;
+
+ case ICLASSTYPE:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSTYPE instruction.");
+
+  reg.accumulator.object().simple().put(reg.class_type);
+ }
+ break;
+
+ case ICLASSTYPE2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSTYPE2 instruction.");
+
+  reg.class_type = reg.accumulator.object().simple().to_string().get();
+ }
+ break;
+
+ case ICLASSNAME2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSNAME2 instruction.");
+
+  reg.accumulator.object().simple().put(reg.class_name);
+ }
+ break;
+
+ case ICLASSNAME3:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invaild CLASSNAME3 instruction.");
+
+  reg.class_name = reg.accumulator.object().simple().to_string().get();
+ }
+ break;
+
+ case ICLASSMETHOD:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TNUMBER)
+   crash((char *)"Invalid CLASSMETHOD instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+  {
+   if (reg.oclasses[is2].name() == reg.class_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.class_name + " not found.");
+  
+  reg.cfpointer1 = new Function(reg.fpointer1.get_function(reg.operand));
+  reg.oclasses[is2].put(reg.fpointer1.length(), *reg.cfpointer1);
+  reg.fpointer1.remove_function(reg.operand);
+ }
+ break;
+
+ case ICLASSMETHOD2:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid CLASSMETHOD2 instruction.");
+
+  unsigned long is2;
+  bool found = false;
+  for (is2 = 0; is2 < reg.oclasses.length(); ++is2)
+  {
+   if (reg.oclasses[is2].name() == reg.class_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.class_name + " not found.");
+
+
+  String str = (char *)"";
+  unsigned long is3 = 0;
+  for (is3 = k; mem.get(is3) != 0; ++is3)
+   str += (char)mem.get(is3);
+
+  
+  unsigned long index = reg.fpointer1.find(str);
+  reg.oclasses[is2].put(reg.fpointer1.length(), reg.fpointer1.get_function(index));
+  reg.fpointer1.remove_function(index);
+
+
+  i = is3 + 1;
+  j = i + 1;
+  k = j + 1;
+
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case ICLASSMETHODCALL:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid CLASSMETHODCALL instruction.");
+
+
+  reg.fname = (char *)"";
+  unsigned long is;
+  for (is = k; mem.get(is) != 0; ++is)
+   reg.fname += (char)mem.get(is);
+
+  cout << '\"' << reg.fname << '\"' << endl;
+
+  
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+
+ case ICLASSMETHODCPARAMS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid CLASSMETHODCPARAMS instruction.");
+ }
+ break;
+
+ case ICLASSMETHODECPARAMS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid CLASSMETHODECPARAMS instruction.");
+ }
+ break;
+
+ case ICLASSMETHODECALL:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TVOID && reg.operand != 0)
+   crash((char *)"Invalid CLASSMETHODECALL instruction.");
+
+
+  unsigned long is;
+  bool found = false;
+  for (is = 0; is < reg.oclasses.length(); ++is)
+  {
+   reg.oclasses[1].name(reg.savename);
+
+   cout << '\"' << reg.class_name << '\"' << " " << '\"' << reg.oclasses[is].name() << '\"' << endl;
+   if (reg.oclasses[is].name() == reg.class_name)
+   {
+    found = true;
+    break;
+   }
+  }
+  
+  if (!found)
+   crash((char *)"object: " + reg.class_name + " not found.");
+
+  Function_Stack funcs2 = reg.oclasses[is].methods();
+  unsigned long index = funcs2.find(reg.fname, reg.frets, reg.fparams);
+
+  if (index == -1)
+   crash((char *)"Function not found.");
+  reg.fpointer3 = &funcs2.get_function(index);
+
+  for (unsigned long is = reg.frets.length() - 1; is != 0; --is)
+   reg.frets.remove();
+
+  for (unsigned long is = reg.fparams.length() - 1; is != 0; --is)
+   reg.fparams.remove();
+
+
+  PNF_Number n(i);
+  PNF_Variable v2(n);
+  funcstk.push(v2);
+
+  i = reg.fpointer3->definition();
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case ICLASSEXTENDACCESS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid CLASSEXTENDACCESS instruction.");
+
+
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+
+  if (str == "public")
+   reg.extendaccess = PUBLIC;
+  else if (str == "private")
+   reg.extendaccess = PRIVATE;
+  else if (str == "protected")
+   reg.extendaccess = PROTECTED;
+  else
+   crash((char *)"Invalid CLASSEXTENDACCESS instruction.");
+
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case ICLASSEXTEND:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid CLASSEXTEND instruction.");
+
+
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+
+
+  unsigned long is2 = 0;
+  bool found = false;
+  for (is2 = 0; is2 < reg.classes.length(); ++is2)
+  {
+   if (reg.classes[is2].type() == reg.class_type)
+   {
+    found = true;
+    break;
+   }
+  }
+
+  if (!found)
+   crash((char *)"class: " + reg.class_type + " not found.");
+
+
+  unsigned long is3 = 0;
+  bool found2 = false;
+  for (is3 = 0; is3 < reg.classes[is2].subclass_length(); ++is3)
+  {
+   if (reg.classes[is2].subclass(is3) == reg.class_type)
+   {
+    found2 = true;
+    break;
+   }
+  }
+
+  if (found2)
+   crash((char *)"subclass " + reg.class_type + " found.");
+
+  //String name = reg.savename;
+  //cout << "name: " << name << endl;
+  reg.classes[is2].subclass(reg.classes[is2].subclass_length(), reg.class_type);
+  reg.classes[is2].extend(reg.extendaccess, reg.classes[reg.classes[is2].subclass_length() - 1]);
+  //reg.classes[is2].name(name);
+
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case ICLASSIMPLEMENTACCESS:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid CLASSIMPLEMENTACCESS instruction.");
+
+
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+
+  if (str == "public")
+   reg.implementaccess = PUBLIC;
+  else if (str == "private")
+   reg.implementaccess = PRIVATE;
+  else if (str == "protected")
+   reg.implementaccess = PROTECTED;
+  else
+   crash((char *)"Invalid CLASSIMPLEMENTACCESS instruction.");
+
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
+
+ case ICLASSIMPLEMENT:
+ {
+  PNF_Void v;
+  bool s = reg.version.check(v, 1);
+
+  if (s == false)
+   crash((char *)"Invalid instruction. Not in this version.");
+
+  if (reg.type != TSTRING)
+   crash((char *)"Invalid CLASSIMPLEMENT instruction.");
+
+
+  String str = (char *)"";
+  unsigned long is = 0;
+  for (is = k; mem.get(is) != 0; ++is)
+   str += (char)mem.get(is);
+
+
+  unsigned long is2 = 0;
+  bool found = false;
+  for (is2 = 0; is2 < reg.classes.length(); ++is2)
+  {
+   if (reg.classes[is2].type() == reg.class_type)
+   {
+    found = true;
+    break;
+   }
+  }
+
+  if (!found)
+   crash((char *)"interface: " + reg.class_type + " not found.");
+
+
+  unsigned long is3 = 0;
+  bool found2 = false;
+  for (is3 = 0; is3 < reg.classes.length(); ++is3)
+  {
+   if (reg.interfaces[is3].type() == str)
+   {
+    found2 = true;
+    break;
+   }
+  }
+
+  if (!found2)
+   crash((char *)"interface: " + str + " not found.");
+
+  reg.classes[is2].implement(reg.implementaccess, reg.interfaces[is3]);
+
+  i = is + 1;
+  j = i + 1;
+  k = j + 1;
+  i -= 3, j -= 3, k -= 3;
+ }
+ break;
    
    
    default:

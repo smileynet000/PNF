@@ -1,0 +1,3105 @@
+Copyright (c)  2019  Dennis Earl Smiley.
+    Permission is granted to copy, distribute and/or modify this document
+    under the terms of the GNU Free Documentation License, Version 1.3
+    or any later version published by the Free Software Foundation;
+    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    A copy of the license is included in the section entitled "GNU
+    Free Documentation License".
+
+
+CHANGELOG
+=========
+
+5/25/15 Original a	- The first version.
+5/25/15 Original a-a	- Replaced IADDSTORE with ISTOREA. These 2 did the same thing.
+3/30/17 Original a-a-a  - 1. Added words about Arrays, Enums, and Ranges.
+			  2. Added information about preprocessing...
+			  3. Added information about IFs...
+			  4. Added information about SWITCHes...
+			  5. Revised document, including adding function documentation.
+			  6. Updated document...
+			  7. Fixed errors...
+			  8. Added msg and loop documentation.
+
+
+INTRODUCTION
+============
+
+	This tutorial is for the language PNF (Portable Numbers Format). It assumes no previous programming experience or light experience. It will take you from square one, to some simple working programs. By the time you are done, you should be able to write simple programs in PNF. I recommend that you follow this tutorial, and then try to come up with a working program of your own at the end of it.
+	So what is PNF? It is a binary format, runnable by the PNF interpreter. It is a very low level language. However, it is the easiest to use of it's level of languages.
+	What are some uses of PNF? PNF can be used to run programs in a platform-independent manor. That is, you can run a PNF program anywhere an interpreter has been written for it. PNF is designed to be a language, which an assembler can be assembled to. But you might want to write directly in PNF to "tweak" your program, and perhaps make it more efficient. It has been designed for such ease of use in modifying it.
+
+
+THE BASICS
+==========
+
+	So let's begin to get started in PNF. First, you should stop now, and read, "instruction_set.txt". It will perhaps tell you enough to get started. But I will assume that you are reading this because you want some more information to get you started than what is available in that file.
+	PNF is a text file, containing a signature, and numbers. That's it. That's all there is to it. You just need a signature, to identify that this is the PNF language, and numbers telling the file what to do.
+	The signature is simply, "!@.PNF". It is read as, "not at dot PNF". The purpose of this signature is to tell the computer that this is indeed a PNF file, and not something else carrying the same extension.
+	Then you have the numbers, and that's all there is to it! However, there are some numbers, you have to have. Each number, is a decimal number in the range of 2.22507e-308 - 1.79769e+308, where everything after 'e' is the exponent part. What are those numbers? Read on and I'll show you what they are.
+	The "numbers" are made up of 3 parts. An instruction opcode, a type (opcode), and an operand. First, I'll start with telling you about the types. There are 5 types possible. They are, TVOID, TBOOLEAN, TNUMBER, TCHARACTER, and TSTRING. Their opcodes are, 0-4, with TVOID being 0, and TSTRING being 4. These are type descriptors for values. If you forget what types there are, and their opcodes, you can look it up in "instruction_set.txt".
+	TVOID is the easiest to explain. It is a 0, and that's it. Wherever you need a void value, use 0. That's all there is to using a VOID value. A VOID value is the absence of all values. It is used when such an absence of values occurs. By convention, I will sometimes refer to a VOID value as 0V.
+	TBOOLEAN is the next easiest to explain. It signifies a true/false value. 0 is false, and any non-zero value is true. This is used for Boolean logic, like ands and ors. Some of the instructions put true or false in %accumulator. You can then jump to a spot in your code, based off of that value. By convention, you should use 1 to signify true, however.
+	TNUMBER is a number. It is a decimal number. You can make numeric calculations with this type. It has the range of: 2.22507e-308 - 1.79769e+308. Everything after 'e' is the exponent.
+	TCHARACTER is a character. It is an ASCII compliant character. You specify a character in PNF, by it's ASCII value. For example, 'a', would be '97'. That is a character value.
+	Finally, there is TSTRING. It is a NULL-Terminated string of characters. Each character in the string is specified by it's ASCII value, and it ends with the NULL character, which is 0.
+	An operand, is one of those types of data, and it is usually the one specified by the type operand, though there are a few special exceptions. An operand is the basic data that the instruction needs to complete it's task.
+	Finally, there is the instruction opcode. You can look up the instruction opcodes in "instruction_set.txt". Instructions are what do the work. This language is made up of instructions, which do work of some kind. Each instruction, does a different job, and requires different parameters to function.
+
+
+REQUIRED INSTRUCTIONS
+=====================
+
+	In your basic framework for any program, there are 2 instructions that are required in any program. These 2 instructions are required for any program to function. You will get crashes with errors if you do not include them.
+	The first, is the version instruction. It's format is VERSION [type] [operand]. Some instructions will only work in certain versions of PNF. You can lookup the opcodes to make it work in "instruction_set.txt".
+	The second, is the END instruction. END takes TVOID as a type, and 0V as an operand. I should point out, that 0V, is the friendly name for a VOID value. Wherever you see 0V, you know it is a void value, and will be the number 0, in PNF.
+	These are the required instructions. A file with all the basic components in it, will look like this:
+
+---
+!@.PNF
+
+
+0 0 0
+...
+61 0 0
+---
+
+Where "..." is any other instructions you wish to include for your program to work. Whitespace is not important. You can include whitespace anywhere you wish to make your program more readable. The recommended way to do it, is to place one instruction, one type, and one operand all on the same line, and that's it. However, you can do it any way you want. Remember though, that you need some form of whitespace to separate each number from other numbers.
+
+
+BASIC CONCEPTS
+==============
+
+	The way the interpreter works, is modeled after the way computer hardware works. There are design differences between a real computer, and this virtual one, however. One design difference is the "register rich" archetecture. The interpreter, is essentially, trying to act like it's own type of computer. All the parts that computer hardware needs to function, are present in the interpreter. These are the parts in the interpreter:
+
+* Registers
+* Memory
+* The Stack
+
+	First I'll talk briefly about memory in PNF. The amount of memory in PNF available to your program, depends upon how much your program has asked for. You can ask for as much as you want, up to your physical limits.
+	Instructions, are the basic unit of an action in PNF. As you recall, each instruction requires the instruction, the type, and then the operand to function. Each supported instruction does a different task. You can use any combination of instructions you desire to make your program function. Depending on what's necessary, you can put them in any order you wish. There are some combinations though, that don't make any sense or may not quite work as expected. See the documentation in "instruction_set.txt", for proper usage of instructions.
+	Instructions are stored in memory. The minimum amount of memory you have available, is the minimum amount of memory that your instructions take up. You can get the amount of memory available to your program, by using the MEML instruction. It takes TVOID and a VOID value. It will store it's result in %accumulator. By decrementing the accumulator, using the DEC instruction, you can see the maximum memory location which you can work with. DEC takes TVOID and a VOID value.
+	Now I'll get ready to show you an example program, using the MEML instruction, and the DEC instruction. But before I do, I'll explain how I'm going to show you the program. I'll display the friendly names, of the components required to create the program, and you will have to look up the opcodes yourself. This is so that the tutorial does NOT have to be rewritten, in the event that an opcode changes anytime soon. Not that they will change all the time, but they may change while a version to be released is being created. After that, backwards compatibility with that version will be strived for. Now without further ado, here is the first program I will show you:
+
+---
+meml.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+MEML TVOID 0V
+PRINT TSTRING "The amount of memory is: "
+PRINTLN TVOID 0V
+DEC TVOID 0V
+PRINT TSTRING "The maximum memory location is: "
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+The amount of memory is: 84
+The maximum memory location is: 83
+---
+
+	This program prints out the amount of memory locations available to your program, and the address of the maximum memory location as well. It also introduces some new instructions to you, that I haven't discussed yet. Let's break this program down into it's parts, and I'll tell you about it.
+	First, it begins with the VERSION instruction. As you recall, every program must begin with the version instruction. This allows maximum compatibility between versions of PNF. This program asks for the first version. It is all that's supported right now, so this will run.
+	The program ends, with the END instruction. This is a "marker" for the end of the program. Every program must end with the END instruction. END takes TVOID and a VOID value, signified by 0V.
+	The next to last instruction is the QUIT instruction. The QUIT instruction, takes TVOID and a number, which must be an integer or it's decimal will be lopped off, and that will be the return value. Every program returns a return value to the OS. For now, just assume that the return value will always be 0. Thus, the return value given is 0.
+	The next part will be a bit tricky. PRINTLN TVOID 0V, produces output. It prints %accumulator to standard output, then a newline. Whatever is in %accumulator, is printed. What we have done is use the MEML instruction to store a value in %accumulator. Then we later decremented it, so that %accumulator = %accumulator - 1. We print it, and then a newline twice in the program.
+	The PRINT instruction, is shown here taking a TSTRING, and a STRING value. It is shown twice, with two different messages. You would code those, by ignoring the quotes, and putting the ASCII value of the characters after the opcode for the TSTRING. When you get finished coding that, you use 0 (null), to signify the end of a STRING value. This can be difficult, but it is the way it must be done. You can look up an ASCII chart online by googling it, if you need to.
+	Finally, there is the DEC instruction. This is shown as DEC TVOID 0V. This instruction takes %accumulator, and sets it to %accumulator - 1. This is called decrementing it.
+	Now you can see how this simple program works. Congratulations! If you have followed along, you have written your first PNF program. Now you should understand memory a step better. We will talk about the registers and the stack later, as well as go more into memory. But for now know that they exist.
+	Now before I go on, I will teach you how to run the program. That way, from that point on, you will know how to run a PNF program. A PNF program, when in platform-independent form, is run via the "pnf" program. The pnf program takes the following parameters:
+
+---
+pnf [PNF program] [arguments]
+---
+
+	The [PNF program] is the name of the program to be run, and [arguments], is the arguments that that program takes. For example, to run this program that you have created, use the command line:
+
+---
+pnf meml.pnf
+---
+
+	Now you should know how to run the program. From this point on, I will assume that you got how to run the program under control. As you can see, it produced the output specified in the output section of the program listing.
+
+
+LESSON 1 - An empty program
+===========================
+
+	Now we shall take an experience based approach to things. We shall begin with writing some programs, to demonstrate the features of PNF. Your first program, "empty.pnf", will do nothing. It is a program to demonstrate the basic requirements for any PNF program. Here it is:
+
+---
+empty.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+---
+
+	This program does nothing. It quits with the QUIT instruction, as soon as it starts. You should be able to tell how it works, from the knowledge you gained by the previous example.
+
+
+LESSON 2 - Hello World
+======================
+
+	In this lesson, we will follow one of the programming traditions, by showing you the simplest way to write a, "Hello World" program. Here is the code for "hello.pnf".
+
+---
+hello.pnf
+---
+!@.PNF
+
+
+
+VERSION TVOID 0V
+
+
+PRINTLN TSTRING "Hello World!"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+
+	You should pretty much understand how this works, at this point, as well. But just to make sure, I will go over the key instruction in this example. It is the PRINTLN instruction. It is taking a TSTRING and a STRING value. The instruction, prints out the STRING value, followed by a newline. This is the preferred way of printing, when you require a newline at the end. It prints it to standard output.
+
+
+REGISTERS
+=========
+
+	What is a register? A register is a special "built-in" variable. In real hardware, they are built-in memory into the processor. There are typically very few of them available to your program. In PNF, there a still a few, but it is considered, "register rich", because there are more of them than hardware can typically handle. The registers are stored in your computer's memory, rather than in real hardware registers.
+	Each register has a different purpose. I'll go over a few with you, but really I'll go over them as we need to know them. Here are the ones I will go over right now:
+
+---
+%icount		(icount)	- The number of instructions.
+
+%instruction	(instruction)	- The current instruction.
+
+%type		(type)		- The current type.
+
+%operand	(operand)	- The current operand.
+
+%ninstruction   (next_instruction) - The next instruction to be executed. 
+				     For debugging purposes.
+
+%mins		(mins)		   - The instruction number (internal loopcount). For debugging purposes.
+
+%pmins		(pmins)		   - The instruction memory address. For debugging purposes.
+
+%iname		(iname)		   - The name of the PNF interpreter.
+
+---
+
+	Each register's friendly name, begins with '%'. The name in parenthesis is the internal name in the PNF program. The last portion, is the description. In the next few paragraphs, I'm going to tell you what each of these do, in more detail.
+	Let's start with %icount. This holds the number of instructions. It is the number of instructions that have been processed. For each instruction, before it is executed, we begin by incrementing %icount.
+	Next, is %instruction. This is the opcode of the current instruction that we are executing. This is used by the interpreter to tell it what to execute next. Every time we get ready to execute an instruction, we fetch %instruction, and then we decide what to do based off of it's opcode.
+	Then we have %type. This is the opcode of the type for the instruction that we are executing. Each time we begin the execution of an instruction, we first fetch %type. Then we decide what type of data the instruction will ask for, based off of that.
+	Finally, in this group, there is %operand. This is the first part of the data for the operand. If it is a STRING value, there will be more than this register can contain, but %operand will always point to the first piece of data for that instruction.
+	The next group, is a set of registers for debugging purposes. There is %ninstruction, %mins, and %pmins. %ninstruction, acts like %instruction, but will contain the next instruction to be executed, instead of the one we are on. %mins, holds the internal loopcount of the instruction execute cycle. This effectively, tells us how many times we have looped to execute the program. %pmins, tells the instruction's memory address. This is used to tell where from memory we got the instruction being executed.
+	Then there is one last register, that we will go over right now. It is %iname. This is the name of the interpreter. For the version I put out, this will always be, "pnf".
+	Now you know about these registers. As we go, I will introduce you to more of them, until we have covered them all.
+
+
+LESSON 3 - The COMMENT instruction
+==================================
+
+	The COMMENT instruction is used to create a comment inside of a program. A comment, is text meant for humans, not the machine. Any text in the comment, is ignored by the computer. Now I'm going to show you a program with the COMMENT instruction in it:
+
+
+---
+comment.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+COMMENT TSTRING "The next statement quits the program with 0."
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+---
+
+	The new instruction here, is the COMMENT instruction. It takes a TSTRING, and a STRING value. Note, that this is NOT a literal string, but just like any other place, it is a string made up of numbers.
+
+
+LESSON 4 - The version instructions
+===================================
+
+	Now, we are going to go over our first group of instructions. This is the version group of instructions. This group of instructions, is used for manipulating the version.
+	You have already seen the VERSION instruction. Note that while right now, it only supports TVOID with 0V, later, it might support more than that. But right now, it's only the first version. First, I will introduce you to a couple of new registers:
+
+---
+%version	(version)	- The current version of PNF.
+
+%sversion	(sversion)	- The supported version table.
+
+%accumulator	(accumulator)	- A storage space for calculations.
+---
+
+	The first one to talk about, is %accumulator. It is the most widely used register of all. %accumulator, is like a working space for calculations. When a working space for calculations is required, %accumulator is the most widely used.
+	%version is the next one to talk about. %version is a 2 part register, that contains the current version. For the first version, it will always be "0 0". The first number in the %version register is called "base". The second part is called "top". The base corresponds to the type portion, and the top corresponds to the operand portion.
+	%sversion, is the supported version table. It is a table that contains the supported versions for the PNF interpreter. There is an instruction that works with the supported version table. That is what %sversion is all about.
+	Now, we will go over some new instructions, within this group. Here they are:
+
+---
+ IVERSION   - Switches versions.
+              VERSION TVOID 0V
+
+ IVCHECK    - Sets %accumulator to true if we are in the specified version.
+ 	      VCHECK [type] [operand]
+
+ IVSUPP	    - Checks to see if a version is supported.
+ 	      VSUPP [type] [operand]
+
+ IVPRINT    - Prints the version.
+	      VPRINT TVOID 0V
+
+ IVPRINTLN  - Prints the version, then a newline.
+	      VPRINTLN TVOID 0V
+---
+
+	First, we will go over VPRINT and VPRINTLN. They print out the version. The VPRINTLN instruction, also prints out a newline. You would use these to output the %version register. Here is an example program, showing VPRINTLN. VPRINT, is used the same way.
+
+
+---
+vprint.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+VPRINTLN TVOID 0V
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+0 0
+
+---
+
+	Now we will go over VERSION. VERSION is used to switch to another version. Note that it's not possible to switch versions yet, because we are on the first version. Thus, this program will crash. Nonetheless, it is important to know about it. That's because at a later time, this will be used, and you will need to know how to switch versions to another version. Here is the program:
+
+---
+version.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+VERSION TNUMBER 1
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+* ERROR: Invalid VOID Value.
+
+
+Registers:
+==========
+%icount              = 2
+
+%instruction         = 0
+%type                = 0
+%operand             = 1
+%ninstruction        = 3
+%mins                = 3
+%pmins               = 0
+%typeof              = UNKNOWN
+%version             = 0 0
+%accumulator         = 0
+%calc                = 0
+%iname               = pnf
+
+memory[0]: 0
+memory[1]: 0
+memory[2]: 0
+memory[3]: 0
+memory[4]: 0
+memory[5]: 1
+memory[6]: 3
+memory[7]: 0
+memory[8]: 0
+memory[9]: 61
+memory[10]: 0
+memory[11]: 0
+
+
+args[0]: version.pnf
+
+
+---
+
+	The magic here, is the VERSION instruction. Note that it crashes. This is what it looks like when a PNF program crashes. Why does it crash? Because this is the first version, and switching versions is not supported yet. Note, however, that by the time you read this, some of that may be outdated information, and actually at the time of my writing, it is already. I'm already at version TVOID 1 at the time of writing/updating this.
+	Now, I'll show you a safer way to do this. You can check to see if a version is supported or not with the VSUPP instruction. You can then make a decision, based off of that, what you want to do. Here is the modified program:
+
+---
+vsupp.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+VSUPP TNUMBER 1
+CGOTOL TSTRING "Supported"
+GOTOL TSTRING "Not_Supported"
+
+
+LBL TSTRING "Supported"
+PRINTLN TSTRING "Supported..."
+GOTOL TSTRING "end"
+
+
+LBL TSTRING "Not_Supported"
+PRINTLN TSTRING "Not Supported..."
+GOTOL TSTRING "end"
+
+
+LBL TSTRING "end"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Not Supported...
+
+---
+
+	The instruction I wanted you to see, was the VSUPP instruction. It checks to see if a version is supported or not. It returns "true" in %accumulator if it's supported, or "false" otherwise. Then you can use a branch instruction to go somewhere else, and do something or other.
+	There are a few new instructions here that you have not yet seen. They are, CGOTOL, GOTOL, PRINTLN, and LBL. I will go over each one in turn. Follow along to see what they do.
+	PRINTLN, produces output to the standard output stream, which is the screen. It is buffered output. Then it prints a newline. PRINTLN, with a TSTRING, takes a STRING value, and prints that string.
+	LBL, is the next easiest to explain to you. LBL is a label. A label can be either a string label, or a standard label. I recommend you use string labels most of the time, but sometimes you might need to use a standard label. A standard label takes TVOID, and a VOID value. A string label takes TSTRING and a STRING value. It is simply a "marker" for jumping to in different ways.
+	GOTOL goes to a label unconditionally. It stops what it's doing, and just "jumps" to the label specified. It can either take a TVOID, and a label number, or a TSTRING, and the name of a string label.
+	If a label number is specified, then it goes to the label specified by it's label number. Label numbers are computed at load time. The first label in the program is 0, and it goes up from there. String labels count too. If a label string is specified, then it goes to the label identified by the string. That is what GOTOL does.
+	CGOTOL does the same thing as GOTOL, but conditionally. It does so, only if %accumulator contains the Boolean value "true". If it's false, it does nothing. It takes the same parameters as GOTOL.
+	The reason we used a CGOTOL, immediately followed by a GOTOL, is so that we do something whether or not %accumulator is true. We end each branch area with another GOTOL, going to the same place. That is so that we end at the same place. This is how you implement an if-else in PNF. Finally, we quit with 0.
+	The last instruction, is VCHECK. This instruction, checks to see if we are in the specified version or not. You would use VCHECK, if you, say, wanted to know whether we are in the first version or not.
+	Here we modify the program before, so that it now uses the VCHECK instruction:
+
+---
+vcheck.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+VCHECK TNUMBER 1
+CGOTO TSTRING "in_v2"
+
+
+VSUPP TNUMBER 1
+CGOTOL TSTRING "Supported"
+GOTOL TSTRING "Not_Supported"
+
+
+LBL TSTRING "Supported"
+PRINTLN TSTRING "Supported..."
+GOTOL TSTRING "end"
+
+
+LBL TSTRING "Not_Supported"
+PRINTLN TSTRING "Not Supported..."
+GOTOL TSTRING "end"
+
+
+
+LBL TSTRING "in_v2"
+PRINTLN TSTRING "In v2..."
+GOTO TSTRING "end"
+
+
+LBL TSTRING "end"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Not Supported...
+
+---
+
+	The only new instruction here, is the VCHECK instruction. It does the above mentioned action. So use a program such as this, whenever you want to switch versions. This will avoid crashing under some circumstances.
+
+
+LESSON 5 - Checking whether a type is supported
+===============================================
+
+	You can check if a type is supported or not, much as you can check whether a version is supported or not. That way, you don't have to risk crashes when you use an unsupported type in a particular version in which it is unsupported. First, we have a new register to discuss:
+
+---
+%stype		(stype)		- The supported type table.
+---
+
+	This register is %stype. It contains the supported type table. Just as there is a supported version table, there is a supported type table. The supported type table, as it's name implies, stores the supported types.
+	The instruction for asking if a type is supported or not, is TSUPP. TSUPP takes TVOID, and the type number. Here is an example program demonstrating the TSUPP instruction in action:
+
+---
+tsupp.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+TSUPP TVOID 0
+CGOTOL TSTRING "Supported"
+GOTOL TSTRING "Not_Supported"
+
+
+LBL TSTRING "Supported"
+PRINTLN TSTRING "Supported..."
+GOTOL TSTRING "end"
+
+
+LBL TSTRING "Not_Supported"
+PRINTLN TSTRING "Not Supported..."
+GOTOL TSTRING "end"
+
+
+LBL TSTRING "end"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Supported...
+
+---
+
+	The only new instruction here, is the TSUPP instruction. You should be able to see from my earlier explanation how TSUPP works. That is how you check to see if a type is supported or not.
+
+
+LESSON 6 - Checking to see if an instruction is supported or not
+================================================================
+
+	Sometimes, a new version may not be a significant enough change to introduce a new PNF version, but there may still be new instructions anyway. In that case, if you try to use an instruction, and it's not supported in the version it's being ran with, it will produce an invalid opcode crash. So to prevent this, if you intend to make your program portable to all versions, you should check to see if an instruction is supported at times.
+
+---
+%sinstruction	(sinstruction)	- The supported instruction table.
+---
+
+	The %sinstruction register, holds the supported instruction table. As with types, there is a table holding the supported instructions. This functions in exactly the same way.
+	So what is the instruction needed to check for a supported instruction? It is ISUPP. That is the instruction that checks for a supported instruction. Here is an example showing the ISUPP instruction:
+
+---
+isupp.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+ISUPP TNUMBER 0
+CGOTOL TSTRING "Supported"
+GOTOL TSTRING "Not_Supported"
+
+
+LBL TSTRING "Supported"
+PRINTLN TSTRING "Supported..."
+GOTOL TSTRING "end"
+
+
+LBL TSTRING "Not_Supported"
+PRINTLN TSTRING "Not Supported..."
+GOTOL TSTRING "end"
+
+
+LBL TSTRING "end"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Supported...
+
+---
+
+	This is how you use the ISUPP instruction. It takes a TVOID, and the opcode of the instruction to check if it's supported or not. That is how the ISUPP instruction functions.
+
+
+LESSON 7 - Doing nothing
+========================
+
+	There are sometimes when you need to simply do nothing at all. For those times, you would use the VOID instruction. The VOID instruction takes TVOID and a VOID  value. Here is a program that asks to do nothing:
+
+---
+void.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+VOID TVOID 0V
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+---
+
+	VOID is the only new instruction here. This program still does nothing, but is modified from our empty shell.
+
+
+LESSON 8 - Quit or Halt?
+========================
+
+	You have already seen a simple version of QUIT, but now I'll explain it more clearly. Every program, running under the most popular operating systems, returns an error code to the OS. See your OSs documentation for the standards on how the error codes are handled. You should follow this standard when coding your programs.
+	The QUIT instruction takes a TVOID, and a number to use to quit. The decimal is lopped off, if any, and it exits the program with the specified value. That is how QUIT functions.
+	Sometimes, however, you will want to halt, instead of quit. HALT is implemented by entering a forever loop that does nothing. An OS, or other system's software might use this instruction, for example. HALT takes a TVOID and a VOID value. Here is an example of the HALT instruction:
+
+---
+halt.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+HALT TVOID 0V
+
+
+END TVOID 0V
+---
+
+Output:
+---
+---
+Note: Loops forever. Press ^C to stop, under most OSs.
+---
+
+	HALT does the magic here. Press ^C to stop the program, when you are ready, under most OSs. That is all there is to using QUIT and HALT!
+
+
+LESSON 9 - An intentional crash
+===============================
+
+	You can ask for an intentional crash of your program. You might do this to indicate a user-specified error in your program. Or you could also do this for debugging purposes, so you can see what's going on in your program. In this example, we will do it in that way.
+	You use the CRASH instruction to crash a program. That instruction takes TSTRING, and a STRING value. The STRING value will be used to print a message telling the user why the program crashed. Without further ado, here is the program that crashes:
+
+---
+crash.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+CRASH TSTRING "a"
+
+
+END TVOID 0V
+---
+
+Output:
+---
+* ERROR:  a
+
+
+Registers:
+==========
+%icount              = 2
+
+%instruction         = 2
+%type                = 4
+%operand             = 97
+%ninstruction        = 0
+%mins                = 3
+%pmins               = 0
+%typeof              = UNKNOWN
+%version             = 0 0
+%accumulator         = 0
+%calc                = 0
+%iname               = pnf
+
+memory[0]: 0
+memory[1]: 0
+memory[2]: 0
+memory[3]: 2
+memory[4]: 4
+memory[5]: 97
+memory[6]: 0
+memory[7]: 61
+memory[8]: 0
+memory[9]: 0
+
+
+args[0]: crash.pnf
+
+
+---
+
+	This program makes an intentional crash. Note that QUIT is NOT needed, because CRASH quits automatically. That is how this program works, and what it does. That is another instruction out of the way!
+
+
+LESSON 10 - Output to the screen
+================================
+
+	Now, I will officially show you how to output to the screen. After that, you will be able to produce some useful output. There are 2 types of output to the screen. One is buffered output, the other is unbuffered output. Buffered output is output to the standard output stream, while unbuffered output is output to the standard error stream. Your program uses standard output for most operations, most of the time. However, standard error is used when you want errors or other output that is harder to redirect for the user. Today, it is usually possible to redirect even the standard error output. However, it is harder to use, and will serve as a warning to the user that you really want them to pay attention to this output.
+	You use the standard output instructions to output to standard output. They are PRINT, and PRINTLN. PRINTLN, prints a newline after the output. PRINT, on the other hand, does not. Both instructions take any type. You use TVOID, when you wish to print out %accumulator. You put data of the same type as you specify after the instruction. It will print that data. Here, for your review, is the Hello World program again:
+
+---
+hello.pnf
+---
+!@.PNF
+
+
+
+VERSION TVOID 0V
+
+
+PRINTLN TSTRING "Hello World!"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+
+	I will not spend time on this, because you already know how it works. But now, I will tell you how to print to standard error. In order to do this, you use EPRINT, or EPRINTLN. As before, EPRINTLN prints out a newline after the data, and EPRINT does not. These instructions take the same parameters and work the same as the instructions that print to standard output. Here is a program that prints, "Hello World!" to standard error:
+
+---
+ehello.pnf
+---
+!@.PNF
+
+
+
+VERSION TVOID 0V
+
+
+EPRINTLN TSTRING "Hello World!"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+Note: This is printed to standard error.
+---
+
+	This works the same way, but it's printed to standard error, instead of standard output. Now you know how to produce output.
+
+
+LESSON 11 - Input from the keyboard
+===================================
+
+	Now you know how to produce useful output. But what about some input? In order to do that, you need the READ instruction. The READ instruction can be used to get useful input. You would then process the input, and display the results.
+	READ takes any type, and always takes a VOID value. It will read in whatever type you specify into %accumulator. By doing this, you can get useful input. Here is an example program showing the READ instruction:
+
+---
+read.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+PRINT TSTRING "Enter a string: "
+READ TSTRING 0V
+PRINT TSTRING "Your string is: "
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Input:
+---
+Cat
+---
+Output:
+---
+Enter a string: Cat
+Your string is: Cat
+
+---
+
+	If you give the program the input I told you to, you will get the same results. Note that when you read a value, that value is echoed back to you. You end the input with a newline. That is how you get input.
+
+
+LESSON 12 - File I/O
+====================
+
+	First, I will introduce some new registers. These registers are %fimode, and %fomode. These registers hold the file input and output modes, respectively. Here are the definitions:
+
+---
+%fimode		(fimode)	- The file input mode.
+
+%fomode		(fomode)	- The file output mode.
+---
+
+	These registers can be set with the FIMODE, and FOMODE instructions. Both of these take a TSTRING. You can find the values to give the instructions in the documentation for the instruction set, including the defaults. If the default modes are acceptable, then this is optional.
+	Next, you open a file for input or output, using the FIOPEN, or FOOPEN instructions, respectively. These take TSTRING as well. The string it expects is a filename or file path, which is somewhat dependent on your OS.
+	Then, you use FPRINT, or FPRINTLN to print to the file, or FREAD to read from the file. They work just like the ordinary versions of these. If it is open for input, you can test if you are at the end, using FIEOF.
+	Then, when you are all done, some cleanup is necessary. You just use FICLOSE, or FOCLOSE, for input or output, respectively. Here is an example of file input, and output, which we will end with. You should be able to tell how it works:
+
+
+---
+file.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+FOOPEN TSTRING "file.txt"
+FPRINTLN TSTRING "Hello World!"
+FOCLOSE TVOID 0V
+
+FIOPEN TSTRING "file.txt"
+FREAD TSTRING 0V
+PRINTLN TVOID 0V
+FICLOSE TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+
+File Output:
+---
+file.txt
+---
+Hello World!
+
+---
+
+
+LESSON 13 - Loading and Storing
+===============================
+
+	Sometimes you will need to load or store a value from memory. For this, you will use the load and store set of instructions. First, I will have to show you a new register:
+
+---
+%calc		(calc)		- A storage space for calculations.
+---
+
+	As you can see, the register %calc, is works a lot like %accumulator. However, it is used less than %accumulator. However, sometimes you need it such as for binary operations. Now, here are some new instructions:
+
+---
+ ILOAD      - Loads a value from memory into the accumulator.
+              LOAD [type] [address]
+
+ ISTORE     - Stores the contents of the accumulator at the specified memory
+              location.
+              STORE TVOID [address]
+
+ ILOADC     - Loads a value from memory into the %calc register.
+              LOADC [type] [address]
+
+ ISTOREC    - Stores the contents of the %calc register into the specified
+              memory location.
+              STOREC TVOID [address]
+---
+
+	There are 2 basic types of operations. Load, and Store. Load fetches the value and puts it in %accumulator or %calc. Store, puts %accumulator or %calc somewhere else.
+	Let's start with how to store a value. To store a value from %accumulator, you use the STORE instruction. To store a value from %calc, you use the STOREC instruction. Both take TVOID, and a memory address. Recall that a memory address starts with 0, and ends with the maximum memory address available to your program.
+	To load a value to %accumulator, you use LOAD, while to load to %calc, you use LOADC. Both of those instructions take a type and a memory address. The memory address is in the same format. The type is any type you desire, depending on how you want the memory address to be interpreted. Here is an example program showing LOAD and STORE:
+
+---
+loadstore.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+PRINT TSTRING "Enter a number: "
+READ TNUMBER 0V
+
+STORE TVOID 0
+LOAD TNUMBER 0
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Input:
+---
+2
+---
+
+Output:
+---
+Enter a number: 2
+2
+
+---
+
+	Now I will introduce another register to you:
+
+---
+%ecount		(ecount)	- Contains the location of the END instruction.
+---
+
+	%ecount contains the address of the END instruction. This can be used for several things in your program. But for now, we will only show you one thing your program can use it for. Here are some more instructions to mill over:
+
+---
+ IELOAD	    - Loads the contents of [%ecount] into %accumulator.
+	      ELOAD TBOOLEAN 0V
+	      ELOAD TNUMBER 0V
+              ELOAD TCHARACTER 0V
+              ELOAD TSTRING 0V
+ 
+ IELOADC    - Loads the contents of [%ecount] into %calc.
+	      ELOADC TBOOLEAN 0V
+	      ELOADC TNUMBER 0V
+              ELOADC TCHARACTER 0V
+              ELOADC TSTRING 0V
+
+ IESTORE    - Stores the contents of %accumulator into [%ecount + 3].
+              ESTORE TVOID 0V
+
+ IESTOREC   - Stores the contents of %calc into [%ecount + 3].
+              ESTOREC TVOID 0V
+---
+
+	ELOAD and ESTORE load and store from %ecount and %ecount + 3 to and from %accumulator respectively. ELOADC and ESTOREC load and store from %ecount and %ecount + 3 to and from %calc respectively. The load instructions take a type and a VOID value. The store instructions take a TVOID and a VOID value. They always load from %ecount and store to %ecount + 3, which is the value beyond the end of the program.
+
+	Next, there is one more group of load and store instructions. But to show you those, I first need to show you a new register:
+
+---
+%varcount	(varcount)	- Contains the addresses of variables.
+---
+
+	This is %varcount. It contains the addresses of variables, in table format. Each entry has a variable address, and the variable's address. Now I will need to show you another new instruction:
+
+---
+ IVAR        - Declares a variable.
+               VAR TVOID [variable]
+---
+
+	This is the VAR instruction. It is used to declare a variable. It takes TVOID and whatever type of value you wish for the variable. Then there is the corresponding load and store instructions:
+
+---
+ IVLOAD     - Gets a variable from variable location %operand, and stores it in
+              %accumulator.
+              VLOAD [type] [Variable Address]
+
+ IVSTORE    - Stores a new variable from %accumulator to the next location.
+              VSTORE TVOID 0V
+	      VSTORE TNUMBER [Variable Address]
+
+ IVLOADC    - Gets a variable from variable location %operand, and stores it in
+              %calc.
+              VLOADC [type] [Variable Address]
+
+ IVSTOREC   - Stores a new variable from %calc to the next location.
+              VSTOREC TVOID 0V
+	      VSTOREC TNUMBER [Variable Address]
+---
+
+	I will show you these by example. First, I will show you and example of the VLOAD instruction:
+
+---
+var.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+VLOAD TSTRING 0
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+VAR TVOID "Hello World!"
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+
+	Now, I will show you VSTORE:
+
+---
+vstore.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+PRINT TSTRING "Enter a string: "
+READ TSTRING 0V
+VSTORE TVOID 0V
+VLOAD TSTRING 0V
+PRINTLN TVOID 0V
+
+QUIT TVOID 0V
+
+
+END TOID 0V
+---
+
+Input:
+---
+a
+---
+
+Output:
+---
+Enter a string: a
+a
+
+---
+
+	VLOADC and VSTOREC work the same, except they use %calc instead of %accumulator. You can also store to an existing variable, by using TNUMBER, and the variable number. That is the load and store instructions.
+
+
+LESSON 14 - Modifying the type of %accumulator and %calc
+========================================================
+
+	It is possible to modify the type of %accumulator and %calc. To do this, you use the MODT and MODCT instructions, respectively. They both take a type and a VOID value. Here is the definitions of those instructions:
+
+
+---
+ IMODT      - Modifies the type of %accumulator.
+              MODT [type] 0V
+
+ IMODCT     - Modifies the type of %calc.
+              MODCT [type] 0V
+---
+
+	This basically reinterprets the value of the register, as if it were a different type. That way you can convert one type to another by doing this. Here is an example program showing this in action:
+
+
+---
+modt.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+PRINT TSTRING "Enter a number: "
+READ TNUMBER 0V
+MODT TBOOLEAN 0V
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+
+Input:
+---
+1
+---
+
+Output:
+---
+Enter a number: 1
+true
+
+---
+
+	MODCT works the same, only it changes the type of calc. Now you know yet another 2 instructions...
+
+
+LESSON 15 - Mathematical Operations
+===================================
+
+	You can perform math, using this language. Many languages perform math to accomplish tasks. There are 9 mathematical operations. They are, ADD (+), SUB (-), MUL (*), DIV (/), MOD (%), POW (^), ROOT (!^), INC (++), and DEC (--). Here are the definitions of them:
+
+---
+ IADD       - Adds %calc or other value to %accumulator.
+              ADD TVOID 0V
+              ADD TNUMBER [data]
+              ADD TCHARACTER [data]
+              ADD TSTRING [data]
+
+ ISUB       - Subtracts %calc from %accumulator.
+              SUB TVOID 0V
+              SUB TNUMBER [data]
+
+ IMUL       - Multiplies %accumulator and %calc.
+              MUL TVOID 0V
+              MUL TNUMBER [data]
+
+ IDIV       - Divides %calc by %accumulator.
+              DIV TVOID 0V
+              DIV TNUMBER [data]
+
+ IMOD       - Takes a modulus of %accumulator and %calc.
+              MOD TVOID 0V
+              MOD TNUMBER [data]
+
+ IPOW       - Raises %accumulator to the power of %calc.
+              POW TVOID 0V
+              POW TNUMBER [data]
+
+ IROOT      - Roots %accumulator by itself or the given number.
+              ROOT TVOID 0V
+              ROOT TNUMBER [data]
+
+ IINC       - Increments %accumulator.
+              INC TVOID 0V
+
+ IDEC       - Decrements %accumulator.
+              DEC TVOID 0V
+---
+
+	While I'm not assuming any previous programming experience, I will assume that you have algebraic skills in math, and can read at a basic college level. So from that standpoint, let's take a look at these operations.
+	The simplest is addition, which is accomplished with the ADD instruction. You can either add up the content of %accumulator and %calc, or you can add a number to %accumulator. In the first case, you use TVOID and a VOID value. In the second, you use TNUMBER and a number. You'd be surprised to know, but you can also add a character, by treating it as an ASCII code too. Or you can add a STRING to another STRING, which is the same as concatenating it together.
+	The next simplest, is subtraction, for which you use the SUB instruction. You can subtract %calc from %accumulator by using TVOID, and a VOID value. You can also subtract a number from %accumulator by using TNUMBER, and a NUMBER.
+	Multiplying and dividing work the same way. To multiply, use the MUL instruction, and to divide, use the DIV instruction. That is how multiply and divide work.  That should be the operations you are most familiar with.
+	However, there are some more operations in the programming world. We'll start with the ones you "might" be familiar with. They are POW, and ROOT. POW raises %accumulator to the power of %calc, or some other number. The other number or %calc, is the exponent, and the base number is %accumulator. To use %calc as an exponent, use TVOID and a VOID value. To use another number, use TNUMBER, and a NUMBER.
+	ROOT is the opposite of POW. ROOT using the number 2, would be a square root. A TVOID and a VOID value, roots %accumulator by itself, and you can also use TNUMBER, and a NUMBER, to root it by a given number.
+	You can also increment (count up by one), or decrement (count down by one), a number. You use INC, or DEC, TVOID and a VOID value, to do so. That will increment or decrement %accumulator. That is how you increment and decrement a number.
+	The one you might not really be familiar with, is MOD, which takes the modulus of a number. Modulus is dividing two numbers the non-decimal way, and taking it's remainder as your answer. You can either use TVOID and VOID, which uses %accumulator and %calc, or you can use TNUMBER and a NUMBER, which will take the modulus of %accumulator and that number.
+	Now let's see a working example of the mathematical operations:
+
+---
+math.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+PRINT TSTRING "Enter a number: "
+READ TNUMBER 0V
+ATOC TVOID 0V
+
+PRINT TSTRING "Enter another number: "
+READ TNUMBER 0V
+SWITCH TVOID 0V
+
+ADD TVOID 0V
+MUL TVOID 0V
+SUB TVOID 0V
+DIV TVOID 0V
+INC TVOID 0V
+MOD TVOID 0V
+POW TNUMBER 2
+DEC TVOID 0V
+ROOT TNUMBER 3
+
+PRINT TSTRING "Your modified number: "
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Input:
+---
+3, 55
+---
+
+Output:
+---
+Enter a number: 3
+Enter another number: 55
+Your modified number: 2
+
+---
+
+	There are only two instructions you may not yet understand here. They are there to load %calc and %accumulator with values. The first is ATOC, which takes a TVOID and a VOID value. This puts whatever is in %accumulator in %calc. The second, is SWITCH, which also takes TVOID and a VOID value. This one switches %accumulator and %calc's values around. While not really math, here is a string operation:
+
+---
+ INTIMES	 - Sets %accumulator to a string %calc number of times. %accumulator MUST BE A STRING!
+		   NTIMES TVOID 0V
+---
+
+	This instruction, copys the %accumulator as a string, %calc number of times. %accumulator MUST BE A STRING!
+
+That's all to that!
+
+
+LESSON 16 - Relational Operations
+=================================
+
+	Just like in algebra, there are relational operations. These all put true or false in %accumulator, to which you can make a decision with. These are:
+
+---
+ IEQU       - Tests if %accumulator == %calc.
+              EQU TVOID 0V
+              EQU TBOOLEAN [data]
+              EQU TNUMBER [data]
+              EQU TCHARACTER [data]
+
+ INEQU      - Tests if %accumulator != %calc.
+              NEQU TVOID 0V
+              NEQU TBOOLEAN [data]
+              NEQU TNUMBER [data]
+              NEQU TCHARACTER [data]
+
+ IGTR       - Tests if %accumulator > %calc.
+              GTR TVOID 0V
+              GTR TNUMBER [data]
+              GTR TCHARACTER [data]
+
+ ILSS       - Tests if %accumulator < %calc.
+              LSS TVOID 0V
+              LSS TNUMBER [data]
+              LSS TCHARACTER [data]
+
+ IGEQU      - Tests if %accumulator >= %calc.
+              GEQU TVOID 0V
+              GEQU TNUMBER [data]
+              GEQU TCHARACTER [data]
+
+ ILEQU      - Tests if %accumulator <= %calc.
+              LEQU TVOID 0V
+              LEQU TNUMBER [data]
+              LEQU TCHARACTER [data]
+---
+
+	I won't spend any more time than this on these, because you should already understand how they work and what they do. Here, is one more:
+
+---
+ ICMP		 - Sets %accumulator to -1 if %accumulator < %calc. Sets %accumulator to 0 if %accumulator == %calc. Sets %accumulator to 1 if 			   %accumulator > %calc. Stores results in %accumulator.
+
+		   CMP TVOID 0V
+---
+
+
+LESSON 17 - Logical Operations
+==============================
+
+	You also have logical operations to work with. These are AND, OR, and NOT. These also return true/false values. AND is true if both operands are true. OR is true if one operand is true. NOT reverses the true false value of %accumulator. That's all the time I shall spend on that!
+
+
+LESSON 18 - Bitwise Operations
+==============================
+
+	It is possible to work bit by bit on a value. This is what the bitwise operations do. You should ignore them your first read through this, and them come back to them later. I will assume that if you continue reading from this point on, you are ready to learn them. These operations are:
+
+---
+ IBTAND	     - Performs bit AND on %accumulator and %calc.
+ 	       BTAND TVOID 0V
+ 			  
+ IBTOR	     - Performs bit OR on %accumulator and %calc.
+ 	       BTOR TVOID 0V
+ 			  
+ IBTEXOR     - Performs bit exclusive OR on %accumulator and %calc.
+ 	       BTEXOR TVOID 0V
+ 			  
+ IBTNOT	     - Performs bit NOT on %accumulator.
+ 	       BTNOT TVOID 0V
+ 			  
+ IBTSL	     - Performs << on %accumulator and %calc.
+ 	       BTSL TVOID 0V
+ 			  
+ IBTSR	     - Performs >> on %accumulator and %calc.
+ 	       BTSR TVOID 0V
+---
+
+	BTAND performs a logical AND operation on each bit of %accumulator and %calc. Likewise, BTOR performs a bitwise OR, and BTNOT performs a bitwise NOT. BTEXOR is true if one bit being compared is true, but not if both are true. BTSL, shift the bits left by %calc. BTSR shifts the bits right by %calc. Those are the bitwise operations.
+
+
+LESSON 19 - Branching to a Different Location
+=============================================
+
+	Most of the programs we have seen so far simply run the instructions in order. However, it is possible to make decisions as well. To do this, you use the GOTO form of instructions. Here they are:
+
+---
+ IGOTO      - Go to the memory address specified and continue running the
+              program from there.
+              GOTO TVOID [memory address]
+
+ ICGOTO     - Go to the memory address specified and continue running the
+              program from there if %accumulator equals true.
+              CGOTO TVOID [memory address]
+
+ IZGOTO     - Go to the memory address specified if %accumulator is 0.
+              ZGOTO TVOID [memory address]
+
+ IPGOTO     - Go to the memory address specified if %accumulator is > 0.
+              PGOTO TVOID [memory address]
+
+ INGOTO     - Go to the memory address specified if %accumulator is < 0.
+              NGOTO TVOID [memory address]
+
+ IGOTOL     - Go to the label specified and continue running the
+              program from there.
+              GOTOL TVOID [label number]
+	      GOTOL TSTRING [label string]
+
+ ICGOTOL     - Go to the label specified and continue running the
+               program from there if %accumulator equals true.
+               CGOTOL TVOID [label number]
+	       CGOTOL TSTRING [label string]
+
+ IZGOTOL     - Go to the label specified if %accumulator is 0.
+               ZGOTOL TVOID [label number]
+	       ZGOTOL TSTRING [label string]
+
+ IPGOTOL     - Go to the memory address specified if %accumulator is > 0.
+               PGOTOL TVOID [label number]0
+	       PGOTOL TSTRING [label string]
+
+ INGOTOL     - Go to the label specified if %accumulator is < 0.
+               NGOTOL TVOID [label number]
+	       NGOTOL TSTRING [label string]
+---
+
+	Each of these instructions has 2 forms. An 'L' form, and a normal form. The 'L' form, branches to a label, and the normal form branches to a memory address. You an branch either to a named label, or a label number. Named labels have a label number too. First, I will go over the GOTO instructions, and then I will go over the label instructions.
+	First is GOTO. GOTO causes an unconditional branch to the spot you want to go to. It just branches there and poof, you are there. There would be very few times you would use this, but there are some uses for it.
+	CGOTO is the second form. This branches to a value when %accumulator is true. This can be used after a test has just been made, such as the relational, or logical operations have been used.
+	The next group can be used for some types of loops. ZGOTO branches when %accumulator is 0. PGOTO branches if %accumulator is positive. NGOTO branches if %accumulator is negative.
+	That is the GOTO group. Now for the label group. Here is the instruction for creating a label:
+
+---
+ ILBL	     - Declares a label.
+	       LBL TVOID 0V
+	       LBL TSTRING [string]
+---
+
+	As you can see, LBL declares a label. When it has TVOID and a VOID value, it is a numbered label. When it is TSTRING, with a STRING, it is a string label. String labels count as numbered labels too, but not the reverse. The first label in a program is 0, and it goes up from there. The label table is kept in this register:
+
+---
+%labels		(labels)	- Contains the addresses of labels.
+---
+
+	While we are at it, there is one more instruction I'd like you to see:
+
+---
+ IST         - Sets %accumulator to 0 if %calc is 0. (Used for loops.)
+               ST TVOID 0V
+---
+
+	This instruction can be used for loops. I'll show you a simple loop:
+
+---
+loop.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+ALOAD TNUMBER 1
+ATOC TVOID 0V
+ALOAD TNUMBER 5
+VSTORE TVOID 0V
+SWITCH TVOID 0V
+
+LBL TSTRING "loop"
+ATOC TVOID 0V
+VLOAD TNUMBER 0
+EQU TVOID 0V
+CGOTOL TSTRING "end_loop"
+SWITCH TVOID 0V
+PRINT TVOID 0V
+PRINT TSTRING "..."
+INC TVOID 0V
+GOTOL TSTRING "loop"
+
+
+LBL TSTRING "end_loop"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+1...2...3...4...
+---
+
+	The only instruction you have not yet seen is ALOAD. ALOAD loads whatever value of whatever type you want into %accumulator. It is recommended that you use the  string label version of GOTO, whenever possible.
+
+
+LESSON 20 - Subroutines
+=======================
+
+	A subroutine is a chunk of code separate from other code. You create a subroutine, and then use it any number of times in your program. For example, in the algorithm for getting ready for school, "go to the bathroom", might be a subroutine. It is an unbuiltin primitive that you can use wherever you desire to accomplish a task.
+	So how do you write a subroutine? Well, first, you need to begin it with a memory address, a label number, or a label with a name. For this example, we'll assume you have done what you will want to do most of the time, which is begin it with a string label. Each subroutine, ends with RET, which takes TVOID and a VOID value. Here is an example of a subroutine:
+
+---
+LBL TSTRING "hello"
+PRINTLN TSTRING "Hello World!"
+RET TVOID 0V
+---
+
+	Wherever you want to print, "Hello World!", you can now use the "hello" subroutine. To call it, you use the CALLL instruction, which in this case gets a TSTRING, and the string "hello", such as this:
+
+---
+CALLL TSTRING "hello"
+---
+
+	The call will return after you are done, to the instruction right after the CALLL instruction. To demonstrate, I will create a complete program:
+
+---
+calll.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+CALLL TSTRING "hello"
+
+QUIT TVOID 0
+
+
+LBL TSTRING "hello"
+PRINTLN TSTRING "Hello World!"
+RET TVOID 0V
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Hello World!
+
+---
+
+	Now you know how to use a subroutine.
+
+
+LESSON 21 - Functions
+=====================
+
+In addition to a concept of subroutines, there is also a concept of a "function". A function is like a subroutine, except it can return one or more values and take one or more parameters. Here are the relivant instructions.
+
+
+---
+ IFRET	      - Returns from a function.
+		FRET TVOID 0V
+
+ IFCALL	      - Prepares to call function [name]
+		FCALL TSTRING [name]
+
+ IFCPARAMS    - The actual parameter block start.
+		FCPARAMS TVOID 0V
+
+ IFECPARAMS   - The actual parameter block end.
+		FECPARAMS TVOID 0V
+
+ IFECALL      - Makes the call to the function.
+		FECALL TVOID 0V
+
+ IPNUM       - Allows us to specify an actual parameter number.
+   	       PNUM TNUMBER [num]
+
+ IPARAMF      - Specify an actual parameter.
+		PARAMF [type] [value]
+
+ IPARAMF2     - Load parameter specified by %pnum to %accumulator
+		PARAMF2 [type] 0V
+
+ IPARAMF3     - Loads %fparams with the type.
+                PARAMF3 [type] 0V
+
+ IRNUM	      - Specify a return value number
+		RNUM TNUMBER [num]
+
+ IRETURNF     - Modifies a value for return
+		RETURNF [type] [value]
+
+ IRETURNF2    - Loads %frets with the type.
+		RETURNF2 [type] 0V
+
+ IRETURNF3    - Loads %frets2 with the type.
+		RETURNF3 [type] 0V
+
+ IFNAME	      - Sets %fname
+		FNAME TSTRING [name]
+
+ IRETURNV     - Loads %accumulator with return value %rnum
+		RETURNV TVOID 0V
+
+ IFNCLOAD     - Loads a function from %fpointer1 to %fpointer2.
+		FNCLOAD TNUMBER [num]
+
+ IFNCSTORE    - Stores a function from %fpointer2 to %fpointer1
+		FNCSTORE TNUMBER [num]
+		FNCSTORE TVOID 0V
+
+ IFNCNEW      - Adds a new Function on the C++ heap.
+		FNCNEW TVOID 0V
+
+ IFNCDELETE   - Deletes a new Function on the C++ heap.
+		FNCDELETE TVOID 0V
+
+ IFNCSNAME    - Sets the name of the function %fpointer2
+		FNCSNAME TVOID 0V
+
+ IFNCSRET     - Sets the return type of a return value in %fpointer.
+		FNCSRET [type] 0V
+
+ IFNCSPARAM   - Adds a parameter of type [type] to %fpointer2 with value %accumulator
+		FNCSPARAM [type] 0V
+
+ IFNCSDEF      - Adds a definition beginning at [where] or [label] to %fpointer2.
+		 FNCSDEF TNUMBER [where]
+		 FNCSDEF TSTRING [label]
+
+ IFNCGNAME     - Gets the name of %fpointer2
+		 FNCGNAME TVOID 0V
+
+ IFNCGRET      - Gets a return value from %fpointer2
+		 FNCGRET TNUMBER [num]
+
+ IFNCGPARAM    - Gets a parameter value from %fpointer2
+		 FNCGPARAM TNUMBER [num]
+
+ IFNCGDEF      - Gets a definition address for %fpointer2
+		 FNCGDEF TVOID 0V
+
+ IFNCPOINT     - Gets a function by it's number. It's number should be in %accumulator. Puts it in %fpointer3.
+		 FNCPOINT TVOID 0V
+
+ IFNCLENGTH    - Gets the length of %fpointer1. Puts it in %accumulator.
+		 FNCLENGTH TVOID 0V
+
+ IFNCSYNCR     - Syncrhonizes %fname, %frets, and %fparams to %fname2, %frets2, and %fparams2.
+		 FNCSYNCR TVOID 0V
+
+ IFNCFIND      - Finds the function with %accumulator as the name, and %frets3 and %fparams3 as the return values and parameters.
+		 FNCFIND TVOID 0V
+
+ IFNCFRET      - Adds [type] to %frets3.
+		 FNCFRET [type] 0V
+
+ IFNCFPARAM    - Adds [type] to %fparams3.
+		 FNCFPARAM [type] 0V
+
+ IFNCBRET      - Adds blank to %frets3.
+		 FNCBRET TVOID 0V
+
+ IFNCBPARAM    - Adds blank to %fparams3.
+		 FNCBPARAM TVOID 0V
+
+ IFNCDEFAULT   - Sets %fdefaultv to true.
+		 FNCDEFAULT TVOID 0V
+
+ IFNCDEFAULT2  - Sets %fdefaultv to false.
+		 FNCDEFAULT2 TVOID 0V
+
+ IFNCSDEFAULTV - Gets function number from %accumulator. Adds [type] to %fparams if %fdefaultv is true.
+		 FNCSDEFAULTV [type] 0V
+
+ IFNCSDEFAULTV2 - Sets %fdefaultvalue to %accumulator. Sets the the default value at %pnum to %fdefaultvalue if %fdefaultv is true.
+		  FNCSDEFAULTV2 TVOID 0V
+
+ IFNCGDEFAULTV2 - Sets %fdefaultvalue to the %fpointer2->[default value] at %pnum if %fdefaultv is true. Sets %accumulator to %fdefaultvaalue.
+		  FNCGDEFAULTV2 TVOID 0V
+
+ IFNCDEFAULTSYNC - Syncs %fpointer2->[default parameter value] at %pnum.
+		   FNCDEFAULTSYNC TVOID 0V
+---
+
+Don't worry. This may look confusing, but it's actually easy. OK, let's jump in and I'll explain functions to you!
+
+A function, has a "function signature" or just "signature". Every function MUST have a unique signature to be able to be valid. No 2 functions can have the same signature.
+
+Here, in human readable format, is an example function signature:
+
+---
+(var: boolean, var: number) examplefunc(var a: boolean, var b: string);
+---
+
+Here's another example:
+
+---
+(0V) examplefunc2(0V);
+---
+
+So now let's get into how to create and use a function. To create a function, there are 2 steps. The first is the function declaration. That allows the computer to always be able to find our function. It is required!
+
+A function declaration looks like this:
+
+---
+FNCNEW TVOID 0V
+; Parameter 0 definition
+PNUM TNUMBER 0
+ALOAD TVOID 0V
+FNCSPARAM TVOID 0V
+; End Parameter 0 definition
+; More parameters may follow here...
+...
+; Until here...
+ALOAD TSTRING "[funcname]"
+FNCSNAME TVOID 0V
+FNCSDEF TSTRING "[funcdef_label]"
+FNCSTORE TVOID 0V
+FNCDELETE TVOID 0V
+---
+
+Once you declare your function, you must implement your function. A function implementation done the proper way, looks as follows:
+
+---
+GOTOL TSTRING "[skip_label]"
+LBL TSTRING "[definition label]"
+; Function code goes here
+...
+; End function code
+FRET TVOID 0V
+LBL TSTRING "[skip_label]"
+---
+
+
+Then wherever you need to, you can call the function, as follows:
+
+---
+FCALL TSTRING "[function name]"
+FCPARAMS TVOID 0V
+; If parameters
+FNCLOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+FNCSPARAM TVOID 0V
+FNCSTORE TNUMBER [function number]
+ALOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+PARAMF TVOID 0V
+; Repeat here for other parameters
+...
+FNCDEFAULT2 TVOID 0V
+FECPARAMS TVOID 0V
+FECALL TVOID 0V
+---
+
+That's how you use a function!
+
+
+LESSON 22 - Return Values
+=========================
+
+A function, may have one or more return values. Here's how you use them:
+
+In a function, you may load the return type value with a value, as follows:
+
+---
+FNCLOAD TNUMBER [function number]
+RNUM TNUMBER [return value number]
+ALOAD [type] [return value value]
+FNCSRET TNUMBER 0V
+---
+
+Then, after you call the function, you may do:
+
+---
+RNUM TNUMBER [return value number]
+RETURNV TVOID 0V
+---
+
+This will load %accumulator with the return value.
+
+
+LESSON 23 - Parameters
+======================
+
+Functions can take, one or more parameters. Here is how that works:
+
+You first pass parameters, when you call a function, like this:
+
+---
+FNCLOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+FNCSPARAM TNUMBER 0V
+FNCSTORE TNUMBER [function number]
+ALOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+PARAMF [type] [parameter value]
+---
+
+Then, in the function implementation, you can change the parameter like this:
+
+---
+ALOAD [type] [new parameter value]
+FNCLOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+FNCSPARAM TNUMBER 0V
+FNCSTORE TNUMBER [function number]
+---
+
+Then, in the function, you can get the value to %accumulator, as follows.
+
+---
+PNUM TNUMBER [parameter number]
+ALOAD TNUMBER [function number]
+PARAMF2 TNUMBER 0V
+---
+
+LESSON 24 - Function Overloading
+================================
+
+A function may have the same name as another function, as long as the signature is different between the functions.
+
+
+LESSON 25 - Default Parameters
+==============================
+
+A function may have one or more default parameters. These are values you can use, instead of specifying actual parameters. To do this, you have to have this additional code in a function implementation. This goes right before the GOTOL instruction.
+
+---
+FNCDEFAULT TVOID 0V
+FNCLOAD TNUMBER [function number]
+ALOAD [type] [default value]
+PNUM TNUMBER [parameter number]
+FNCSDEFAULTV2 TVOID 0V
+FNCSTORE TNUMBER [function number]
+---
+
+Then, if you want to use the default parameter, then instead of as before with the parameter, you put:
+
+---
+ALOAD TNUMBER [function number]
+PNUM TNUMBER [parameter number]
+PARAMF [type] [0 value]
+FNCDEFAULTSYNC TVOID 0V
+---
+
+That's all there is to function default values!
+
+
+LESSON 26 - Function Registers
+==============================
+
+Here are the function registers:
+
+---
+%fpointer1	(fpointer1)	- Function pointer #1.
+
+%fpointer2	(fpointer2)	- Function pointer #2.
+
+%fpointer3	(fpointer3)	- Function pointer #3.
+
+%fname		(fname)		- Function name register.
+
+%fname2		(fname2)	- Function name register #2.
+
+%frets		(frets)		- Function return value type pointer #1.
+
+%fparams	(fparams)	- Function parameter type pointer #1.
+
+%frets2		(frets2)	- Function return value type pointer #2.
+
+%fparams2	(fparams2)	- Function parameter type pointer #2.
+
+%frets3		(frets3)	- Function return value type pointer #3.
+
+%fparams3	(fparams3)	- Function parameter type pointer #3.
+
+%rnum		(rnum)		- Return number register.
+
+%pnum		(pnum)		- Parameter number register.
+
+%fdefaultv	(fdefaultv)	- Set to true if you need to use default parameters.
+
+%fdefaultvalue	(fdefaultvalue)	- Set to the default value of a parameter.
+---
+
+There is pretty good descriptions of those given.
+
+
+LESSON 27 - Displaying the Type of %accumulator or %calc
+========================================================
+
+	You can display the type of %accumulator or %calc, or make other calculations on it's type. In order to do this, first you need to know a new register:
+
+---
+%typeof		(type_of)	- Stores a type name. Can be used to show the type
+				  name of %accumulator or %calc.
+---
+
+And:
+
+---
+ ITYPEOF     - Puts the type of %accumulator in %typeof.
+	       TYPEOF TVOID 0V
+ 			  
+ ICTYPEOF    - Puts the type of %calc in %typeof.
+	       CTYPEOF TVOID 0V
+
+ ITLOAD	     - Loads %typeof to %accumulator.
+	       TLOAD TVOID 0V
+---
+
+Here is an example of them in practice:
+
+---
+typeof.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+TYPEOF TVOID 0V
+TLOAD TVOID 0V
+PRINT TSTRING "Type: "
+PRINTLN TVOID 0V
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Type: VOID
+---
+
+
+LESSON 28 - Arguments and Interpreter Name
+==========================================
+
+	So, how does your program take arguments? Well, the answer is that there are some registers available for your use that store arguments to the program. Here they are:
+
+---
+%iname		(iname)		- The name of the PNF interpreter.
+
+%args		(args)		- The arguments to the program, including the name
+				  of the program in %args[0].
+---
+
+	First is %iname. %iname stores the name of the PNF interpreter. That can be used, for example, if someone else has developed a working PNF interpreter, which has slightly different features. You can check the name to see which interpreter you are using, and if you are using a different interpreter, do something different.
+	Then there is %args, which stores the arguments to the program. The name of the program being run is in %args[0]. Please take a look at this program, which demonstrates taking arguments:
+
+---
+arnload.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+VLOAD TNUMBER 0
+ATOC TVOID 0V
+ARNLOAD TVOID 0V
+EQU TVOID 0V
+CGOTOL TSTRING "arg"
+GOTOL TSTRING "no_arg"
+
+
+LBL TSTRING "arg"
+VLOAD TSTRING 1
+ATOC TVOID 0V
+ARLOAD TVOID 1
+EQU TVOID 0V
+CGOTOL TSTRING "help"
+GOTOL TSTRING "no_arg"
+
+
+LBL TSTRING "help"
+PRINTLN TSTRING "Good job."
+QUIT TVOID 0
+
+
+LBL TSTRING "no_arg"
+PRINTLN TSTRING "* ERROR: Wrong arguments."
+QUIT TVOID 1
+
+
+VAR TVOID 2
+VAR TVOID "-help"
+
+END TVOID 0V
+---
+
+Arguments:
+---
+-help
+---
+
+Output:
+---
+Good job.
+
+---
+
+	So here are the new instructions:
+
+---
+ IINLOAD     - Loads %iname into %accumulator.
+ 	       INLOAD TVOID 0V
+
+ IARLOAD     - Loads %arg[number] into %accumulator.
+ 	       ARLOAD TVOID [number]
+
+ IARNLOAD    - Loads the number of arguments into %accumulator.
+ 	       ARNLOAD TVOID 0V
+---
+
+
+The Stack
+=========
+
+	Now it's time to explain the final part of the basic architecture. It is the stack. The stack is a Last-In-First-Out (LIFO) data structure. Think of it as a stack of stars:
+
+---
+*
+*
+*
+*
+---
+
+You can "push" a star onto the stack, which puts it here:
+
+---
+* <----
+*
+*
+*
+*
+---
+
+To push, means to add to the stack. Now, let's take on off, or "pop" it:
+
+---
+*
+*
+*
+*
+---
+
+Now, we want at the second one. To do this, we will have to "pop" 3 times:
+
+Once:
+
+---
+*
+*
+*
+---
+
+Twice:
+
+---
+*
+*
+---
+
+Third time:
+
+---
+*
+---
+
+
+LESSON 29 - Using the Stack
+===========================
+
+	Ready to try this with our stack of data? Well, here goes! Here are the instructions you need to know:
+
+---
+ IPUSH       - Put %accumulator on the stack.
+               PUSH TVOID 0V
+
+ IPOP        - Loads a value into %accumulator from the stack.
+               POP TVOID 0V
+---
+
+These instructions work with %accumulator.
+
+
+LESSON 30 - Loading %icount Into %accumulator
+=============================================
+
+	I simply want to show you an instruction we haven't covered yet now. It is this one:
+
+---
+ IICLOAD     - Loads %icount into %accumulator.
+ 	       ICLOAD TVOID 0V
+
+---
+
+That is how you load %icount into %accumulator!
+
+
+LESSON 31 - Events in PNF
+=========================
+
+	More and more, programs are being designed in an event-driven way. If a the 'x' is pushed, close the program. If a button is clicked, calculate your raise. Those are some examples. PNF supports this, in a hardware-type way. Events come to you, you don't have to go to events. Now stop and read the sections on events in "instruction_set.txt". I will not repeat that here.
+	Ready? Well, here goes! For each of these types of events, you have some instructions. There is an instruction to execute that type of event, and instructions for working with it's table. You can add it to the table, remove it from the table, edit a table entry, or get the table entry. Here are some registers you need to know:
+
+---
+%labels		(labels)	- Contains the addresses of labels.
+
+%elabels	(elabels)	- Contains the addresses of event labels.
+
+%evalue		(evalue)	- Contains an event number to be used.
+
+%hevents	(hevents)	- The Hardware Event Table.
+
+%shevents	(shevents)	- The System Hardware Event Table.
+
+%events		(events)	- The Event Table.
+
+%exceptions	(exceptions)	- The Exception Table.
+
+%interrupts	(interrupts)	- The Interrupt Table.
+---
+
+And here are some instructions:
+
+---
+ IELBL       - Declares an event label.
+               ELBL TVOID 0V
+
+ IEVLOAD     - Loads a value into %evalue.
+               EVLOAD TVOID [value]
+
+ IHEADD      - Adds a Hardware Event to the table.
+               HEADD TVOID [event label number]
+
+ IHEREM      - Removes a Hardware Event from the table.
+               HEREM TVOID 0V
+
+ IHEED       - Edits a Hardware Event in the table. %evalue must be the hevent
+               number.
+               HEED TVOID [new event label number number]
+
+ IHEGET      - Gets a Hardware Event event label number from the table. Puts it
+               in %evalue.
+               HEGET TVOID [hardware event number]
+
+ ISHEADD     - Adds a System Hardware Event to the table.
+               SHEADD TVOID [event label number]
+
+ ISHEREM     - Removes a System Hardware Event from the table.
+               SHEREM TVOID 0V
+
+ ISHEED      - Edits a System Hardware Event in the table. %evalue must be the 
+               shevent number.
+               SHEED TVOID [new event label number number]
+
+ ISHEGET     - Gets a System Hardware Event event label number from the table.
+               Puts it in %evalue.
+               SHEGET TVOID [hardware event number]
+
+ IEADD       -  Adds an Event to the table.
+                EADD TVOID [event label number]
+ 
+ IEREM       - Removes an Event from the table.
+               EREM TVOID 0V
+
+ IEED        - Edits an Event in the table. %evalue must be the event number.
+               EED TVOID [new event label number number]
+
+ IEGET       - Gets an Event event label number from the table. Puts it in
+               %evalue.
+               EGET TVOID [hardware event number]
+
+ IEXADD      - Adds an Exception to the table.
+               EXADD TVOID [event label number]
+
+ IEXREM      - Removes an Exception from the table.
+               EXREM TVOID 0V
+
+ IEXED       - Edits an Exception in the table. %evalue must be the exception
+               number.
+               EXED TVOID [new event label number number]
+
+ IEXGET      - Gets an Exception event label number from the table. Puts it
+               in %evalue.
+               EXGET TVOID [hardware event number]
+
+ IIADD       - Adds an Interrupt to the table.
+               IADD TVOID [event label number]
+
+ IIREM       - Removes an Interrupt from the table.
+               IREM TVOID 0V
+
+ IIED        - Edits an Interrupt in the table. %evalue must be the interrupt
+               number.
+               IED TVOID [new event label number number]
+
+ IIGET       - Gets an Interrupt event label number from the table. Puts it
+               in %evalue.
+               IGET TVOID [hardware event number]
+              
+ IHEVENT     - Executes a Hardware Event subroutine.
+               HEVENT TVOID [hardware event number]
+
+ ISHEVENT    - Executes a System Hardware Event Subroutine.
+               SHEVENT TVOID [system hardware event number]
+
+ IEVENT      - Executes an Event subroutine.
+               EVENT TVOID [event number]
+
+ IEXCEPTION  - Executes an Exception subroutine.
+               EXCEPTION TVOID [exception number]
+
+ IINT        - Executes an Interrupt (User Defined Event) subroutine.
+               INT TVOID [interrupt number]
+---
+
+These are the instructions and registers for working with events.
+	So how do you do it? You define a special type of subroutine, called an event handler. Then, you either call it manually, or you let the system call it automatically, depending on which one it is.
+	I'll show you how to catch the breakpoint exception. We are going to print, "Hello World!", each time we are in a breakpoint. Here it is:
+
+---
+breakpoint.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+PRINTLN TSTRING "Before first breakpoint."
+EXADD TVOID 0
+PRINTLN TSTRING "After first breakpoint."
+QUIT TVOID 0
+
+
+ELBL TVOID 0V
+CALLL TSTRING "phello"
+RET TVOID 0V
+
+
+LBL TSTRING "phello"
+PRINTLN TSTRING "Hello World!"
+RET TVOID 0V
+
+
+END TVOID 0V
+---
+
+Output:
+---
+Before first breakpoint.
+Hello World!
+After first breakpoint.
+Hello World!
+
+---
+
+All pre-defined events, have a default event handler. The default event handler for exception 0, does nothing. Now you know about events in PNF!
+
+
+LESSON 32 - Addresses
+=====================
+
+	Things have addresses, and values. Their addresses, have to do with where they are in memory. Their values, have to do with what they are. Here are some instructions:
+
+---
+ IVADD	     - Gets the address of the specified variable.
+ 	       VADD TVOID [variable number]
+ 			  
+ ILADD	     - Gets the address of the specified label.
+ 	       LADD TVOID [label number]
+ 			  
+ IELADD	     - Gets the address of the specified event label.
+ 	       ELADD TVOID [event label number]
+
+ IADD2V	    - Retrieves the value at the address stored in %accumulator.
+ 	      ADD2V TVOID 0V
+
+ ISTOREA    - Stores %accumulator to the address pointed at by %calc.
+ 	      STOREA TVOID 0V
+---
+
+These instructions allow you to work directly with addresses, instead of with values. This can be useful sometimes.
+
+
+LESSON 33 - ST
+==============
+
+	Here is the next instruction:
+
+---
+ IST         - Sets %accumulator to 0 if %calc is 0. (Used for loops.)
+               ST TVOID 0V
+
+---
+
+I have not used this yet, in all this time. But it is there, because PNF was based off of some other languages, and that instruction was taken from there. If you can find an example where you would use it, please contact me. Thanks!
+
+
+LESSON 34 - Ranges
+==================
+
+There are two types of ranges:
+
+* Type 1 - A single value within a certain range of numbers.
+
+* Type 2 - A series of numbers from a starting number to an ending number.
+
+First, let's start with type1 ranges. You first have to define them. Here is the syntax of a valid definiton:
+
+---
+RDSTART1 TSTRING [name]
+RFROM1 TNUMBER [from value]
+RTO1 TNUMBER [to value]
+RDEND1 TVOID 0V
+---
+
+[name] is the name of the range. [from value] is the lowest value you can have. [to value] is the highest value you can have. The last instruction tells us we are at the end of the definition.
+
+After you define a type1 range, you need to implement it. This tells you what you actually have stored in the range. Here is the syntax of a type1 range implementation.
+
+---
+RSTART1 TSTRING [defname]
+RANGE1 TNUMBER [num]
+REND1 TSTRING [name]
+---
+
+The definition name is the name of the definition you defined the range with. The name is the name you have given your implementation. The [num] parameter tell us which number you wish to use as your parameter. It is an error to use a number outside of your defined range.
+
+Here are some other instructions for a type1 range.
+
+---
+RLOAD1 TSTRING [name]  - Loads a value from a type1 range to %accumulator.
+RSTORE1 TSTRING [name] - Stores a value from %accumulator to a type1 range.
+---
+
+Based off of earlier discussions, you should be able to know how to use these two instructions.
+
+Now for type2 ranges. Like a type1 range, you define, and implement them. The syntax for a type2 range is a bit simpler. Here is the syntax for the definition:
+
+---
+RDSTART2 TSTRING [name]
+RFROM2 TNUMBER [from value]
+RTO2 TNUMBER [to value]
+RDEND2 TVOID 0V
+---
+
+[name] is the name of the definition. [from value] is the lowest value in the range. [to value] is the highest value in the range.
+
+Implementation:
+---
+RSTART2 TSTRING [defname]
+RANGE2 TSTRING [name]
+---
+
+[defname] is the definition's name. [name], is the name you are giving your range.
+
+Here are some other things you can do with your type2 range:
+
+---
+RPREP2 TSTRING [name]  - Prepares the %rt2prep register...
+RLOAD2 TNUMBER [index] - Loads a value from index to %accumulator
+---
+
+We have just introduced a new register:
+
+---
+%rt2prep	(rt2prep)	- The RangeT2 preparation register.
+---
+
+This is where the implementation name is stored, so that it knows which type2 range you are working with.
+
+You should know from context how to use this in a program.
+
+More registers:
+
+---
+%rt1defs	(rt1defs)	- The RangeT1 definitions.
+
+%rt1vars	(rt1vars)	- The RangeT1 variables.
+
+%rt2defs	(rt2defs)	- The RangeT2 definitions.
+
+%rt2vars	(rt2vars)	- The RangeT2 variables.
+---
+
+You should know about these, but you can't use them directly.
+
+
+LESSON 35 - Enums
+=================
+
+An enum is a variable that can be set to one of a set of names. You define, and implement an enum. Let's cover the definition first:
+
+Definition syntax:
+---
+ESTART TSTRING [name]
+ENAME TSTRING [name]
+...
+EEND TVOID 0V
+---
+
+The first [name], is the name of the definition. The second [name], is a possible value of the enum. The "..." signifies that you may have more than one possible value for the enum. You may have as many as you want. The EEND instruction, lets us know that you are done defining possible values.
+
+After you define an enum, you must implement it. Here is an example of the implementation syntax:
+
+---
+ENUMS TSTRING [defname]
+ENUM TSTRING [valuename]
+SENUM TSTRING [name]
+---
+
+The [defname] lets you know the definition we are using. The [valuename], is the particular value you are giving this enum. Note that you must use a value which you have defined. If you do not, it's an error. Finally, [name] is the name you are giving the implementation.
+
+Other enum instructions:
+---
+ IEPREP     - Prepares the %eprep register...
+ 	      EPREP TSTRING [name]
+
+ ILOADE     - Loads a value from an enum to %accumulator
+ 	      LOADE TVOID 0V
+
+ ISTOREE    - Stores a value from %accumulator to an enum
+ 	      STOREE TVOID 0V
+---
+
+Here is the new register:
+
+---
+%eprep		(eprep)		- The enum preparation register.
+---
+
+Here are some other registers:
+
+---
+%edefs		(edefs)		- The enum definitions.
+
+%evars		(evars)		- The enum variables.
+---
+
+You cannot directly use these.
+
+I hope this will tell you how to use enums.
+
+
+LESSON 36 - Arrays
+==================
+
+An array is a set of variables. You may put enums or ranges as the set of variables if you wish.
+
+To use an array, you must implement it. Here is the syntax of how you do that:
+
+---
+ASTART TSTRING [name]
+AEND TNUMBER [length]
+---
+
+[name] is the name you are giving the array. [length] is the length of the array. The length of the array is how many "elements" or variables you are allowing it to have.
+
+Other things you can do with an array:
+
+---
+ IAPREP     - Prepares %aprep register
+ 	      APREP TSTRING [name]
+
+ IAIPREP    - Prepares %aiprep register. If TVOID, gets number from %accumulator.
+ 	      AIPREP TNUMBER [num]
+	      AIPREP TVOID 0V
+
+ ILOADIA    - Loads a value from an array to %accumulator
+ 	      LOADIA TVOID 0V
+
+ ISTOREIA   - Stores a value from %accumulator to an array
+ 	      STOREIA TVOID 0V
+
+ IALENGTH   - Gets the length of an array and puts it in %accumulator
+	      ALENGTH TVOID 0V
+
+ IAPRINT    - Prints the contents of an array
+	      APRINT TVOID 0V
+---
+
+You see, to use an array, first you must prepare it to be used. First you use the APREP to tell it which Array you are going to use. Then use use the AIPREP instruction to tell it which index, or element you are going to use. Once you do that, you can load or store to or from it.
+
+Here are some new registers:
+
+---
+%aprep		(aprep)		- The Array name preparation register.
+
+%aiprep		(aiprep)	- The Array index preparation register.
+---
+
+These should be self-explanitory. Here's one more register:
+
+---
+%avars		(avars)		- The Array variables.
+---
+
+You cannot directly use this one.
+
+I think you see how to use arrays now.
+
+
+LESSON 37 - Duplicating a register
+==================================
+
+You can duplicate %accumulator or %calc to the other one. Here are the instructions for that:
+
+---
+ IDUP	    - Sets %accumulator to %calc
+	      DUP TVOID 0V
+
+ ICDUP	    - Sets %calc to %accumulator
+	      CDUP TVOID 0V
+---
+
+These are useful for when you need to copy one to the other and have the other one match.
+
+
+LESSON 38 - %extrai
+===================
+
+There is one more register to go over now. It is %extrai.
+
+---
+%extrai		(extrai)	- Each instruction has an extra value, which is logical and doesn't exist in the file.
+---
+
+That's that register!
+
+
+LESSON 39 - IFs
+===============
+
+You can run code conditionally.
+
+---
+ IIF	    - Branches to if block if %accumulator is true, otherwise either optional else block or the end of the if.
+	      IF TVOID 0V
+
+ IIFBEGIN    - Marks the begining of the if or else block.
+	      IFBEGIN TVOID 0V
+
+ IIFEND	     - Marks the end of the if or else block.
+	       IFEND TVOID 0V
+
+ IENDIF	     - Marks the end of the if.
+	       ENDIF TVOID 0V
+
+ IIFELSE     - Marks the beginning of the optional else block.
+	       IFELSE TVOID 0V
+
+ IENDIFELSE  - Marks the end of the optional else blcok.
+	       ENDIFELSE TVOID 0V
+
+ IEIF	     - Marks the end of the if/else.
+	       EIF TVOID 0V
+---
+
+First, you compute a TBOOLEAN in %accumulator.
+
+Then, you start with an IF. You then use ENDIF to mark the end of the IF. You stick code between the IFBEGIN and IFEND instructions.
+
+If there is to be an ELSE, then you use IFELSE and ENDIFELSE. You again stick code for the else between an IFBEGIN and IFEND instruction(s).
+
+At the end of it all, you stick EIF.
+
+
+LESSON 40 - SWITCH2
+===================
+
+You can use a form of "fancy if statement".
+
+---
+ ISWITCH2    - Specifies that what follows is a switch statement.
+               SWITCH2 TVOID 0V
+
+ ISWBEGIN    - The switch statement block start.
+               SWBEGIN TVOID 0V
+
+ ISWEND      - The switch statement block end.
+               SWEND TVOID 0V
+
+ ISWCBEGIN   - The switch statement case block start.
+               SWCBEGIN TVOID 0V
+
+ ISWCEND     - The switch statement case block end.
+               SWCEND TVOID 0V
+
+ ISWCASE     - A switch statement case.
+               SWCASE [type] [value]
+
+ ISWDEFAULT  - A switch statement default case.
+               SWDEFAULT TVOID 0V
+
+ ISWBREAK    - Goes to the next SWEND or reg.ecount.
+	       SWBREAK TVOID 0V
+
+---
+
+You begin with SWITCH2. Then you use SWBEGIN. At the end, you stick a SWEND.
+
+You then use SWCASES, to specify what you are looking for. Code to execute if it matches, goes inbetween SWCBEGIN and SWCEND.
+
+You can use an SWDEFAULT for what if nothing matches? Code to execute in that case goes inbetween SWCBEGIN and SWCEND.
+
+Anywhere in the code, you can stick an SWBREAK. This will go to the nearest SWEND or reg.ecount.
+
+
+LESSON 41 - Dynamically Patching the VM
+=======================================
+
+There is a PATCH instruction, used for dynamically patching the VM. It is recommended you always patch with TVOID and 0V, if PATCH is supported. Note, that if you are using version 1, or greater, the patch is autmomatically applied. The code would look something like this:
+
+patch.pasm
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+CALLL TSTRING "patch_0"
+
+QUIT TVOID 0
+
+
+LBL TSTRING "patch_0"
+ ISUPP TNUMBER 189
+ CGOTOL TSTRING "supported"
+ GOTOL TSTRING "not_supported"
+
+
+ LBL TSTRING "supported"
+ PATCH TVOID 0V
+ GOTOL TSTRING "end"
+
+
+ LBL TSTRING "not_supported"
+ CRASH TSTRING "PATCH not supported."
+ GOTOL TSTRING "end"
+
+
+ LBL TSTRING "end"
+ RET TVOID 0V
+
+
+END TVOID 0V
+---
+
+
+LESSON 42 - Native Subroutines
+==============================
+
+A subroutine can be native. What does it mean to be native? It means, "possibly" implemented in another language. This can be done by creating a program, that "is" the subroutine. Then you run the program, using the NATIVE instruction. This just runs your program, which MUST be in the same directory as the file you are trying to run.
+
+First, you'd better apply patch 0, and then check to see whether NATIVE is supported. A program might look like this:
+
+
+a.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+PRINTLN TSTRING "Hello World!"
+
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+That was the native subroutine. Code to call it, looks as follows:
+
+native.pnf
+---
+!@.PNF
+
+
+VERSION TVOID 0V
+
+
+ISUPP TNUMBER 189
+CGOTOL TSTRING "Supported"
+GOTOL TSTRING "Not_Supported"
+
+
+LBL TSTRING "Supported"
+PATCH TVOID 0V
+GOTOL TSTRING "end"
+
+LBL TSTRING "Not_Supported"
+QUIT TVOID 1
+GOTOL TSTRING "end"
+
+LBL TSTRING "end"
+ISUPP TNUMBER 190
+CGOTOL TSTRING "native_supported"
+GOTOL TSTRING "native_not_supported"
+
+
+LBL TSTRING "native_supported"
+NATIVE TSTRING "a"
+GOTOL TSTRING "end_2"
+
+LBL TSTRING "native_not_supported"
+QUIT TVOID 1
+GOTOL TSTRING "end_2"
+
+
+LBL TSTRING "end_2"
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+
+LESSON 43 - Preprocessing
+=========================
+
+	If you require preprocessing, you should use the extension, ".PPPNF", instead of, ".PNF". A tutorial on preprocessing can be found in "PNFPP-tutorial.txt". You should take a look at that next, and skim through it.
+
+
+LESSON 44 - MODE and EXTMODE
+============================
+
+	You know how today's PCs, have real mode, protected mode, and long mode? They are 16 bit, 32 bit, and 64 bit. Well, PNF has a concept of "modes', which are similar. Each mode has several "extmodes". Right now there is only one mode and only one extmode, so these instructions do nothing. Here are some registers:
+
+---
+%mode		(mode)		- Holds the current mode.
+
+%smode		(smode)		- Holds the supported modes.
+
+%extmode	(extmode)	- Holds the current extmode.
+
+%sextmode	(sextmode)	- Holds the supported extmodes.
+
+---
+
+...And then the coresponding instructions:
+
+---
+ IMODE		 - Like on a ordinary PC hardware, which has multiple modes, this language may have multiple modes, and this instruction is 			   reserved for that use.
+
+		   MODE TVOID 0V
+
+ IEXTMODE	 - There may be "submodes", of the processor. This instruction is reserved for that.
+		   EXTMODE TVOID 0V
+
+ IMCHECK	 - Sets %accumulator to true if we are in the specified mode.
+		   MCHECK [type] [operand]
+
+ IMSUPP		 - Checks to see if a mode is supported.
+		   MSUPP [type] [operand]
+
+ IMEXTCHECK	 - Sets %accumulator to true if we are in the specified extended mode.
+		   MCHECK [type] [operand]
+
+ IMEXTSUPP	 - Checks to see if an extended mode is supported.
+		   MSUPP [type] [operand]
+---
+
+These should be straightforward, so I won't go over these here any more. The hint is they work just like versions.
+
+
+LESSON 45 - Segments
+====================
+
+	Just as today's PCs, have sections, such as .text, and .data, PNF has segments, any number you wish, up to the memory in your computer. Each segment has it's own memory and it's own stack. There is one segment when you start.
+
+Instructions:
+---
+ IADDSEG	 - Adds a segment.
+		   ADDSEG TVOID 0V
+
+ IREMSEG	 - Removes a segment.
+		   REMSEG TVOID 0V
+
+ ICOLLSEG	 - Collapses a segment.
+		   COLLSEG TNUMBER [segment]
+
+ IEXPSEG	 - Expands a segment.
+		   EXPSEG TNUMBER [segment]
+
+ ICPYSEG	 - Copys a segment to another segment. from = %accumulator, to = %calc.
+		   CPYSEG TVOID 0V
+
+ ISEGLOAD	 - Loads a value from a segment to %accumulator.
+		   SEGLOAD TNUMBER [segment]
+
+ ISEGSTORE	 - Stores %accumulator to segment.
+		   SEGSTORE TNUMBER [segment]
+
+ ISEGPUSH	 - Pushes a value onto segment stack. Gets it from %accumulator, segment from %calc.
+		   SEGPUSH TVOID 0V
+
+ ISEGPOP	 - Pops a value from segment stack. Puts it in %accumulator, segment from %calc.
+		   SEGPOP TVOID 0V
+
+ ISEGTOP	 - Tops a value from segment stack. Same as pop, but will not destroy. Puts it in %accumulator, segment from %calc.
+		   SEGTOP TVOID 0V
+
+ ISEGVLOAD	- Gets a variable from variable location %operand, and segment %calc, and stores it in %accumulator.
+		  SEGVLOAD [type] [variable address]
+
+ ISEGVSTORE	- Stores a new variable from %accumulator to the next location, at segment %calc
+             	  SEGVSTORE TVOID 0V
+	      	  SEGVSTORE TNUMBER [Variable Address]
+---
+
+You cannot execute code directly on a segment. You must have code be in the default segment to execute it.
+
+
+LESSON 46 - Structs and Unions
+==============================
+
+	Just as in C, there's a simple object type, called a "struct". This is basically a group of variables, grouped by one master name.
+
+Here are some registers:
+
+---
+%structs	(structs)	- Holds the struct definitions.
+
+%ostructs	(ostructs)	- Holds the struct object definitions.
+
+%struct_type	(struct_type)	- Holds the typename of a structure.
+
+%struct_name	(struct_name)	- Holds the object name of a structure.
+---
+
+Now here are some instructions:
+
+---
+ ISTRUCT	 - Starts a structure definition.
+		   STRUCT TSTRING [typename]
+
+ ISTRUCTVAR	 - Defines a variable within a structure. It is a placeholder for that member.
+		   STRUCTVAR TSTRING [membername]
+
+ IENDSTRUCT	 - Ends a structure definition.
+		   ENDSTRUCT TVOID 0V
+
+ ISTRUCTNAME	- Sets %struct_type to [typename].
+		  STRUCTNAME TSTRING [typename]
+
+ ISTRUCTONAME	- Sets %struct_name to [objectname].
+		  STRUCTONAME TSTRING [objectname]
+
+ ISTRUCTD	- Creates a structure object [objectname].
+		  STRUCTD TSTRING [objectname]
+
+ ISTRUCTUSE     - Sets a member as the active member of a struct.
+		  STRUCTUSE TVOID 0V
+		  STRUCTUSE TNUMBER [membernum]
+		  STRUCTUSE TSTRING [membername]
+
+ ISTRUCTUSING	- Gets the active member number in %accumulator.
+		  STRUCTUSING TVOID 0V
+
+ ISTRUCTUSINGNAME - Gets the name of a member from the active member and puts it in %accumulator.
+		    STRUCTUSINGNAME TVOID 0V
+
+ ISTRUCTGET	  - Gets a member from the structure, and puts it in %accumulator
+		    STRUCTGET TVOID 0V
+
+ ISTRUCTPUT	  - Puts %accumulator in specified member of struct.
+		    STRUCTPUT TVOID 0V
+
+ ISTRUCTTYPE	 - Puts %struct_type in %accumulator
+		   STRUCTTYPE TVOID 0V
+
+ ISTRUCTTYPE2	 - Puts %accumulator in %struct_type
+		   STRUCTTYPE2 TVOID 0V
+
+ ISTRUCTNAME2	 - Puts %struct_name in %accumulator
+		   STRUCTNAME2 TVOID 0V
+
+ ISTRUCTNAME3	 - Puts %accumulator in %struct_name
+		   STRUCTNAME3 TVOID 0V
+---
+
+A Union, is the same as a struct, but one member can be active at a time. Writing to a member will overwrite all other members.
+
+Here are some more registers:
+
+---
+%unions		(unions)	- Holds the union definitions.
+
+%ounions	(ounions)	- Holds the union object definitions.
+
+%union_type	(union_type)	- Holds the typename of a union.
+
+%union_name	(union_name)	- Holds the object name of a union.
+---
+
+...And some instructions:
+
+---
+ IUNION		 - Starts a union definition.
+		   UNION TSTRING [typename]
+
+ IUNIONVAR	 - Defines a variable within a union. It is a placeholder for that member.
+		   UNIONVAR TSTRING [membername]
+
+ IENDUNION	 - Ends a union definition.
+		   ENDUNION TVOID 0V
+
+ IUNIONNAME	- Sets %union_type to [typename].
+		  UNIONNAME TSTRING [typename]
+
+ IUNIONONAME	- Sets %union_name to [objectname].
+		  UNIONONAME TSTRING [objectname]
+
+ IUNIOND	- Creates a union object [objectname].
+		  UNIOND TSTRING [objectname]
+
+ IUNIONUSE     	- Sets a member as the active member of a union.
+		  UNIONUSE TVOID 0V
+		  UNIONUSE TNUMBER [membernum]
+		  UNIONUSE TSTRING [membername]
+
+ IUNIONUSING	- Gets the active member number in %accumulator.
+		  UNIONUSING TVOID 0V
+
+ IUNIONUSINGNAME - Gets the name of a member from the active member and puts it in %accumulator.
+		    UNIONUSINGNAME TVOID 0V
+
+ IUNIONGET	  - Gets a member from the union, and puts it in %accumulator
+		    UNIONGET TVOID 0V
+
+ IUNIONPUT	  - Puts %accumulator in specified member of union.
+		    UNIONPUT TVOID 0V
+
+ IUNIONTYPE	 - Puts %union_type in %accumulator
+		   UNIONTYPE TVOID 0V
+
+ IUNIONTYPE2	 - Puts %accumulator in %union_type
+		   UNIONTYPE2 TVOID 0V
+
+ IUNIONNAME2	 - Puts %union_name in %accumulator
+		   STRUCTNAME2 TVOID 0V
+
+ IUNIONNAME3	 - Puts %accumulator in %union_name
+		   UNIONNAME3 TVOID 0V
+---
+
+Here is a program:
+
+---
+struct.pnf
+---
+VERSION TVOID 1
+
+
+STRUCT TSTRING "a"
+STRUCTVAR TSTRING "a"
+STRUCTVAR TSTRING "b"
+ENDSTRUCT TVOID 0V
+STRUCTNAME TSTRING "a"
+STRUCTD TSTRING "abc"
+STRUCTNAME TSTRING "a"
+STRUCTONAME TSTRING "abc"
+STRUCTUSE TSTRING "a"
+ALOAD TNUMBER 2.000000
+STRUCTPUT TVOID 0V
+STRUCTNAME TSTRING "a"
+STRUCTONAME TSTRING "abc"
+STRUCTUSE TSTRING "b"
+ALOAD TSTRING "Hello World!"
+STRUCTPUT TVOID 0V
+STRUCTUSING TVOID 0V
+PRINTLN TVOID 0V
+STRUCTUSINGNAME TVOID 0V
+PRINTLN TVOID 0V
+STRUCTGET TVOID 0V
+PRINTLN TVOID 0V
+STRUCTTYPE TVOID 0V
+PRINTLN TVOID 0V
+STRUCTNAME2 TVOID 0V
+PRINTLN TVOID 0V
+UNION TSTRING "a"
+UNIONVAR TSTRING "a"
+UNIONVAR TSTRING "b"
+ENDUNION TVOID 0V
+UNIONNAME TSTRING "a"
+UNIOND TSTRING "uniona"
+UNIONNAME TSTRING "a"
+UNIONONAME TSTRING "uniona"
+UNIONUSE TSTRING "a"
+ALOAD TSTRING "Hello World!"
+UNIONPUT TVOID 0V
+UNIONGET TVOID 0V
+PRINTLN TVOID 0V
+UNIONNAME TSTRING "a"
+UNIONONAME TSTRING "uniona"
+UNIONUSE TSTRING "b"
+ALOAD TSTRING "Hello Tree"
+UNIONPUT TVOID 0V
+UNIONGET TVOID 0V
+PRINTLN TVOID 0V
+UNIONUSE TSTRING "a"
+UNIONGET TVOID 0V
+PRINTLN TVOID 0V
+UNIONUSING TVOID 0V
+PRINTLN TVOID 0V
+UNIONUSINGNAME TVOID 0V
+PRINTLN TVOID 0V
+UNIONTYPE TVOID 0V
+PRINTLN TVOID 0V
+UNIONNAME2 TVOID 0V
+PRINTLN TVOID 0V
+QUIT TVOID 0
+
+
+END TVOID 0V
+---
+
+Output:
+---
+1
+b
+Hello World!
+a
+abc
+Hello World!
+Hello Tree
+0
+0
+a
+a
+uniona
+---
+
+
+LESSON 47 - CPY
+===============
+
+An instruction for you:
+
+---
+ ICPY		 - Copies [%accumulator] in [%calc].
+		   CPY TVOID 0V
+---
+
+This is like the PCs, MOV assembly language instruction.
+
+
+LESSON 48 - Running Other Programs
+==================================
+
+Instructions:
+
+---
+ IRUN		 - Runs a program.
+		   RUN TSTRING [program]
+
+ IJRUN		 - Runs a java program, using the java interpreter, pointed to by the JRUN enviroment variable.
+		   JRUN TSTRING [program]
+
+ IPNFRUN	 - Runs another PNF program.
+		   PNFRUN TSTRING [program]
+---
+
+These are for running other programs. You can run either a native app, a java app (needs JRUN enviroment variable set), or another PNF program.
+
+
+LESSON 48 - Loops & Messages
+============================
+
+This lesson will simply list the instructions:
+
+---
+ IMSG      - Displays a message that the creator of the language believes in.
+             MSG TVOID [Message Number]
+
+ ILOOP    - Marks the beginning of a loop.
+            LOOP TVOID 0V
+
+ IELOOP   - Marks the end of a loop.
+            ELOOP TVOID 0V
+
+ IWHILE  - Marks the beginning of a while loop.
+           WHILE TVOID 0V
+
+ IWHILEB - Marks the beginning of a while loop body.
+           WHILEB TVOID 0V
+
+ IWHILEE - Marks the end of a while loop body.
+           WHILEE TVOID 0V
+
+ IWHILEBB - Marks the beginning of a whileb loop.
+            WHILEBB TVOID 0V
+
+ IWHILEBBB - Marks the beginning of a whileb loop body.
+             WHILEBBB TVOID 0V
+
+ IWHILEBBE - Marks the end of a whileb loop body.
+             WHILEBBE TVOID 0V
+
+ IUNTIL    - Marks the beginning of an until loop.
+             UNTIL TVOID 0V
+
+ IUNTILB   - Marks the beginning of an until loop body.
+             UNTILB TVOID 0V
+
+ IUNTILE   - Marks the end of an until loop body.
+             UNTILE TVOID 0V
+
+ IUNTILBB  - Marks the beginning of an untilb loop.
+             UNTILBB TVOID 0V
+
+ IUNTILBBB - Marks the beginning of an untilb loop body.
+             UNTILBBB TVOID 0V
+
+ IUNTILBBE - Marks the end of an untilb loop body.
+             UNTILBBE TVOID 0V
+
+ IFOR      - Marks the beginning of a for loop.
+             FOR TVOID 0V
+
+ IFORINIT  - Marks the end of for loop initialization.
+             FORINIT TVOID 0V
+
+ IFORCOND  - Marks the end of for loop condition.
+             FORCOND TVOID 0V
+
+ IFORINC   - Marks the end of for loop increment.
+             FORINC TVOID 0V
+
+ IFORB     - Marks the beginning of a for loop body.
+             FORB TVOID 0V
+
+ IFORE     - Marks the end of a for loop body.
+             FORE TVOID 0V
+
+ IFORBB    - Marks the beginning of a forb loop.
+             FORBB TVOID 0V
+
+ IFORBBINIT - Marks the end of forb loop initialization.
+              FORBBINIT TVOID 0V
+
+ IFORBBCOND  - Marks the end of forb loop condition.
+               FORBBCOND TVOID 0V
+
+ IFORBBINC   - Marks the end of forb loop increment.
+               FORBBINC TVOID 0V
+
+ IFORBBB     - Marks the beginning of a forb loop body.
+               FORBBB TVOID 0V
+
+ IFORBBE     - Marks the end of a forb loop body.
+               FORBBE TVOID 0V
+
+ IFOREVER    - Marks the beginning of a forever loop.
+               FOREVER TVOID 0V
+
+ IFOREVERE   - Marks the end of a forever loop.
+               FOREVERE TVOID 0V
+
+ IBREAK      - Break from a loop.
+               BREAK TVOID 0V
+               BREAK TNUMBER [labelnum]
+               BREAK TSTRING [label]
+
+ ICONTINUE   - Continues a loop.
+               CONTINUE TVOID 0V
+               CONTINUE TNUMBER [labelnum]
+               CONTINUE TSTRING [label]
+---
+
+Now, I'll "challenge" you to figure out how to use them. Got it? If not, you probably need to re-read the tutorial!
+
+
+CONCLUSION
+==========
+
+	Now you know all the instructions and registers used for creating programs. You are at this point encouraged to come up with your own PNF program, and create it. That will re-enforce the concepts you have learned today. The next step is learning the language a level up, PNFASM. Please read the tutorial on that next. Thanks for reading this tutorial!

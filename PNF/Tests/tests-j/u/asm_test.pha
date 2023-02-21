@@ -1,0 +1,27 @@
+asm "PRINT" "TSTRING" $"?";
+asm "READ" "TNUMBER" "0V";
+asm "VSTORE" "TVOID" "0V";
+asm "LBL" "TSTRING" $"loop";
+asm "PRINT" "TSTRING" $"?";
+asm "READ" "TNUMBER" "0V";
+asm "VSTORE" "TVOID" "0V";
+asm "PRINT" "TSTRING" $"?";
+asm "READ" "TNUMBER" "0V";
+asm "VSTORE" "TVOID" "0V";
+asm "VLOAD" "TNUMBER" "1";
+asm "MUL" "TNUMBER" "2";
+asm "VSTORE" "TVOID" "0V";
+asm "VLOAD" "TNUMBER" "2";
+asm "MUL" "TNUMBER" "3";
+asm "ADD" "TNUMBER" "4";
+asm "VSTORE" "TVOID" "0V";
+asm "VLOAD" "TNUMBER" "1";
+asm "PRINTLN" "TVOID" "0V";
+asm "VLOAD" "TNUMBER" "2";
+asm "PRINTLN" "TVOID" "0V";
+asm "VLOAD" "TNUMBER" "4";
+asm "PRINTLN" "TVOID" "0V";
+asm "ST" "TVOID" "0V";
+asm "CGOTOL" "TSTRING" $"loop";
+
+end 0;

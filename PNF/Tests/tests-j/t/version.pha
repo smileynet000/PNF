@@ -1,0 +1,12 @@
+version pnf 1;
+
+mode 0;
+extmode 0;
+
+check current_vmode void 0;
+check vmode void 0;
+check current_extvmode void 0;
+check extvmode void 0;
+
+
+end 0;

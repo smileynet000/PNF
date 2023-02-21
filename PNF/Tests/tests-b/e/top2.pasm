@@ -1,0 +1,16 @@
+VERSION TVOID 0V
+
+
+ALOAD TBOOLEAN false
+CGOTOL TSTRING "top_iftrue_1"
+GOTOL TSTRING "top_iffalse_1"
+LBL TSTRING "top_iftrue_1"
+PRINTLN TSTRING "true"
+GOTOL TSTRING "top_end_1"
+LBL TSTRING "top_iffalse_1"
+PRINTLN TSTRING "false"
+GOTOL TSTRING "top_end_1"
+LBL TSTRING "top_end_1"
+QUIT TVOID 0
+
+END TVOID 0V

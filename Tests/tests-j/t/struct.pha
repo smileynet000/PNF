@@ -1,0 +1,56 @@
+struct a
+{
+ structvar a;
+ structvar b;
+};
+
+struct a abc;
+
+struct a abc.a = 2;
+struct a abc.b = "Hello World!";
+
+(struct);
+println;
+{struct};
+println;
+
+load struct "get";
+println;
+load struct "type1";
+println;
+load struct "name1";
+println;
+
+
+union a
+{
+ unionvar a;
+ unionvar b;
+};
+
+union a uniona;
+
+union a uniona.a = "Hello World!";
+load union "get";
+println;
+
+union a uniona.b = "Hello Tree";
+load union "get";
+println;
+
+use tunion a;
+load union "get";
+println;
+
+(union);
+println;
+{union};
+println;
+
+load union "type1";
+println;
+load union "name1";
+println;
+
+
+end 0;

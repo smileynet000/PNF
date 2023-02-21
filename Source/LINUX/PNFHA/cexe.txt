@@ -1,0 +1,572 @@
+pnfha.ypp:782.1-14: warning: deprecated directive: ‘%error-verbose’, use ‘%define parse.error verbose’ [-Wdeprecated]
+  782 | %error-verbose
+      | ^~~~~~~~~~~~~~
+      | %define parse.error verbose
+pnfha.ypp: warning: 4 nonterminals useless in grammar [-Wother]
+pnfha.ypp: warning: 8 rules useless in grammar [-Wother]
+pnfha.ypp:6100.1-27: warning: nonterminal useless in grammar: actual_function_parameters2 [-Wother]
+ 6100 | actual_function_parameters2:	opt_expression2
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+pnfha.ypp:6101.33-6104.33: warning: nonterminal useless in grammar: @69 [-Wother]
+ 6101 | 				{
+      |                                 ^
+pnfha.ypp:6161.1-15: warning: nonterminal useless in grammar: opt_expression2 [-Wother]
+ 6161 | opt_expression2:		{
+      | ^~~~~~~~~~~~~~~
+pnfha.ypp:8113.1-5: warning: nonterminal useless in grammar: vars4 [-Wother]
+ 8113 | vars4:			VOIDV
+      | ^~~~~
+pnfha.ypp: error: shift/reduce conflicts: 892 found, 23 expected
+pnfha.ypp: error: reduce/reduce conflicts: 5048 found, 0 expected
+pnfha.ypp: warning: reduce/reduce conflict on token "\n" [-Wcounterexamples]
+  Example: •
+  First reduce derivation
+    $@1
+    ↳ 3: ε •
+  Second reduce derivation
+    line
+    ↳ 5: statement
+         ↳ 8: $@2      stmt
+              ↳ 7: ε • ↳ 8: ε
+pnfha.ypp: warning: shift/reduce conflict on token $end [-Wcounterexamples]
+  First example: input • $end
+  Shift derivation
+    $accept
+    ↳ 0: input • $end
+  Second example: input • stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                              $end
+         ↳ 2: input line
+                    ↳ 5: statement
+                         ↳ 8: $@2      stmt
+                              ↳ 7: ε •
+pnfha.ypp: warning: shift/reduce conflict on token error [-Wcounterexamples]
+  Example: input • error
+  Shift derivation
+    input
+    ↳ 2: input line
+               ↳ 6: • error
+  Reduce derivation
+    input
+    ↳ 2: input                                line
+         ↳ 2: input line                      ↳ 6: error
+                    ↳ 5: statement
+                         ↳ 8: $@2      stmt
+                              ↳ 7: ε • ↳ 8: ε
+pnfha.ypp: warning: shift/reduce conflict on token COMMA [-Wcounterexamples]
+  Example: input statement • COMMA
+  Shift derivation
+    input
+    ↳ 2: input line
+               ↳ 5: statement
+                    ↳ 9: statement • COMMA stmt
+                                           ↳ 9: ε
+  Reduce derivation
+    input
+    ↳ 2: input                       line
+         ↳ 2: input line             ↳ 5: statement
+                    ↳ 5: statement •      ↳ 9: statement COMMA stmt
+                                               ↳ 9: ε          ↳ 9: ε
+pnfha.ypp: warning: reduce/reduce conflict on token WHILEC [-Wcounterexamples]
+  Example: •
+  First reduce derivation
+    $@28
+    ↳ 73: ε •
+  Second reduce derivation
+    stmt
+    ↳ 10: control_statement
+          ↳ 28: loop_statement
+                ↳ 72: loopo_statement
+                      ↳ 83: $@31      while_loop
+                            ↳ 82: ε • ↳ 83: ε
+pnfha.ypp: warning: reduce/reduce conflict on token WHILEC [-Wcounterexamples]
+  Example: •
+  First reduce derivation
+    $@28
+    ↳ 73: ε •
+  Second reduce derivation
+    stmt
+    ↳ 10: control_statement
+          ↳ 28: loop_statement
+                ↳ 72: loopo_statement
+                      ↳ 85: whileb_loop $@32    until_loop
+                            ↳ 127: ε •  ↳ 85: ε ↳ 85: ε
+pnfha.ypp: warning: reduce/reduce conflict on token WHILEC [-Wcounterexamples]
+  Example: •
+  First reduce derivation
+    $@28
+    ↳ 73: ε •
+  Second reduce derivation
+    stmt
+    ↳ 10: control_statement
+          ↳ 28: loop_statement
+                ↳ 72: loopo_statement
+                      ↳ 86: untilb_loop
+                            ↳ 129: ε •
+pnfha.ypp: warning: reduce/reduce conflict on token WHILEC [-Wcounterexamples]
+  Example: •
+  First reduce derivation
+    $@28
+    ↳ 73: ε •
+  Second reduce derivation
+    stmt
+    ↳ 10: control_statement
+          ↳ 28: loop_statement
+                ↳ 72: loopo_statement
+                      ↳ 87: for_loop
+                            ↳ 130: ε •
+pnfha.ypp: warning: reduce/reduce conflict on token WHILEC [-Wcounterexamples]
+  Example: •
+  First reduce derivation
+    $@28
+    ↳ 73: ε •
+  Second reduce derivation
+    stmt
+    ↳ 10: control_statement
+          ↳ 28: loop_statement
+                ↳ 72: loopo_statement
+                      ↳ 88: forb_loop
+                            ↳ 131: ε •
+pnfha.ypp: warning: reduce/reduce conflict on token WHILEC [-Wcounterexamples]
+  Example: •
+  First reduce derivation
+    $@28
+    ↳ 73: ε •
+  Second reduce derivation
+    stmt
+    ↳ 10: control_statement
+          ↳ 28: loop_statement
+                ↳ 72: loopo_statement
+                      ↳ 90: forever_loop $@33
+                            ↳ 132: ε •   ↳ 90: ε
+pnfha.ypp: warning: shift/reduce conflict on token SEND [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • SEND line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                      $end
+         ↳ 2: input                            line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 11: • SEND
+  Second example: input $@2 • while_loop $@2 SEND stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                    $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt       stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 11: SEND
+                                       ↳ 10: control_statement
+                                             ↳ 28: loop_statement
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token ID [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • ID OPCOLON line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                  $end
+         ↳ 2: input                                        line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 14: label_statement
+                                        ↳ 22: • ID OPCOLON
+  Second example: input $@2 • while_loop $@2 ID OPCOLON stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                   stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 14: label_statement
+                                       ↳ 10: control_statement                                          ↳ 22: ID OPCOLON
+                                             ↳ 28: loop_statement
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token SUB [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • SUB ID OPCOLON line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                      $end
+         ↳ 2: input                                            line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 14: label_statement
+                                        ↳ 23: • SUB ID OPCOLON
+  Second example: input $@2 • while_loop $@2 SUB ID OPCOLON stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                    $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                       stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 14: label_statement
+                                       ↳ 10: control_statement                                          ↳ 23: SUB ID OPCOLON
+                                             ↳ 28: loop_statement
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token EVENT [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • EVENT ID OPCOLON line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                        $end
+         ↳ 2: input                                              line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 14: label_statement
+                                        ↳ 24: • EVENT ID OPCOLON
+  Second example: input $@2 • while_loop $@2 EVENT ID OPCOLON stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                      $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                         stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 14: label_statement
+                                       ↳ 10: control_statement                                          ↳ 24: EVENT ID OPCOLON
+                                             ↳ 28: loop_statement
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token IF [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • IF LEFTP stmt RIGHTP $@3 THEN $@4 stmt $@5 ENDIF $@6 opt_else $@7 eif line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                                                   $end
+         ↳ 2: input                                                                                                         line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 10: control_statement
+                                        ↳ 25: if_statement
+                                              ↳ 34: • IF LEFTP stmt RIGHTP $@3 THEN $@4 stmt $@5 ENDIF $@6 opt_else $@7 eif
+  Second example: input $@2 • while_loop $@2 IF LEFTP stmt RIGHTP $@3 THEN $@4 stmt $@5 ENDIF $@6 opt_else $@7 eif stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                                                 $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                                                    stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 10: control_statement
+                                       ↳ 10: control_statement                                          ↳ 25: if_statement
+                                             ↳ 28: loop_statement                                             ↳ 34: IF LEFTP stmt RIGHTP $@3 THEN $@4 stmt $@5 ENDIF $@6 opt_else $@7 eif
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token UNLESS [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • UNLESS LEFTP stmt RIGHTP $@8 THEN $@9 stmt $@10 ENDIF $@11 opt_else $@12 eif line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                                                          $end
+         ↳ 2: input                                                                                                                line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 10: control_statement
+                                        ↳ 26: unless_statement
+                                              ↳ 40: • UNLESS LEFTP stmt RIGHTP $@8 THEN $@9 stmt $@10 ENDIF $@11 opt_else $@12 eif
+  Second example: input $@2 • while_loop $@2 UNLESS LEFTP stmt RIGHTP $@8 THEN $@9 stmt $@10 ENDIF $@11 opt_else $@12 eif stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                                                        $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                                                           stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 10: control_statement
+                                       ↳ 10: control_statement                                          ↳ 26: unless_statement
+                                             ↳ 28: loop_statement                                             ↳ 40: UNLESS LEFTP stmt RIGHTP $@8 THEN $@9 stmt $@10 ENDIF $@11 opt_else $@12 eif
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token SWITCH [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • SWITCH LEFTP expression RIGHTP LEFTB $@14 case_statements $@15 opt_default_statement $@16 $@17 RIGHTB line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                                                                                   $end
+         ↳ 2: input                                                                                                                                         line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 10: control_statement
+                                        ↳ 27: switch_statement
+                                              ↳ 49: • SWITCH LEFTP expression RIGHTP LEFTB $@14 case_statements $@15 opt_default_statement $@16 $@17 RIGHTB
+  Second example: input $@2 • while_loop $@2 SWITCH LEFTP expression RIGHTP LEFTB $@14 case_statements $@15 opt_default_statement $@16 $@17 RIGHTB stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                                                                                 $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                                                                                    stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 10: control_statement
+                                       ↳ 10: control_statement                                          ↳ 27: switch_statement
+                                             ↳ 28: loop_statement                                             ↳ 49: SWITCH LEFTP expression RIGHTP LEFTB $@14 case_statements $@15 opt_default_statement $@16 $@17 RIGHTB
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token CSWITCH [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • CSWITCH LEFTP stmt RIGHTP $@18 LEFTB case_statements2 $@19 opt_default_statement2 $@20 RIGHTB line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                                                                           $end
+         ↳ 2: input                                                                                                                                 line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 10: control_statement
+                                        ↳ 27: switch_statement
+                                              ↳ 53: • CSWITCH LEFTP stmt RIGHTP $@18 LEFTB case_statements2 $@19 opt_default_statement2 $@20 RIGHTB
+  Second example: input $@2 • while_loop $@2 CSWITCH LEFTP stmt RIGHTP $@18 LEFTB case_statements2 $@19 opt_default_statement2 $@20 RIGHTB stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                                                                         $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                                                                            stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 10: control_statement
+                                       ↳ 10: control_statement                                          ↳ 27: switch_statement
+                                             ↳ 28: loop_statement                                             ↳ 53: CSWITCH LEFTP stmt RIGHTP $@18 LEFTB case_statements2 $@19 opt_default_statement2 $@20 RIGHTB
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token DOFORC [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • DOFORC $@55 stmt $@56 FORC LEFTP $@57 stmt SEND $@58 stmt SEND $@59 stmt $@60 RIGHTP line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                                                                               $end
+         ↳ 2: input                                                                                                                                     line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 10: control_statement
+                                        ↳ 28: loop_statement
+                                              ↳ 71: loopc_statement
+                                                    ↳ 79: forbc_loop
+                                                          ↳ 123: • DOFORC $@55 stmt $@56 FORC LEFTP $@57 stmt SEND $@58 stmt SEND $@59 stmt $@60 RIGHTP
+  Second example: input $@2 • while_loop $@2 DOFORC $@55 stmt $@56 FORC LEFTP $@57 stmt SEND $@58 stmt SEND $@59 stmt $@60 RIGHTP stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                                                                             $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                                                                                stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 10: control_statement
+                                       ↳ 10: control_statement                                          ↳ 28: loop_statement
+                                             ↳ 28: loop_statement                                             ↳ 71: loopc_statement
+                                                   ↳ 72: loopo_statement                                            ↳ 79: forbc_loop
+                                                         ↳ 83: $@31      while_loop                                       ↳ 123: DOFORC $@55 stmt $@56 FORC LEFTP $@57 stmt SEND $@58 stmt SEND $@59 stmt $@60 RIGHTP
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token FOREVERC [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • FOREVERC $@61 stmt $@30 line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                  $end
+         ↳ 2: input                                                                        line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 10: control_statement
+                                        ↳ 28: loop_statement
+                                              ↳ 71: loopc_statement
+                                                    ↳ 81: foreverc_loop               $@30
+                                                          ↳ 125: • FOREVERC $@61 stmt
+  Second example: input $@2 • while_loop $@2 FOREVERC $@61 stmt $@30 stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                   stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 10: control_statement
+                                       ↳ 10: control_statement                                          ↳ 28: loop_statement
+                                             ↳ 28: loop_statement                                             ↳ 71: loopc_statement
+                                                   ↳ 72: loopo_statement                                            ↳ 81: foreverc_loop             $@30
+                                                         ↳ 83: $@31      while_loop                                       ↳ 125: FOREVERC $@61 stmt
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token LEFTB [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • LEFTB statements RIGHTB line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                $end
+         ↳ 2: input                                                      line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 16: statement_block
+                                        ↳ 133: • LEFTB statements RIGHTB
+  Second example: input $@2 • while_loop $@2 LEFTB statements RIGHTB stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                              $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                 stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 16: statement_block
+                                       ↳ 10: control_statement                                          ↳ 133: LEFTB statements RIGHTB
+                                             ↳ 28: loop_statement
+                                                   ↳ 72: loopo_statement
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token VOIDV [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • VOIDV SEND line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                 $end
+         ↳ 2: input                                                       line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 12: expression_statement
+                                        ↳ 19: expression             SEND
+                                              ↳ 136: void_expression
+                                                     ↳ 145: • VOIDV
+  Second example: input $@2 • while_loop $@2 VOIDV SEND stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                 $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                    stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 12: expression_statement
+                                       ↳ 10: control_statement                                          ↳ 19: expression             SEND
+                                             ↳ 28: loop_statement                                             ↳ 136: void_expression
+                                                   ↳ 72: loopo_statement                                             ↳ 145: VOIDV
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token LEFTP [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • LEFTP void_expression RIGHTP SEND line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                       $end
+         ↳ 2: input                                                                             line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 12: expression_statement
+                                        ↳ 19: expression                                   SEND
+                                              ↳ 136: void_expression
+                                                     ↳ 146: • LEFTP void_expression RIGHTP
+  Second example: input $@2 • while_loop $@2 LEFTP void_expression RIGHTP SEND stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                     $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                        stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 12: expression_statement
+                                       ↳ 10: control_statement                                          ↳ 19: expression                                 SEND
+                                             ↳ 28: loop_statement                                             ↳ 136: void_expression
+                                                   ↳ 72: loopo_statement                                             ↳ 146: LEFTP void_expression RIGHTP
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token BOOLEANV [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • BOOLEANV SEND line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                    $end
+         ↳ 2: input                                                          line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 12: expression_statement
+                                        ↳ 19: expression                SEND
+                                              ↳ 137: boolean_expression
+                                                     ↳ 147: • BOOLEANV
+  Second example: input $@2 • while_loop $@2 BOOLEANV SEND stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                    $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                       stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 12: expression_statement
+                                       ↳ 10: control_statement                                          ↳ 19: expression                SEND
+                                             ↳ 28: loop_statement                                             ↳ 137: boolean_expression
+                                                   ↳ 72: loopo_statement                                             ↳ 147: BOOLEANV
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token OPNOT [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • OPNOT boolean_expression SEND line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                   $end
+         ↳ 2: input                                                                         line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 12: expression_statement
+                                        ↳ 19: expression                               SEND
+                                              ↳ 137: boolean_expression
+                                                     ↳ 148: • OPNOT boolean_expression
+  Second example: input $@2 • while_loop $@2 OPNOT boolean_expression SEND stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                 $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                    stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 12: expression_statement
+                                       ↳ 10: control_statement                                          ↳ 19: expression                             SEND
+                                             ↳ 28: loop_statement                                             ↳ 137: boolean_expression
+                                                   ↳ 72: loopo_statement                                             ↳ 148: OPNOT boolean_expression
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token LEFTP [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • LEFTP boolean_expression RIGHTP SEND line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                                          $end
+         ↳ 2: input                                                                                line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 12: expression_statement
+                                        ↳ 19: expression                                      SEND
+                                              ↳ 137: boolean_expression
+                                                     ↳ 151: • LEFTP boolean_expression RIGHTP
+  Second example: input $@2 • while_loop $@2 LEFTP void_expression RIGHTP SEND stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                                     $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                                        stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 12: expression_statement
+                                       ↳ 10: control_statement                                          ↳ 19: expression                                 SEND
+                                             ↳ 28: loop_statement                                             ↳ 136: void_expression
+                                                   ↳ 72: loopo_statement                                             ↳ 146: LEFTP void_expression RIGHTP
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token NUMBERV [-Wcounterexamples]
+time limit exceeded: 6.000000
+  First example: input $@2 • NUMBERV SEND line $end
+  Shift derivation
+    $accept
+    ↳ 0: input                                                                   $end
+         ↳ 2: input                                                         line
+              ↳ 2: input statement
+                         ↳ 8: $@2 stmt
+                                  ↳ 12: expression_statement
+                                        ↳ 19: expression               SEND
+                                              ↳ 138: number_expression
+                                                     ↳ 152: • NUMBERV
+  Second example: input $@2 • while_loop $@2 NUMBERV SEND stmt $end
+  Reduce derivation
+    $accept
+    ↳ 0: input                                                                                                                                   $end
+         ↳ 2: input                                                                 line
+              ↳ 2: input line                                                       ↳ 5: statement
+                         ↳ 5: statement                                                  ↳ 8: $@2 stmt                                      stmt
+                              ↳ 8: $@2 stmt                                                       ↳ 12: expression_statement
+                                       ↳ 10: control_statement                                          ↳ 19: expression               SEND
+                                             ↳ 28: loop_statement                                             ↳ 138: number_expression
+                                                   ↳ 72: loopo_statement                                             ↳ 152: NUMBERV
+                                                         ↳ 83: $@31      while_loop
+                                                               ↳ 82: ε •
+pnfha.ypp: warning: shift/reduce conflict on token OPMINUS [-Wcounterexamples]

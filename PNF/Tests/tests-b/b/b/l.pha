@@ -1,0 +1,5 @@
+print "Read a boolean: ";
+var a;
+read boolean a;
+println;
+end 0;

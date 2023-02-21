@@ -1,0 +1,16 @@
+var name = "Dennis";
+
+switch (name)
+{
+ case 'a':
+ {
+  println "Dennis";
+  break;
+ }
+
+ case 'b':
+ {
+  println "Chris";
+  break;
+ }
+}

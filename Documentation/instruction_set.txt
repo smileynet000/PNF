@@ -1,0 +1,1674 @@
+Copyright (c)  2019  Dennis Earl Smiley.
+    Permission is granted to copy, distribute and/or modify this document
+    under the terms of the GNU Free Documentation License, Version 1.3
+    or any later version published by the Free Software Foundation;
+    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    A copy of the license is included in the section entitled "GNU
+    Free Documentation License".
+
+
+CHANGELOG
+=========
+
+5/25/15 Origional a	- The first version.
+5/25/15 Origional a-a	- 1. Removed ADDSTORE instruction. 2 instructions did the same thing.
+			  2. Added Array, Enum, and Range documentation.
+			  3. Added ifs documentation.
+			  4. Added switch documentation.
+			  5. Added more stack documentation.
+			  6. Added PATCH and NATIVE documenation.
+
+11/22/19 Origional a-a-a  1. Updated VERSION.
+			  2. Added Function documentation.
+			  3. Removed "extra" instructions.
+			  4. Documented function "default" instructions.
+			  5. Documentation now up to date.
+			  6. Documentation up to date again.
+              7. Added documentation for loops.
+              8. Documentation up to date again.
+
+
+
+FORMAT - PNFASM
+===============
+
+VERSION TVOID 0V
+
+
+INSTRUCTION TYPE OPERAND
+...
+END TVOID 0V
+
+
+FORMAT - PNF
+============
+
+!@.PNF
+
+
+0 0 0
+INSTRUCTION_OPCODE TYPE OPERAND
+...
+61 0 0
+
+
+INSTRUCTIONS
+============
+
+ IVERSION   - Switches versions. Default is 0V.
+              VERSION TVOID 0V
+	          VERSION TVOID 1
+
+ IVOID      - Does nothing.
+              VOID TVOID 0V
+
+ ICRASH     - Intentional crash of program.
+              CRASH TSTRING [string]
+
+ IQUIT      - Quits the program. Returns return value.
+              QUIT TVOID [return value]
+
+ IHALT      - Halts the system by entering a forever loop.
+              HALT TVOID 0V
+
+ IPRINT     - Prints the specified value or the contents of the accumulator.
+              PRINT TVOID 0V
+              PRINT TBOOLEAN [data]
+              PRINT TNUMBER [data]
+              PRINT TCHARACTER [data]
+              PRINT TSTRING [data]
+
+ IPRINTLN   - Prints the specified value or the contents of the accumulator,
+              then a newline.
+
+              PRINTLN TVOID 0V
+              PRINTLN TBOOLEAN [data]
+              PRINTLN TNUMBER [data]
+              PRINTLN TCHARACTER [data]
+              PRINTLN TSTRING [data]
+
+ IEPRINT     - Prints the specified value or the contents of the accumulator to
+	       cerr.
+
+               EPRINT TVOID 0V
+               EPRINT TBOOLEAN [data]
+               EPRINT TNUMBER [data]
+               EPRINT TCHARACTER [data]
+               EPRINT TSTRING [data]
+
+ IEPRINTLN   - Prints the specified value or the contents of the accumulator,
+               then a newline to cerr.
+
+               EPRINTLN TVOID 0V
+               EPRINTLN TBOOLEAN [data]
+               EPRINTLN TNUMBER [data]
+               EPRINTLN TCHARACTER [data]
+               EPRINTLN TSTRING [data]
+
+ IEND	     - A marker for the end of the program.
+	       END TVOID 0V
+
+ IREAD      - Reads in a value to the accumulator.
+              READ [type] 0V
+
+ ILOAD      - Loads a value from memory into the accumulator.
+              LOAD [type] [address]
+
+ ISTORE     - Stores the contents of the accumulator at the specified memory
+              location.
+
+              STORE TVOID [address]
+
+ ILOADC     - Loads a value from memory into the %calc register.
+              LOADC [type] [address]
+
+ ISTOREC    - Stores the contents of the %calc register into the specified
+              memory location.
+
+              STOREC TVOID [address]
+
+ IELOAD	    - Loads the contents of [%ecount] into %accumulator.
+	      ELOAD TBOOLEAN 0V
+	      ELOAD TNUMBER 0V
+              ELOAD TCHARACTER 0V
+              ELOAD TSTRING 0V
+ 
+ IELOADC    - Loads the contents of [%ecount] into %calc.
+	      ELOADC TBOOLEAN 0V
+	      ELOADC TNUMBER 0V
+              ELOADC TCHARACTER 0V
+              ELOADC TSTRING 0V
+
+ IESTORE    - Stores the contents of %accumulator into [%ecount + 3].
+              ESTORE TVOID 0V
+
+ IESTOREC   - Stores the contents of %calc into [%ecount + 3].
+              ESTOREC TVOID 0V
+
+ IVLOAD     - Gets a variable from variable location %operand, and stores it in
+              %accumulator.
+
+              VLOAD [type] [Variable Address]
+
+ IVSTORE    - Stores a new variable from %accumulator to the next location.
+              VSTORE TVOID 0V
+	      VSTORE TNUMBER [Variable Address]
+
+ IVLOADC    - Gets a variable from variable location %operand, and stores it in
+              %calc.
+
+              VLOADC [type] [Variable Address]
+
+ IVSTOREC   - Stores a new variable from %calc to the next location.
+              VSTOREC TVOID 0V
+	      VSTOREC TNUMBER [Variable Address]
+
+ ISTOREA    - Stores %accumulator to the address pointed at by %calc.
+ 	      STOREA TVOID 0V
+
+ IMODT      - Modifies the type of %accumulator.
+              MODT [type] 0V
+
+ IMODCT     - Modifies the type of %calc.
+              MODCT [type] 0V
+
+ IADD       - Adds %calc or other value to %accumulator.
+              ADD TVOID 0V
+              ADD TNUMBER [data]
+              ADD TCHARACTER [data]
+              ADD TSTRING [data]
+
+ ISUB       - Subtracts %calc from %accumulator.
+              SUB TVOID 0V
+              SUB TNUMBER [data]
+
+ IMUL       - Multiplies %accumulator and %calc.
+              MUL TVOID 0V
+              MUL TNUMBER [data]
+
+ IDIV       - Divides %calc by %accumulator.
+              DIV TVOID 0V
+              DIV TNUMBER [data]
+
+ IMOD       - Takes a modulus of %accumulator and %calc.
+              MOD TVOID 0V
+              MOD TNUMBER [data]
+
+ IPOW       - Raises %accumulator to the power of %calc.
+              POW TVOID 0V
+              POW TNUMBER [data]
+
+ IROOT      - Roots %accumulator by itself or the given number.
+              ROOT TVOID 0V
+              ROOT TNUMBER [data]
+
+ IINC       - Increments %accumulator.
+              INC TVOID 0V
+
+ IDEC       - Decrements %accumulator.
+              DEC TVOID 0V
+
+ IEQU       - Tests if %accumulator == %calc.
+              EQU TVOID 0V
+              EQU TBOOLEAN [data]
+              EQU TNUMBER [data]
+              EQU TCHARACTER [data]
+
+ INEQU      - Tests if %accumulator != %calc.
+              NEQU TVOID 0V
+              NEQU TBOOLEAN [data]
+              NEQU TNUMBER [data]
+              NEQU TCHARACTER [data]
+
+ IGTR       - Tests if %accumulator > %calc.
+              GTR TVOID 0V
+              GTR TNUMBER [data]
+              GTR TCHARACTER [data]
+
+ ILSS       - Tests if %accumulator < %calc.
+              LSS TVOID 0V
+              LSS TNUMBER [data]
+              LSS TCHARACTER [data]
+
+ IGEQU      - Tests if %accumulator >= %calc.
+              GEQU TVOID 0V
+              GEQU TNUMBER [data]
+              GEQU TCHARACTER [data]
+
+ ILEQU      - Tests if %accumulator <= %calc.
+              LEQU TVOID 0V
+              LEQU TNUMBER [data]
+              LEQU TCHARACTER [data]
+
+ IAND       - %accumulator && %calc
+              AND TVOID 0V
+
+ IOR        - %accumulator || %calc
+              OR TVOID 0V
+
+ INOT       - !(%accumulator)
+              NOT TVOID 0V
+
+ IGOTO      - Go to the memory address specified and continue running the
+              program from there.
+
+              GOTO TVOID [memory address]
+
+ ICGOTO     - Go to the memory address specified and continue running the
+              program from there if %accumulator equals true.
+
+              CGOTO TVOID [memory address]
+
+ IZGOTO     - Go to the memory address specified if %accumulator is 0.
+              ZGOTO TVOID [memory address]
+
+ IPGOTO     - Go to the memory address specified if %accumulator is > 0.
+              PGOTO TVOID [memory address]
+
+ INGOTO     - Go to the memory address specified if %accumulator is < 0.
+              NGOTO TVOID [memory address]
+
+ IGOTOL     - Go to the label specified and continue running the
+              program from there.
+
+              GOTOL TVOID [label number]
+	      GOTOL TSTRING [label string]
+
+ ICGOTOL     - Go to the label specified and continue running the
+               program from there if %accumulator equals true.
+
+               CGOTOL TVOID [label number]
+	       CGOTOL TSTRING [label string]
+
+ IZGOTOL     - Go to the label specified if %accumulator is 0.
+               ZGOTOL TVOID [label number]
+	       ZGOTOL TSTRING [label string]
+
+ IPGOTOL     - Go to the memory address specified if %accumulator is > 0.
+               PGOTOL TVOID [label number]
+	       PGOTOL TSTRING [label string]
+
+ INGOTOL     - Go to the label specified if %accumulator is < 0.
+               NGOTOL TVOID [label number]
+	       NGOTOL TSTRING [label string]
+
+ IST         - Sets %accumulator to 0 if %calc is 0. (Used for loops.)
+               ST TVOID 0V
+
+ IPUSH       - Put %accumulator on the stack.
+               PUSH TVOID 0V
+
+ IPOP        - Loads a value into %accumulator from the stack.
+               POP TVOID 0V
+
+ ICALL       - Calls a subroutine that begins at [memory address].
+               CALL TVOID [memory address]
+
+ ICALLL      - Calls a subroutine that begins at [label].
+               CALLL TVOID [label number]
+	       CALLL TSTRING [label string]
+
+ IRET        - Returns from a subroutine.
+               RET TVOID 0
+
+ ILBL	     - Declares a label.
+	       LBL TVOID 0V
+	       LBL TSTRING [string]
+
+ IVAR        - Declares a variable.
+               VAR TVOID [variable]
+
+ IELBL       - Declares an event label.
+               ELBL TVOID 0V
+
+ IEVLOAD     - Loads a value into %evalue.
+               EVLOAD TVOID [value]
+
+ IHEADD      - Adds a Hardware Event to the table.
+               HEADD TVOID [event label number]
+
+ IHEREM      - Removes a Hardware Event from the table.
+               HEREM TVOID 0V
+
+ IHEED       - Edits a Hardware Event in the table. %evalue must be the hevent
+               number.
+
+               HEED TVOID [new event label number number]
+
+ IHEGET      - Gets a Hardware Event event label number from the table. Puts it
+               in %evalue.
+
+               HEGET TVOID [hardware event number]
+
+ ISHEADD     - Adds a System Hardware Event to the table.
+               SHEADD TVOID [event label number]
+
+ ISHEREM     - Removes a System Hardware Event from the table.
+               SHEREM TVOID 0V
+
+ ISHEED      - Edits a System Hardware Event in the table. %evalue must be the 
+               shevent number.
+
+               SHEED TVOID [new event label number number]
+
+ ISHEGET     - Gets a System Hardware Event event label number from the table.
+               Puts it in %evalue.
+
+               SHEGET TVOID [hardware event number]
+
+ IEADD       -  Adds an Event to the table.
+                EADD TVOID [event label number]
+ 
+ IEREM       - Removes an Event from the table.
+               EREM TVOID 0V
+
+ IEED        - Edits an Event in the table. %evalue must be the event number.
+               EED TVOID [new event label number number]
+
+ IEGET       - Gets an Event event label number from the table. Puts it in
+               %evalue.
+
+               EGET TVOID [hardware event number]
+
+ IEXADD      - Adds an Exception to the table.
+               EXADD TVOID [event label number]
+
+ IEXREM      - Removes an Exception from the table.
+               EXREM TVOID 0V
+
+ IEXED       - Edits an Exception in the table. %evalue must be the exception
+               number.
+
+               EXED TVOID [new event label number number]
+
+ IEXGET      - Gets an Exception event label number from the table. Puts it
+               in %evalue.
+
+               EXGET TVOID [hardware event number]
+
+ IIADD       - Adds an Interrupt to the table.
+               IADD TVOID [event label number]
+
+ IIREM       - Removes an Interrupt from the table.
+               IREM TVOID 0V
+
+ IIED        - Edits an Interrupt in the table. %evalue must be the interrupt
+               number.
+
+               IED TVOID [new event label number number]
+
+ IIGET       - Gets an Interrupt event label number from the table. Puts it
+               in %evalue.
+
+               IGET TVOID [hardware event number]
+              
+ IHEVENT     - Executes a Hardware Event subroutine.
+               HEVENT TVOID [hardware event number]
+
+ ISHEVENT    - Executes a System Hardware Event Subroutine.
+               SHEVENT TVOID [system hardware event number]
+
+ IEVENT      - Executes an Event subroutine.
+               EVENT TVOID [event number]
+
+ IEXCEPTION  - Executes an Exception subroutine.
+               EXCEPTION TVOID [exception number]
+
+ IINT        - Executes an Interrupt (User Defined Event) subroutine.
+               INT TVOID [interrupt number]
+
+ ITYPEOF     - Puts the type of %accumulator in %typeof.
+	       TYPEOF TVOID 0V
+ 			  
+ ICTYPEOF    - Puts the type of %calc in %typeof.
+	       CTYPEOF TVOID 0V
+
+ ITLOAD	     - Loads %typeof to %accumulator.
+	       TLOAD TVOID 0V
+
+ IALOAD      - Loads a value into the accumulator.
+ 	       ALOAD TVOID 0V
+   	       ALOAD TBOOLEAN [data]
+ 	       ALOAD TNUMBER [data]
+ 	       ALOAD TCHARACTER [data]
+ 	       ALOAD TSTRING [data]
+
+ IINLOAD     - Loads %iname into %accumulator.
+ 	       INLOAD TVOID 0V
+ 			  
+ IICLOAD     - Loads %icount into %accumulator.
+ 	       ICLOAD TVOID 0V
+ 			  
+ IARLOAD     - Loads %arg[number] into %accumulator.
+ 	       ARLOAD TVOID [number]
+ 			   			  
+ IATOC	     - Puts %accumulator in %calc.
+ 	       ATOC TVOID 0V
+ 			  
+ ISWITCH     - Switches %accumulator and %calc.
+ 	       SWITCH TVOID 0V
+ 		
+ IVADD	     - Gets the address of the specified variable.
+ 	       VADD TVOID [variable number]
+ 			  
+ ILADD	     - Gets the address of the specified label.
+ 	       LADD TVOID [label number]
+ 			  
+ IELADD	     - Gets the address of the specified event label.
+ 	       ELADD TVOID [event label number]
+
+ IADD2V	    - Retrieves the value at the address stored in %accumulator.
+ 	      ADD2V TVOID 0V
+ 			  
+ IBTAND	     - Performs bit AND on %accumulator and %calc.
+ 	       BTAND TVOID 0V
+ 			  
+ IBTOR	     - Performs bit OR on %accumulator and %calc.
+ 	       BTOR TVOID 0V
+ 			  
+ IBTEXOR     - Performs bit exclusive OR on %accumulator and %calc.
+ 	       BTEXOR TVOID 0V
+ 			  
+ IBTNOT	     - Performs bit NOT on %accumulator.
+ 	       BTNOT TVOID 0V
+ 			  
+ IBTSL	     - Performs << on %accumulator and %calc.
+ 	       BTSL TVOID 0V
+ 			  
+ IBTSR	     - Performs >> on %accumulator and %calc.
+ 	       BTSR TVOID 0V
+
+ IVCHECK    - Sets %accumulator to true if we are in the specified version.
+ 	      VCHECK [type] [operand]
+
+ IVSUPP	    - Checks to see if a version is supported.
+ 	      VSUPP [type] [operand]
+
+ IVPRINT    - Prints the version.
+	      VPRINT TVOID 0V
+
+ IVPRINTLN  - Prints the version, then a newline.
+	      VPRINTLN TVOID 0V
+
+ IISUPP     - Checks to see if an instruction is supported or not.
+ 	      ISUPP TNUMBER [data]
+ 			  
+ ITSUPP	    - Checks to see if a type is supported or not.
+ 	      TSUPP TNUMBER [data]
+
+ ICOMMENT   - A comment in the code.
+ 	      COMMENT TSTRING [string]
+
+ IFIMODE    - Sets the mode for file input.
+ 	      FIMODE TSTRING [mode]
+ 		
+ IFOMODE    - Sets the mode for file output.
+ 	      FOMODE TSTRING [mode]
+ 			  
+ IFIOPEN    - Opens the specified file for input. If VOID, gets it from %accumulator.
+	      FIOPEN TVOID 0V
+ 	      FIOPEN TSTRING [filename]
+ 			  
+ IFOOPEN    - Opens the specified file for output. If VOID, gets it from, %accumulator.
+	      FOOPEN TVOID 0V
+ 	      FOOPEN TSTRING [filename]
+ 			  
+ IFREAD	     - Reads a value from the file, and stores it in %accumulator.
+ 	       FREAD [type] 0V
+ 			  
+ IFPRINT     - Prints a value to the file.
+ 	       FRPINT [type] [data]
+ 			  
+ IFPRINTLN   - Prints a value to the file, then a newline.
+ 	       FPRINTLN [type] [data]
+
+ IFICLOSE    - Closes the input file that's open.
+ 	       FICLOSE TVOID 0V
+ 			  
+ IFOCLOSE    - Closes the output file that's open.
+ 	       FOCLOSE TVOID 0V
+
+ IMEML	     - Stores the length of memory in %accumulator.
+ 	       MEML TVOID 0V
+
+ IFIEOF      - Tests if we are at EOF or not.
+ 	       FIEOF TVOID 0V
+
+ IARNLOAD    - Loads the number of arguments into %accumulator.
+ 	       ARNLOAD TVOID 0V
+
+ IRDSTART1  - Marks the start of a type1 range.
+      	      RDSTART1 TSTRING [name]
+
+ IRFROM1    - Specifies the type1 range from value.
+	      RFROM1 TNUMBER [num]
+
+ IRTO1	    - Specifies the type1 range to value.
+	      RTO1 TNUMBER [num]
+
+ IRDEND1    - Marks the end of a type1 range.
+   	      RDEND1 TVOID 0V
+
+ IRSTART1   - Marks the start of a type1 range implementation. Needs a definition name.
+              RSTART1 TSTRING [defname]
+
+ IRANGE1    - Specifies the range implementation value for a type1 range. To be valid, number MUST be within the range values...
+      	      RANGE1 TNUMBER [num]
+
+ IREND1     - Marks the end of the type1 range implementation, and names it.
+ 	      REND1 TSTRING [name]
+
+ IRLOAD1    - Loads a value from a type1 range to %accumulator.
+ 	      RLOAD1 TSTRING [name]
+
+ IRSTORE1   - Stores a value from %accumulator to a type1 range.
+   	      RSTORE TSTRING [name]
+
+ IHEADDB    - Add num blank hardware events
+ 	      HEADDB TVOID [num]
+
+ ISHEADDB   - Add num blank system hardware events
+ 	      SHEADDB TVOID [num]
+
+ IEADDB     - Add num blank events
+ 	      EADDB TVOID [num]
+
+ IEXADDB    - Add num blank exceptions
+ 	      EXADDB TVOID [num]
+
+ IIADDB     - Add num blank system interrupts
+ 	      IADDB TVOID [num]
+
+ IRDSTART2  - Marks the start of a type2 range.
+   	      RDSTART2 TSTRING [name]
+
+ IRFROM2    - Specifies the type2 range from value.
+   	      RFROM2 TNUMBER [num]
+
+ IRTO2      - Specifies the type2 range to value.
+ 	      RTO2 TNUMBER [num]
+
+ IRDEND2    - Marks the end of a type2 range.
+              RDEND2 TVOID 0V
+
+ IRSTART2   - Marks the start of a type2 range implementation. Needs a definition name.
+              RSTART2 TSTRING [defname]
+
+ IRANGE2    - Specifies the range implementation value for a type2 range.
+  	      RANGE2 TSTRING [name]
+
+ IRPREP2    - Prepares the %rt2prep register...
+   	      RPREP2 TSTRING [name]
+
+ IRLOAD2    - Loads a value from index to %accumulator
+ 	      RLOAD2 TNUMBER [index]
+
+ IESTART    - Marks the start of an enum definition
+ 	      ESTART TSTRING [name]
+
+ IENAME     - Specifies an enum definition name
+ 	      ENAME TSTRING [name]
+
+ IEEND      - Marks the end of an enum definition
+ 	      EEND TVOID 0V
+
+ IENUMS     - Marks the beginning of an enum implementation
+ 	      ENUMS TSTRING [defname]
+
+ IENUM      - Sets the value for the enum implementation
+ 	      ENUM TSTRING [valuename]
+
+ ISENUM     - Ends the enum implementation. Names it.
+ 	      SENUM TSTRING [name]
+
+ IEPREP     - Prepares the %etprep register...
+ 	      EPREP TSTRING [name]
+
+ ILOADE     - Loads a value from an enum to %accumulator
+ 	      LOADE TVOID 0V
+
+ ISTOREE    - Stores a value from %accumulator to an enum
+ 	      STOREE TVOID 0V
+
+ IASTART    - Names the array to be defined.
+ 	      ASTART TSTRING [name]
+
+ IAEND      - Marks the end of an array definition
+ 	      AEND TNUMBER [length]
+
+ IAPREP     - Prepares %aprep register
+ 	      APREP TSTRING [name]
+
+ IAIPREP    - Prepares %aiprep register. If TVOID, gets number from %accumulator.
+ 	      AIPREP TNUMBER [num]
+	      AIPREP TVOID 0V
+
+ ILOADIA    - Loads a value from an array to %accumulator
+ 	      LOADIA TVOID 0V
+
+ ISTOREIA   - Stores a value from %accumulator to an array
+ 	      STOREIA TVOID 0V
+
+ IALENGTH   - Gets the length of an array and puts it in %accumulator
+	      ALENGTH TVOID 0V
+
+ IAPRINT    - Prints the contents of an array
+	      APRINT TVOID 0V
+
+ IDUP	    - Sets %accumulator to %calc
+	      DUP TVOID 0V
+
+ ICDUP	    - Sets %calc to %accumulator
+	      CDUP TVOID 0V
+
+ IIF	    - Branches to if block if %accumulator is true, otherwise either optional else block or the end of the if.
+	      IF TVOID 0V
+
+ IIFBEGIN    - Marks the begining of the if or else block.
+	      IFBEGIN TVOID 0V
+
+ IIFEND	     - Marks the end of the if or else block.
+	       IFEND TVOID 0V
+
+ IENDIF	     - Marks the end of the if.
+	       ENDIF TVOID 0V
+
+ IIFELSE     - Marks the beginning of the optional else block.
+	       IFELSE TVOID 0V
+
+ IENDIFELSE  - Marks the end of the optional else blcok.
+	       ENDIFELSE TVOID 0V
+
+ IEIF	     - Marks the end of the if/else.
+	       EIF TVOID 0V
+
+ ISWITCH2    - Specifies that what follows is a switch statement.
+               SWITCH2 TVOID 0V
+
+ ISWBEGIN    - The switch statement block start.
+               SWBEGIN TVOID 0V
+
+ ISWEND      - The switch statement block end.
+               SWEND TVOID 0V
+
+ ISWCBEGIN   - The switch statement case block start.
+               SWCBEGIN TVOID 0V
+
+ ISWCEND     - The switch statement case block end.
+               SWCEND TVOID 0V
+
+ ISWCASE     - A switch statement case.
+               SWCASE [type] [value]
+
+ ISWDEFAULT  - A switch statement default case.
+               SWDEFAULT TVOID 0V
+
+ ISWBREAK    - Goes to the next SWEND or reg.ecount.
+	       SWBREAK TVOID 0V
+
+ ILOADSP     - Loads the specified stack position into %accumulator.
+	       LOADSP TNUMBER [stackpos]
+
+ ISTORESP    - Stores the specified stack position from %accumulator. Also mirrors the stack in %savestack.
+	       STORESP TNUMBER [stackpos]
+
+ ILOADSTACK  - Loads %savestack into the stack.
+	       LOADSTACK TVOID 0V
+
+ ISTORESTACK - Stores the stack in %savestack.
+	       STORESTACK TVOID 0V
+
+ IATOSP	     - Sends %accumulator to %stackp.
+	       ATOSP TVOID 0V
+
+ ISPTOA	     - Sends %stackp to %accumulator.
+	       SPTOA TVOID 0V
+
+ IPATCH	     - Applies a patch.
+	       PATCH [type] [value]
+
+ INATIVE     - Runs a native subroutine.
+	       NATIVE TSTRING [subroutine name]
+
+ IFRET	      - Returns from a function.
+		FRET TVOID 0V
+
+ IFCALL	      - Prepares to call function [name]
+		FCALL TSTRING [name]
+
+ IFCPARAMS    - The actual parameter block start.
+		FCPARAMS TVOID 0V
+
+ IFECPARAMS   - The actual parameter block end.
+		FECPARAMS TVOID 0V
+
+ IFECALL      - Makes the call to the function.
+		FECALL TVOID 0V
+
+ IPNUM       - Allows us to specify an actual parameter number.
+   	       PNUM TNUMBER [num]
+
+ IPARAMF      - Specify an actual parameter.
+		PARAMF [type] [value]
+
+ IPARAMF2     - Load parameter specified by %pnum to %accumulator
+		PARAMF2 [type] 0V
+
+ IPARAMF3     - Loads %fparams with the type.
+                PARAMF3 [type] 0V
+
+ IRNUM	      - Specify a return value number
+		RNUM TNUMBER [num]
+
+ IRETURNF     - Modifies a value for return
+		RETURNF [type] [value]
+
+ IRETURNF2    - Loads %frets with the type.
+		RETURNF2 [type] 0V
+
+ IRETURNF3    - Loads %frets2 with the type.
+		RETURNF3 [type] 0V
+
+ IFNAME	      - Sets %fname
+		FNAME TSTRING [name]
+
+ IRETURNV     - Loads %accumulator with return value %rnum
+		RETURNV TVOID 0V
+
+ IFNCLOAD     - Loads a function from %fpointer1 to %fpointer2.
+		FNCLOAD TNUMBER [num]
+
+ IFNCSTORE    - Stores a function from %fpointer2 to %fpointer1
+		FNCSTORE TNUMBER [num]
+		FNCSTORE TVOID 0V
+
+ IFNCNEW      - Adds a new Function on the C++ heap.
+		FNCNEW TVOID 0V
+
+ IFNCDELETE   - Deletes a new Function on the C++ heap.
+		FNCDELETE TVOID 0V
+
+ IFNCSNAME    - Sets the name of the function %fpointer2
+		FNCSNAME TVOID 0V
+
+ IFNCSRET     - Sets the return type of a return value in %fpointer.
+		FNCSRET [type] 0V
+
+ IFNCSPARAM   - Adds a parameter of type [type] to %fpointer2 with value %accumulator
+		FNCSPARAM [type] 0V
+
+ IFNCSDEF      - Adds a definition beginning at [where] or [label] to %fpointer2.
+		 FNCSDEF TNUMBER [where]
+		 FNCSDEF TSTRING [label]
+
+ IFNCGNAME     - Gets the name of %fpointer2
+		 FNCGNAME TVOID 0V
+
+ IFNCGRET      - Gets a return value from %fpointer2
+		 FNCGRET TNUMBER [num]
+
+ IFNCGPARAM    - Gets a parameter value from %fpointer2
+		 FNCGPARAM TNUMBER [num]
+
+ IFNCGDEF      - Gets a definition address for %fpointer2
+		 FNCGDEF TVOID 0V
+
+ IFNCPOINT     - Gets a function by it's number. It's number should be in %accumulator. Puts it in %fpointer3.
+		 FNCPOINT TVOID 0V
+
+ IFNCLENGTH    - Gets the length of %fpointer1. Puts it in %accumulator.
+		 FNCLENGTH TVOID 0V
+
+ IFNCSYNCR     - Syncrhonizes %fname, %frets, and %fparams to %fname2, %frets2, and %fparams2.
+		 FNCSYNCR TVOID 0V
+
+ IFNCFIND      - Finds the function with %accumulator as the name, and %frets3 and %fparams3 as the return values and parameters.
+		 FNCFIND TVOID 0V
+
+ IFNCFRET      - Adds [type] to %frets3.
+		 FNCFRET [type] 0V
+
+ IFNCFPARAM    - Adds [type] to %fparams3.
+		 FNCFPARAM [type] 0V
+
+ IFNCBRET      - Adds blank to %frets3.
+		 FNCBRET TVOID 0V
+
+ IFNCBPARAM    - Adds blank to %fparams3.
+		 FNCBPARAM TVOID 0V
+
+ IFNCDEFAULT   - Sets %fdefaultv to true.
+		 FNCDEFAULT TVOID 0V
+
+ IFNCDEFAULT2  - Sets %fdefaultv to false.
+		 FNCDEFAULT2 TVOID 0V
+
+ IFNCSDEFAULTV - Gets function number from %accumulator. Adds [type] to %fparams if %fdefaultv is true.
+		 FNCSDEFAULTV [type] 0V
+
+ IFNCSDEFAULTV2 - Sets %fdefaultvalue to %accumulator. Sets the the default value at %pnum to %fdefaultvalue if %fdefaultv is true.
+		  FNCSDEFAULTV2 TVOID 0V
+
+ IFNCGDEFAULTV2 - Sets %fdefaultvalue to the %fpointer2->[default value] at %pnum if %fdefaultv is true. Sets %accumulator to %fdefaultvaalue.
+		  FNCGDEFAULTV2 TVOID 0V
+
+ IFNCDEFAULTSYNC - Syncs %fpointer2->[default parameter value] at %pnum.
+		   FNCDEFAULTSYNC TVOID 0V
+
+ INTIMES	 - Sets %accumulator to a string %calc number of times. %accumulator MUST BE A STRING!
+		   NTIMES TVOID 0V
+
+ ICMP		 - Sets %accumulator to -1 if %accumulator < %calc. Sets %accumulator to 0 if %accumulator == %calc. Sets %accumulator to 1 if 			   %accumulator > %calc. Stores results in %accumulator.
+
+		   CMP TVOID 0V
+
+ IRUN		 - Runs a program.
+		   RUN TSTRING [program]
+
+ IJRUN		 - Runs a java program, using the java interpreter, pointed to by the JRUN enviroment variable.
+		   JRUN TSTRING [program]
+
+ IPNFRUN	 - Runs another PNF program.
+		   PNFRUN TSTRING [program]
+
+ ISTRUCT	 - Starts a structure definition.
+		   STRUCT TSTRING [typename]
+
+ ISTRUCTVAR	 - Defines a variable within a structure. It is a placeholder for that member.
+		   STRUCTVAR TSTRING [membername]
+
+ IENDSTRUCT	 - Ends a structure definition.
+		   ENDSTRUCT TVOID 0V
+
+ ISTRUCTNAME	- Sets %struct_type to [typename].
+		  STRUCTNAME TSTRING [typename]
+
+ ISTRUCTONAME	- Sets %struct_name to [objectname].
+		  STRUCTONAME TSTRING [objectname]
+
+ ISTRUCTD	- Creates a structure object [objectname].
+		  STRUCTD TSTRING [objectname]
+
+ ISTRUCTUSE     - Sets a member as the active member of a struct.
+		  STRUCTUSE TVOID 0V
+		  STRUCTUSE TNUMBER [membernum]
+		  STRUCTUSE TSTRING [membername]
+
+ ISTRUCTUSING	- Gets the active member number in %accumulator.
+		  STRUCTUSING TVOID 0V
+
+ ISTRUCTUSINGNAME - Gets the name of a member from the active member and puts it in %accumulator.
+		    STRUCTUSINGNAME TVOID 0V
+
+ ISTRUCTGET	  - Gets a member from the structure, and puts it in %accumulator
+		    STRUCTGET TVOID 0V
+
+ ISTRUCTPUT	  - Puts %accumulator in specified member of struct.
+		    STRUCTPUT TVOID 0V
+
+ ISTRUCTTYPE	 - Puts %struct_type in %accumulator
+		   STRUCTTYPE TVOID 0V
+
+ ISTRUCTTYPE2	 - Puts %accumulator in %struct_type
+		   STRUCTTYPE2 TVOID 0V
+
+ ISTRUCTNAME2	 - Puts %struct_name in %accumulator
+		   STRUCTNAME2 TVOID 0V
+
+ ISTRUCTNAME3	 - Puts %accumulator in %struct_name
+		   STRUCTNAME3 TVOID 0V
+
+ IUNION		 - Starts a union definition.
+		   UNION TSTRING [typename]
+
+ IUNIONVAR	 - Defines a variable within a union. It is a placeholder for that member.
+		   UNIONVAR TSTRING [membername]
+
+ IENDUNION	 - Ends a union definition.
+		   ENDUNION TVOID 0V
+
+ IUNIONNAME	- Sets %union_type to [typename].
+		  UNIONNAME TSTRING [typename]
+
+ IUNIONONAME	- Sets %union_name to [objectname].
+		  UNIONONAME TSTRING [objectname]
+
+ IUNIOND	- Creates a union object [objectname].
+		  UNIOND TSTRING [objectname]
+
+ IUNIONUSE     	- Sets a member as the active member of a union.
+		  UNIONUSE TVOID 0V
+		  UNIONUSE TNUMBER [membernum]
+		  UNIONUSE TSTRING [membername]
+
+ IUNIONUSING	- Gets the active member number in %accumulator.
+		  UNIONUSING TVOID 0V
+
+ IUNIONUSINGNAME - Gets the name of a member from the active member and puts it in %accumulator.
+		    UNIONUSINGNAME TVOID 0V
+
+ IUNIONGET	  - Gets a member from the union, and puts it in %accumulator
+		    UNIONGET TVOID 0V
+
+ IUNIONPUT	  - Puts %accumulator in specified member of union.
+		    UNIONPUT TVOID 0V
+
+ IUNIONTYPE	 - Puts %union_type in %accumulator
+		   UNIONTYPE TVOID 0V
+
+ IUNIONTYPE2	 - Puts %accumulator in %union_type
+		   UNIONTYPE2 TVOID 0V
+
+ IUNIONNAME2	 - Puts %union_name in %accumulator
+		   STRUCTNAME2 TVOID 0V
+
+ IUNIONNAME3	 - Puts %accumulator in %union_name
+		   UNIONNAME3 TVOID 0V
+
+ IMODE		 - Like on a ordinary PC hardware, which has multiple modes, this language may have multiple modes, and this instruction is 			   reserved for that use.
+
+		   MODE TVOID 0V
+
+ IEXTMODE - There may be "submodes", of the processor. This instruction is reserved for that.
+		    EXTMODE TVOID 0V
+            EXTMODE TVOID 1
+
+ IMCHECK	 - Sets %accumulator to true if we are in the specified mode.
+		   MCHECK [type] [operand]
+
+ IMSUPP		 - Checks to see if a mode is supported.
+		   MSUPP [type] [operand]
+
+ IMEXTCHECK	 - Sets %accumulator to true if we are in the specified extended mode.
+		   MCHECK [type] [operand]
+
+ IMEXTSUPP	 - Checks to see if an extended mode is supported.
+		   MSUPP [type] [operand]
+
+ ICPY		 - Copies [%accumulator] in [%calc].
+		   CPY TVOID 0V
+
+ IADDSEG	 - Adds a segment.
+		   ADDSEG TVOID 0V
+
+ IREMSEG	 - Removes a segment.
+		   REMSEG TVOID 0V
+
+ ICOLLSEG	 - Collapses a segment.
+		   COLLSEG TNUMBER [segment]
+
+ IEXPSEG	 - Expands a segment.
+		   EXPSEG TNUMBER [segment]
+
+ ICPYSEG	 - Copys a segment to another segment. from = %accumulator, to = %calc.
+		   CPYSEG TVOID 0V
+
+ ISEGLOAD	 - Loads a value from a segment to %accumulator.
+		   SEGLOAD TNUMBER [segment]
+
+ ISEGSTORE	 - Stores %accumulator to segment.
+		   SEGSTORE TNUMBER [segment]
+
+ ISEGPUSH	 - Pushes a value onto segment stack. Gets it from %accumulator, segment from %calc.
+		   SEGPUSH TVOID 0V
+
+ ISEGPOP	 - Pops a value from segment stack. Puts it in %accumulator, segment from %calc.
+		   SEGPOP TVOID 0V
+
+ ISEGTOP	 - Tops a value from segment stack. Same as pop, but will not destroy. Puts it in %accumulator, segment from %calc.
+		   SEGTOP TVOID 0V
+
+ ISEGVLOAD	- Gets a variable from variable location %operand, and segment %calc, and stores it in %accumulator.
+		  SEGVLOAD [type] [variable address]
+
+ ISEGVSTORE	- Stores a new variable from %accumulator to the next location, at segment %calc
+             	  SEGVSTORE TVOID 0V
+	      	  SEGVSTORE TNUMBER [Variable Address]
+
+ IMSG      - Displays a message that the creator of the language believes in.
+             MSG TVOID [Message Number]
+
+ ILOOP    - Marks the beginning of a loop.
+            LOOP TVOID 0V
+
+ IELOOP   - Marks the end of a loop.
+            ELOOP TVOID 0V
+
+ IWHILE  - Marks the beginning of a while loop.
+           WHILE TVOID 0V
+
+ IWHILEB - Marks the beginning of a while loop body.
+           WHILEB TVOID 0V
+
+ IWHILEE - Marks the end of a while loop body.
+           WHILEE TVOID 0V
+
+ IWHILEBB - Marks the beginning of a whileb loop.
+            WHILEBB TVOID 0V
+
+ IWHILEBBB - Marks the beginning of a whileb loop body.
+             WHILEBBB TVOID 0V
+
+ IWHILEBBE - Marks the end of a whileb loop body.
+             WHILEBBE TVOID 0V
+
+ IUNTIL    - Marks the beginning of an until loop.
+             UNTIL TVOID 0V
+
+ IUNTILB   - Marks the beginning of an until loop body.
+             UNTILB TVOID 0V
+
+ IUNTILE   - Marks the end of an until loop body.
+             UNTILE TVOID 0V
+
+ IUNTILBB  - Marks the beginning of an untilb loop.
+             UNTILBB TVOID 0V
+
+ IUNTILBBB - Marks the beginning of an untilb loop body.
+             UNTILBBB TVOID 0V
+
+ IUNTILBBE - Marks the end of an untilb loop body.
+             UNTILBBE TVOID 0V
+
+ IFOR      - Marks the beginning of a for loop.
+             FOR TVOID 0V
+
+ IFORINIT  - Marks the end of for loop initialization.
+             FORINIT TVOID 0V
+
+ IFORCOND  - Marks the end of for loop condition.
+             FORCOND TVOID 0V
+
+ IFORINC   - Marks the end of for loop increment.
+             FORINC TVOID 0V
+
+ IFORB     - Marks the beginning of a for loop body.
+             FORB TVOID 0V
+
+ IFORE     - Marks the end of a for loop body.
+             FORE TVOID 0V
+
+ IFORBB    - Marks the beginning of a forb loop.
+             FORBB TVOID 0V
+
+ IFORBBINIT - Marks the end of forb loop initialization.
+              FORBBINIT TVOID 0V
+
+ IFORBBCOND  - Marks the end of forb loop condition.
+               FORBBCOND TVOID 0V
+
+ IFORBBINC   - Marks the end of forb loop increment.
+               FORBBINC TVOID 0V
+
+ IFORBBB     - Marks the beginning of a forb loop body.
+               FORBBB TVOID 0V
+
+ IFORBBE     - Marks the end of a forb loop body.
+               FORBBE TVOID 0V
+
+ IFOREVER    - Marks the beginning of a forever loop.
+               FOREVER TVOID 0V
+
+ IFOREVERE   - Marks the end of a forever loop.
+               FOREVERE TVOID 0V
+
+ IBREAK      - Break from a loop.
+               BREAK TVOID 0V
+               BREAK TNUMBER [labelnum]
+               BREAK TSTRING [label]
+
+ ICONTINUE   - Continues a loop.
+               CONTINUE TVOID 0V
+               CONTINUE TNUMBER [labelnum]
+               CONTINUE TSTRING [label]
+
+
+REGISTERS
+=========
+%icount		(icount)	- The number of instructions.
+
+%instruction	(instruction)	- The current instruction.
+
+%type		(type)		- The current type.
+
+%operand	(operand)	- The current operand.
+
+%extrai		(extrai)	- Each instruction has an extra value, which is logical and doesn't exist in the file.
+
+%ninstruction   (next_instruction) - The next instruction to be executed. 
+				     For debugging purposes.
+
+%mins		(mins)		   - The instruction number (internal loopcount). For debugging purposes.
+
+%pmins		(pmins)		   - The instruction memory address. For debugging purposes.
+
+%iname		(iname)		- The name of the PNF interpreter.
+
+%args		(args)		- The arguments to the program, including the name
+				  of the program in %args[0].
+
+%version	(version)	- The current version of PNF.
+
+%sversion	(sversion)	- The supported version table.
+
+%sinstruction	(sinstruction)	- The supported instruction table.
+
+%stype		(stype)		- The supported type table.
+
+%accumulator	(accumulator)	- A storage space for calculations.
+
+%calc		(calc)		- A storage space for calculations.
+
+%stackp		(stackp)	- The stack pointer.
+
+%savestack	(savestack)	- Used for saving the stack.
+
+%typeof		(type_of)	- Stores a type name. Can be used to show the type
+				  name of %accumulator or %calc.
+
+%ecount		(ecount)	- Contains the location of the END instruction.
+
+%varcount	(varcount)	- Contains the addresses of variables.
+
+%labels		(labels)	- Contains the addresses of labels.
+
+%elabels	(elabels)	- Contains the addresses of event labels.
+
+%evalue		(evalue)	- Contains an event number to be used.
+
+%hevents	(hevents)	- The Hardware Event Table.
+
+%shevents	(shevents)	- The System Hardware Event Table.
+
+%events		(events)	- The Event Table.
+
+%exceptions	(exceptions)	- The Exception Table.
+
+%interrupts	(interrupts)	- The Interrupt Table.
+
+%fimode		(fimode)	- The file input mode.
+
+%fomode		(fomode)	- The file output mode.
+
+%rt1defs	(rt1defs)	- The RangeT1 definitions.
+
+%rt1vars	(rt1vars)	- The RangeT1 variables.
+
+%rt2defs	(rt2defs)	- The RangeT2 definitions.
+
+%rt2vars	(rt2vars)	- The RangeT2 variables.
+
+%rt2prep	(rt2prep)	- The RangeT2 preparation register.
+
+%edefs		(edefs)		- The enum definitions.
+
+%evars		(evars)		- The enum variables.
+
+%eprep		(eprep)		- The enum preparation register.
+
+%avars		(avars)		- The Array variables.
+
+%aprep		(aprep)		- The Array name preparation register.
+
+%aiprep		(aiprep)	- The Array index preparation register.
+
+%fpointer1	(fpointer1)	- Function pointer #1.
+
+%fpointer2	(fpointer2)	- Function pointer #2.
+
+%fpointer3	(fpointer3)	- Function pointer #3.
+
+%fname		(fname)		- Function name register.
+
+%fname2		(fname2)	- Function name register #2.
+
+%frets		(frets)		- Function return value type pointer #1.
+
+%fparams	(fparams)	- Function parameter type pointer #1.
+
+%frets2		(frets2)	- Function return value type pointer #2.
+
+%fparams2	(fparams2)	- Function parameter type pointer #2.
+
+%frets3		(frets3)	- Function return value type pointer #3.
+
+%fparams3	(fparams3)	- Function parameter type pointer #3.
+
+%rnum		(rnum)		- Return number register.
+
+%pnum		(pnum)		- Parameter number register.
+
+%fdefaultv	(fdefaultv)	- Set to true if you need to use default parameters.
+
+%fdefaultvalue	(fdefaultvalue)	- Set to the default value of a parameter.
+
+%structs	(structs)	- Holds the struct definitions.
+
+%ostructs	(ostructs)	- Holds the struct object definitions.
+
+%struct_type	(struct_type)	- Holds the typename of a structure.
+
+%struct_name	(struct_name)	- Holds the object name of a structure.
+
+%unions		(unions)	- Holds the union definitions.
+
+%ounions	(ounions)	- Holds the union object definitions.
+
+%union_type	(union_type)	- Holds the typename of a union.
+
+%union_name	(union_name)	- Holds the object name of a union.
+
+%mode		(mode)		- Holds the current mode.
+
+%smode		(smode)		- Holds the supported modes.
+
+%extmode	(extmode)	- Holds the current extmode.
+
+%sextmode	(sextmode)	- Holds the supported extmodes.
+
+
+SEGMENTS IN PNF
+===============
+
+Memory and the stack, are not always flat. Sometimes, you want to have some data or code stored outside of main memory, into a "segment". This divides up code and data to logical groupings. It is good practice to use these, when needed. Each segment, has memory and a stack of it's own. You cannot execute code, directly from a segment. You MUST first collapse the segment to run code, as only the main memory can run code, or the main "segment". You cannot allocate more than the memory you have on your computer!
+
+
+EVENTS IN PNF
+=============
+
+HEVENT		- A hardware event		Hardware generates this type of event, such as if a refrigerator was plugged into the system.
+
+SHEVENT 	- A system hardware event	System hardware, such as the processor, generates these types of events
+
+EVENT		- A software event		Software will generate these types of events
+
+EXCEPTION 	- An exceptional circumstance	Circumstances, such as a breakpoint will generate an exception
+
+INTERRUPT	- Any other type of event	Any other event will trigger this type of event
+
+
+EVENT OPCODES
+=============
+
+EXCEPTIONS
+----------
+
+0	- The Breakpoint Exception: Ran every time an instruction is processed, unless we are already in a breakpoint. DEFAULT: Does nothing.
+
+1	- Invalid RangeT1 Exception: Ran every time an invalid RangeT1 is encountered. DEFAULT: Crashes.
+
+2	- Invalid RangeT2 Exception: Ran every time an invalid RangeT2 is encountered. DEFAULT: Crashes.
+
+3	- Invalid Enum Exception: Ran every time an invalid Enum is encountered. DEFAULT: Crashes.
+
+
+FILE I/O MODES
+==============
+
+INPUT
+-----
+
+in	- Read as a text file.
+
+binary	- Read as a binary file.
+
+
+OUTPUT
+------
+
+out	- Output in text mode.
+
+binary	- Output in binary mode.
+
+ate	- Positioned at end of file, as text.
+
+app	- Positioned at end of file, ready to add text to it, as text.
+
+trunc	- Ready to replace the file, as text.
+
+
+DEFAULTS
+--------
+
+INPUT	- in
+
+OUTPUT	- out
+
+
+SUPPORTED PATCHES
+=================
+
+TYPE AND OPERAND	DESCRIPTION				            EXPLANATION
+----------------	-----------				            -----------
+TVOID 0V		    The if/switch compiled bug patch.	If you compile a program, using pnf2cpp and a C++ compiler, and then run it, and you use IFs or SWITCH2s, 
+                                                        then without the patch, it will misbehave. This	was because it was accidently shipped out at first with 
+                                                        some code in PNF::load(), which should have been in PNF::load2().
+
+
+OPCODES
+=======
+
+ IVERSION   	  - 0
+ IVOID      	  - 1
+ ICRASH     	  - 2
+ IQUIT      	  - 3
+ IHALT      	  - 4
+ IPRINT     	  - 5
+ IPRINTLN   	  - 6
+ IREAD      	  - 7
+ ILOAD      	  - 8
+ ISTORE     	  - 9
+ ILOADC     	  - 10
+ ISTOREC    	  - 11
+ IELOAD	    	  - 12
+ IESTORE    	  - 13
+ IELOADC    	  - 14
+ IESTOREC   	  - 15
+ IVLOAD     	  - 16
+ IVSTORE    	  - 17
+ IVLOADC    	  - 18
+ IVSTOREC   	  - 19
+ ISTOREA    	  - 20
+ IMODT      	  - 21
+ IMODCT     	  - 22
+ IADD       	  - 23
+ ISUB       	  - 24
+ IMUL       	  - 25
+ IDIV       	  - 26
+ IMOD       	  - 27
+ IPOW       	  - 28
+ IROOT      	  - 29
+ IINC       	  - 30
+ IDEC       	  - 31
+ IEQU       	  - 32
+ INEQU      	  - 33
+ IGTR       	  - 34
+ ILSS       	  - 35
+ IGEQU      	  - 36
+ ILEQU      	  - 37
+ IAND       	  - 38
+ IOR        	  - 39
+ INOT       	  - 40
+ IGOTO      	  - 41
+ ICGOTO     	  - 42
+ IZGOTO     	  - 43
+ IPGOTO     	  - 44
+ INGOTO     	  - 45
+ IGOTOL     	  - 46
+ ICGOTOL     	  - 47
+ IZGOTOL     	  - 48
+ IPGOTOL     	  - 49
+ INGOTOL    	  - 50
+ IST        	  - 51
+ IPUSH      	  - 52
+ IPOP       	  - 53
+ ICALL      	  - 54
+ ICALLL     	  - 55
+ IRET       	  - 56
+ IVAR       	  - 57
+ ILBL	    	  - 58
+ IEPRINT    	  - 59
+ IEPRINTLN  	  - 60
+ IEND       	  - 61
+ IELBL	    	  - 62
+ IEVLOAD    	  - 63
+ IHEADD     	  - 64
+ IHEREM     	  - 65
+ IHEED      	  - 66
+ IHEGET     	  - 67
+ ISHEADD    	  - 68
+ ISHEREM    	  - 69
+ ISHEED     	  - 70
+ ISHEGET    	  - 71
+ IEADD      	  - 72
+ IEREM      	  - 73
+ IEED       	  - 74
+ IEGET      	  - 75
+ IEXADD     	  - 76
+ IEXREM	    	  - 77
+ IEXED      	  - 78
+ IEXGET     	  - 79
+ IIADD      	  - 80
+ IIREM      	  - 81
+ IIED       	  - 82
+ IIGET      	  - 83
+ IHEVENT    	  - 84
+ ISHEVENT   	  - 85
+ IEVENT     	  - 86
+ IEXCEPTION 	  - 87
+ IINT       	  - 88
+ ITYPEOF    	  - 89
+ ICTYPEOF   	  - 90
+ ITLOAD	    	  - 91
+ IALOAD	     	  - 92
+ IINLOAD    	  - 93
+ IICLOAD    	  - 94
+ IARLOAD    	  - 95
+ IATOC	    	  - 96
+ ISWITCH    	  - 97
+ IVADD	    	  - 98
+ ILADD	    	  - 99
+ IELADD	    	  - 100
+ IADD2V     	  - 101
+ IBTAND	    	  - 102
+ IBTOR	    	  - 103
+ IBTEXOR    	  - 104
+ IBTNOT	    	  - 105
+ IBTSL	     	  - 106
+ IBTSR	    	  - 107
+ IVCHECK    	  - 108
+ IVSUPP	    	  - 109
+ IVPRINT    	  - 110
+ IVPRINTLN  	  - 111
+ IISUPP	    	  - 112
+ ITSUPP	    	  - 113
+ ICOMMENT   	  - 114
+ IFIMODE    	  - 115
+ IFOMODE    	  - 116
+ IFIOPEN    	  - 117
+ IFOOPEN    	  - 118
+ IFREAD	    	  - 119
+ IFPRINT     	  - 120
+ IFPRINTLN  	  - 121
+ IFICLOSE   	  - 122
+ IFOCLOSE   	  - 123
+ IMEML      	  - 124
+ IFIEOF	    	  - 125
+ IARNLOAD   	  - 126
+ IRDSTART1  	  - 127
+ IRFROM1    	  - 128
+ IRTO1	    	  - 129
+ IRDEND1    	  - 130
+ IRSTART1   	  - 131
+ IRANGE1    	  - 132
+ IREND1     	  - 133
+ IRLOAD1    	  - 134
+ IRSTORE1   	  - 135
+ IHEADDB    	  - 136
+ ISHEADDB   	  - 137
+ IEADDB     	  - 138
+ IEXADDB    	  - 139
+ IIADDB     	  - 140
+ IRDSTART2  	  - 141
+ IRFROM2    	  - 142
+ IRTO2      	  - 143
+ IRDEND2    	  - 144
+ IRSTART2   	  - 145
+ IRANGE2    	  - 146
+ IRPREP2    	  - 147
+ IRLOAD2    	  - 148
+ IESTART    	  - 149
+ IENAME     	  - 150
+ IEEND      	  - 151
+ IENUMS     	  - 152
+ IENUM      	  - 153
+ ISENUM     	  - 154
+ IEPREP     	  - 155
+ ILOADE     	  - 156
+ ISTOREE    	  - 157
+ IASTART    	  - 158
+ IAEND      	  - 159
+ IAPREP     	  - 160
+ IAIPREP    	  - 161
+ ILOADIA    	  - 162
+ ISTOREIA   	  - 163
+ IALENGTH   	  - 164
+ IAPRINT    	  - 165
+ IDUP	    	  - 166
+ ICDUP	    	  - 167
+ IIF	    	  - 168
+ IENDIF	    	  - 169
+ IIFELSE    	  - 170
+ IIFENDELSE 	  - 171
+ IEIF	    	  - 172
+ IIFBEGIN   	  - 173
+ IIFEND	    	  - 174
+ ISWITCH2   	  - 175
+ ISWBEGIN   	  - 176
+ ISWEND	    	  - 177
+ ISWCASE    	  - 178
+ ISWCBEGIN  	  - 179
+ ISWCEND    	  - 180
+ ISWDEFAULT 	  - 181
+ ISWBREAK   	  - 182
+ ILOADSP    	  - 183
+ ISTORESP   	  - 184
+ ILOADSTACK 	  - 185
+ ISTORESTACK 	  - 186
+ IATOSP	    	  - 187
+ ISPTOA	    	  - 188
+ IPATCH	    	  - 189
+ INATIVE    	  - 190
+ IFRET	    	  - 191
+ IFCALL	    	  - 192
+ IFCPARAMS   	  - 193
+ IFECPARAMS  	  - 194
+ IFECALL     	  - 195
+ IPNUM       	  - 196
+ IPARAMF     	  - 197
+ IPARAMF2    	  - 198
+ IPARAMF3    	  - 199
+ IRNUM     	  - 200
+ IRETURNF   	  - 201
+ IRETURNF2  	  - 202
+ IRETURNF3   	  - 203
+ IFNAME      	  - 204
+ IRETURNV  	  - 205
+ IFNCLOAD    	  - 206
+ IFNCSTORE   	  - 207
+ IFNCNEW    	  - 208
+ IFNCDELETE 	  - 209
+ IFNCSNAME  	  - 210
+ IFNCSRET   	  - 211
+ IFNCSPARAM  	  - 212
+ IFNCSDEF    	  - 213
+ IFNCGNAME   	  - 214
+ IFNCGRET    	  - 215
+ IFNCGPARAM  	  - 216
+ IFNCGDEF    	  - 217
+ IFNCPOINT   	  - 218
+ IFNCLENGTH 	  - 219
+ IFNCSYNCR   	  - 220
+ IFNCFIND    	  - 221
+ IFNCFRET    	  - 222
+ IFNCFPARAM  	  - 223
+ IFNCBRET    	  - 224
+ IFNCBPARAM  	  - 225
+ IFNCDEFAULT 	  - 226
+ IFNCDEFAULT2 	  - 227
+ IFNCSDEFAULTV    - 228
+ IFNCSDEFAULTV2   - 229
+ IFNCGDEFAULTV2   - 230
+ IFNCDEFAULTSYNC  - 231
+ INTIMES	  - 232
+ INCMP		  - 233
+ IRUN		  - 234
+ IJRUN		  - 235
+ IPNFRUN	  - 236
+ ISTRUCT	  - 237
+ ISTRUCTVAR	  - 238
+ IENDSTRUCT	  - 239
+ ISTRUCTNAME	  - 240
+ ISTRUCTONAME	  - 241
+ ISTRUCTD	  - 242
+ ISTRUCTUSE	  - 243
+ ISTRUCTUSING	  - 244
+ ISTRUCTUSINGNAME - 245
+ ISTRUCTGET	  - 246
+ ISTRUCTPUT	  - 247
+ ISTRUCTTYPE	  - 248
+ ISTRUCTTYPE2	  - 249
+ ISTRUCTNAME2	  - 250
+ ISTRUCTNAME3	  - 251
+ IUNION		  - 252
+ IUNIONVAR	  - 253
+ IENDUNION	  - 254
+ IUNIONNAME	  - 255
+ IUNIONONAME	  - 256
+ IUNIOND	  - 257
+ IUNIONUSE	  - 258
+ IUNIONUSING	  - 259
+ IUNIONUSINGNAME  - 260
+ IUNIONGET	  - 261
+ IUNIONPUT	  - 262
+ IUNIONTYPE	  - 263
+ IUNIONTYPE2	  - 264
+ IUNIONNAME2	  - 265
+ IUNIONNAME3	  - 266
+ IMODE		  - 267
+ IEXTMODE	  - 268
+ IMCHECK	  - 269
+ IMSUPP		  - 270
+ IMEXTCHECK	  - 271
+ IMEXTSUPP	  - 272
+ ICPY		  - 273
+ IADDSEG	  - 274
+ IREMSEG	  - 275
+ ICOLLSEG	  - 276
+ IEXPSEG	  - 277
+ ICPYSEG	  - 278
+ ISEGLOAD	  - 279
+ ISEGSTORE	  - 280
+ ISEGPUSH	  - 281
+ ISEGPOP	  - 282
+ ISEGTOP	  - 283
+ ISEGVLOAD	  - 284
+ ISEGVSTORE	  - 285
+ IMSG         - 286
+ ILOOP        - 287
+ IELOOP       - 288
+ IWHILE       - 289
+ IWHILEB      - 290
+ IWHILEE      - 291
+ IWHILEBB     - 292
+ IWHILEBBB    - 293
+ IWHILEBBE    - 294
+ IUNTIL       - 295
+ IUNTILB      - 296
+ IUNTILE      - 297
+ IUNTILBB     - 298
+ IUNTILBBB    - 299
+ IUNTILBBE    - 300
+ IFOR         - 301
+ IFORINIT     - 302
+ IFORCOND     - 303
+ IFORINC      - 304
+ IFORB        - 305
+ IFORE        - 306
+ IFORBB       - 307
+ IFORBBINIT   - 308
+ IFORBBCOND   - 309
+ IFORBBINC    - 310
+ IFORBBB      - 311
+ IFORBBE      - 312
+ IFOREVER     - 313
+ IFOREVERE    - 314
+ IBREAK       - 315
+ ICONTINUE    - 316
+
+
+ TVOID	    - 0
+ TBOOLEAN   - 1
+ TNUMBER    - 2
+ TCHARACTER - 3
+ TSTRING    - 4

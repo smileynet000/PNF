@@ -1,0 +1,59 @@
+println "Loops...";
+println "";
+println "";
+
+println "whilec...";
+var a = 0;
+loop
+dowhilec
+{
+ load %accumulator variable a;
+ print "a = ";
+ println;
+
+ load %accumulator variable a;
+ ++;
+ asm "VSTORE" "TNUMBER" "0";
+}
+whilebc ({load %accumulator variable a; atoc; load aload 10; switch; <;})
+endloop;
+
+/*
+println "";
+
+println "while...";
+var b = 0;
+loop
+while ({load %accumulator variable b; atoc; load aload 10; switch; <;})
+{
+ load %accumulator variable b;
+ print "b = ";
+ println;
+
+ load %accumulator variable b;
+ ++;
+ asm "VSTORE" "TNUMBER" "1";
+}
+endloop
+
+println "";
+
+
+println "whilebc...";
+var c = 0;
+loop
+dowhilec 
+{
+ load %accumulator variable c;
+ print "c = ";
+ println;
+
+ load %accumulator variable c;
+ ++;
+ asm "VSTORE" "TNUMBER" "2";
+}
+whilec ({load %accumulator variable c; atoc; load aload 10; switch; <;})
+endloop
+*/
+
+end 0;

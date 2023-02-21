@@ -1,0 +1,31 @@
+var loopcount;
+var loopuntil;
+
+
+print "Loop until: ";
+read number loopuntil;
+println "";
+
+
+do {
+addressof avariable loopcount;
+add2v;
+println;
+
+addressof avariable loopcount;
+atoc;
+addressof avariable loopcount;
+add2v;
+++;
+store storea;
+} while ({
+addressof avariable loopuntil;
+add2v;
+atoc;
+addressof avariable loopcount;
+add2v;
+<;
+})
+
+
+end 0;

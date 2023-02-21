@@ -1,0 +1,31 @@
+label loop_test;
+label loop_top;
+label loop_increment;
+label loop_end;
+
+
+load aload 1;
+atoc;
+load aload 6;
+
+loop_test:
+ switch;
+ push;
+ <;
+ goto condition loop_top;
+ goto normal loop_end;
+
+loop_top:
+ pop;
+ print "%accumulator = ";
+ println;
+
+loop_increment:
+ ++;
+ switch;
+ goto normal loop_test;
+
+loop_end:
+
+
+end 0;

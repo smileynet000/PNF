@@ -1,0 +1,12 @@
+#define "CAT" "VERSION"
+
+
+CAT TVOID 0V
+
+
+PRINTLN TSTRING "Hello World!"
+
+QUIT TVOID 0
+
+
+END TVOID 0V

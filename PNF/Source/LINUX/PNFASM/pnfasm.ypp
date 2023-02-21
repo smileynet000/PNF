@@ -72,6 +72,10 @@ This file is part of pnfasm.
 			13. Added struct instructions.
 			14. Added more struct instructions.
 			15. Implemented segment instructions.
+            16. Implemented message instruction.
+            17. Implemented basic class instructions.
+
+2/19/22 Origional a-a-f 1. Implemented CLASSMETHOD instruction.
 */
 /*
  IVERSION   - Switches versions. It's not possible to switch versions yet, because it's the first version.
@@ -816,9 +820,9 @@ unsigned long ifcounter3 = 0;
 unsigned long pifend = 0;
 %}
 /* Bison Declarations */
-%error-verbose
+%define parse.error verbose
 
-%expect 311
+%expect 363
 
 
 %token ASMVERSION
@@ -1132,6 +1136,58 @@ unsigned long pifend = 0;
 %token ISEGTOP
 %token ISEGVLOAD
 %token ISEGVSTORE
+%token IMSG
+%token IWHILE
+%token IWHILEB
+%token IWHILEE
+%token IWHILEBB
+%token IWHILEBBB
+%token IWHILEBBE
+%token IUNTIL
+%token IUNTILB
+%token IUNTILE
+%token IUNTILBB
+%token IUNTILBBB
+%token IUNTILBBE
+%token IFOR
+%token IFORINIT
+%token IFORCOND
+%token IFORINC
+%token IFORB
+%token IFORE
+%token IFORBB
+%token IFORBBINIT
+%token IFORBBCOND
+%token IFORBBINC
+%token IFORBBB
+%token IFORBBE
+%token IFOREVER
+%token IFOREVERE
+%token ICLASS
+%token ICLASSVAR
+%token IENDCLASS
+%token ICLASSNAME
+%token ICLASSONAME
+%token ICLASSD
+%token ICLASSUSE
+%token ICLASSUSING
+%token ICLASSUSINGNAME
+%token ICLASSGET
+%token ICLASSPUT
+%token ICLASSTYPE
+%token ICLASSTYPE2
+%token ICLASSNAME2
+%token ICLASSNAME3
+%token ICLASSMETHOD
+%token ICLASSMETHOD2
+%token ICLASSMETHODCALL
+%token ICLASSMETHODCPARAMS
+%token ICLASSMETHODECPARAMS
+%token ICLASSMETHODECALL
+%token ICLASSEXTENDACCESS
+%token ICLASSEXTEND
+%token ICLASSIMPLEMENTACCESS
+%token ICLASSIMPLEMENT
 
 
 %token TVOID
@@ -1293,9 +1349,11 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 		| IROOT TVOID VOID 		{ fprintf(output, "29 0 0\n"); }
 		| IROOT TNUMBER NUMBER 		{ fprintf(output, "29 2 %s\n", $3.getString().c_str()); }
 		| IINC TVOID VOID 		{ fprintf(output, "30 0 0\n"); }
+		| IINC TNUMBER VOID 		{ fprintf(output, "30 2 0\n"); }
 		| IDEC TVOID VOID 		{ fprintf(output, "31 0 0\n"); }
 		| IEQU TVOID VOID 		{ fprintf(output, "32 0 0\n"); }
 		| INEQU TVOID VOID 		{ fprintf(output, "33 0 0\n"); }
+		| INEQU TNUMBER NUMBER 		{ fprintf(output, "33 2 %s\n", $3.getString().c_str()); }
 		| IGTR TVOID VOID 		{ fprintf(output, "34 0 0\n"); }
 		| ILSS TVOID VOID 		{ fprintf(output, "35 0 0\n"); }
 		| IGEQU TVOID VOID 		{ fprintf(output, "36 0 0\n"); }
@@ -2205,7 +2263,7 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 						}
 
 		| IEXTMODE TVOID NUMBER		{ 
-						 fprintf(output, "268 0 0\n");
+						 fprintf(output, "268 0 %s\n", $3.getString().c_str());
 						}
 
 		| IMCHECK TVOID NUMBER		{ fprintf(output, "269 0 %s\n", $3.getString().c_str()); }
@@ -2350,6 +2408,177 @@ instruction:	IVERSION TVOID VOID	{ fprintf(output, "0 0 0\n"); }
 		| ISEGVLOAD TSTRING NUMBER		{ fprintf(output, "284 4 %s\n", $3.getString().c_str()); }
 		| ISEGVSTORE TVOID VOID		{ fprintf(output, "285 0 0\n"); }
 		| ISEGVSTORE TNUMBER NUMBER	{ fprintf(output, "285 2 %s\n", $3.getString().c_str()); }
+        | IMSG TVOID NUMBER         { fprintf(output, "286 0 %s\n", $3.getString().c_str()); }
+        | IWHILE TVOID VOID		{ fprintf(output, "287 0 0\n"); }
+        | IWHILEB TVOID VOID		{ fprintf(output, "288 0 0\n"); }
+        | IWHILEE TVOID VOID		{ fprintf(output, "289 0 0\n"); }
+        | IWHILEBB TVOID VOID		{ fprintf(output, "290 0 0\n"); }
+        | IWHILEBBB TVOID VOID		{ fprintf(output, "291 0 0\n"); }
+        | IWHILEBBE TVOID VOID		{ fprintf(output, "292 0 0\n"); }
+        | IUNTIL TVOID VOID		    { fprintf(output, "293 0 0\n"); }
+        | IUNTILB TVOID VOID		{ fprintf(output, "294 0 0\n"); }
+        | IUNTILE TVOID VOID		{ fprintf(output, "295 0 0\n"); }
+        | IUNTILBB TVOID VOID		{ fprintf(output, "296 0 0\n"); }
+        | IUNTILBBB TVOID VOID		{ fprintf(output, "297 0 0\n"); }
+        | IUNTILBBE TVOID VOID		{ fprintf(output, "298 0 0\n"); }
+        | IFOR TVOID VOID		{ fprintf(output, "299 0 0\n"); }
+        | IFORINIT TVOID VOID		{ fprintf(output, "300 0 0\n"); }
+        | IFORCOND TVOID VOID		{ fprintf(output, "301 0 0\n"); }
+        | IFORINC TVOID VOID		{ fprintf(output, "302 0 0\n"); }
+        | IFORB TVOID VOID		{ fprintf(output, "303 0 0\n"); }
+        | IFORE TVOID VOID		{ fprintf(output, "304 0 0\n"); }
+        | IFORBB TVOID VOID		{ fprintf(output, "305 0 0\n"); }
+        | IFORBBINIT TVOID VOID		{ fprintf(output, "306 0 0\n"); }
+        | IFORBBCOND TVOID VOID		{ fprintf(output, "307 0 0\n"); }
+        | IFORBBINC TVOID VOID		{ fprintf(output, "308 0 0\n"); }
+        | IFORBBB TVOID VOID		{ fprintf(output, "309 0 0\n"); }
+        | IFORBBE TVOID VOID		{ fprintf(output, "310 0 0\n"); }
+        | IFOREVER TVOID VOID		{ fprintf(output, "311 0 0\n"); }
+        | IFOREVERE TVOID VOID		{ fprintf(output, "312 0 0\n"); }
+		| ICLASS TSTRING STRING	{ 
+						 fprintf(output, "313 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}	
+		| ICLASSVAR TSTRING STRING	{ 
+						 fprintf(output, "314 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}	
+		| IENDCLASS TVOID VOID	{ fprintf(output, "315 0 0\n"); }
+		| ICLASSNAME TSTRING STRING	{ 
+						 fprintf(output, "316 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ICLASSONAME TSTRING STRING	{ 
+						 fprintf(output, "317 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ICLASSD TSTRING STRING	{ 
+						 fprintf(output, "318 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ICLASSUSE TVOID VOID		{ 
+						 fprintf(output, "319 0 0\n");
+						}
+		| ICLASSUSE TNUMBER VOID	{	
+						fprintf(output, "319 2 0\n");
+						}
+		| ICLASSUSE TSTRING STRING	{ 
+						 fprintf(output, "319 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ICLASSUSING TVOID VOID	{ 
+						 fprintf(output, "320 0 0\n");
+						}
+		| ICLASSUSINGNAME TVOID VOID	{ 
+						 fprintf(output, "321 0 0\n");
+						}
+		| ICLASSGET TVOID VOID		{ 
+						 fprintf(output, "322 0 0\n");
+						}
+		| ICLASSPUT TVOID VOID		{ 
+						 fprintf(output, "323 0 0\n");
+						}
+
+		| ICLASSTYPE TVOID VOID	{ 
+						 fprintf(output, "324 0 0\n");
+						}
+		| ICLASSTYPE2 TVOID VOID	{ 
+						 fprintf(output, "325 0 0\n");
+						}
+		| ICLASSNAME2 TVOID VOID	{ 
+						 fprintf(output, "326 0 0\n");
+						}
+		| ICLASSNAME3 TVOID VOID	{ 
+						 fprintf(output, "327 0 0\n");
+						}
+        | ICLASSMETHOD TNUMBER NUMBER         { fprintf(output, "328 2 %s\n", $3.getString().c_str()); }
+		| ICLASSMETHOD2 TSTRING STRING	{ 
+						 fprintf(output, "329 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+        | ICLASSMETHODCALL TSTRING STRING	{ 
+						 fprintf(output, "330 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"');
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+		| ICLASSMETHODCPARAMS TVOID VOID		{ fprintf(output, "331 0 0\n"); }
+		| ICLASSMETHODECPARAMS TVOID VOID		{ fprintf(output, "332 0 0\n"); }
+		| ICLASSMETHODECALL TVOID VOID		{ fprintf(output, "331 0 0\n"); }
+        | ICLASSEXTENDACCESS TSTRING STRING	{ 
+						 fprintf(output, "334 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+        | ICLASSEXTEND TSTRING STRING	{ 
+						 fprintf(output, "335 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+        | ICLASSIMPLEMENTACCESS TSTRING STRING	{ 
+						 fprintf(output, "336 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
+        | ICLASSIMPLEMENT TSTRING STRING	{ 
+						 fprintf(output, "337 4 ");
+						 for (unsigned long i = 0; i < $3.length(); ++i)
+						 {
+						  if ($3[i] != '\"')
+						   fprintf(output, "%d ", (int)($3[i]));
+						 }
+						 fprintf(output, "0\n");
+						}
 		
 		| ASMVERSION TVOID VOID		{ /* Do nothing... */ }
 		| PNF NUMBER NUMBER NUMBER	{ fprintf(output, "%s %s %s\n", $2.getString().c_str(), $3.getString().c_str(), $4.getString().c_str()); }

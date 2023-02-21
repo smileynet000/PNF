@@ -1,0 +1,11 @@
+var a = 2;
+println a;
+
+{
+ var a = 5;
+ println a;
+}
+println a;
+
+
+end 0;

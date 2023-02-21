@@ -1,0 +1,7 @@
+load aload "Hello World!";
+store %accumulator seg2;
+load %accumulator seg2 string 0;
+println;
+
+
+end 0;

@@ -1,0 +1,10 @@
+#define "string" "MSG"
+
+VERSION TVOID 1
+EXTMODE TVOID 1
+
+string TVOID 0
+
+QUIT TVOID 0
+
+END TVOID 0V

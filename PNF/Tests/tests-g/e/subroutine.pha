@@ -1,0 +1,12 @@
+subroutine sub1;
+
+
+println "In main()...";
+gosub sub sub1;
+println "Back in main()...";
+end 0;
+
+
+sub1:
+ println "In demonstration function...";
+ return;

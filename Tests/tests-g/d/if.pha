@@ -1,0 +1,34 @@
+label gif;
+label gelse;
+label gend;
+
+var a;
+print "Enter a number: ";
+read number a;
+print "a: ";
+addressof avariable a;
+add2v;
+println;
+
+addressof avariable a;
+add2v;
+atoc;
+load %accumulator aload 33;
+switch;
+==;
+goto condition gif;
+goto normal gelse;
+
+gif:
+ println "33";
+ goto normal gend;
+
+gelse:
+ println "Not 33";
+ goto normal gend;
+
+
+gend:
+ ;
+
+end 0;
